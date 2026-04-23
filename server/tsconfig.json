@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "moduleResolution": "node",
+    "target": "ES2022",
+    "outDir": "dist",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    "baseUrl": "./src",
+    "paths": {
+      "@services/*": ["modules/services/*"],
+      "@controllers/*": ["modules/controllers/*"],
+      "@database/*": ["modules/database/*"],
+      "@errors/*": ["errors/*"],
+      "@types/*": ["types/*"]
+    }
+  }
+}

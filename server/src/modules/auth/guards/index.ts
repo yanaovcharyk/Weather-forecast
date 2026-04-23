@@ -1,0 +1,1 @@
+export { AccessJwtGuard } from './access-jwt.guard';
