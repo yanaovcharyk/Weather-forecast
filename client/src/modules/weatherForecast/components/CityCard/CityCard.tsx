@@ -2,7 +2,7 @@ import { Flex } from 'antd';
 import { Text } from '@/shared/components';
 import { TextButton } from '@/shared/components/Button/TextButton';
 import { InfoCard } from '@/shared/components/Card/InfoCard';
-import { getWeatherBackground } from './getWeatherEmoji';
+import { getWeatherBackground } from './getWeatherBackground';
 import type { City } from '../../../../shared/types';
 import { theme } from 'antd';
 import { CloseOutlined } from '@ant-design/icons';
@@ -29,7 +29,10 @@ export const CityCard = ({
   return (
     <InfoCard
       headerLeft={
-        <Text strong style={{ fontSize: 14, color: token.colorTextHeading }}>
+        <Text
+          strong
+          style={{ fontSize: token.fontSizeXL, color: token.colorTextHeading }}
+        >
           {city}
         </Text>
       }
@@ -49,7 +52,7 @@ export const CityCard = ({
             color: token.colorTextHeading,
           }}
         >
-          <CloseOutlined style={{ fontSize: 12 }} />
+          <CloseOutlined style={{ fontSize: token.fontSizeLG }} />
         </TextButton>
       }
     >
@@ -89,16 +92,16 @@ export const CityCard = ({
               {weather.temperature}°C
             </Text>
 
-            <Text style={{ fontSize: 12, lineHeight: 1 }}>
+            <Text style={{ fontSize: token.fontSizeLG, lineHeight: 1 }}>
               {weather.description}
             </Text>
 
             <Text
               strong
               style={{
-                fontSize: 12,
+                fontSize: token.fontSizeLG,
                 alignSelf: 'flex-start',
-                marginTop: 6,
+                marginTop: token.marginXXS,
                 padding: 0,
               }}
             >
@@ -116,13 +119,16 @@ export const CityCard = ({
                     padding: '3px 0',
                   }}
                 >
-                  <Text strong style={{ fontSize: 10, lineHeight: 1 }}>
+                  <Text
+                    strong
+                    style={{ fontSize: token.fontSizeSM, lineHeight: 1 }}
+                  >
                     {days[i + 1]?.label}
                   </Text>
-                  <Flex align="center" style={{ gap: 6 }}>
+                  <Flex align="center" gap={6}>
                     <Text
                       style={{
-                        fontSize: 9,
+                        fontSize: token.fontSizeSM,
                         opacity: 0.8,
                         lineHeight: 1,
                       }}
@@ -133,7 +139,7 @@ export const CityCard = ({
                     <Text
                       strong
                       style={{
-                        fontSize: 10,
+                        fontSize: token.fontSizeSM,
                         lineHeight: 1,
                         display: 'flex',
                         alignItems: 'center',

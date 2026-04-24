@@ -7,8 +7,7 @@ export const CenteredLayout = ({ children }: { children: React.ReactNode }) => {
       justify="center"
       style={{
         minHeight: '100vh',
-        background:
-          'radial-gradient(circle at top, #E6F0FF 0%, #91aad6 50%, #6d90cd 100%)',
+        background: '#D7E3F8',
       }}
     >
       {children}

@@ -1,10 +1,13 @@
-import { Form, Select, Grid, Space } from 'antd';
+import { Form, Select, Grid, Space, theme, Empty } from 'antd';
 import { PrimaryButton } from '@/shared/components/Button/PrimaryButton';
 
 import type { AddCityFormProps } from './types';
 import { useCitySearch } from '../../hooks/useCitySearch';
 
 export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
+  const { useToken } = theme;
+  const { token } = useToken();
+
   const [form] = Form.useForm();
   const { data, loading, handleSearch } = useCitySearch();
 
@@ -47,7 +50,7 @@ export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
     <Form form={form} onFinish={handleSubmit}>
       <Space
         orientation="vertical"
-        size={isMobile ? 6 : 8}
+        size={isMobile ? token.marginXXS : token.marginXS}
         style={{ width: '100%', padding: isMobile ? '0 0 8' : 8 }}
       >
         <Form.Item
@@ -68,10 +71,15 @@ export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
             placement={isMobile ? 'topLeft' : 'bottomLeft'}
             getPopupContainer={() => document.body}
             notFoundContent={
-              <div style={{ textAlign: 'center', padding: 12 }}>
-                <div style={{ fontSize: 20 }}>🌥</div>
-                <div>No cities found</div>
-              </div>
+              <Empty
+                image={<div style={{ fontSize: token.fontSizeXL }}>🌥</div>}
+                description="No cities found"
+                styles={{
+                  image: {
+                    height: 24,
+                  },
+                }}
+              />
             }
           />
         </Form.Item>

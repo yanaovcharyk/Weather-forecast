@@ -21,6 +21,13 @@ export const ThemeProvider = ({ children }: Props) => {
           colorBgLayout: '#D7E3F8',
           borderRadius: 8,
           colorBgContainer: '#F0F6FF',
+
+          marginXXS: 6,
+          marginXS: 8,
+          fontSizeLG: 12,
+          fontSizeSM: 10,
+          fontSizeXL: 18,
+          controlHeightXS: 16,
         },
 
         components: {

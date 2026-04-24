@@ -1,4 +1,4 @@
-import { Form, Input } from 'antd';
+import { Form, Input, theme } from 'antd';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -8,6 +8,8 @@ import { FormField } from '@/shared/components/Form/FormInput';
 import { PrimaryButton } from '@/shared/components/Button/PrimaryButton';
 
 export const LoginForm = () => {
+  const { token } = theme.useToken();
+
   const { submit, loading } = useLogin();
 
   const { handleSubmit, control } = useForm<LoginFormValues>({
@@ -18,7 +20,7 @@ export const LoginForm = () => {
     <Form
       layout="vertical"
       onFinish={handleSubmit(submit)}
-      style={{ padding: 16, color: '#234C75' }}
+      style={{ padding: 16 }}
     >
       <FormField<LoginFormValues>
         name="email"
@@ -26,7 +28,7 @@ export const LoginForm = () => {
         label="Email"
         style={{ marginBottom: 4 }}
       >
-        {(field) => <Input {...field} style={{ color: '#234C75' }} />}
+        {(field) => <Input {...field} style={{ color: token.colorPrimary }} />}
       </FormField>
 
       <FormField<LoginFormValues>
@@ -34,7 +36,9 @@ export const LoginForm = () => {
         control={control}
         label="Password"
       >
-        {(field) => <Input.Password {...field} style={{ color: '#234C75' }} />}
+        {(field) => (
+          <Input.Password {...field} style={{ color: token.colorPrimary }} />
+        )}
       </FormField>
 
       <PrimaryButton htmlType="submit" block loading={loading}>

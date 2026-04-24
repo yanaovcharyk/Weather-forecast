@@ -1,4 +1,4 @@
-import { Spin, Row, Col, Space, Grid, Flex } from 'antd';
+import { Spin, Row, Col, Space, Grid, Flex, theme } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 
@@ -11,6 +11,7 @@ import { handleResult } from '@/shared/utils';
 import { TextButton } from '../../../shared/components/Button/TextButton';
 
 export const CitiesPage = () => {
+  const { token } = theme.useToken();
   const { data, loading } = useCities();
   const { addCity, loading: addCityLoading } = useAddCity();
   const { removeCity } = useRemoveCity();
@@ -66,7 +67,9 @@ export const CitiesPage = () => {
               borderRadius: 8,
             }}
           >
-            <EllipsisOutlined style={{ fontSize: 18, color: '#234C75' }} />
+            <EllipsisOutlined
+              style={{ fontSize: token.fontSizeXL, color: token.colorPrimary }}
+            />
           </TextButton>
         </Flex>
       }
@@ -98,9 +101,9 @@ export const CitiesPage = () => {
             )}
 
             {cities.length === 0 ? (
-              <div style={{ textAlign: 'center' }}>
+              <Flex justify="center">
                 <Text type="secondary">No cities yet 🌥</Text>
-              </div>
+              </Flex>
             ) : (
               <Row gutter={[12, 12]}>
                 {cities.map((city) => (
