@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 
 import { LOGIN_MUTATION } from '../api';
-import { useAuth } from '@/shared/hooks';
-import { extractErrorCode, mapErrorCodeToMessage } from '@/shared/utils';
 import type { LoginFormValues, LoginMutationResponse } from '../types';
+import { useAuth } from './useAuth';
+import { mapErrorCodeToMessage, extractErrorCode } from '@/shared/result';
 
 export const useLogin = () => {
   const { login } = useAuth();

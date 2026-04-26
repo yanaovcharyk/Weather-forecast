@@ -1,57 +1,23 @@
-import { Form, Select, Grid, Space, theme, Empty } from 'antd';
-import { PrimaryButton } from '@/shared/components/Button/PrimaryButton';
+import { Form, Select, Space, theme, Empty } from 'antd';
+import { PrimaryButton } from '@/common/components';
 
 import type { AddCityFormProps } from './types';
-import { useCitySearch } from '../../hooks/useCitySearch';
+import { useAddCityForm } from '../../hooks/useAddCityForm';
+import { useIsMobile } from '@/common/hooks/useIsMobile';
 
 export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
-  const { useToken } = theme;
-  const { token } = useToken();
+  const { token } = theme.useToken();
+  const isMobile = useIsMobile();
 
-  const [form] = Form.useForm();
-  const { data, loading, handleSearch } = useCitySearch();
-
-  const { useBreakpoint } = Grid;
-  const screens = useBreakpoint();
-
-  const isMobile = !screens.md;
-
-  const getCityOptionValue = (city: { lat: number; lon: number }) =>
-    `${city.lat}|${city.lon}`;
-
-  const findSelectedCity = (value: string) =>
-    data?.searchCities?.find((city) => getCityOptionValue(city) === value);
-
-  const submitCity = async (city: { name: string }) => {
-    await onSubmit(city.name);
-  };
-
-  const resetForm = () => {
-    form.resetFields();
-  };
-
-  const cityOptions =
-    data?.searchCities?.map((city) => ({
-      label: `${city.name}, ${city.country}`,
-      value: getCityOptionValue(city),
-    })) ?? [];
-
-  const handleSubmit = async (values: { city?: string }) => {
-    if (!values.city) return;
-
-    const selectedCity = findSelectedCity(values.city);
-    if (!selectedCity) return;
-
-    await submitCity(selectedCity);
-    resetForm();
-  };
+  const { form, loading, handleSearch, cityOptions, handleSubmit } =
+    useAddCityForm(onSubmit);
 
   return (
     <Form form={form} onFinish={handleSubmit}>
       <Space
         orientation="vertical"
         size={isMobile ? token.marginXXS : token.marginXS}
-        style={{ width: '100%', padding: isMobile ? '0 0 8' : 8 }}
+        style={{ width: '100%' }}
       >
         <Form.Item
           name="city"
@@ -72,13 +38,8 @@ export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
             getPopupContainer={() => document.body}
             notFoundContent={
               <Empty
-                image={<div style={{ fontSize: token.fontSizeXL }}>🌥</div>}
+                image={<div style={{ fontSize: 24 }}>🌥</div>}
                 description="No cities found"
-                styles={{
-                  image: {
-                    height: 24,
-                  },
-                }}
               />
             }
           />

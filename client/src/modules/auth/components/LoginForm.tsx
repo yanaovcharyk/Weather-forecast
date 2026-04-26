@@ -1,11 +1,9 @@
 import { Form, Input, theme } from 'antd';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { useLogin } from '../hooks/useLogin';
 import { schema, type LoginFormValues } from '../types';
-import { FormField } from '@/shared/components/Form/FormInput';
-import { PrimaryButton } from '@/shared/components/Button/PrimaryButton';
+import { PrimaryButton, FormField } from '@/common/components';
 
 export const LoginForm = () => {
   const { token } = theme.useToken();

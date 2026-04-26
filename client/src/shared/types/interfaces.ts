@@ -6,16 +6,6 @@ export interface Weather {
   next3DaysDescription: string[];
 }
 
-// export interface CityWithWeather {
-//   id: number;
-//   city: string;
-//   weather: Weather | null;
-// }
-
-// export interface CitiesWithWeatherQuery {
-//   citiesWithWeather: CityWithWeather[];
-// }
-
 export interface City {
   id: number;
   city: string;

@@ -3,16 +3,27 @@ import { Response, Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import { AppConfig } from '../../../shared/types/app.config';
-import { TokenName, Tokens } from '../types/token';
+
+enum TokenName {
+  ACCESS = 'accessToken',
+  REFRESH = 'refreshToken',
+}
 
 type MsString = `${number}${'ms' | 's' | 'm' | 'h' | 'd'}`;
 
 @Injectable()
 export class AuthCookieService {
-  private readonly isProd: boolean;
+  constructor(private readonly config: ConfigService<AppConfig>) {}
 
-  constructor(private readonly config: ConfigService<AppConfig>) {
-    this.isProd = this.config.get('nodeEnv', { infer: true }) === 'production';
+  private get cookieOptions() {
+    const isProd = this.config.get('nodeEnv', { infer: true }) === 'production';
+
+    return {
+      httpOnly: true,
+      secure: isProd,
+      sameSite: 'lax' as const,
+      path: '/',
+    };
   }
 
   getAccessToken(req: Request): string | null {
@@ -23,75 +34,71 @@ export class AuthCookieService {
     return req.cookies?.refreshToken ?? null;
   }
 
-  getRefreshTokenOrThrow(req: Request): string {
-    const token = this.getRefreshToken(req);
+  private getAccessTokenMaxAge(): number {
+    const expires = this.config.get('jwt.accessExpires', { infer: true });
 
-    if (!token) {
-      throw new Error('Refresh token not found');
+    if (!expires) {
+      throw new Error('jwt.accessExpires is not defined');
     }
 
-    return token;
+    return this.parseMs(expires);
   }
 
-  setAuthCookies(res: Response, tokens: Tokens) {
-    console.log(`🍪 SET access + refresh cookies`);
+  private getRefreshTokenMaxAge(): number {
+    const expires = this.config.get('jwt.refreshExpires', { infer: true });
 
-    this.setCookie(
-      res,
-      TokenName.ACCESS,
-      tokens.accessToken,
-      this.getMaxAge('jwt.accessExpires'),
-    );
-
-    this.setCookie(
-      res,
-      TokenName.REFRESH,
-      tokens.refreshToken,
-      this.getMaxAge('jwt.refreshExpires'),
-    );
-  }
-
-  clearAuthCookies(res: Response) {
-    res.clearCookie(TokenName.ACCESS, this.baseOptions);
-    res.clearCookie(TokenName.REFRESH, this.baseOptions);
-  }
-
-  private readonly baseOptions = {
-    httpOnly: true,
-    sameSite: 'lax' as const,
-    path: '/',
-  };
-
-  private setCookie(
-    res: Response,
-    name: TokenName,
-    value: string,
-    maxAge: number,
-  ) {
-    res.cookie(name, value, {
-      ...this.baseOptions,
-      secure: this.isProd,
-      maxAge,
-    });
-  }
-
-  private getMaxAge(key: 'jwt.accessExpires' | 'jwt.refreshExpires'): number {
-    const value = this.config.get<string>(key, { infer: true });
-
-    if (!value) {
-      throw new Error(`${key} is not defined`);
+    if (!expires) {
+      throw new Error('jwt.refreshExpires is not defined');
     }
 
-    return this.parseMs(value as MsString);
+    return this.parseMs(expires);
   }
 
   private parseMs(value: MsString): number {
     const result = ms(value);
 
-    if (!result) {
+    if (typeof result !== 'number') {
       throw new Error(`Invalid ms value: ${value}`);
     }
 
     return result;
+  }
+
+  private setToken(
+    res: Response,
+    token: string,
+    name: TokenName,
+    maxAge: number,
+  ) {
+    res.cookie(name, token, {
+      ...this.cookieOptions,
+      maxAge,
+    });
+  }
+
+  setAccessToken(res: Response, token: string) {
+    this.setToken(
+      res,
+      token,
+      TokenName.ACCESS,
+      this.getAccessTokenMaxAge(),
+    );
+  }
+
+  setRefreshToken(res: Response, token: string) {
+    this.setToken(
+      res,
+      token,
+      TokenName.REFRESH,
+      this.getRefreshTokenMaxAge(),
+    );
+  }
+
+  clearAccessToken(res: Response) {
+    res.clearCookie(TokenName.ACCESS, this.cookieOptions);
+  }
+
+  clearRefreshToken(res: Response) {
+    res.clearCookie(TokenName.REFRESH, this.cookieOptions);
   }
 }

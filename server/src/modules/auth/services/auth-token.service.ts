@@ -75,23 +75,9 @@ export class AuthTokenService {
     errorMessage: string,
   ): Promise<T> {
     try {
-      const decoded = await this.jwt.verifyAsync<T>(token, { secret });
-
-      console.log(`🔐 TOKEN OK`);
-
-      return decoded;
+      return await this.jwt.verifyAsync<T>(token, { secret });
     } catch {
-      console.log(`🔐 TOKEN INVALID`);
-
       throwUnauthorized(errorMessage);
-    }
-  }
-
-  decodeToken(token: string): any {
-    try {
-      return this.jwt.decode(token);
-    } catch {
-      return null;
     }
   }
 }

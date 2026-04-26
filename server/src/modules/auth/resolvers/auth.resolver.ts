@@ -3,7 +3,7 @@ import { UseGuards } from '@nestjs/common';
 import { LoginInput, RegisterInput, LoginOutput, AuthOutput } from '../dto';
 import { GQLContext } from '../../cities/interfaces';
 import { AuthService } from '../services';
-import { AccessJwtGuard } from '../guards';
+import { AccessJwtGuard, RefreshJwtGuard } from '../guards';
 
 @Resolver()
 export class AuthResolver {
@@ -22,6 +22,17 @@ export class AuthResolver {
   ) {
     await this.authService.register(input, ctx.req, ctx.res);
     return { success: true };
+  }
+
+  @Mutation(() => AuthOutput)
+  @UseGuards(RefreshJwtGuard)
+  async refreshTokens(@Context() ctx: GQLContext) {
+
+    return this.authService.rotateRefreshToken(
+      ctx.req.user.refreshToken,
+      ctx.req,
+      ctx.res,
+    );
   }
 
   @Query(() => Boolean)

@@ -1,11 +1,13 @@
 import { useLazyQuery } from '@apollo/client/react';
-import { useRef } from 'react';
+import { useMemo, useRef } from 'react';
 
 import { SEARCH_CITIES } from '../api';
 import type {
   SearchCitiesData,
   SearchCitiesVars,
 } from '../components/AddCityForm/types';
+import { CityService } from '../services/CityService';
+import { getCityKey } from '../utils/citySelect';
 
 const DEBOUNCE_DELAY_MS = 300;
 const MIN_SEARCH_LENGTH = 2;
@@ -34,25 +36,31 @@ export const useCitySearch = () => {
     }, DEBOUNCE_DELAY_MS);
   };
 
-  const isSearchQueryTooShort = (query: string) => {
-    return query.trim().length < MIN_SEARCH_LENGTH;
-  };
-
   const requestCitySearch = (inputValue: string) => {
-    const query = inputValue.trim();
+    const query = CityService.normalizeCityName(inputValue);
 
     cancelPreviousSearch();
 
-    if (isSearchQueryTooShort(query)) {
+    if (query.length < MIN_SEARCH_LENGTH) {
       return;
     }
 
     scheduleSearchRequest(query);
   };
 
+  const cityOptions = useMemo(() => {
+    return (
+      data?.searchCities?.map((city) => ({
+        label: `${city.name}, ${city.country}`,
+        value: getCityKey(city),
+      })) ?? []
+    );
+  }, [data]);
+
   return {
     data,
     loading,
     handleSearch: requestCitySearch,
+    cityOptions,
   };
 };

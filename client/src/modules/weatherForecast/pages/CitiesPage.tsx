@@ -1,85 +1,76 @@
-import { Spin, Row, Col, Space, Grid, Flex, theme } from 'antd';
-import { EllipsisOutlined } from '@ant-design/icons';
-import { useState } from 'react';
+import { Spin, Row, Col, Space } from 'antd';
+import { useCallback, useState } from 'react';
 
 import { useRemoveCity, useAddCity, useCities } from '../hooks';
-import { AddCityForm, CityCard } from '../components';
-import type { City } from '@/shared/types';
+import { AddCityForm, CitiesList } from '../components';
 
-import { PageLayout, FormCard, Title, Text } from '@/shared/components';
-import { handleResult } from '@/shared/utils';
-import { TextButton } from '../../../shared/components/Button/TextButton';
+import { CityService } from '../services/CityService';
+import { useIsMobile } from '@/common/hooks/';
+import { handleResult } from '@/shared/result';
+import { EmptyState, FormCard, PageLayout } from '@/common/components';
+import { Header } from '@/common/components';
 
 export const CitiesPage = () => {
-  const { token } = theme.useToken();
   const { data, loading } = useCities();
   const { addCity, loading: addCityLoading } = useAddCity();
   const { removeCity } = useRemoveCity();
 
   const [removingId, setRemovingId] = useState<number | null>(null);
 
-  const cities: City[] = data?.cities ?? [];
+  const cities = data?.cities ?? [];
+  const isMobile = useIsMobile();
 
-  const screens = Grid.useBreakpoint();
-  const isMobile = !screens.md;
+  const isCityLimitReached = CityService.isCityLimitReached(cities);
+  const isAddDisabled = isCityLimitReached || addCityLoading;
+
+  const handleAddCity = useCallback(
+    async (city: string) => {
+      const result = await addCity(city);
+
+      handleResult(result, {
+        successMessage: `City ${city} added successfully`,
+      });
+    },
+    [addCity],
+  );
+
+  const handleRemove = useCallback(
+    async (id: number, city: string) => {
+      setRemovingId(id);
+
+      try {
+        await removeCity(id);
+        handleResult(
+          { ok: true },
+          { successMessage: `City ${city} removed successfully` },
+        );
+      } finally {
+        setRemovingId(null);
+      }
+    },
+    [removeCity],
+  );
+
+  const addCityForm = (
+    <AddCityForm onSubmit={handleAddCity} disabled={isAddDisabled} />
+  );
 
   if (loading && !data) {
     return <Spin fullscreen />;
   }
 
-  const handleAddCity = async (city: string) => {
-    const result = await addCity(city);
-
-    handleResult(result, {
-      successMessage: 'City added successfully',
-    });
-  };
-
-  const handleRemove = async (id: number) => {
-    setRemovingId(id);
-
-    try {
-      await removeCity(id);
-    } finally {
-      setRemovingId(null);
-    }
-  };
-
   return (
     <PageLayout
-      header={
-        <Flex align="center" justify="space-between" style={{ height: '100%' }}>
-          <Title
-            level={3}
-            style={{ margin: 0, textShadow: '0 2px 4px rgba(0, 0, 0, 0.25)' }}
-          >
-            Weather
-          </Title>
-
-          <TextButton
-            style={{
-              width: 32,
-              height: 32,
-              padding: 0,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: 8,
-            }}
-          >
-            <EllipsisOutlined
-              style={{ fontSize: token.fontSizeXL, color: token.colorPrimary }}
-            />
-          </TextButton>
-        </Flex>
-      }
+      header={<Header />}
       footer={
         isMobile && (
-          <FormCard fullWidth style={{ padding: '8px 24px 16px' }}>
-            <AddCityForm
-              onSubmit={handleAddCity}
-              disabled={cities.length >= 10 || addCityLoading}
-            />
+          <FormCard
+            fullWidth
+            style={{
+              padding: '8px 24px 16px',
+            }}
+          >
+            {addCityForm}
           </FormCard>
         )
       }
@@ -90,33 +81,19 @@ export const CitiesPage = () => {
             {!isMobile && (
               <Row justify="center">
                 <Col span={24}>
-                  <FormCard fullWidth>
-                    <AddCityForm
-                      onSubmit={handleAddCity}
-                      disabled={cities.length >= 10 || addCityLoading}
-                    />
-                  </FormCard>
+                  <FormCard fullWidth>{addCityForm}</FormCard>
                 </Col>
               </Row>
             )}
 
             {cities.length === 0 ? (
-              <Flex justify="center">
-                <Text type="secondary">No cities yet 🌥</Text>
-              </Flex>
+              <EmptyState />
             ) : (
-              <Row gutter={[12, 12]}>
-                {cities.map((city) => (
-                  <Col key={city.id} xs={24} sm={24} md={12} lg={8} xl={6}>
-                    <CityCard
-                      city={city.city}
-                      weather={city.weather}
-                      onRemove={() => handleRemove(city.id)}
-                      loading={removingId === city.id}
-                    />
-                  </Col>
-                ))}
-              </Row>
+              <CitiesList
+                cities={cities}
+                removingCityId={removingId}
+                onRemove={handleRemove}
+              />
             )}
           </Space>
         </Col>

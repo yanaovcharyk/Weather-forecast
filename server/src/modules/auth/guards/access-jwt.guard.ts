@@ -1,50 +1,38 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { ExecutionContext, Injectable, mixin, Type } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { AuthTokenService } from '../services/auth-token.service';
-import { AuthService } from '../services/auth.service';
-import { AuthCookieService } from '../services';
+import { GraphQLError } from 'graphql';
 
-@Injectable()
-export class AccessJwtGuard implements CanActivate {
-  constructor(
-    private readonly tokenService: AuthTokenService,
-    private readonly authService: AuthService,
-    private readonly cookies: AuthCookieService,
-  ) {}
-
-  async canActivate(context: ExecutionContext): Promise<boolean> {
-    const ctx = GqlExecutionContext.create(context);
-    const req = ctx.getContext().req;
-    const res = ctx.getContext().res;
-    const reqAny = req as any;
-
-    if (!reqAny.reqId) {
-      reqAny.reqId = Math.random().toString(36).slice(2, 8);
+export function createJwtAuthGuard(strategy: string): Type<any> {
+  @Injectable()
+  class JwtAuthGuard extends AuthGuard(strategy) {
+    getRequest(context: ExecutionContext) {
+      return GqlExecutionContext.create(context).getContext().req;
     }
-    const id = reqAny.reqId;
 
-    const accessToken = this.cookies.getAccessToken(req);
+    handleRequest<TUser = any>(
+      err: unknown,
+      user: TUser,
+    ): TUser {
+      return this.assertAuthenticatedUser(err, user);
+    }
 
-    if (accessToken) {
-      try {
-        const verifiedAccess = await this.tokenService.verifyAccessToken(accessToken);
-        req.user = verifiedAccess;
-        return true;
-      } catch (error) {
+    private assertAuthenticatedUser<TUser>(
+      err: unknown,
+      user: TUser,
+    ): TUser {
+      if (err || !user) {
+        throw new GraphQLError('Unauthorized access', {
+          extensions: { code: 'UNAUTHENTICATED' },
+        });
       }
-    }
 
-    try {
-      await this.authService.refreshTokensUsingRefreshToken(req, res);
-      return true;
-    } catch (error) {
-      console.log(`[REQ ${id}] ⛔ GUARD: Refresh failed`);
-      throw new UnauthorizedException();
+      return user;
     }
   }
+
+  return mixin(JwtAuthGuard);
 }
+
+export const AccessJwtGuard = createJwtAuthGuard('jwt');
+export const RefreshJwtGuard = createJwtAuthGuard('jwt-refresh');

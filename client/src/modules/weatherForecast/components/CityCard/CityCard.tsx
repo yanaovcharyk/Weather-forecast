@@ -1,12 +1,9 @@
-import { Flex } from 'antd';
-import { Text } from '@/shared/components';
-import { TextButton } from '@/shared/components/Button/TextButton';
-import { InfoCard } from '@/shared/components/Card/InfoCard';
-import { getWeatherBackground } from './getWeatherBackground';
-import type { City } from '../../../../shared/types';
-import { theme } from 'antd';
+import { Button, Flex, theme } from 'antd';
+import { getWeatherBackground, getNextDays } from '../../utils';
+import type { City } from '@/shared/types';
 import { CloseOutlined } from '@ant-design/icons';
-import { getNextDays } from '../../utils/getNextDays';
+import Text from 'antd/es/typography/Text';
+import { InfoCard } from '@/common/components/Card/InfoCard';
 
 export interface CityCardProps {
   city: string;
@@ -37,23 +34,18 @@ export const CityCard = ({
         </Text>
       }
       headerRight={
-        <TextButton
+        <Button
+          type="text"
           loading={loading}
           onClick={onRemove}
-          style={{
-            width: 16,
-            height: 16,
-            padding: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            lineHeight: 1,
-            fontSize: 12,
-            color: token.colorTextHeading,
-          }}
-        >
-          <CloseOutlined style={{ fontSize: token.fontSizeLG }} />
-        </TextButton>
+          size="small"
+          style={{ padding: 4 }}
+          icon={
+            <CloseOutlined
+              style={{ fontSize: token.fontSizeLG, color: token.colorPrimary }}
+            />
+          }
+        />
       }
     >
       {weather ? (
