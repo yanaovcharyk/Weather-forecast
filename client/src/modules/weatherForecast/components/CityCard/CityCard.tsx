@@ -1,9 +1,11 @@
 import { Button, Flex, theme } from 'antd';
 import { getWeatherBackground, getNextDays } from '../../utils';
-import type { City } from '@/modules/common/types';
 import { CloseOutlined } from '@ant-design/icons';
 import Text from 'antd/es/typography/Text';
 import { InfoCard } from '@/modules/common/components/Card/InfoCard';
+import { useSmartBackground } from '@/modules/common/hooks';
+import type { City } from '../../../common/types';
+import Title from 'antd/es/typography/Title';
 
 export interface CityCardProps {
   city: string;
@@ -18,31 +20,30 @@ export const CityCard = ({
   onRemove,
   loading,
 }: CityCardProps) => {
-  const background = getWeatherBackground(weather?.description);
   const { token } = theme.useToken();
+
+  const background = getWeatherBackground(weather?.description);
+  const { loaded } = useSmartBackground(background);
 
   const days = getNextDays(4);
 
   return (
     <InfoCard
       headerLeft={
-        <Text
-          strong
-          style={{ fontSize: token.fontSizeXL, color: token.colorTextHeading }}
-        >
+        <Title level={5} style={{ margin: 0 }}>
           {city}
-        </Text>
+        </Title>
       }
       headerRight={
         <Button
           type="text"
           loading={loading}
           onClick={onRemove}
-          size="small"
-          style={{ padding: 4 }}
           icon={
             <CloseOutlined
-              style={{ fontSize: token.fontSizeLG, color: token.colorPrimary }}
+              style={{
+                color: token.colorTextHeading,
+              }}
             />
           }
         />
@@ -51,13 +52,27 @@ export const CityCard = ({
       {weather ? (
         <div
           style={{
-            padding: '8px 16px 16px',
-            backgroundImage: `url(${background})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
             position: 'relative',
+            padding: '8px 16px 16px',
+            minHeight: 160,
+            overflow: 'hidden',
           }}
         >
+          <div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              backgroundImage: `url(${background})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+
+              opacity: loaded ? 1 : 0,
+
+              transition: 'opacity 0.6s ease',
+              transform: 'scale(1.05)',
+            }}
+          />
+
           <div
             style={{
               position: 'absolute',
@@ -71,32 +86,16 @@ export const CityCard = ({
             align="center"
             justify="center"
             style={{ position: 'relative', zIndex: 2 }}
-            gap={0}
           >
-            <Text
-              style={{
-                fontSize: 18,
-                fontWeight: 700,
-                lineHeight: 1,
-                marginBottom: 4,
-              }}
-            >
+            <Text style={{ fontSize: 18, fontWeight: 700 }}>
               {weather.temperature}°C
             </Text>
 
-            <Text style={{ fontSize: token.fontSizeLG, lineHeight: 1 }}>
+            <Text style={{ fontSize: token.fontSizeLG }}>
               {weather.description}
             </Text>
 
-            <Text
-              strong
-              style={{
-                fontSize: token.fontSizeLG,
-                alignSelf: 'flex-start',
-                marginTop: token.marginXXS,
-                padding: 0,
-              }}
-            >
+            <Text strong style={{ marginTop: 8, alignSelf: 'flex-start' }}>
               Next days
             </Text>
 
@@ -104,42 +103,18 @@ export const CityCard = ({
               {weather.next3DaysTemperature?.map((t, i) => (
                 <Flex
                   key={i}
-                  align="center"
                   justify="space-between"
                   style={{
                     borderBottom: '1px solid rgba(255,255,255,0.3)',
-                    padding: '3px 0',
+                    padding: '0',
                   }}
                 >
-                  <Text
-                    strong
-                    style={{ fontSize: token.fontSizeSM, lineHeight: 1 }}
-                  >
+                  <Text style={{ fontSize: token.fontSizeSM }}>
                     {days[i + 1]?.label}
                   </Text>
-                  <Flex align="center" gap={6}>
-                    <Text
-                      style={{
-                        fontSize: token.fontSizeSM,
-                        opacity: 0.8,
-                        lineHeight: 1,
-                      }}
-                    >
-                      {weather.next3DaysDescription?.[i]}
-                    </Text>
-
-                    <Text
-                      strong
-                      style={{
-                        fontSize: token.fontSizeSM,
-                        lineHeight: 1,
-                        display: 'flex',
-                        alignItems: 'center',
-                      }}
-                    >
-                      {t}°C
-                    </Text>
-                  </Flex>
+                  <Text style={{ fontSize: token.fontSizeSM }}>
+                    {weather.next3DaysDescription?.[i]} {t}°C
+                  </Text>
                 </Flex>
               ))}
             </Flex>

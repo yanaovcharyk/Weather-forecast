@@ -1,4 +1,4 @@
-import { Card, type CardProps, theme } from 'antd';
+import { Card, type CardProps, Flex, theme } from 'antd';
 
 type InfoCardProps = CardProps & {
   headerLeft: React.ReactNode;
@@ -23,11 +23,8 @@ export const InfoCard = ({
           padding: '4px 16px',
           minHeight: 'unset',
           lineHeight: 1,
-          display: 'flex',
-          alignItems: 'center',
           background: token.colorBgContainer,
           color: token.colorTextHeading,
-          border: 'none',
           ...headerStyle,
         },
 
@@ -44,21 +41,10 @@ export const InfoCard = ({
         ...props.style,
       }}
       title={
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-
-            position: 'sticky',
-            top: 0,
-            zIndex: 1,
-            background: token.colorBgContainer,
-          }}
-        >
+        <Flex justify="space-between" align="center">
           {headerLeft}
           {headerRight}
-        </div>
+        </Flex>
       }
     >
       {children}
