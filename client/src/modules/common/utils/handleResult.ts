@@ -1,5 +1,5 @@
-import { notifyError, notifySuccess } from '../../common/toast/notify';
-import { mapErrorCodeToMessage } from './mapErrorCodeToMessage';
+import { notifyError, notifySuccess } from '../utils/notify';
+import { mapErrorCodeToMessage } from '../utils/mapErrorCodeToMessage';
 
 export const handleResult = <T extends { ok: boolean; code?: string }>(
   result: T,

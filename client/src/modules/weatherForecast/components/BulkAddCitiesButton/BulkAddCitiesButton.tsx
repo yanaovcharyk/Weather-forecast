@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, theme } from 'antd';
-import { handleResult } from '@/shared/result';
+import { handleResult } from '@/modules/common/result';
 
 interface AddCityResult {
   ok: boolean;

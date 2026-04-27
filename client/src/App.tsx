@@ -1,7 +1,7 @@
 import { BrowserRouter } from 'react-router-dom';
-import { AppProviders } from './common/providers/';
-import { AppRouter } from './common/routers/';
 import './App.css';
+import { AppProviders } from './modules/common/providers';
+import { AppRouter } from './modules/common/components/Routers';
 
 export const App = () => (
   <AppProviders>

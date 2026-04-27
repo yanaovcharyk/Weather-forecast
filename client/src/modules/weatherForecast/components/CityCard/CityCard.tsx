@@ -1,9 +1,9 @@
 import { Button, Flex, theme } from 'antd';
 import { getWeatherBackground, getNextDays } from '../../utils';
-import type { City } from '@/shared/types';
+import type { City } from '@/modules/common/types';
 import { CloseOutlined } from '@ant-design/icons';
 import Text from 'antd/es/typography/Text';
-import { InfoCard } from '@/common/components/Card/InfoCard';
+import { InfoCard } from '@/modules/common/components/Card/InfoCard';
 
 export interface CityCardProps {
   city: string;

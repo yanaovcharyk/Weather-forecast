@@ -1,4 +1,4 @@
-import type { AddCityMutation, CitiesQuery } from '@/shared/types';
+import type { AddCityMutation, CitiesQuery } from '@/modules/common/types';
 import { ADD_CITY_MUTATION, CITIES_QUERY } from '../api';
 import { useApolloClient, useMutation } from '@apollo/client/react';
 import { CityService } from '../services/CityService';
@@ -18,26 +18,8 @@ export const useAddCity = () => {
   const performAddCityMutation = async (city: string) => {
     return mutate({
       variables: { input: { city } },
-      update(cache, { data }) {
-        if (!data?.addCity) {
-          return;
-        }
 
-        const existing = cache.readQuery<CitiesQuery>({
-          query: CITIES_QUERY,
-        });
-
-        if (!existing) {
-          return;
-        }
-
-        cache.writeQuery({
-          query: CITIES_QUERY,
-          data: {
-            cities: [data.addCity, ...existing.cities],
-          },
-        });
-      },
+      refetchQueries: [{ query: CITIES_QUERY }],
     });
   };
 

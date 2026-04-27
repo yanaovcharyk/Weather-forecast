@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useLogin } from '../hooks/useLogin';
 import { schema, type LoginFormValues } from '../types';
-import { PrimaryButton, FormField } from '@/common/components';
+import { PrimaryButton, FormField } from '@/modules/common/components';
 
 export const LoginForm = () => {
   const { token } = theme.useToken();
@@ -20,7 +20,7 @@ export const LoginForm = () => {
       onFinish={handleSubmit(submit)}
       style={{ padding: 16 }}
     >
-      <FormField<LoginFormValues>
+      <FormField<LoginFormValues, 'email'>
         name="email"
         control={control}
         label="Email"
@@ -29,7 +29,7 @@ export const LoginForm = () => {
         {(field) => <Input {...field} style={{ color: token.colorPrimary }} />}
       </FormField>
 
-      <FormField<LoginFormValues>
+      <FormField<LoginFormValues, 'password'>
         name="password"
         control={control}
         label="Password"

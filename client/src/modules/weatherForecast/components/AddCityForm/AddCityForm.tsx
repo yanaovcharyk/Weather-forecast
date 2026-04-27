@@ -1,9 +1,9 @@
 import { Form, Select, Space, theme, Empty } from 'antd';
-import { PrimaryButton } from '@/common/components';
+import { PrimaryButton } from '@/modules/common/components';
 
 import type { AddCityFormProps } from './types';
 import { useAddCityForm } from '../../hooks/useAddCityForm';
-import { useIsMobile } from '@/common/hooks/useIsMobile';
+import { useIsMobile } from '@/modules/common/hooks/useIsMobile';
 
 export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
   const { token } = theme.useToken();
@@ -36,12 +36,7 @@ export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
             size="middle"
             placement={isMobile ? 'topLeft' : 'bottomLeft'}
             getPopupContainer={() => document.body}
-            notFoundContent={
-              <Empty
-                image={<div style={{ fontSize: 24 }}>🌥</div>}
-                description="No cities found"
-              />
-            }
+            notFoundContent={<Empty description="No cities found" />}
           />
         </Form.Item>
 

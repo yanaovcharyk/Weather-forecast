@@ -4,4 +4,5 @@ export {
   isPermissionError,
 } from './extractErrorCode';
 export { handleResult } from './handleResult';
-export { mapErrorCodeToMessage } from './mapErrorCodeToMessage';
+export { mapErrorCodeToMessage } from '../utils/mapErrorCodeToMessage';
+export { notifyError, notifySuccess } from './notify';

@@ -8,18 +8,18 @@ import {
 } from 'react-hook-form';
 
 type FormFieldProps<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends Path<TFieldValues> = Path<TFieldValues>,
-> = ControllerProps<TFieldValues, TName> & {
+  TFieldValues extends FieldValues,
+  TName extends Path<TFieldValues>,
+> = Omit<ControllerProps<TFieldValues, TName>, 'render'> & {
   label: string;
   children: (
     field: ControllerRenderProps<TFieldValues, TName>,
   ) => React.ReactNode;
-};
+} & React.ComponentProps<typeof Form.Item>;
 
 export function FormField<
-  TFieldValues extends FieldValues = FieldValues,
-  TName extends Path<TFieldValues> = Path<TFieldValues>,
+  TFieldValues extends FieldValues,
+  TName extends Path<TFieldValues>,
 >({
   label,
   children,

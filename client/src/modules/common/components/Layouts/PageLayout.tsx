@@ -1,6 +1,6 @@
 import { Flex, Layout } from 'antd';
 import { theme } from 'antd';
-import { useIsMobile } from '../../../common/hooks/useIsMobile';
+import { useIsMobile } from '../../hooks/useIsMobile';
 
 const { Header, Content, Footer } = Layout;
 

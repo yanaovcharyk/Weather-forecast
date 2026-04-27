@@ -15,7 +15,12 @@ export class CitiesService {
   ) {}
 
   async getCities(userId: string): Promise<ICityOutput[]> {
-    const cities = await this.cityRepository.find({ where: { userId } });
+    const cities = await this.cityRepository.find({
+      where: { userId },
+      order: {
+        createdAt: 'DESC',
+      },
+    });
 
     return cities.map((city) => ({
       id: city.id,

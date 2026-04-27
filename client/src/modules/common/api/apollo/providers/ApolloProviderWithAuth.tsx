@@ -1,8 +1,8 @@
 import { useMemo } from 'react';
 import { ApolloProvider } from '@apollo/client/react';
 import { createApolloClient } from '..';
-import { useAuth } from '../../../auth/hooks/useAuth';
-import { useToast } from '../../../../common/toast/useToast';
+import { useAuth } from '../../../../auth/hooks/useAuth';
+import { useToast } from '../../../hooks/useToast';
 
 interface Props {
   children: React.ReactNode;

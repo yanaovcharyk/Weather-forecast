@@ -5,10 +5,10 @@ import { useRemoveCity, useAddCity, useCities } from '../hooks';
 import { AddCityForm, CitiesList } from '../components';
 
 import { CityService } from '../services/CityService';
-import { useIsMobile } from '@/common/hooks/';
-import { handleResult } from '@/shared/result';
-import { EmptyState, FormCard, PageLayout } from '@/common/components';
-import { Header } from '@/common/components';
+import { useIsMobile } from '@/modules/common/hooks';
+import { EmptyState, FormCard, PageLayout } from '@/modules/common/components';
+import { Header } from '@/modules/common/components';
+import { handleResult } from '../../common/utils';
 
 export const CitiesPage = () => {
   const { data, loading } = useCities();

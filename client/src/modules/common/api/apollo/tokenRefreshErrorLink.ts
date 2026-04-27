@@ -1,11 +1,8 @@
 import { ApolloLink } from '@apollo/client';
 import { Observable } from 'rxjs';
 import type { AccessTokenRefreshCoordinator } from './AccessTokenRefreshCoordinator';
-import {
-  extractErrorCode,
-  isTokenError,
-} from '../../../shared/result/extractErrorCode';
-import { mapErrorCodeToMessage } from '../../../shared/result/mapErrorCodeToMessage';
+import { extractErrorCode, isTokenError } from '../../utils/extractErrorCode';
+import { mapErrorCodeToMessage } from '../../utils/mapErrorCodeToMessage';
 
 type CreateErrorLinkParams = {
   tokenRefreshCoordinator: AccessTokenRefreshCoordinator;

@@ -1,5 +1,5 @@
 import { message } from 'antd';
-import { ToastContext, type ToastType } from './ToastContext';
+import { ToastContext, type ToastType } from '../contexts/ToastContext';
 
 export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
   const toast = (type: ToastType, text: string) => {

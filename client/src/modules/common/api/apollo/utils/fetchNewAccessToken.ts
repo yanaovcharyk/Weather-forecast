@@ -1,4 +1,4 @@
-import type { GraphQLResponse } from '@/shared/types';
+import type { GraphQLResponse } from '@/modules/common/types';
 
 interface RefreshTokensResponse {
   refreshTokens: {

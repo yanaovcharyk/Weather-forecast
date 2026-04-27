@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
-import { LoginPage } from '../../modules/auth/pages/';
+import { LoginPage } from '@/modules/auth/pages/';
 import { PrivateRoute } from './PrivateRoute';
-import { CitiesPage } from '../../modules/weatherForecast/pages/';
+import { CitiesPage } from '@/modules/weatherForecast/pages/';
 
 export const AppRouter = () => (
   <Routes>
