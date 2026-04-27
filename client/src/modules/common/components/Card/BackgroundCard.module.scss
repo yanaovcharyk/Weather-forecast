@@ -1,0 +1,23 @@
+.card {
+  overflow: hidden;
+}
+
+.wrapper {
+  position: relative;
+}
+
+.background {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-image: 
+    linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+    var(--bg-image);
+  background-position: center;
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+  padding: 16px;
+}

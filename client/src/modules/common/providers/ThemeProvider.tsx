@@ -25,7 +25,7 @@ export const ThemeProvider = ({ children }: Props) => {
           marginXXS: 6,
           marginXS: 8,
           marginLG: 32,
-          fontSizeLG: 12,
+          fontSize: 12,
           fontSizeSM: 10,
           fontSizeXL: 18,
           controlHeightXS: 16,
@@ -36,6 +36,7 @@ export const ThemeProvider = ({ children }: Props) => {
             colorPrimary: '#234C75',
             colorPrimaryHover: '#2d68a3',
             colorPrimaryActive: '#3379bf',
+            colorText: '#234C75',
           },
 
           Input: {
@@ -54,8 +55,12 @@ export const ThemeProvider = ({ children }: Props) => {
 
           Card: {
             headerBg: '#F0F6FF',
+            extraColor: '#234C75',
             colorText: '#F0F6FF',
             colorBgContainer: '#F0F6FF',
+            bodyPaddingSM: 0,
+            lineWidth: 0,
+            boxShadow: '0 4px 4px rgba(0, 0, 0, 0.5)',
           },
         },
       }}

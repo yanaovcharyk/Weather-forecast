@@ -13,6 +13,7 @@
     "@apollo/client": "^4.1.6",
     "@hookform/resolvers": "^5.2.2",
     "antd": "^6.3.3",
+    "classnames": "^2.5.1",
     "graphql": "^16.13.1",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
@@ -35,6 +36,7 @@
     "globals": "^17.4.0",
     "lint-staged": "^16.4.0",
     "prettier": "^3.8.1",
+    "sass-embedded": "^1.99.0",
     "typescript": "~5.9.3",
     "typescript-eslint": "^8.56.1",
     "vite": "^8.0.0"
