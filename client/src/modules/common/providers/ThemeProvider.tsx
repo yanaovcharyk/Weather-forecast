@@ -62,10 +62,35 @@ export const ThemeProvider = ({ children }: Props) => {
             lineWidth: 0,
             boxShadow: '0 4px 4px rgba(0, 0, 0, 0.5)',
           },
+
+          Layout: {
+            bodyBg: '#D7E3F8',
+            footerBg: '#F0F6FF',
+            headerBg: '#F0F6FF',
+            headerColor: '#234C75',
+            footerPadding: '8px 24px 16px',
+            headerPadding: '0 24px',
+            headerHeight: 44,
+          },
+
+          Typography: {
+            titleMarginTop: 0,
+            titleMarginBottom: 0,
+          },
         },
       }}
     >
-      {children}
+      <div
+        style={
+          {
+            '--radius': '8px',
+            '--shadow-sm': '0 2px 8px rgba(0,0,0,0.3)',
+            '--shadow-lg': '0 -4px 12px rgba(0,0,0,0.3)',
+          } as React.CSSProperties
+        }
+      >
+        {children}
+      </div>
     </ConfigProvider>
   );
 };

@@ -1,14 +1,13 @@
-import { Flex, theme } from 'antd';
-import Text from 'antd/es/typography/Text';
+import { Empty, Flex } from 'antd';
+import styles from './EmptyState.module.scss';
 
 export const EmptyState = () => {
-  const { token } = theme.useToken();
-
   return (
-    <Flex justify="center">
-      <Text type="secondary" style={{ paddingTop: token.marginLG }}>
-        No cities yet 🌥
-      </Text>
+    <Flex justify="center" align="center" className={styles.wrapper}>
+      <Empty
+        image={<img src="/cloud.svg" className={styles.image} alt="empty" />}
+        description="No cities yet"
+      />
     </Flex>
   );
 };

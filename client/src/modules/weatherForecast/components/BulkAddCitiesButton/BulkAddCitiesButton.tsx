@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, theme } from 'antd';
-import { handleResult } from '@/modules/common/result';
+import { handleResult } from '../../../common/utils';
 
 interface AddCityResult {
   ok: boolean;
@@ -46,7 +46,6 @@ export const BulkAddCitiesButton = ({ addCity }: Props) => {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        borderRadius: 8,
         color: token.colorPrimary,
       }}
     >

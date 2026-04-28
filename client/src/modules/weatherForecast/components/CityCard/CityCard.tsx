@@ -73,7 +73,7 @@ export const CityCard = ({
           </Flex>
         </Flex>
       ) : (
-        <Flex align="center" justify="center">
+        <Flex align="center" justify="flex-start">
           <AppText>No forecast yet</AppText>
         </Flex>
       )}

@@ -1,30 +1,28 @@
-import { Button, Flex, theme } from 'antd';
+import { Button, Flex, Typography } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
-import Title from 'antd/es/typography/Title';
+import { Shadow } from '../Shadow/Shadow';
+
+const { Title } = Typography;
 
 export const Header = () => {
-  const { token } = theme.useToken();
-
   return (
     <Flex align="center" justify="space-between" style={{ height: '100%' }}>
-      <Title
-        level={3}
-        style={{ margin: 0, textShadow: '0 2px 4px rgba(0, 0, 0, 0.25)' }}
-      >
-        Weather
-      </Title>
+      <Shadow type="text" direction="bottom">
+        <Title style={{ margin: 0 }} level={3}>
+          Weather
+        </Title>
+      </Shadow>
 
       <Button
         type="text"
         icon={
           <EllipsisOutlined
             style={{
-              fontSize: 24,
+              fontSize: 18,
               fontWeight: 700,
             }}
           />
         }
-        style={{ borderRadius: 8, color: token.colorPrimary }}
       />
     </Flex>
   );

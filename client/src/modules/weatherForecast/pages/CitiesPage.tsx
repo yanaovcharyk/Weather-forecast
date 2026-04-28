@@ -62,18 +62,7 @@ export const CitiesPage = () => {
   return (
     <PageLayout
       header={<Header />}
-      footer={
-        isMobile && (
-          <FormCard
-            fullWidth
-            style={{
-              padding: '8px 24px 16px',
-            }}
-          >
-            {addCityForm}
-          </FormCard>
-        )
-      }
+      footer={isMobile && <FormCard fullWidth>{addCityForm}</FormCard>}
     >
       <Row justify="center">
         <Col span={24}>
