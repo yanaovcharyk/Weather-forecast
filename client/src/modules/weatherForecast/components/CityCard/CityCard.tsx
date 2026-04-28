@@ -1,7 +1,7 @@
 import { Button, Flex } from 'antd';
 import { getWeatherBackground, getNextDays } from '../../utils';
 import { CloseOutlined } from '@ant-design/icons';
-import { BackgroundCard } from '@/modules/common/components/Card/BackgroundCard';
+import { BackgroundCard } from '@/modules/common/components/Card/BackgroundCard/BackgroundCard';
 import type { City } from '../../../common/types';
 import Title from 'antd/es/typography/Title';
 import { AppText } from '../../../common/components/Typography/Text/AppText';

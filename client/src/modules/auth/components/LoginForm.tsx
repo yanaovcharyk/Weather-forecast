@@ -1,43 +1,48 @@
 import { Form, Input, theme } from 'antd';
-import { useForm } from 'react-hook-form';
+import { useForm, useController } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+
 import { useLogin } from '../hooks/useLogin';
 import { schema, type LoginFormValues } from '../types';
-import { PrimaryButton, FormField } from '@/modules/common/components';
+import { PrimaryButton } from '../../common/components';
 
 export const LoginForm = () => {
   const { token } = theme.useToken();
-
   const { submit, loading } = useLogin();
 
   const { handleSubmit, control } = useForm<LoginFormValues>({
     resolver: zodResolver(schema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
   });
 
-  return (
-    <Form
-      layout="vertical"
-      onFinish={handleSubmit(submit)}
-      style={{ padding: 16 }}
-    >
-      <FormField<LoginFormValues, 'email'>
-        name="email"
-        control={control}
-        label="Email"
-        style={{ marginBottom: 4 }}
-      >
-        {(field) => <Input {...field} style={{ color: token.colorPrimary }} />}
-      </FormField>
+  const email = useController<LoginFormValues>({ name: 'email', control });
+  const password = useController<LoginFormValues>({
+    name: 'password',
+    control,
+  });
 
-      <FormField<LoginFormValues, 'password'>
-        name="password"
-        control={control}
-        label="Password"
+  const inputStyle = { color: token.colorPrimary };
+
+  return (
+    <Form layout="vertical" onFinish={handleSubmit(submit)}>
+      <Form.Item
+        label="Email"
+        validateStatus={email.fieldState.error ? 'error' : undefined}
+        help={email.fieldState.error?.message}
       >
-        {(field) => (
-          <Input.Password {...field} style={{ color: token.colorPrimary }} />
-        )}
-      </FormField>
+        <Input {...email.field} style={inputStyle} />
+      </Form.Item>
+
+      <Form.Item
+        label="Password"
+        validateStatus={password.fieldState.error ? 'error' : undefined}
+        help={password.fieldState.error?.message}
+      >
+        <Input.Password {...password.field} style={inputStyle} />
+      </Form.Item>
 
       <PrimaryButton htmlType="submit" block loading={loading}>
         Login

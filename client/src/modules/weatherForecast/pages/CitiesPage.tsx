@@ -5,7 +5,6 @@ import { useRemoveCity, useAddCity, useCities } from '../hooks';
 import { AddCityForm, CitiesList } from '../components';
 
 import { CityService } from '../services/CityService';
-import { useIsMobile } from '@/modules/common/hooks';
 import { EmptyState, FormCard, PageLayout } from '@/modules/common/components';
 import { Header } from '@/modules/common/components';
 import { handleResult } from '../../common/utils';
@@ -18,7 +17,6 @@ export const CitiesPage = () => {
   const [removingId, setRemovingId] = useState<number | null>(null);
 
   const cities = data?.cities ?? [];
-  const isMobile = useIsMobile();
 
   const isCityLimitReached = CityService.isCityLimitReached(cities);
   const isAddDisabled = isCityLimitReached || addCityLoading;
@@ -51,29 +49,18 @@ export const CitiesPage = () => {
     [removeCity],
   );
 
-  const addCityForm = (
-    <AddCityForm onSubmit={handleAddCity} disabled={isAddDisabled} />
-  );
-
   if (loading && !data) {
     return <Spin fullscreen />;
   }
 
   return (
-    <PageLayout
-      header={<Header />}
-      footer={isMobile && <FormCard fullWidth>{addCityForm}</FormCard>}
-    >
+    <PageLayout header={<Header />}>
       <Row justify="center">
         <Col span={24}>
-          <Space orientation="vertical" size="small" style={{ width: '100%' }}>
-            {!isMobile && (
-              <Row justify="center">
-                <Col span={24}>
-                  <FormCard fullWidth>{addCityForm}</FormCard>
-                </Col>
-              </Row>
-            )}
+          <Space orientation="vertical" size="medium">
+            <FormCard fullWidth>
+              <AddCityForm onSubmit={handleAddCity} disabled={isAddDisabled} />
+            </FormCard>
 
             {cities.length === 0 ? (
               <EmptyState />

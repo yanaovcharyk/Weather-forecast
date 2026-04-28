@@ -1,6 +1,6 @@
-import { Button, Flex, Typography } from 'antd';
-import { EllipsisOutlined } from '@ant-design/icons';
+import { Flex, Typography } from 'antd';
 import { Shadow } from '../Shadow/Shadow';
+import { EllipsisButton } from '../Button/EllipsisButton/EllipsisButton';
 
 const { Title } = Typography;
 
@@ -12,18 +12,7 @@ export const Header = () => {
           Weather
         </Title>
       </Shadow>
-
-      <Button
-        type="text"
-        icon={
-          <EllipsisOutlined
-            style={{
-              fontSize: 18,
-              fontWeight: 700,
-            }}
-          />
-        }
-      />
+      <EllipsisButton />
     </Flex>
   );
 };
