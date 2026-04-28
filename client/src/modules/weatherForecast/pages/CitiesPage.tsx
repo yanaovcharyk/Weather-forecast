@@ -63,7 +63,7 @@ export const CitiesPage = () => {
             </FormCard>
 
             {cities.length === 0 ? (
-              <EmptyState />
+              <EmptyState description="No cities added" />
             ) : (
               <CitiesList
                 cities={cities}

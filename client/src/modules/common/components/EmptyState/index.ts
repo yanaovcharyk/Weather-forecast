@@ -1,1 +1,1 @@
-export { EmptyState } from './EmptyState';
+export { AppEmpty as EmptyState } from './EmptyState';

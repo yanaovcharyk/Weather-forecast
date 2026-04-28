@@ -1,5 +1,5 @@
-import { Form, Select, Space, theme, Empty } from 'antd';
-import { PrimaryButton } from '@/modules/common/components';
+import { Form, Select, Space, theme } from 'antd';
+import { EmptyState, PrimaryButton } from '@/modules/common/components';
 
 import type { AddCityFormProps } from './types';
 import { useAddCityForm } from '../../hooks/useAddCityForm';
@@ -36,7 +36,7 @@ export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
             size="middle"
             placement={isMobile ? 'topLeft' : 'bottomLeft'}
             getPopupContainer={() => document.body}
-            notFoundContent={<Empty description="No cities found" />}
+            notFoundContent={<EmptyState description="No cities found" />}
           />
         </Form.Item>
 
