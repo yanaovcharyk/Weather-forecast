@@ -1,12 +1,11 @@
 import { Button, Flex } from 'antd';
-import { getWeatherBackground, getNextDays } from '../../utils';
+import { getWeatherBackground, getNextDays } from '@/weatherForecast/utils';
 import { CloseOutlined } from '@ant-design/icons';
-import { BackgroundCard } from '@/modules/common/components/Card/BackgroundCard/BackgroundCard';
-import type { City } from '../../../common/types';
-import Title from 'antd/es/typography/Title';
-import { AppText } from '../../../common/components/Typography/Text/AppText';
-import { useSmartBackground } from '../../../common/hooks';
-import { BackgroundCardSkeleton } from '../../../common/components/Card/BackgroundCard/BackgroundCardSkeleton';
+import { BackgroundCard, BackgroundCardSkeleton } from '@/common/components';
+import type { City } from '@/common/types';
+import { AppText } from '@/common/components/Typography/Text/AppText';
+import { useSmartBackground } from '@/common/hooks';
+import { AppTitle } from '@/common/components/Typography/Title/AppTitle';
 
 export interface CityCardProps {
   city: string;
@@ -34,11 +33,7 @@ export const CityCard = ({
 
   return (
     <BackgroundCard
-      headerLeft={
-        <Title level={5} style={{ margin: 0 }}>
-          {city}
-        </Title>
-      }
+      headerLeft={<AppTitle level={5}>{city}</AppTitle>}
       headerRight={
         <Button
           type="text"

@@ -1,7 +1,6 @@
 import { useMutation } from '@apollo/client/react';
 import { REMOVE_CITY_MUTATION } from '../api/weatherApi';
-import type { Reference } from '@apollo/client';
-import type { StoreObject } from '@apollo/client';
+import type { Reference, StoreObject } from '@apollo/client';
 import type { RemoveCityMutation, RemoveCityVariables } from '../types';
 
 let mutationQueue: Promise<unknown> = Promise.resolve();

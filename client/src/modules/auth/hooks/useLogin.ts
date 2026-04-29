@@ -5,7 +5,7 @@ import { message } from 'antd';
 import { LOGIN_MUTATION } from '../api';
 import type { LoginFormValues, LoginMutationResponse } from '../types';
 import { useAuth } from './useAuth';
-import { extractErrorCode, mapErrorCodeToMessage } from '../../common/utils';
+import { extractErrorCode, mapErrorCodeToMessage } from '@/common/utils';
 
 export const useLogin = () => {
   const { login } = useAuth();

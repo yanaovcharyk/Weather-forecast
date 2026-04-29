@@ -5,7 +5,7 @@ import {
   extractErrorCode,
   isTokenError,
   mapErrorCodeToMessage,
-} from '../../../utils';
+} from '@/common/utils';
 
 type CreateErrorLinkParams = {
   tokenRefreshCoordinator: AccessTokenRefreshCoordinator;

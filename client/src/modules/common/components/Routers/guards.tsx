@@ -1,4 +1,4 @@
-import type { AppRoute } from '../../types/AppRoute';
+import type { AppRoute } from '@/common/types/AppRoute';
 import { PrivateRoute } from './PrivateRoute';
 
 export const applyGuards = (route: AppRoute, element: React.ReactElement) => {

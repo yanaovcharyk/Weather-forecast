@@ -1,4 +1,4 @@
-import { CenteredLayout, FormCard } from '../../common/components';
+import { CenteredLayout, FormCard } from '@/common/components';
 import { LoginForm } from '../components/LoginForm';
 import Title from 'antd/es/typography/Title';
 

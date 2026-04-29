@@ -1,5 +1,5 @@
 import { Row, Col } from 'antd';
-import type { City } from '@/modules/common/types';
+import type { City } from '@/common/types';
 import { CityCard } from '../CityCard/CityCard';
 
 interface CitiesListProps {

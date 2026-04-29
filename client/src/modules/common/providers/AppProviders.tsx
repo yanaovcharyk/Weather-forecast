@@ -1,5 +1,5 @@
 import { ThemeProvider } from './ThemeProvider';
-import { AuthProvider } from '@/modules/auth/providers/AuthProvider';
+import { AuthProvider } from '@/auth/providers/AuthProvider';
 import { ToastProvider } from './ToastProvider';
 import { AppApolloProvider } from '../api/apollo/providers/AppApolloProvider';
 

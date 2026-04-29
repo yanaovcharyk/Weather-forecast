@@ -1,9 +1,11 @@
 import { Form, Select, Space, theme } from 'antd';
-import { EmptyState, PrimaryButton } from '@/modules/common/components';
+import { EmptyState, PrimaryButton } from '@/common/components';
 
 import type { AddCityFormProps } from './types';
-import { useAddCityForm } from '../../hooks/useAddCityForm';
-import { useIsMobile } from '@/modules/common/hooks/useIsMobile';
+import { useAddCityForm } from '@/weatherForecast/hooks/useAddCityForm';
+import { useIsMobile } from '@/common/hooks/useIsMobile';
+
+import styles from './AddCityForm.module.scss';
 
 export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
   const { token } = theme.useToken();
@@ -17,12 +19,12 @@ export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
       <Space
         orientation="vertical"
         size={isMobile ? token.marginXXS : token.marginXS}
-        style={{ width: '100%' }}
+        className={styles.space}
       >
         <Form.Item
           name="city"
           rules={[{ required: true, message: 'Select a city' }]}
-          style={{ marginBottom: 0 }}
+          className={styles.formItem}
         >
           <Select
             showSearch={{

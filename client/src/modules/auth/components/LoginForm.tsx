@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useLogin } from '../hooks/useLogin';
 import { schema, type LoginFormValues } from '../types';
-import { PrimaryButton } from '../../common/components';
+import { PrimaryButton } from '@/common/components';
 
 export const LoginForm = () => {
   const { token } = theme.useToken();

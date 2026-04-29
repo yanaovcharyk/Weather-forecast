@@ -5,9 +5,8 @@ import { useRemoveCity, useAddCity, useCities } from '../hooks';
 import { AddCityForm, CitiesList } from '../components';
 
 import { CityService } from '../services/CityService';
-import { EmptyState, FormCard, PageLayout } from '@/modules/common/components';
-import { Header } from '@/modules/common/components';
-import { handleResult } from '../../common/utils';
+import { EmptyState, FormCard, PageLayout, Header } from '@/common/components';
+import { handleResult } from '@/common/utils';
 
 export const CitiesPage = () => {
   const { data, loading } = useCities();

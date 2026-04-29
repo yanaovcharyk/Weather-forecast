@@ -1,5 +1,5 @@
-import type { AppRoute } from '../common/types/AppRoute';
-import type { AppModule } from '../common/types/IAppModule';
+import type { AppRoute } from '@/common/types/AppRoute';
+import type { AppModule } from '@/common/types/IAppModule';
 import { LoginPage } from './pages/LoginPage';
 
 class AuthModule implements AppModule {

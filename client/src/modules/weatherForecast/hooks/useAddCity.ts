@@ -1,4 +1,4 @@
-import type { AddCityMutation, CitiesQuery } from '@/modules/common/types';
+import type { AddCityMutation, CitiesQuery } from '@/common/types';
 import { ADD_CITY_MUTATION, CITIES_QUERY } from '../api';
 import { useApolloClient, useMutation } from '@apollo/client/react';
 import { CityService } from '../services/CityService';

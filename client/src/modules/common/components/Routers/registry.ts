@@ -1,4 +1,4 @@
-import type { AppModule } from '../../types/IAppModule';
+import type { AppModule } from '@/common/types/IAppModule';
 
 const modules = import.meta.glob<{ default: AppModule }>(
   '@/modules/*/module.ts',
