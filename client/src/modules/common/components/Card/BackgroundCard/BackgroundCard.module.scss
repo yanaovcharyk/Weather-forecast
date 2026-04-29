@@ -3,6 +3,14 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.3);
 }
 
+:global(.ant-skeleton-paragraph) {
+  margin: 0 !important;
+}
+
+:global(.ant-skeleton-title) {
+  margin: 0 !important;
+}
+
 .wrapper {
   position: relative;
 }
@@ -21,4 +29,26 @@
   position: relative;
   z-index: 1;
   padding: 16px;
+}
+
+.backgroundSkeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(240, 240, 240, 0.6) 25%,
+    rgba(220, 220, 220, 0.8) 37%,
+    rgba(240, 240, 240, 0.6) 63%
+  );
+  background-size: 400% 100%;
+  animation: shimmer 1.2s ease infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
 }

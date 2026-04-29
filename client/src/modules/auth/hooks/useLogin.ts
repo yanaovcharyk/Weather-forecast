@@ -18,7 +18,7 @@ export const useLogin = () => {
     },
   );
 
-  const submit = async (values: LoginFormValues) => {
+  const loginUser = async (values: LoginFormValues) => {
     try {
       const { data } = await loginMutation({
         variables: { input: values },
@@ -38,7 +38,7 @@ export const useLogin = () => {
   };
 
   return {
-    submit,
+    loginUser,
     loading,
   };
 };

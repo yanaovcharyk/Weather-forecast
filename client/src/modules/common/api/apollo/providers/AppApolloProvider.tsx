@@ -4,11 +4,11 @@ import { createApolloClient } from '..';
 import { useAuth } from '../../../../auth/hooks/useAuth';
 import { useToast } from '../../../hooks/useToast';
 
-interface Props {
+interface AppApolloProviderProps {
   children: React.ReactNode;
 }
 
-export const ApolloProviderWithAuth = ({ children }: Props) => {
+export const AppApolloProvider = ({ children }: AppApolloProviderProps) => {
   const { logout } = useAuth();
   const { toast } = useToast();
 

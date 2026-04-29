@@ -5,6 +5,8 @@ import { BackgroundCard } from '@/modules/common/components/Card/BackgroundCard/
 import type { City } from '../../../common/types';
 import Title from 'antd/es/typography/Title';
 import { AppText } from '../../../common/components/Typography/Text/AppText';
+import { useSmartBackground } from '../../../common/hooks';
+import { BackgroundCardSkeleton } from '../../../common/components/Card/BackgroundCard/BackgroundCardSkeleton';
 
 export interface CityCardProps {
   city: string;
@@ -20,8 +22,15 @@ export const CityCard = ({
   loading,
 }: CityCardProps) => {
   const background = getWeatherBackground(weather?.description);
+  const { loaded } = useSmartBackground(background);
 
   const days = getNextDays(4);
+
+  if (!loaded) {
+    return (
+      <BackgroundCardSkeleton hasHeader hasExtra rows={4} showBackground />
+    );
+  }
 
   return (
     <BackgroundCard

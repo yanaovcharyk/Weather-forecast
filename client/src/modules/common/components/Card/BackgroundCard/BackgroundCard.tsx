@@ -2,7 +2,7 @@ import { Card, type CardProps } from 'antd';
 import styles from './BackgroundCard.module.scss';
 
 type InfoCardProps = CardProps & {
-  headerLeft: React.ReactNode;
+  headerLeft?: React.ReactNode;
   headerRight?: React.ReactNode;
   backgroundImage?: React.ReactNode;
 };

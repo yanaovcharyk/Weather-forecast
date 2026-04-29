@@ -1,4 +1,4 @@
-import { fetchNewAccessToken } from './utils/fetchNewAccessToken';
+import { fetchNewAccessToken } from './fetchNewAccessToken';
 
 type RetryOperation = () => void;
 

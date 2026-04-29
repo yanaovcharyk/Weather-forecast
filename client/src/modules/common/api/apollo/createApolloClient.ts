@@ -4,8 +4,8 @@ import {
   ApolloLink,
   HttpLink,
 } from '@apollo/client';
-import { AccessTokenRefreshCoordinator } from './AccessTokenRefreshCoordinator';
-import { createTokenRefreshErrorLink } from './tokenRefreshErrorLink';
+import { AccessTokenRefreshCoordinator } from './auth/AccessTokenRefreshCoordinator';
+import { createTokenRefreshErrorLink } from './links/tokenRefreshErrorLink';
 
 type CreateApolloClientParams = {
   performLogout: () => void;

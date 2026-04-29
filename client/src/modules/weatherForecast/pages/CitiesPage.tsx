@@ -57,8 +57,8 @@ export const CitiesPage = () => {
     <PageLayout header={<Header />}>
       <Row justify="center">
         <Col span={24}>
-          <Space orientation="vertical" size="medium">
-            <FormCard fullWidth>
+          <Space orientation="vertical" size="medium" style={{ width: '100%' }}>
+            <FormCard>
               <AddCityForm onSubmit={handleAddCity} disabled={isAddDisabled} />
             </FormCard>
 

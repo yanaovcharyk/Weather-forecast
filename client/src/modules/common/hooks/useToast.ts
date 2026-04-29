@@ -1,10 +1,4 @@
-import { useContext } from 'react';
 import { ToastContext } from '../contexts/ToastContext';
+import { createSafeContext } from '../utils/createSafeContext';
 
-export const useToast = () => {
-  const ctx = useContext(ToastContext);
-  if (!ctx) {
-    throw new Error('useToast must be used inside ToastProvider');
-  }
-  return ctx;
-};
+export const useToast = createSafeContext(ToastContext, 'useToast');

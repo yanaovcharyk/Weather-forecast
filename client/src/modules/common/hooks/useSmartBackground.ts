@@ -9,7 +9,9 @@ export const useSmartBackground = (image: string) => {
     const img = new Image();
 
     img.onload = () => {
-      if (!cancelled) setLoaded(true);
+      if (!cancelled) {
+        setLoaded(true);
+      }
     };
 
     img.src = image;

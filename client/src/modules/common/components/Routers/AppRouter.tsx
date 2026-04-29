@@ -1,18 +1,24 @@
 import { Routes, Route } from 'react-router-dom';
-import { LoginPage } from '@/modules/auth/pages/';
-import { PrivateRoute } from './PrivateRoute';
-import { CitiesPage } from '@/modules/weatherForecast/pages/';
+import { registry } from './registry';
+import { applyGuards } from './guards';
 
-export const AppRouter = () => (
-  <Routes>
-    <Route path="/login" element={<LoginPage />} />
-    <Route
-      path="/"
-      element={
-        <PrivateRoute>
-          <CitiesPage />
-        </PrivateRoute>
-      }
-    />
-  </Routes>
-);
+export const AppRouter = () => {
+  const routes = registry.flatMap((m) => m.routes);
+
+  return (
+    <Routes>
+      {routes.map((route, i) => {
+        const Component = route.component;
+        const element = <Component />;
+
+        return (
+          <Route
+            key={i}
+            path={route.path}
+            element={applyGuards(route, element)}
+          />
+        );
+      })}
+    </Routes>
+  );
+};

@@ -8,7 +8,7 @@ import { PrimaryButton } from '../../common/components';
 
 export const LoginForm = () => {
   const { token } = theme.useToken();
-  const { submit, loading } = useLogin();
+  const { loginUser, loading } = useLogin();
 
   const { handleSubmit, control } = useForm<LoginFormValues>({
     resolver: zodResolver(schema),
@@ -27,7 +27,7 @@ export const LoginForm = () => {
   const inputStyle = { color: token.colorPrimary };
 
   return (
-    <Form layout="vertical" onFinish={handleSubmit(submit)}>
+    <Form layout="vertical" onFinish={handleSubmit(loginUser)}>
       <Form.Item
         label="Email"
         validateStatus={email.fieldState.error ? 'error' : undefined}

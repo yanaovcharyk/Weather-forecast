@@ -1,15 +1,11 @@
 import { Card, type CardProps } from 'antd';
 
-type Props = CardProps & {
-  fullWidth?: boolean;
-};
-
-export const FormCard = ({ children, fullWidth, ...props }: Props) => {
+export const FormCard = ({ children, ...props }: CardProps) => {
   return (
     <Card
       {...props}
       style={{
-        width: fullWidth ? '100%' : 400,
+        width: '100%',
         ...props.style,
       }}
     >
