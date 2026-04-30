@@ -1,6 +1,6 @@
 import type { AppRoute } from './AppRoute';
 
-export interface AppModule {
+export interface IAppModule {
   name: string;
   routes: AppRoute[];
 }

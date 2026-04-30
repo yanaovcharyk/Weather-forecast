@@ -3,7 +3,7 @@ import { registry } from './registry';
 import { applyGuards } from './guards';
 
 export const AppRouter = () => {
-  const routes = registry.flatMap((m) => m.routes);
+  const routes = registry.flatMap((module) => module.routes);
 
   return (
     <Routes>

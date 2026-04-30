@@ -3,8 +3,6 @@ import { useCallback, useState } from 'react';
 
 import { useRemoveCity, useAddCity, useCities } from '../hooks';
 import { AddCityForm, CitiesList } from '../components';
-
-import { CityService } from '../services/CityService';
 import { EmptyState, FormCard, PageLayout, Header } from '@/common/components';
 import { handleResult } from '@/common/utils';
 
@@ -17,8 +15,8 @@ export const CitiesPage = () => {
 
   const cities = data?.cities ?? [];
 
-  const isCityLimitReached = CityService.isCityLimitReached(cities);
-  const isAddDisabled = isCityLimitReached || addCityLoading;
+  // const isCityLimitReached = CityService.isCityLimitReached(cities);
+  const isAddDisabled = addCityLoading;
 
   const handleAddCity = useCallback(
     async (city: string) => {
