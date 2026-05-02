@@ -1,5 +1,6 @@
 import { Card, type CardProps } from 'antd';
 import styles from './BackgroundCard.module.scss';
+import classNames from 'classnames';
 
 type InfoCardProps = CardProps & {
   headerLeft?: React.ReactNode;
@@ -12,6 +13,7 @@ export const BackgroundCard = ({
   headerLeft,
   headerRight,
   backgroundImage,
+  className,
   ...props
 }: InfoCardProps) => {
   return (
@@ -20,7 +22,7 @@ export const BackgroundCard = ({
       size="small"
       title={headerLeft}
       extra={headerRight}
-      className={styles.card}
+      className={classNames(styles.card, className)}
     >
       <div className={styles.wrapper}>
         {backgroundImage && (
