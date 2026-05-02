@@ -55,12 +55,14 @@ export const ThemeProvider = ({ children }: Props) => {
 
           Card: {
             headerBg: '#F0F6FF',
+            actionsBg: '#234C75',
             extraColor: '#234C75',
             colorText: '#F0F6FF',
             colorBgContainer: '#F0F6FF',
             bodyPaddingSM: 0,
             lineWidth: 0,
             boxShadow: '0 4px 4px rgba(0, 0, 0, 0.5)',
+            borderRadius: 8,
           },
 
           Layout: {
