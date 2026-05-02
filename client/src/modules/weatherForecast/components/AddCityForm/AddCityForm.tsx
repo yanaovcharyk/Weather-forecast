@@ -1,4 +1,4 @@
-import { Form, Select, Space, theme } from 'antd';
+import { Col, Form, Row, Select } from 'antd';
 import { EmptyState, PrimaryButton } from '@/common/components';
 
 import type { AddCityFormProps } from './types';
@@ -8,7 +8,6 @@ import { useIsMobile } from '@/common/hooks/useIsMobile';
 import styles from './AddCityForm.module.scss';
 
 export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
-  const { token } = theme.useToken();
   const isMobile = useIsMobile();
 
   const { form, loading, handleSearch, cityOptions, handleSubmit } =
@@ -16,41 +15,41 @@ export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
 
   return (
     <Form form={form} onFinish={handleSubmit}>
-      <Space
-        orientation="vertical"
-        size={isMobile ? token.marginXXS : token.marginXS}
-        className={styles.space}
-      >
-        <Form.Item
-          name="city"
-          rules={[{ required: true, message: 'Select a city' }]}
-          className={styles.formItem}
-        >
-          <Select
-            showSearch={{
-              filterOption: false,
-              onSearch: handleSearch,
-            }}
-            loading={loading}
-            disabled={disabled}
-            allowClear
-            options={cityOptions}
-            size="middle"
-            placement={isMobile ? 'topLeft' : 'bottomLeft'}
-            getPopupContainer={() => document.body}
-            notFoundContent={<EmptyState description="No cities found" />}
-          />
-        </Form.Item>
+      <Row gutter={16} align="middle">
+        <Col span={isMobile ? 18 : 22}>
+          <Form.Item
+            name="city"
+            rules={[{ required: true, message: 'Select a city' }]}
+            className={styles.formItem}
+          >
+            <Select
+              showSearch={{
+                filterOption: false,
+                onSearch: handleSearch,
+              }}
+              loading={loading}
+              disabled={disabled}
+              allowClear
+              options={cityOptions}
+              size="middle"
+              placement={isMobile ? 'topLeft' : 'bottomLeft'}
+              getPopupContainer={() => document.body}
+              notFoundContent={<EmptyState description="No cities found" />}
+            />
+          </Form.Item>
+        </Col>
 
-        <PrimaryButton
-          block
-          size="middle"
-          htmlType="submit"
-          disabled={disabled}
-        >
-          Add
-        </PrimaryButton>
-      </Space>
+        <Col span={isMobile ? 6 : 2}>
+          <PrimaryButton
+            block
+            size="middle"
+            htmlType="submit"
+            disabled={disabled}
+          >
+            Add
+          </PrimaryButton>
+        </Col>
+      </Row>
     </Form>
   );
 };
