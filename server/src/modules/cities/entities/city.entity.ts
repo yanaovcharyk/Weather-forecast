@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
+import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { BaseEntity } from '../../../shared/types/base.entity';
 
@@ -13,10 +13,12 @@ export class CityEntity extends BaseEntity {
   @Field()
   city!: string;
 
-  @Column('double precision')
+  @Column('float')
+  @Field(() => Float)
   lat!: number;
 
-  @Column('double precision')
+  @Column('float')
+  @Field(() => Float)
   lon!: number;
 
   @Column('uuid')

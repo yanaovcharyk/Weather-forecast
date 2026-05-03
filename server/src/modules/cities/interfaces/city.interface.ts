@@ -1,6 +1,9 @@
 export interface ICityOutput {
   id: number;
   city: string;
+  lat: number;
+  lon: number;
+
   weather?: {
     city: string;
     temperature: number;

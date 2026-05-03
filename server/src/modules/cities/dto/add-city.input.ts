@@ -1,16 +1,17 @@
-import { InputType, Field } from '@nestjs/graphql';
-import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { InputType, Field, Int, Float } from '@nestjs/graphql';
+import { IsNumber, IsString } from 'class-validator';
 
 @InputType()
 export class AddCityInput {
+  @Field(() => Float)
+  @IsNumber()
+  lat!: number;
+
+  @Field(() => Float)
+  @IsNumber()
+  lon!: number;
+
   @Field()
   @IsString()
-  @IsNotEmpty()
   city!: string;
 }
-
-export type CreateCityParams = {
-  city: string;
-  lat: number;
-  lon: number;
-};

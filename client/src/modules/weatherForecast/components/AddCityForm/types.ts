@@ -1,4 +1,4 @@
-export interface City {
+export interface SearchCity {
   name: string;
   country: string;
   lat: number;
@@ -6,14 +6,16 @@ export interface City {
 }
 
 export interface SearchCitiesData {
-  searchCities: City[];
+  searchCities: SearchCity[];
 }
 
 export interface SearchCitiesVars {
-  query: string;
+  input: {
+    query: string;
+  };
 }
 
 export interface AddCityFormProps {
-  onSubmit: (city: string) => Promise<void> | void;
+  onSubmit: (lat: number, lon: number, city: string) => Promise<void> | void;
   disabled?: boolean;
 }

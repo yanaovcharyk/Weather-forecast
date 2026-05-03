@@ -1,29 +1,23 @@
 import { Form } from 'antd';
 import { useCallback } from 'react';
 import { useCitySearch } from './useCitySearch';
-import { findCityByKey } from '../utils/citySelect';
 
 export const useAddCityForm = (
-  onSubmit: (name: string) => void | Promise<void>,
+  onSubmit: (lat: number, lon: number, city: string) => void | Promise<void>,
 ) => {
   const [form] = Form.useForm();
-  const { data, loading, handleSearch, cityOptions } = useCitySearch();
+  const { loading, handleSearch, cityOptions } = useCitySearch();
 
   const handleSubmit = useCallback(
     async ({ city }: { city?: string }) => {
-      if (!city) {
-        return;
-      }
+      if (!city) return;
 
-      const selected = findCityByKey(data?.searchCities ?? [], city);
-      if (!selected) {
-        return;
-      }
+      const parsed = JSON.parse(city);
 
-      await onSubmit(selected.name);
+      await onSubmit(parsed.lat, parsed.lon, parsed.name);
       form.resetFields();
     },
-    [data, form, onSubmit],
+    [form, onSubmit],
   );
 
   return {

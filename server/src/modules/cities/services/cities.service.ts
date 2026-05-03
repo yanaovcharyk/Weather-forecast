@@ -5,7 +5,8 @@ import { Repository } from 'typeorm';
 import { WeatherService } from '../../weather/services/weather.service';
 import { CityEntity } from '../entities/city.entity';
 import { ICityOutput } from '../interfaces/city.interface';
-import { CreateCityParams } from '../dto/add-city.input';
+import { AddCityInput } from '../dto/add-city.input';
+
 @Injectable()
 export class CitiesService {
   constructor(
@@ -25,13 +26,17 @@ export class CitiesService {
     return cities.map((city) => ({
       id: city.id,
       city: city.city,
+      lat: city.lat,
+      lon: city.lon,
     }));
   }
 
-  async addCity(userId: string, input: CreateCityParams): Promise<ICityOutput> {
+  async addCity(userId: string, input: AddCityInput): Promise<ICityOutput> {
     const entity = this.cityRepository.create({
-      ...input,
       userId,
+      city: input.city,
+      lat: input.lat,
+      lon: input.lon,
     });
 
     const saved = await this.cityRepository.save(entity);
@@ -39,6 +44,8 @@ export class CitiesService {
     return {
       id: saved.id,
       city: saved.city,
+      lat: saved.lat,
+      lon: saved.lon,
     };
   }
 
@@ -47,11 +54,15 @@ export class CitiesService {
       where: { id, userId },
     });
 
-    if (!city) throw new NotFoundException('City not found');
+    if (!city) {
+      throw new NotFoundException('City not found');
+    }
 
-    const result = {
+    const result: ICityOutput = {
       id: city.id,
       city: city.city,
+      lat: city.lat,
+      lon: city.lon,
     };
 
     await this.cityRepository.remove(city);
@@ -59,20 +70,28 @@ export class CitiesService {
     return result;
   }
 
-  async getWeatherForCity(cityId: number) {
+  async getWeatherForCity(lat: number, lon: number) {
+
+    return this.weatherService.getWeatherPreview({
+      lat,
+      lon,
+    });
+  }
+
+  async getCityById(userId: string, id: number): Promise<ICityOutput> {
     const city = await this.cityRepository.findOne({
-      where: { id: cityId },
+      where: { id, userId },
     });
 
-    if (!city) throw new NotFoundException('City not found');
-
-    if (city.lat == null || city.lon == null) {
-      throw new NotFoundException('City has no coordinates');
+    if (!city) {
+      throw new NotFoundException('City not found');
     }
 
-    return this.weatherService.getWeather({
+    return {
+      id: city.id,
+      city: city.city,
       lat: city.lat,
       lon: city.lon,
-    });
+    };
   }
 }

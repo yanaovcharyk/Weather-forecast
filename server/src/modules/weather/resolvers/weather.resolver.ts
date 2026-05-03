@@ -2,7 +2,9 @@ import { Resolver, Query, Args } from '@nestjs/graphql';
 import { WeatherService } from '../services';
 import { WeatherOutput } from '../dto';
 import { CitySuggestion } from '../dto/city-suggestion.dto';
-import { IWeatherOutput } from '../interfaces';
+import { WeatherDetailsOutput } from '../dto/weather-details.dto';
+import { GetWeatherInput } from '../dto/get-weather.input';
+import { CitySearchInput } from '../dto/city-search.input';
 
 @Resolver()
 export class WeatherResolver {
@@ -10,16 +12,22 @@ export class WeatherResolver {
 
   @Query(() => [CitySuggestion])
   async searchCities(
-    @Args('query') query: string,
-  ): Promise<CitySuggestion[]> {
-    return this.weatherService.searchCities(query);
+    @Args('input') input: CitySearchInput,
+  ) {
+    return this.weatherService.searchCities(input.query);
   }
 
   @Query(() => WeatherOutput)
   async getWeather(
-    @Args('lat') lat: number,
-    @Args('lon') lon: number,
-  ): Promise<IWeatherOutput> {
-    return this.weatherService.getWeather({ lat, lon });
+    @Args('input') input: GetWeatherInput,
+  ) {
+    return this.weatherService.getWeatherPreview(input);
+  }
+
+  @Query(() => WeatherDetailsOutput)
+  async getWeatherDetails(
+    @Args('input') input: GetWeatherInput,
+  ) {
+    return this.weatherService.getWeatherDetails(input);
   }
 }

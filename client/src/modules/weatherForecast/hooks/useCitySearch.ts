@@ -7,7 +7,6 @@ import type {
   SearchCitiesVars,
 } from '../components/AddCityForm/types';
 import { CityService } from '../services/CityService';
-import { getCityKey } from '../utils/citySelect';
 
 const DEBOUNCE_DELAY_MS = 300;
 const MIN_SEARCH_LENGTH = 2;
@@ -31,7 +30,11 @@ export const useCitySearch = () => {
   const scheduleSearchRequest = (query: string) => {
     debounceTimerRef.current = setTimeout(() => {
       executeCitySearch({
-        variables: { query },
+        variables: {
+          input: {
+            query,
+          },
+        },
       });
     }, DEBOUNCE_DELAY_MS);
   };
@@ -41,9 +44,7 @@ export const useCitySearch = () => {
 
     cancelPreviousSearch();
 
-    if (query.length < MIN_SEARCH_LENGTH) {
-      return;
-    }
+    if (query.length < MIN_SEARCH_LENGTH) return;
 
     scheduleSearchRequest(query);
   };
@@ -52,7 +53,12 @@ export const useCitySearch = () => {
     return (
       data?.searchCities?.map((city) => ({
         label: `${city.name}, ${city.country}`,
-        value: getCityKey(city),
+
+        value: JSON.stringify({
+          lat: city.lat,
+          lon: city.lon,
+          name: city.name,
+        }),
       })) ?? []
     );
   }, [data]);

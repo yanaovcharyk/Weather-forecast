@@ -1,4 +1,4 @@
-import { Field, ObjectType } from '@nestjs/graphql';
+import { ObjectType, Field, Float } from '@nestjs/graphql';
 
 @ObjectType()
 export class CitySuggestion {
@@ -8,9 +8,9 @@ export class CitySuggestion {
   @Field()
   country!: string;
 
-  @Field()
+  @Field(() => Float)
   lat!: number;
 
-  @Field()
+  @Field(() => Float)
   lon!: number;
 }

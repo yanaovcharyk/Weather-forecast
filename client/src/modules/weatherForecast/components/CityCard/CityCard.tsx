@@ -6,12 +6,14 @@ import type { City } from '@/common/types';
 import { AppText } from '@/common/components/Typography/Text/AppText';
 import { useSmartBackground } from '@/common/hooks';
 import { AppTitle } from '@/common/components/Typography/Title/AppTitle';
+import styles from './CityCard.module.scss';
 
 export interface CityCardProps {
   city: string;
   weather: City['weather'];
   onRemove: () => void;
   loading?: boolean;
+  onClick?: () => void;
 }
 
 export const CityCard = ({
@@ -19,6 +21,7 @@ export const CityCard = ({
   weather,
   onRemove,
   loading,
+  onClick,
 }: CityCardProps) => {
   const background = getWeatherBackground(weather?.description);
   const { loaded } = useSmartBackground(background);
@@ -33,16 +36,21 @@ export const CityCard = ({
 
   return (
     <BackgroundCard
+      className={styles.card}
       headerLeft={<AppTitle level={5}>{city}</AppTitle>}
       headerRight={
         <Button
           type="text"
           loading={loading}
-          onClick={onRemove}
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove();
+          }}
           icon={<CloseOutlined />}
         />
       }
       backgroundImage={background}
+      onClick={onClick}
     >
       {weather ? (
         <Flex vertical gap={4}>
@@ -59,19 +67,23 @@ export const CityCard = ({
             </Flex>
           </Flex>
 
-          <Flex vertical gap={4} style={{ width: '100%' }}>
+          <Flex gap={4} style={{ width: '100%' }}>
             {weather.next3DaysTemperature?.map((t, i) => (
               <Flex
                 key={i}
-                justify="space-between"
-                style={{
-                  borderBottom: '1px solid rgba(255,255,255,0.3)',
-                }}
+                vertical
+                align="center"
+                justify="center"
+                className={styles.dayCard}
+                style={{ flex: 1 }}
               >
-                <AppText size="sm">{days[i + 1]?.label}</AppText>
-                <AppText size="sm">
-                  {weather.next3DaysDescription?.[i]} {t}°C
+                <AppText size="sm" strong>
+                  {days[i + 1]?.label}
                 </AppText>
+
+                <AppText strong>{t}°C</AppText>
+
+                <AppText size="sm">{weather.next3DaysDescription?.[i]}</AppText>
               </Flex>
             ))}
           </Flex>

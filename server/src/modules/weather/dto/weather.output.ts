@@ -3,8 +3,6 @@ import { IWeatherOutput } from '../interfaces';
 
 @ObjectType()
 export class WeatherOutput implements IWeatherOutput {
-  @Field()
-  city!: string;
 
   @Field(() => Float)
   temperature!: number;

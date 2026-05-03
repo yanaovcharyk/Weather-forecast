@@ -1,7 +1,7 @@
-import { ArgsType, Field } from '@nestjs/graphql';
+import { InputType, Field } from '@nestjs/graphql';
 import { IsString } from 'class-validator';
 
-@ArgsType()
+@InputType()
 export class CitySearchInput {
   @Field()
   @IsString()

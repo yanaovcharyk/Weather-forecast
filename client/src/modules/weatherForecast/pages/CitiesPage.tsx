@@ -5,6 +5,7 @@ import { useRemoveCity, useAddCity, useCities } from '../hooks';
 import { AddCityForm, CitiesList } from '../components';
 import { EmptyState, FormCard, PageLayout, Header } from '@/common/components';
 import { handleResult } from '@/common/utils';
+import { useNavigate } from 'react-router-dom';
 
 export const CitiesPage = () => {
   const { data, loading } = useCities();
@@ -12,6 +13,7 @@ export const CitiesPage = () => {
   const { removeCity } = useRemoveCity();
 
   const [removingId, setRemovingId] = useState<number | null>(null);
+  const navigate = useNavigate();
 
   const cities = data?.cities ?? [];
 
@@ -19,8 +21,8 @@ export const CitiesPage = () => {
   const isAddDisabled = addCityLoading;
 
   const handleAddCity = useCallback(
-    async (city: string) => {
-      const result = await addCity(city);
+    async (lat: number, lon: number, city: string) => {
+      const result = await addCity(lat, lon, city);
 
       handleResult(result, {
         successMessage: `City ${city} added successfully`,
@@ -46,6 +48,13 @@ export const CitiesPage = () => {
     [removeCity],
   );
 
+  const handleOpenCity = useCallback(
+    (id: number) => {
+      navigate(`/cities/${id}`);
+    },
+    [navigate],
+  );
+
   if (loading && !data) {
     return <Spin fullscreen />;
   }
@@ -66,6 +75,7 @@ export const CitiesPage = () => {
                 cities={cities}
                 removingCityId={removingId}
                 onRemove={handleRemove}
+                onCityClick={handleOpenCity}
               />
             )}
           </Space>

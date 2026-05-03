@@ -1,5 +1,4 @@
 export interface Weather {
-  city: string;
   temperature: number;
   description: string;
   next3DaysTemperature: number[];
@@ -9,6 +8,8 @@ export interface Weather {
 export interface City {
   id: number;
   city: string;
+  lat: number;
+  lon: number;
   weather: Weather | null;
 }
 

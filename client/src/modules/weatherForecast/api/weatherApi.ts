@@ -5,8 +5,10 @@ export const CITIES_QUERY = gql`
     cities {
       id
       city
+      lat
+      lon
+
       weather {
-        city
         temperature
         description
         next3DaysTemperature
@@ -21,8 +23,10 @@ export const ADD_CITY_MUTATION = gql`
     addCity(input: $input) {
       id
       city
+      lat
+      lon
+
       weather {
-        city
         temperature
         description
         next3DaysTemperature
@@ -41,8 +45,8 @@ export const REMOVE_CITY_MUTATION = gql`
 `;
 
 export const SEARCH_CITIES = gql`
-  query SearchCities($query: String!) {
-    searchCities(query: $query) {
+  query SearchCities($input: CitySearchInput!) {
+    searchCities(input: $input) {
       name
       country
       lat
@@ -52,9 +56,8 @@ export const SEARCH_CITIES = gql`
 `;
 
 export const GET_WEATHER = gql`
-  query GetWeather($lat: Float!, $lon: Float!) {
-    getWeather(lat: $lat, lon: $lon) {
-      city
+  query GetWeather($input: GetWeatherInput!) {
+    getWeather(input: $input) {
       temperature
       description
       next3DaysTemperature

@@ -1,14 +1,13 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { IsString } from 'class-validator';
-import { IGetWeatherInput } from '../interfaces';
+import { Field, InputType, Float } from '@nestjs/graphql';
+import { IsNumber } from 'class-validator';
 
 @InputType()
-export class GetWeatherInput implements IGetWeatherInput {
-  @Field()
-  @IsString()
+export class GetWeatherInput {
+  @Field(() => Float)
+  @IsNumber()
   lat!: number;
-  
-  @Field()
-  @IsString()
+
+  @Field(() => Float)
+  @IsNumber()
   lon!: number;
 }
