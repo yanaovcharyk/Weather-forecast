@@ -4,6 +4,7 @@ import {
   ApolloLink,
   HttpLink,
 } from '@apollo/client';
+
 import { AccessTokenRefreshCoordinator } from './auth/AccessTokenRefreshCoordinator';
 import { createTokenRefreshErrorLink } from './links/tokenRefreshErrorLink';
 
@@ -18,7 +19,7 @@ export const createApolloClient = ({
 }: CreateApolloClientParams) => {
   const tokenRefreshCoordinator = new AccessTokenRefreshCoordinator();
 
-  const graphQLHttpLink = new HttpLink({
+  const httpLink = new HttpLink({
     uri: import.meta.env.VITE_API_BASE + '/graphql',
     credentials: 'include',
   });
@@ -30,7 +31,35 @@ export const createApolloClient = ({
   });
 
   return new ApolloClient({
-    link: ApolloLink.from([tokenRefreshErrorLink, graphQLHttpLink]),
-    cache: new InMemoryCache(),
+    link: ApolloLink.from([tokenRefreshErrorLink, httpLink]),
+
+    cache: new InMemoryCache({
+      typePolicies: {
+        Query: {
+          fields: {
+            citiesPaginated: {
+              keyArgs: ['sorting'],
+
+              merge(existing, incoming, { readField }) {
+                const merged = existing?.edges ? [...existing.edges] : [];
+
+                for (const edge of incoming.edges) {
+                  const id = readField('id', edge.node);
+
+                  if (!merged.some((e) => readField('id', e.node) === id)) {
+                    merged.push(edge);
+                  }
+                }
+
+                return {
+                  ...incoming,
+                  edges: merged,
+                };
+              },
+            },
+          },
+        },
+      },
+    }),
   });
 };

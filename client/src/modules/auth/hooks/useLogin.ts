@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client/react';
 import { useNavigate } from 'react-router-dom';
-import { message } from 'antd';
+import { App } from 'antd';
 
 import { LOGIN_MUTATION } from '../api';
 import type { LoginFormValues, LoginMutationResponse } from '../types';
@@ -10,6 +10,7 @@ import { extractErrorCode, mapErrorCodeToMessage } from '@/common/utils';
 export const useLogin = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+  const { message } = App.useApp();
 
   const [loginMutation, { loading }] = useMutation<LoginMutationResponse>(
     LOGIN_MUTATION,

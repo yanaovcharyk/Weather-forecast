@@ -1,0 +1,20 @@
+.label {
+  color: rgba(14, 55, 102, 0.85);
+}
+
+.controls {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.select {
+  width: 120px;
+  margin-right: 8px;
+}
+
+.deleteCol {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+}

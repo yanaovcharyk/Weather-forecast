@@ -13,9 +13,9 @@ export const HourlyForecast = ({ hourly }: Props) => {
   return (
     <Card title="Hourly forecast" className={styles.card}>
       <Flex gap={12} className={styles.scrollRow}>
-        {hourly.map((h) => (
+        {hourly.map((h, index) => (
           <Card
-            key={h.time}
+            key={`${h.time}-${index}`}
             size="small"
             className={styles.hourCard}
             styles={{

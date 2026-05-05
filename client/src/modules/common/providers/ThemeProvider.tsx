@@ -63,6 +63,7 @@ export const ThemeProvider = ({ children }: Props) => {
             lineWidth: 0,
             boxShadow: '0 4px 4px rgba(0, 0, 0, 0.5)',
             borderRadius: 8,
+            bodyPadding: 16,
           },
 
           Layout: {

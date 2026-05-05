@@ -65,3 +65,38 @@ export const GET_WEATHER = gql`
     }
   }
 `;
+
+export const CITIES_PAGINATED = gql`
+  query CitiesPaginated(
+    $pagination: CitiesPaginationInput!
+    $sorting: CitiesSortingInput
+  ) {
+    citiesPaginated(pagination: $pagination, sorting: $sorting) {
+      edges {
+        node {
+          id
+          city
+          lat
+          lon
+          weather {
+            temperature
+            description
+            next3DaysTemperature
+            next3DaysDescription
+          }
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+    }
+  }
+`;
+
+export const REMOVE_ALL_CITIES = gql`
+  mutation RemoveAllCities {
+    removeAllCities
+  }
+`;

@@ -7,6 +7,7 @@ import { AppText } from '@/common/components/Typography/Text/AppText';
 import { useSmartBackground } from '@/common/hooks';
 import { AppTitle } from '@/common/components/Typography/Title/AppTitle';
 import styles from './CityCard.module.scss';
+import React from 'react';
 
 export interface CityCardProps {
   city: string;
@@ -16,13 +17,13 @@ export interface CityCardProps {
   onClick?: () => void;
 }
 
-export const CityCard = ({
+export const CityCard = React.memo(function CityCard({
   city,
   weather,
   onRemove,
   loading,
   onClick,
-}: CityCardProps) => {
+}: CityCardProps) {
   const background = getWeatherBackground(weather?.description);
   const { loaded } = useSmartBackground(background);
 
@@ -95,4 +96,4 @@ export const CityCard = ({
       )}
     </BackgroundCard>
   );
-};
+});

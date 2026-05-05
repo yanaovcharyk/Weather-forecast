@@ -1,13 +1,14 @@
 import { Card, type CardProps } from 'antd';
+import styles from './FormCard.module.scss';
 
 export const FormCard = ({ children, ...props }: CardProps) => {
   return (
     <Card
       {...props}
       style={{
-        width: '100%',
         ...props.style,
       }}
+      className={styles.card}
     >
       {children}
     </Card>

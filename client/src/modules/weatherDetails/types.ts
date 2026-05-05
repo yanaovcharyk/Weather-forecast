@@ -50,7 +50,7 @@ export type GetWeatherDetailsResponse = {
 };
 
 export type City = {
-  id: number;
+  id: number | string;
   city: string;
   lat: number;
   lon: number;

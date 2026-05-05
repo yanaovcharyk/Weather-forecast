@@ -1,7 +1,8 @@
 import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import { BaseEntity } from '../../../shared/types/base.entity';
 
+@Unique(['userId', 'lat', 'lon'])
 @Entity('cities')
 @ObjectType()
 export class CityEntity extends BaseEntity {

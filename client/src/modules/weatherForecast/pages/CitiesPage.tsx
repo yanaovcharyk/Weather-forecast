@@ -1,24 +1,53 @@
-import { Spin, Row, Col, Space } from 'antd';
+import { Spin, Row, Col, Space, App } from 'antd';
 import { useCallback, useState } from 'react';
 
-import { useRemoveCity, useAddCity, useCities } from '../hooks';
+import { useRemoveCity, useAddCity } from '../hooks';
+import { useCitiesPaginated } from '../hooks/useCitiesPaginated';
+import { useRemoveAllCities } from '../hooks/useRemoveAllCities';
+
 import { AddCityForm, CitiesList } from '../components';
+
 import { EmptyState, FormCard, PageLayout, Header } from '@/common/components';
+
+import { ScrollToTopButton } from '../../common/components/ScrollToTopButton';
+
 import { handleResult } from '@/common/utils';
 import { useNavigate } from 'react-router-dom';
+import { CitiesControls } from '../components/CitiesControlBar/CitiesControls';
+
+type SortingState = {
+  sortBy: 'createdAt' | 'city';
+  sortOrder: 'ASC' | 'DESC';
+};
 
 export const CitiesPage = () => {
-  const { data, loading } = useCities();
-  const { addCity, loading: addCityLoading } = useAddCity();
+  const [sorting, setSorting] = useState<SortingState>({
+    sortBy: 'createdAt',
+    sortOrder: 'DESC',
+  });
+
+  const { message } = App.useApp();
+
+  const { cities, loading, loadMore, hasNext } = useCitiesPaginated(sorting);
+
+  const loadMoreStable = useCallback(() => loadMore(), [loadMore]);
+
+  const { addCity } = useAddCity();
   const { removeCity } = useRemoveCity();
+  const { removeAllCities } = useRemoveAllCities();
 
   const [removingId, setRemovingId] = useState<number | null>(null);
   const navigate = useNavigate();
 
-  const cities = data?.cities ?? [];
+  const notifyError = useCallback(
+    (msg: string) => message.error(msg),
+    [message],
+  );
 
-  // const isCityLimitReached = CityService.isCityLimitReached(cities);
-  const isAddDisabled = addCityLoading;
+  const notifySuccess = useCallback(
+    (msg: string) => message.success(msg),
+    [message],
+  );
 
   const handleAddCity = useCallback(
     async (lat: number, lon: number, city: string) => {
@@ -26,9 +55,11 @@ export const CitiesPage = () => {
 
       handleResult(result, {
         successMessage: `City ${city} added successfully`,
+        notifyError,
+        notifySuccess,
       });
     },
-    [addCity],
+    [addCity, notifyError, notifySuccess],
   );
 
   const handleRemove = useCallback(
@@ -37,15 +68,20 @@ export const CitiesPage = () => {
 
       try {
         await removeCity(id);
+
         handleResult(
           { ok: true },
-          { successMessage: `City ${city} removed successfully` },
+          {
+            successMessage: `City ${city} removed successfully`,
+            notifyError,
+            notifySuccess,
+          },
         );
       } finally {
         setRemovingId(null);
       }
     },
-    [removeCity],
+    [removeCity, notifyError, notifySuccess],
   );
 
   const handleOpenCity = useCallback(
@@ -55,7 +91,17 @@ export const CitiesPage = () => {
     [navigate],
   );
 
-  if (loading && !data) {
+  const handleDeleteAll = useCallback(async () => {
+    const result = await removeAllCities();
+
+    handleResult(result, {
+      successMessage: 'All cities removed successfully',
+      notifyError,
+      notifySuccess,
+    });
+  }, [removeAllCities, notifyError, notifySuccess]);
+
+  if (loading && cities.length === 0) {
     return <Spin fullscreen />;
   }
 
@@ -63,24 +109,36 @@ export const CitiesPage = () => {
     <PageLayout header={<Header />}>
       <Row justify="center">
         <Col span={24}>
-          <Space orientation="vertical" size="medium" style={{ width: '100%' }}>
+          <Space orientation="vertical" style={{ width: '100%' }}>
             <FormCard>
-              <AddCityForm onSubmit={handleAddCity} disabled={isAddDisabled} />
+              <AddCityForm onSubmit={handleAddCity} />
+            </FormCard>
+
+            <FormCard>
+              <CitiesControls
+                sorting={sorting}
+                setSorting={setSorting}
+                onDeleteAll={handleDeleteAll}
+              />
             </FormCard>
 
             {cities.length === 0 ? (
-              <EmptyState description="No cities added" />
+              <EmptyState description="No cities" />
             ) : (
               <CitiesList
                 cities={cities}
                 removingCityId={removingId}
                 onRemove={handleRemove}
+                loadMore={loadMoreStable}
+                hasNext={hasNext}
                 onCityClick={handleOpenCity}
               />
             )}
           </Space>
         </Col>
       </Row>
+
+      <ScrollToTopButton />
     </PageLayout>
   );
 };

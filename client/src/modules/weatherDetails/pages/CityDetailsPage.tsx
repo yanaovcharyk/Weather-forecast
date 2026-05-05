@@ -14,7 +14,7 @@ export const CityDetailsPage = () => {
       <PageLayout header={<Header />}>
         <Alert
           type="error"
-          message="Failed to load weather data"
+          title="Failed to load weather data"
           description={error.message}
         />
       </PageLayout>

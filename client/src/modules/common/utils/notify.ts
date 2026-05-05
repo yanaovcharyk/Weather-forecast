@@ -1,9 +1,15 @@
-import { message } from 'antd';
+import { App } from 'antd';
 
-export const notifyError = (msg: string) => {
-  message.error(msg);
-};
+export const useNotify = () => {
+  const { message } = App.useApp();
 
-export const notifySuccess = (msg: string) => {
-  message.success(msg);
+  const notifyError = (msg: string) => {
+    message.error(msg);
+  };
+
+  const notifySuccess = (msg: string) => {
+    message.success(msg);
+  };
+
+  return { notifyError, notifySuccess };
 };

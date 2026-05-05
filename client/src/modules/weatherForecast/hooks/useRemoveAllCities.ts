@@ -1,27 +1,24 @@
 import { useMutation } from '@apollo/client/react';
 import { GraphQLError } from 'graphql';
-import { ADD_CITY_MUTATION } from '../api/weatherApi';
-import type { AddCityMutation } from '@/common/types';
+import { REMOVE_ALL_CITIES } from '../api/weatherApi';
 
-export const useAddCity = () => {
-  const [mutate, { loading }] = useMutation<AddCityMutation>(ADD_CITY_MUTATION);
+export const useRemoveAllCities = () => {
+  const [mutate, { loading }] = useMutation(REMOVE_ALL_CITIES);
 
-  const addCity = async (lat: number, lon: number, city: string) => {
+  const removeAllCities = async () => {
     try {
       await mutate({
-        variables: { input: { lat, lon, city } },
         refetchQueries: ['CitiesPaginated'],
       });
 
       return { ok: true as const };
     } catch (error) {
       const gqlErrors = error as readonly GraphQLError[];
-
       const code = gqlErrors[0]?.extensions?.code as string | undefined;
 
       return { ok: false as const, code };
     }
   };
 
-  return { addCity, loading };
+  return { removeAllCities, loading };
 };

@@ -10,7 +10,7 @@ export interface City {
   city: string;
   lat: number;
   lon: number;
-  weather: Weather | null;
+  weather?: Weather | null;
 }
 
 export interface CitiesQuery {
