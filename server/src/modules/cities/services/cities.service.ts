@@ -9,18 +9,19 @@ import { ICityOutput } from '../interfaces/city.interface';
 import { AddCityInput } from '../dto/add-city.input';
 import { CitiesPaginationInput } from '../dto/cities-pagination.input';
 import { CitiesConnection } from '../dto/cities-connection.output';
-import {
-  CitiesSortingInput,
-  SortableCityField,
-  SortOrder,
-} from '../dto/cities-sorting.input';
 
-import {
-  applyCursorPagination,
-  buildPaginatedResponse,
-} from '../utils/cities-pagination.util';
 import { mapToOutput } from '../mappers/city.mapper';
 import { CitiesQueryService } from './cities-query.service';
+import { CursorPaginationService } from '../../pagination/services/cursor-pagination.service';
+import { Base64CursorEncoder } from '../../pagination/cursor/base64-cursor.encoder';
+import { SortingService } from '../../sorting/service/sorting.service';
+import { SortFields } from '../types';
+import { CITY_SORT_HANDLERS } from '../handlers/city-sort-handlers';
+import { CITY_CURSOR_HANDLERS } from '../handlers/city-cursor-handlers';
+import { buildConnection } from '../../pagination/builders/build-connection';
+import { SortOrder } from '../../sorting/types';
+import { CitiesSortingInput } from '../dto/cities-sorting.input';
+
 @Injectable()
 export class CitiesService {
   constructor(
@@ -28,6 +29,9 @@ export class CitiesService {
     private readonly cityRepository: Repository<CityEntity>,
     private readonly weatherService: WeatherService,
     private readonly citiesQueryService: CitiesQueryService,
+    private readonly sortingService: SortingService,
+    private readonly paginationService: CursorPaginationService,
+    private readonly cursorEncoder: Base64CursorEncoder,
   ) {}
 
   async getCities(userId: string): Promise<ICityOutput[]> {
@@ -116,18 +120,52 @@ export class CitiesService {
   ): Promise<CitiesConnection> {
     const { limit, cursor } = pagination;
 
-    const sortBy = sorting?.sortBy ?? SortableCityField.CREATED_AT;
+    const sortBy = sorting?.sortBy ?? SortFields.CREATED_AT;
+
     const sortOrder = sorting?.sortOrder ?? SortOrder.DESC;
 
-    const citiesQueryBuilder = this.citiesQueryService.buildBaseQuery(userId);
+    const qb = this.citiesQueryService.buildBaseQuery(userId);
 
-    applyCursorPagination(citiesQueryBuilder, cursor, sortBy, sortOrder);
+    this.sortingService.applySorting<CityEntity>({
+      qb,
+      handlers: CITY_SORT_HANDLERS,
+      sortBy,
+      sortOrder,
+    });
 
-    this.citiesQueryService.applySorting(citiesQueryBuilder, sortBy, sortOrder);
-    this.citiesQueryService.applyLimit(citiesQueryBuilder, limit + 1);
+    this.paginationService.applyPagination({
+      qb,
+      cursor,
+      sortBy,
+      sortOrder,
+      handlers: CITY_CURSOR_HANDLERS,
+    });
 
-    const cities = await citiesQueryBuilder.getMany();
+    this.citiesQueryService.applyLimit(qb, limit + 1);
 
-    return buildPaginatedResponse(cities, limit, sortBy);
+    const cities = await qb.getMany();
+
+    return buildConnection({
+      entities: cities,
+
+      limit,
+
+      mapNode: mapToOutput,
+
+      getCursorValue: (city) => {
+        switch (sortBy) {
+          case 'city':
+            return city.city;
+
+          case 'createdAt':
+            return city.createdAt;
+
+          default:
+            return city.createdAt;
+        }
+      },
+
+      encodeCursor: (payload) => this.cursorEncoder.encode(payload),
+    }) as CitiesConnection;
   }
 }

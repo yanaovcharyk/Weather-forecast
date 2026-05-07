@@ -1,12 +1,13 @@
 import { Injectable } from '@nestjs/common';
+
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, SelectQueryBuilder } from 'typeorm';
+
+import {
+  Repository,
+  SelectQueryBuilder,
+} from 'typeorm';
 
 import { CityEntity } from '../entities/city.entity';
-import {
-  SortableCityField,
-  SortOrder,
-} from '../dto/cities-sorting.input';
 
 @Injectable()
 export class CitiesQueryService {
@@ -15,28 +16,25 @@ export class CitiesQueryService {
     private readonly cityRepository: Repository<CityEntity>,
   ) {}
 
-  buildBaseQuery(userId: string): SelectQueryBuilder<CityEntity> {
+  buildBaseQuery(
+    userId: string,
+  ): SelectQueryBuilder<CityEntity> {
     return this.cityRepository
       .createQueryBuilder('city')
-      .where('city.userId = :userId', { userId });
-  }
-
-  applySorting(
-    citiesQueryBuilder: SelectQueryBuilder<CityEntity>,
-    sortBy: SortableCityField,
-    sortOrder: SortOrder,
-  ) {
-    citiesQueryBuilder.orderBy(`city.${sortBy}`, sortOrder)
-      .addOrderBy('city.id', sortOrder);
-
-    return citiesQueryBuilder;
+      .where(
+        'city.userId = :userId',
+        {
+          userId,
+        },
+      );
   }
 
   applyLimit(
-    citiesQueryBuilder: SelectQueryBuilder<CityEntity>,
+    qb: SelectQueryBuilder<CityEntity>,
     limit: number,
   ) {
-    citiesQueryBuilder.limit(limit);
-    return citiesQueryBuilder;
+    qb.limit(limit);
+
+    return qb;
   }
 }

@@ -17,7 +17,7 @@ import { WeatherOutput } from '../../weather/dto';
 import { AccessJwtGuard } from '../../auth/guards';
 import { CitiesConnection } from '../dto/cities-connection.output';
 import { CitiesPaginationInput } from '../dto/cities-pagination.input';
-import { CitiesSortingInput, SortableCityField, SortOrder } from '../dto/cities-sorting.input';
+import { CitiesSortingInput } from '../dto/cities-sorting.input';
 
 @Resolver(() => CityOutput)
 export class CitiesResolver {
@@ -74,15 +74,10 @@ export class CitiesResolver {
   ) {
     const userId = ctx.req.user.userId;
 
-    const normalizedSorting: CitiesSortingInput = {
-      sortBy: sorting?.sortBy ?? SortableCityField.CREATED_AT,
-      sortOrder: sorting?.sortOrder ?? SortOrder.DESC,
-    };
-
     return this.citiesService.getCitiesWithCursorPaginationAndSorting(
       userId,
       pagination,
-      normalizedSorting,
+      sorting,
     );
   }
 
