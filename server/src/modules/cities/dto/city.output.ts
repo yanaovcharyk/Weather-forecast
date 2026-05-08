@@ -15,6 +15,9 @@ export class CityOutput {
   @Field(() => Float)
   lon!: number;
 
+  @Field()
+  isPinned!: boolean;
+
   @Field(() => WeatherOutput, { nullable: true })
   weather?: WeatherOutput | null;
 }

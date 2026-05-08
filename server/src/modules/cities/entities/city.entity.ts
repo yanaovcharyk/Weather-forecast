@@ -25,4 +25,8 @@ export class CityEntity extends BaseEntity {
   @Column('uuid')
   @Field(() => ID)
   userId!: string;
+
+  @Column({ default: false })
+  @Field()
+  isPinned!: boolean;
 }

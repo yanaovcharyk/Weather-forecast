@@ -17,9 +17,14 @@ export interface CitiesQuery {
   cities: City[];
 }
 
-export interface AddCityMutation {
-  addCity: City;
-}
+export type AddCityMutation = {
+  addCity: {
+    ok: boolean;
+    code?: string | null;
+    city?: City | null;
+    existingCity?: City | null;
+  };
+};
 
 export interface GraphQLFormattedError {
   message: string;

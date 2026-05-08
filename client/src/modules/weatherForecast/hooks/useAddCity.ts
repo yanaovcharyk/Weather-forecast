@@ -8,18 +8,28 @@ export const useAddCity = () => {
 
   const addCity = async (lat: number, lon: number, city: string) => {
     try {
-      await mutate({
+      const { data } = await mutate({
         variables: { input: { lat, lon, city } },
         refetchQueries: ['CitiesPaginated'],
       });
 
-      return { ok: true as const };
+      return {
+        ok: data?.addCity.ok ?? false,
+        code: data?.addCity.code,
+        city: data?.addCity.city ?? null,
+        existingCity: data?.addCity.existingCity ?? null,
+      };
     } catch (error) {
       const gqlErrors = error as readonly GraphQLError[];
 
       const code = gqlErrors[0]?.extensions?.code as string | undefined;
 
-      return { ok: false as const, code };
+      return {
+        ok: false as const,
+        code,
+        city: null,
+        existingCity: null,
+      };
     }
   };
 

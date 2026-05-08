@@ -1,18 +1,27 @@
 import { gql } from '@apollo/client';
 
 export const CITIES_QUERY = gql`
-  query Cities {
-    cities {
-      id
-      city
-      lat
-      lon
-
-      weather {
-        temperature
-        description
-        next3DaysTemperature
-        next3DaysDescription
+  query CitiesPaginated($query: CitiesQueryInput!) {
+    citiesPaginated(query: $query) {
+      edges {
+        node {
+          id
+          city
+          lat
+          lon
+          isPinned
+          weather {
+            temperature
+            description
+            next3DaysTemperature
+            next3DaysDescription
+          }
+        }
+        cursor
+      }
+      pageInfo {
+        hasNextPage
+        endCursor
       }
     }
   }
@@ -21,16 +30,33 @@ export const CITIES_QUERY = gql`
 export const ADD_CITY_MUTATION = gql`
   mutation AddCity($input: AddCityInput!) {
     addCity(input: $input) {
-      id
-      city
-      lat
-      lon
-
-      weather {
-        temperature
-        description
-        next3DaysTemperature
-        next3DaysDescription
+      ok
+      code
+      city {
+        id
+        city
+        lat
+        lon
+        isPinned
+        weather {
+          temperature
+          description
+          next3DaysTemperature
+          next3DaysDescription
+        }
+      }
+      existingCity {
+        id
+        city
+        lat
+        lon
+        isPinned
+        weather {
+          temperature
+          description
+          next3DaysTemperature
+          next3DaysDescription
+        }
       }
     }
   }
@@ -67,17 +93,15 @@ export const GET_WEATHER = gql`
 `;
 
 export const CITIES_PAGINATED = gql`
-  query CitiesPaginated(
-    $pagination: CitiesPaginationInput!
-    $sorting: CitiesSortingInput
-  ) {
-    citiesPaginated(pagination: $pagination, sorting: $sorting) {
+  query CitiesPaginated($query: CitiesQueryInput!) {
+    citiesPaginated(query: $query) {
       edges {
         node {
           id
           city
           lat
           lon
+          isPinned
           weather {
             temperature
             description
@@ -98,5 +122,14 @@ export const CITIES_PAGINATED = gql`
 export const REMOVE_ALL_CITIES = gql`
   mutation RemoveAllCities {
     removeAllCities
+  }
+`;
+
+export const TOGGLE_CITY_PIN = gql`
+  mutation ToggleCityPin($id: Int!) {
+    toggleCityPin(id: $id) {
+      id
+      isPinned
+    }
   }
 `;

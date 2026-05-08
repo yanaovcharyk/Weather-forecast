@@ -3,6 +3,7 @@ export interface ICityOutput {
   city: string;
   lat: number;
   lon: number;
+  isPinned: boolean;
 
   weather?: {
     city: string;

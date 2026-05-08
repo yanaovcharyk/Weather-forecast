@@ -7,5 +7,6 @@ export function mapToOutput(city: CityEntity): ICityOutput {
     city: city.city,
     lat: city.lat,
     lon: city.lon,
+    isPinned: city.isPinned,
   };
 }
