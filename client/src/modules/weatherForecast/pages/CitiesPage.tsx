@@ -116,13 +116,15 @@ export const CitiesPage = () => {
         <AddCityForm onSubmit={handleAddCity} />
       </FormCard>
 
-      <FormCard>
-        <CitiesControls
-          sorting={sorting}
-          setSorting={setSorting}
-          onDeleteAll={handleDeleteAll}
-        />
-      </FormCard>
+      {cities.length >= 2 && (
+        <FormCard>
+          <CitiesControls
+            sorting={sorting}
+            setSorting={setSorting}
+            onDeleteAll={handleDeleteAll}
+          />
+        </FormCard>
+      )}
     </>
   );
 

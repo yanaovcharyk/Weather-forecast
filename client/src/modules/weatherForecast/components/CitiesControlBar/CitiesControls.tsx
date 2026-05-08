@@ -1,4 +1,4 @@
-import { Row, Col, Select, Button, Modal, App } from 'antd';
+import { Row, Col, Select, Button, Modal } from 'antd';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { useCallback } from 'react';
 import Text from 'antd/es/typography/Text';
@@ -17,27 +17,9 @@ type Props = {
 };
 
 export const CitiesControls = ({ sorting, setSorting, onDeleteAll }: Props) => {
-  const { message } = App.useApp();
-
-  const notifyError = useCallback(
-    (msg: string) => message.error(msg),
-    [message],
-  );
-
-  const notifySuccess = useCallback(
-    (msg: string) => message.success(msg),
-    [message],
-  );
-
   const handleDeleteAll = useCallback(async () => {
-    try {
-      await onDeleteAll();
-
-      notifySuccess('All cities removed successfully');
-    } catch {
-      notifyError('Failed to delete cities');
-    }
-  }, [onDeleteAll, notifyError, notifySuccess]);
+    await onDeleteAll();
+  }, [onDeleteAll]);
 
   const showDeleteAllModal = () => {
     Modal.confirm({
