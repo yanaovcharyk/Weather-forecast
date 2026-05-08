@@ -1,4 +1,4 @@
-import { Spin, Row, Col, Space, App, Button } from 'antd';
+import { Spin, Row, Col, App, Button, Flex } from 'antd';
 import { useCallback, useState } from 'react';
 
 import { useRemoveCity, useAddCity } from '../hooks';
@@ -42,6 +42,7 @@ export const CitiesPage = () => {
     (msg: string) => message.error(msg),
     [message],
   );
+
   const notifySuccess = useCallback(
     (msg: string) => message.success(msg),
     [message],
@@ -128,11 +129,13 @@ export const CitiesPage = () => {
     </>
   );
 
+  const isEmpty = cities.length === 0;
+
   return (
     <PageLayout header={<Header />}>
       <Row justify="center">
         <Col span={24}>
-          <Space orientation="vertical" style={{ width: '100%' }}>
+          <Flex vertical style={{ width: '100%' }} gap={16}>
             {existingCity ? (
               <>
                 <FormCard>
@@ -154,8 +157,15 @@ export const CitiesPage = () => {
               <>
                 {renderAddCitySection}
 
-                {cities.length === 0 ? (
-                  <EmptyState description="No cities" />
+                {isEmpty ? (
+                  <Flex
+                    flex={1}
+                    justify="center"
+                    align="center"
+                    style={{ minHeight: '60vh' }}
+                  >
+                    <EmptyState description="No cities" />
+                  </Flex>
                 ) : (
                   <CitiesList
                     key={`${sorting.sortBy}-${sorting.sortOrder}`}
@@ -169,7 +179,7 @@ export const CitiesPage = () => {
                 )}
               </>
             )}
-          </Space>
+          </Flex>
         </Col>
       </Row>
 
