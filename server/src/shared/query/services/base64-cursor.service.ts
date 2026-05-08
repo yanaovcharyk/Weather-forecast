@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class Base64CursorEncoder {
+export class Base64CursorService {
   encode(payload: unknown): string {
     return Buffer.from(
       JSON.stringify(payload),

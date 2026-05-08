@@ -1,6 +1,7 @@
 import { Field, InputType, registerEnumType } from '@nestjs/graphql';
 import { IsEnum, IsOptional } from 'class-validator';
-import { SortOrder } from '../../sorting/types';
+import { SortOrder } from '../../../shared/query/enums/sort-order.enum';
+import { CitySortField } from '../services/cities.service';
 
 registerEnumType(SortOrder, {
   name: 'SortOrder',
@@ -10,7 +11,7 @@ registerEnumType(SortOrder, {
 export class CitiesSortingInput {
   @Field(() => String, { nullable: true })
   @IsOptional()
-  sortBy?: string;
+  sortBy?: CitySortField;
 
   @Field(() => SortOrder, { nullable: true })
   @IsOptional()

@@ -6,16 +6,13 @@ import { CitiesResolver } from './resolvers';
 import { CitiesService } from './services';
 import { WeatherModule } from '../weather/weather.module';
 import { AuthModule } from '../auth';
-import { CitiesQueryService } from './services/cities-query.service';
-import { SortingModule } from '../sorting/sorting.module';
-import { PaginationModule } from '../pagination/pagination.module';
+import { QueryModule } from '../../shared/query/query.module';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([CityEntity]), WeatherModule, AuthModule, PaginationModule, SortingModule],
+  imports: [TypeOrmModule.forFeature([CityEntity]), WeatherModule, AuthModule, QueryModule],
   providers: [
     CitiesResolver,
     CitiesService,
-    CitiesQueryService,
   ],
 })
 export class CitiesModule {}

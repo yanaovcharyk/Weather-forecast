@@ -1,26 +1,25 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GraphQLError } from 'graphql/error';
-
 import { WeatherService } from '../../weather/services/weather.service';
 import { CityEntity } from '../entities/city.entity';
 import { ICityOutput } from '../interfaces/city.interface';
 import { AddCityInput } from '../dto/add-city.input';
-import { CitiesPaginationInput } from '../dto/cities-pagination.input';
 import { CitiesConnection } from '../dto/cities-connection.output';
-
+import { CitiesQueryInput } from '../dto/cities-query.input';
 import { mapToOutput } from '../mappers/city.mapper';
-import { CitiesQueryService } from './cities-query.service';
-import { CursorPaginationService } from '../../pagination/services/cursor-pagination.service';
-import { Base64CursorEncoder } from '../../pagination/cursor/base64-cursor.encoder';
-import { SortingService } from '../../sorting/service/sorting.service';
-import { SortFields } from '../types';
-import { CITY_SORT_HANDLERS } from '../handlers/city-sort-handlers';
-import { CITY_CURSOR_HANDLERS } from '../handlers/city-cursor-handlers';
-import { buildConnection } from '../../pagination/builders/build-connection';
-import { SortOrder } from '../../sorting/types';
-import { CitiesSortingInput } from '../dto/cities-sorting.input';
+import { Base64CursorService } from '../../../shared/query/services/base64-cursor.service';
+
+import {
+  CITY_CURSOR_HANDLERS,
+  CITY_CURSOR_VALUES,
+  CITY_SORT_HANDLERS,
+} from '../city-query.config';
+
+import { buildConnection } from '../../../shared/query/builders/build-connection';
+import { SortOrder } from '../../../shared/query/enums/sort-order.enum';
+
+export type CitySortField = 'city' | 'createdAt' | 'isPinned';
 
 @Injectable()
 export class CitiesService {
@@ -28,33 +27,33 @@ export class CitiesService {
     @InjectRepository(CityEntity)
     private readonly cityRepository: Repository<CityEntity>,
     private readonly weatherService: WeatherService,
-    private readonly citiesQueryService: CitiesQueryService,
-    private readonly sortingService: SortingService,
-    private readonly paginationService: CursorPaginationService,
-    private readonly cursorEncoder: Base64CursorEncoder,
+    private readonly cursorService: Base64CursorService,
   ) {}
 
   async getCities(userId: string): Promise<ICityOutput[]> {
     const cities = await this.cityRepository.find({
       where: { userId },
-      order: { createdAt: 'DESC' },
+
+      order: {
+        createdAt: 'DESC',
+      },
     });
 
     return cities.map(mapToOutput);
   }
 
-  async addCity(userId: string, input: AddCityInput): Promise<ICityOutput> {
+  async addCity(userId: string, input: AddCityInput) {
     const exists = await this.cityRepository.findOne({
-      where: {
-        userId,
-        city: input.city,
-      },
+      where: { userId, city: input.city },
     });
 
     if (exists) {
-      throw new GraphQLError('City already exists', {
-        extensions: { code: 'CITY_EXISTS' },
-      });
+      return {
+        ok: false,
+        code: 'CITY_EXISTS',
+        existingCity: mapToOutput(exists),
+        city: null,
+      };
     }
 
     const city = this.cityRepository.create({
@@ -64,17 +63,14 @@ export class CitiesService {
       lon: input.lon,
     });
 
-    try {
-      const saved = await this.cityRepository.save(city);
-      return mapToOutput(saved);
-    } catch (error: any) {
-      if (error.code === '23505') {
-        throw new GraphQLError('City already exists', {
-          extensions: { code: 'CITY_EXISTS' },
-        });
-      }
-      throw error;
-    }
+    const saved = await this.cityRepository.save(city);
+
+    return {
+      ok: true,
+      code: null,
+      city: mapToOutput(saved),
+      existingCity: null,
+    };
   }
 
   async removeCity(userId: string, id: number): Promise<ICityOutput> {
@@ -94,7 +90,9 @@ export class CitiesService {
   }
 
   async removeAllCities(userId: string): Promise<void> {
-    await this.cityRepository.delete({ userId });
+    await this.cityRepository.delete({
+      userId,
+    });
   }
 
   async getCityById(userId: string, id: number): Promise<ICityOutput> {
@@ -113,59 +111,45 @@ export class CitiesService {
     return this.weatherService.getWeatherPreview({ lat, lon });
   }
 
-  async getCitiesWithCursorPaginationAndSorting(
+  async getCitiesPaginated(
     userId: string,
-    pagination: CitiesPaginationInput,
-    sorting?: CitiesSortingInput,
+    query: CitiesQueryInput,
   ): Promise<CitiesConnection> {
-    const { limit, cursor } = pagination;
+    const qb = this.cityRepository
+      .createQueryBuilder('city')
+      .where('city.userId = :userId', { userId });
 
-    const sortBy = sorting?.sortBy ?? SortFields.CREATED_AT;
+    const sortBy: CitySortField = query.sorting?.sortBy ?? 'createdAt';
+    const sortOrder = query.sorting?.sortOrder ?? SortOrder.DESC;
 
-    const sortOrder = sorting?.sortOrder ?? SortOrder.DESC;
+    const sortHandler = CITY_SORT_HANDLERS[sortBy];
+    sortHandler(qb, sortOrder);
 
-    const qb = this.citiesQueryService.buildBaseQuery(userId);
+    const limit = query.pagination.limit;
 
-    this.sortingService.applySorting<CityEntity>({
-      qb,
-      handlers: CITY_SORT_HANDLERS,
-      sortBy,
-      sortOrder,
-    });
+    if (query.pagination.cursor) {
+      const decoded = this.cursorService.decode(query.pagination.cursor) as {
+        value: unknown;
+        id: number;
+      };
 
-    this.paginationService.applyPagination({
-      qb,
-      cursor,
-      sortBy,
-      sortOrder,
-      handlers: CITY_CURSOR_HANDLERS,
-    });
+      const cursorHandler = CITY_CURSOR_HANDLERS[sortBy];
+      cursorHandler(qb, decoded.value, decoded.id, sortOrder);
+    }
 
-    this.citiesQueryService.applyLimit(qb, limit + 1);
+    qb.take(limit + 1);
 
     const cities = await qb.getMany();
 
+    const getCursorValue = CITY_CURSOR_VALUES[sortBy];
+
     return buildConnection({
       entities: cities,
-
-      limit,
-
+      first: limit,
       mapNode: mapToOutput,
-
-      getCursorValue: (city) => {
-        switch (sortBy) {
-          case 'city':
-            return city.city;
-
-          case 'createdAt':
-            return city.createdAt;
-
-          default:
-            return city.createdAt;
-        }
-      },
-
-      encodeCursor: (payload) => this.cursorEncoder.encode(payload),
-    }) as CitiesConnection;
+      getCursorValue,
+      encodeCursor: (payload: { value: unknown; id: number }) =>
+        this.cursorService.encode(payload),
+    });
   }
 }

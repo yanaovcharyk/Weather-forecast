@@ -40,14 +40,3 @@ export type CitiesPaginatedResponse = {
     pageInfo: PageInfo;
   };
 };
-
-export type CitiesPaginatedVariables = {
-  pagination: {
-    limit: number;
-    cursor?: string;
-  };
-  sorting?: {
-    sortBy?: 'city' | 'createdAt';
-    sortOrder?: 'ASC' | 'DESC';
-  };
-};
