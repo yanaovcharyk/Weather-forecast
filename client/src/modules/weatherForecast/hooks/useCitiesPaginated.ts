@@ -1,6 +1,7 @@
-import { useQuery } from '@apollo/client/react';
+import { useCallback } from 'react';
 import { CITIES_PAGINATED } from '../api/weatherApi';
 import type { City } from '../../common/types';
+import { useQuery } from '@apollo/client/react';
 
 type CitiesQuery = {
   citiesPaginated: {
@@ -12,42 +13,56 @@ type CitiesQuery = {
   };
 };
 
-export const useCitiesPaginated = (sorting: {
+type Sorting = {
   sortBy: 'city' | 'createdAt';
   sortOrder: 'ASC' | 'DESC';
-}) => {
-  const { data, loading, fetchMore, refetch } = useQuery<CitiesQuery>(
-    CITIES_PAGINATED,
-    {
-      variables: {
-        pagination: { limit: 10 },
-        sorting,
-      },
-      fetchPolicy: 'cache-and-network',
-      notifyOnNetworkStatusChange: true,
-    },
-  );
+};
 
-  const loadMore = async () => {
+export const useCitiesPaginated = (sorting: Sorting) => {
+  const { data, loading, fetchMore } = useQuery<CitiesQuery>(CITIES_PAGINATED, {
+    variables: {
+      query: {
+        pagination: { limit: 10, cursor: null },
+        sorting,
+        filters: [],
+      },
+    },
+    fetchPolicy: 'network-only',
+    notifyOnNetworkStatusChange: true,
+  });
+
+  const loadMore = useCallback(() => {
     const pageInfo = data?.citiesPaginated?.pageInfo;
     if (!pageInfo?.hasNextPage) return;
 
     return fetchMore({
       variables: {
-        pagination: {
-          limit: 10,
-          cursor: pageInfo.endCursor,
+        query: {
+          pagination: { limit: 10, cursor: pageInfo.endCursor },
+          sorting,
+          filters: [],
         },
-        sorting,
+      },
+      updateQuery: (prev, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+
+        return {
+          citiesPaginated: {
+            ...fetchMoreResult.citiesPaginated,
+            edges: [
+              ...prev.citiesPaginated.edges,
+              ...fetchMoreResult.citiesPaginated.edges,
+            ],
+          },
+        };
       },
     });
-  };
+  }, [data, fetchMore, sorting]);
 
   return {
-    cities: data?.citiesPaginated?.edges?.map((e) => e.node) ?? [],
+    cities: data?.citiesPaginated?.edges.map((e) => e.node) ?? [],
     loading,
     loadMore,
     hasNext: data?.citiesPaginated?.pageInfo?.hasNextPage ?? false,
-    refetch,
   };
 };

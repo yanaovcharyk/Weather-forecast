@@ -38,24 +38,8 @@ export const createApolloClient = ({
         Query: {
           fields: {
             citiesPaginated: {
-              keyArgs: ['sorting'],
-
-              merge(existing, incoming, { readField }) {
-                const merged = existing?.edges ? [...existing.edges] : [];
-
-                for (const edge of incoming.edges) {
-                  const id = readField('id', edge.node);
-
-                  if (!merged.some((e) => readField('id', e.node) === id)) {
-                    merged.push(edge);
-                  }
-                }
-
-                return {
-                  ...incoming,
-                  edges: merged,
-                };
-              },
+              keyArgs: ['query'],
+              merge: false,
             },
           },
         },
