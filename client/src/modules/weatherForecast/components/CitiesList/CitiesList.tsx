@@ -21,21 +21,31 @@ export const CitiesList = React.memo(function CitiesList({
   hasNext,
 }: Props) {
   const loaderRef = useRef<HTMLDivElement | null>(null);
+  const observerRef = useRef<IntersectionObserver | null>(null);
 
   useEffect(() => {
     if (!hasNext) return;
 
-    const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        loadMore?.();
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+
+    observerRef.current = new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      if (entry.isIntersecting) {
+        loadMore();
       }
     });
 
     const el = loaderRef.current;
-    if (el) observer.observe(el);
+    if (el) {
+      observerRef.current.observe(el);
+    }
 
-    return () => observer.disconnect();
-  }, [hasNext, loadMore]);
+    return () => {
+      observerRef.current?.disconnect();
+    };
+  }, [hasNext, loadMore, cities.length]);
 
   return (
     <>
@@ -53,7 +63,7 @@ export const CitiesList = React.memo(function CitiesList({
         ))}
       </Row>
 
-      <div ref={loaderRef} style={{ height: 20 }} />
+      {hasNext && <div ref={loaderRef} style={{ height: 20 }} />}
     </>
   );
 });
