@@ -1,5 +1,5 @@
 import { Spin, Space, Alert, Button } from 'antd';
-import { PageLayout, Header, FormCard } from '@/common/components';
+import { PageLayout, Header, AppCard } from '@/common/components';
 
 import { useCityWeather } from '../hooks/useCityWeather';
 import { CurrentWeatherCard } from '../components/CurrentWeatherCard/CurrentWeatherCard';
@@ -34,11 +34,11 @@ export const CityDetailsPage = () => {
   return (
     <PageLayout header={<Header />}>
       <Space orientation="vertical" size="large" style={{ width: '100%' }}>
-        <FormCard>
+        <AppCard>
           <Button type="default" onClick={handleBack}>
             ← Back to all cities
           </Button>
-        </FormCard>
+        </AppCard>
         <CurrentWeatherCard city={city} weather={weather} />
         <HourlyForecast hourly={weather.hourly} />
         <DailyForecast daily={weather.daily} />

@@ -1,7 +1,7 @@
 import { Card, type CardProps } from 'antd';
-import styles from './FormCard.module.scss';
+import styles from './AppCard.module.scss';
 
-export const FormCard = ({ children, ...props }: CardProps) => {
+export const AppCard = ({ children, ...props }: CardProps) => {
   return (
     <Card
       {...props}

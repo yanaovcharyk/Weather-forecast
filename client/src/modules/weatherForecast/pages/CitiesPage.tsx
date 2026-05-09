@@ -6,7 +6,7 @@ import { useCitiesPaginated } from '../hooks/useCitiesPaginated';
 import { useRemoveAllCities } from '../hooks/useRemoveAllCities';
 
 import { AddCityForm, CitiesList } from '../components';
-import { EmptyState, FormCard, PageLayout, Header } from '@/common/components';
+import { EmptyState, AppCard, PageLayout, Header } from '@/common/components';
 import { ScrollToTopButton } from '../../common/components/ScrollToTopButton';
 
 import { handleResult } from '@/common/utils';
@@ -37,6 +37,7 @@ export const CitiesPage = () => {
 
   const [removingId, setRemovingId] = useState<number | null>(null);
   const [existingCity, setExistingCity] = useState<City | null>(null);
+  const [adding, setAdding] = useState(false);
 
   const notifyError = useCallback(
     (msg: string) => message.error(msg),
@@ -50,24 +51,32 @@ export const CitiesPage = () => {
 
   const handleAddCity = useCallback(
     async (lat: number, lon: number, city: string) => {
-      const result = await addCity(lat, lon, city);
+      if (adding) return;
 
-      if (!result.ok && result.code === 'CITY_EXISTS') {
-        setExistingCity(result.existingCity);
-        message.info(`City ${city} already exists`);
-        return;
+      setAdding(true);
+
+      try {
+        const result = await addCity(lat, lon, city);
+
+        if (!result.ok && result.code === 'CITY_EXISTS') {
+          setExistingCity(result.existingCity);
+          message.info(`City ${city} already exists`);
+          return;
+        }
+
+        handleResult(
+          { ok: result.ok, code: result.code ?? undefined },
+          {
+            successMessage: `City ${city} added successfully`,
+            notifyError,
+            notifySuccess,
+          },
+        );
+      } finally {
+        setAdding(false);
       }
-
-      handleResult(
-        { ok: result.ok, code: result.code ?? undefined },
-        {
-          successMessage: `City ${city} added successfully`,
-          notifyError,
-          notifySuccess,
-        },
-      );
     },
-    [message, addCity, notifyError, notifySuccess],
+    [adding, addCity, message, notifyError, notifySuccess],
   );
 
   const handleRemove = useCallback(
@@ -76,6 +85,11 @@ export const CitiesPage = () => {
 
       try {
         await removeCity(id);
+
+        if (existingCity?.id === id) {
+          setExistingCity(null);
+        }
+
         handleResult(
           { ok: true },
           {
@@ -88,7 +102,7 @@ export const CitiesPage = () => {
         setRemovingId(null);
       }
     },
-    [removeCity, notifyError, notifySuccess],
+    [removeCity, existingCity, notifyError, notifySuccess],
   );
 
   const handleOpenCity = useCallback(
@@ -111,24 +125,6 @@ export const CitiesPage = () => {
     return <Spin fullscreen />;
   }
 
-  const renderAddCitySection = (
-    <>
-      <FormCard>
-        <AddCityForm onSubmit={handleAddCity} />
-      </FormCard>
-
-      {cities.length >= 2 && (
-        <FormCard>
-          <CitiesControls
-            sorting={sorting}
-            setSorting={setSorting}
-            onDeleteAll={handleDeleteAll}
-          />
-        </FormCard>
-      )}
-    </>
-  );
-
   const isEmpty = cities.length === 0;
 
   return (
@@ -138,11 +134,11 @@ export const CitiesPage = () => {
           <Flex vertical style={{ width: '100%' }} gap={16}>
             {existingCity ? (
               <>
-                <FormCard>
+                <AppCard>
                   <Button type="default" onClick={handleBack}>
                     ← Back to all cities
                   </Button>
-                </FormCard>
+                </AppCard>
 
                 <CitiesList
                   cities={[existingCity]}
@@ -155,7 +151,17 @@ export const CitiesPage = () => {
               </>
             ) : (
               <>
-                {renderAddCitySection}
+                <AddCityForm onSubmit={handleAddCity} disabled={adding} />
+
+                {cities.length >= 2 && (
+                  <AppCard>
+                    <CitiesControls
+                      sorting={sorting}
+                      setSorting={setSorting}
+                      onDeleteAll={handleDeleteAll}
+                    />
+                  </AppCard>
+                )}
 
                 {isEmpty ? (
                   <Flex

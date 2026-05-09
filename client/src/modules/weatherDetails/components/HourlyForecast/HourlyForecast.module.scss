@@ -5,6 +5,10 @@
 .scrollRow {
   overflow-x: auto;
   padding-bottom: 8px;
+  scrollbar-width: none; 
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 
 .hourCard {

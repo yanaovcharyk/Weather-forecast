@@ -26,6 +26,7 @@ export const CityCard = React.memo(function CityCard({
 }: CityCardProps) {
   const background = getWeatherBackground(weather?.description);
   const { loaded } = useSmartBackground(background);
+  const isDisabled = loading;
 
   const days = getNextDays(4);
 
@@ -37,21 +38,24 @@ export const CityCard = React.memo(function CityCard({
 
   return (
     <BackgroundCard
-      className={styles.card}
+      className={`${styles.card} ${isDisabled ? styles.cardLoading : ''}`}
+      onClick={isDisabled ? undefined : onClick}
       headerLeft={<AppTitle level={5}>{city}</AppTitle>}
       headerRight={
         <Button
           type="text"
-          loading={loading}
+          disabled={isDisabled}
           onClick={(e) => {
             e.stopPropagation();
+            if (isDisabled) {
+              return;
+            }
             onRemove();
           }}
           icon={<CloseOutlined />}
         />
       }
       backgroundImage={background}
-      onClick={onClick}
     >
       {weather ? (
         <Flex vertical gap={4}>
