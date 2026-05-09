@@ -1,5 +1,6 @@
 import { Card, type CardProps } from 'antd';
 import styles from './AppCard.module.scss';
+import classNames from 'classnames';
 
 export const AppCard = ({ children, ...props }: CardProps) => {
   return (
@@ -8,7 +9,7 @@ export const AppCard = ({ children, ...props }: CardProps) => {
       style={{
         ...props.style,
       }}
-      className={styles.card}
+      className={classNames(styles.card, props.className)}
     >
       {children}
     </Card>
