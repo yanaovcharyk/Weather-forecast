@@ -10,6 +10,7 @@ export interface City {
   city: string;
   lat: number;
   lon: number;
+  isPinned: boolean;
   weather?: Weather | null;
 }
 

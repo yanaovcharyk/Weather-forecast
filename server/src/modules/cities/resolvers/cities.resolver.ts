@@ -32,7 +32,8 @@ export class CitiesResolver {
 
   @UseGuards(AccessJwtGuard)
   @Mutation(() => AddCityResult)
-  async addCity(@Context() ctx: GQLContext,
+  async addCity(
+    @Context() ctx: GQLContext,
     @Args('input')
     input: AddCityInput,
   ) {
@@ -42,7 +43,9 @@ export class CitiesResolver {
 
   @UseGuards(AccessJwtGuard)
   @Mutation(() => CityOutput)
-  async removeCity(@Context() ctx: GQLContext, @Args('id', { type: () => Int, })
+  async removeCity(
+    @Context() ctx: GQLContext,
+    @Args('id', { type: () => Int })
     id: number,
   ): Promise<ICityOutput> {
     const userId = ctx.req.user.userId;
@@ -77,7 +80,7 @@ export class CitiesResolver {
   async citiesPaginated(
     @Context() ctx: GQLContext,
     @Args('query', { type: () => CitiesQueryInput })
-    query: CitiesQueryInput
+    query: CitiesQueryInput,
   ): Promise<CitiesConnection> {
     const userId = ctx.req.user.userId;
     return this.citiesService.getCitiesPaginated(userId, query);
@@ -89,5 +92,17 @@ export class CitiesResolver {
     const userId = ctx.req.user.userId;
     await this.citiesService.removeAllCities(userId);
     return true;
+  }
+
+  @UseGuards(AccessJwtGuard)
+  @Mutation(() => CityOutput)
+  async togglePinnedCity(
+    @Context() ctx: GQLContext,
+    @Args('id', { type: () => Int })
+    id: number,
+  ): Promise<ICityOutput> {
+    const userId = ctx.req.user.userId;
+
+    return this.citiesService.togglePinned(userId, id);
   }
 }

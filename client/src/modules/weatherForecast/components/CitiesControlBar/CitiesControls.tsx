@@ -1,4 +1,4 @@
-import { Row, Col, Select, Button, Modal } from 'antd';
+import { Row, Col, Select, Button, Modal, Checkbox } from 'antd';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
 import { useCallback } from 'react';
 import Text from 'antd/es/typography/Text';
@@ -14,9 +14,17 @@ type Props = {
   sorting: SortingState;
   setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
   onDeleteAll: () => Promise<void>;
+  showPinnedOnly: boolean;
+  setShowPinnedOnly: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export const CitiesControls = ({ sorting, setSorting, onDeleteAll }: Props) => {
+export const CitiesControls = ({
+  sorting,
+  setSorting,
+  onDeleteAll,
+  showPinnedOnly,
+  setShowPinnedOnly,
+}: Props) => {
   const handleDeleteAll = useCallback(async () => {
     await onDeleteAll();
   }, [onDeleteAll]);
@@ -35,6 +43,15 @@ export const CitiesControls = ({ sorting, setSorting, onDeleteAll }: Props) => {
   return (
     <Row>
       <Col span={16}>
+        <Row>
+          <Checkbox
+            checked={showPinnedOnly}
+            onChange={(e) => setShowPinnedOnly(e.target.checked)}
+            className={styles.pinnedCheckbox}
+          >
+            Pinned only
+          </Checkbox>
+        </Row>
         <Text className={styles.label}>Sort by</Text>
 
         <Row className={styles.controls}>

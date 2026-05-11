@@ -126,8 +126,8 @@ export const REMOVE_ALL_CITIES = gql`
 `;
 
 export const TOGGLE_CITY_PIN = gql`
-  mutation ToggleCityPin($id: Int!) {
-    toggleCityPin(id: $id) {
+  mutation TogglePinnedCity($id: Int!) {
+    togglePinnedCity(id: $id) {
       id
       isPinned
     }

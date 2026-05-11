@@ -1,21 +1,26 @@
 import { Col, Row } from 'antd';
 import React, { useEffect, useRef } from 'react';
+
 import { CityCard } from '../CityCard/CityCard';
+
 import type { City } from '../../../common/types';
 
 type Props = {
   cities: City[];
   removingCityId: number | null;
   onRemove: (id: number, city: string) => void;
+  onTogglePinned: (id: number) => void;
   onCityClick?: (id: number) => void;
   loadMore: () => void;
   hasNext: boolean;
+  loading?: boolean;
 };
 
 export const CitiesList = React.memo(function CitiesList({
   cities,
   removingCityId,
   onRemove,
+  onTogglePinned,
   onCityClick,
   loadMore,
   hasNext,
@@ -32,12 +37,14 @@ export const CitiesList = React.memo(function CitiesList({
 
     observerRef.current = new IntersectionObserver((entries) => {
       const entry = entries[0];
+
       if (entry.isIntersecting) {
         loadMore();
       }
     });
 
     const el = loaderRef.current;
+
     if (el) {
       observerRef.current.observe(el);
     }
@@ -55,6 +62,8 @@ export const CitiesList = React.memo(function CitiesList({
             <CityCard
               city={city.city}
               weather={city.weather}
+              isPinned={city.isPinned}
+              onTogglePinned={() => onTogglePinned(city.id)}
               onRemove={() => onRemove(city.id, city.city)}
               loading={removingCityId === city.id}
               onClick={() => onCityClick?.(city.id)}

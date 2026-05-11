@@ -109,20 +109,38 @@ export class CitiesService {
   }
 
   async getCitiesPaginated(
-    userId: string,
-    query: CitiesQueryInput,
-  ): Promise<CitiesConnection> {
-    const queryBuilder = this.cityRepository
-      .createQueryBuilder('city')
-      .where('city.userId = :userId', { userId });
+  userId: string,
+  query: CitiesQueryInput,
+): Promise<CitiesConnection> {
+  const qb = this.cityRepository
+    .createQueryBuilder('city')
+    .where('city.userId = :userId', { userId });
 
-    const { sortBy, sortOrder } = this.applySorting(queryBuilder, query);
-    this.applyCursor(queryBuilder, query, sortBy, sortOrder);
-    const limit = query.pagination.limit;
-    this.applyPagination(queryBuilder, limit);
-    const cities = await queryBuilder.getMany();
+  if (query.showPinnedOnly) {
+    qb.andWhere('city.isPinned = true');
+  }
+  const { sortBy, sortOrder } = this.applySorting(qb, query);
+  this.applyCursor(qb, query, sortBy, sortOrder);
+  const limit = query.pagination.limit;
+  this.applyPagination(qb, limit);
+  const cities = await qb.getMany();
+  return this.toConnection(cities, limit, sortBy);
+}
 
-    return this.toConnection(cities, limit, sortBy);
+  async togglePinned(userId: string, id: number): Promise<ICityOutput> {
+    const city = await this.cityRepository.findOne({
+      where: { id, userId },
+    });
+
+    if (!city) {
+      throw new NotFoundException('City not found');
+    }
+
+    city.isPinned = !city.isPinned;
+
+    const saved = await this.cityRepository.save(city);
+
+    return mapToOutput(saved);
   }
 
   private applySorting(

@@ -18,13 +18,16 @@ type Sorting = {
   sortOrder: 'ASC' | 'DESC';
 };
 
-export const useCitiesPaginated = (sorting: Sorting) => {
+export const useCitiesPaginated = (
+  sorting: Sorting,
+  showPinnedOnly: boolean,
+) => {
   const { data, loading, fetchMore } = useQuery<CitiesQuery>(CITIES_PAGINATED, {
     variables: {
       query: {
         pagination: { limit: 10, cursor: null },
         sorting,
-        filters: [],
+        showPinnedOnly,
       },
     },
     fetchPolicy: 'network-only',
@@ -40,7 +43,7 @@ export const useCitiesPaginated = (sorting: Sorting) => {
         query: {
           pagination: { limit: 10, cursor: pageInfo.endCursor },
           sorting,
-          filters: [],
+          showPinnedOnly,
         },
       },
       updateQuery: (prev, { fetchMoreResult }) => {

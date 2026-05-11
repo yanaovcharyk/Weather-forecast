@@ -3,7 +3,7 @@ import { CitiesSortingInput } from './cities-sorting.input';
 import { FilterInput } from './filter.input';
 import { CitiesPaginationInput } from './cities-pagination.input';
 import { Type } from 'class-transformer';
-import { IsDefined, IsOptional, ValidateNested } from 'class-validator';
+import { IsBoolean, IsDefined, IsOptional, ValidateNested } from 'class-validator';
 
 @InputType()
 export class CitiesQueryInput {
@@ -24,5 +24,10 @@ export class CitiesQueryInput {
   @Type(() => FilterInput)
   @IsOptional()
   filters?: FilterInput[];
+
+  @Field(() => Boolean, { nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  showPinnedOnly?: boolean;
 }
 

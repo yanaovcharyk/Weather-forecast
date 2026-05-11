@@ -1,17 +1,21 @@
-import { Spin, Row, Col, App, Button, Flex } from 'antd';
+import { Row, Col, App, Button, Flex } from 'antd';
 import { useCallback, useState } from 'react';
 
 import { useRemoveCity, useAddCity } from '../hooks';
 import { useCitiesPaginated } from '../hooks/useCitiesPaginated';
 import { useRemoveAllCities } from '../hooks/useRemoveAllCities';
+import { useTogglePinned } from '../hooks/useTogglePinned';
 
 import { AddCityForm, CitiesList } from '../components';
 import { EmptyState, AppCard, PageLayout, Header } from '@/common/components';
+
 import { ScrollToTopButton } from '../../common/components/ScrollToTopButton';
 
 import { handleResult } from '@/common/utils';
 import { useNavigate } from 'react-router-dom';
+
 import { CitiesControls } from '../components/CitiesControlBar/CitiesControls';
+
 import type { City } from '../../common/types';
 
 type SortingState = {
@@ -25,15 +29,22 @@ export const CitiesPage = () => {
     sortOrder: 'DESC',
   });
 
+  const [showPinnedOnly, setShowPinnedOnly] = useState(false);
+
   const { message } = App.useApp();
   const navigate = useNavigate();
 
-  const { cities, loading, loadMore, hasNext } = useCitiesPaginated(sorting);
+  const { cities, loading, loadMore, hasNext } = useCitiesPaginated(
+    sorting,
+    showPinnedOnly,
+  );
+
   const loadMoreStable = useCallback(() => loadMore(), [loadMore]);
 
   const { addCity } = useAddCity();
   const { removeCity } = useRemoveCity();
   const { removeAllCities } = useRemoveAllCities();
+  const { togglePinned } = useTogglePinned();
 
   const [removingId, setRemovingId] = useState<number | null>(null);
   const [existingCity, setExistingCity] = useState<City | null>(null);
@@ -65,7 +76,10 @@ export const CitiesPage = () => {
         }
 
         handleResult(
-          { ok: result.ok, code: result.code ?? undefined },
+          {
+            ok: result.ok,
+            code: result.code ?? undefined,
+          },
           {
             successMessage: `City ${city} added successfully`,
             notifyError,
@@ -105,6 +119,13 @@ export const CitiesPage = () => {
     [removeCity, existingCity, notifyError, notifySuccess],
   );
 
+  const handleTogglePinned = useCallback(
+    async (id: number) => {
+      await togglePinned(id);
+    },
+    [togglePinned],
+  );
+
   const handleOpenCity = useCallback(
     (id: number) => navigate(`/cities/${id}`),
     [navigate],
@@ -112,6 +133,7 @@ export const CitiesPage = () => {
 
   const handleDeleteAll = useCallback(async () => {
     const result = await removeAllCities();
+
     handleResult(result, {
       successMessage: 'All cities removed successfully',
       notifyError,
@@ -121,11 +143,11 @@ export const CitiesPage = () => {
 
   const handleBack = () => setExistingCity(null);
 
-  if (loading && cities.length === 0) {
-    return <Spin fullscreen />;
-  }
+  const filteredCities = showPinnedOnly
+    ? cities.filter((c) => c.isPinned)
+    : cities;
 
-  const isEmpty = cities.length === 0;
+  const isEmpty = !loading && filteredCities.length === 0;
 
   return (
     <PageLayout header={<Header />}>
@@ -141,12 +163,15 @@ export const CitiesPage = () => {
                 </AppCard>
 
                 <CitiesList
+                  key={`${sorting.sortBy}-${sorting.sortOrder}-${showPinnedOnly}`}
                   cities={[existingCity]}
                   removingCityId={removingId}
                   onRemove={handleRemove}
+                  onTogglePinned={handleTogglePinned}
                   loadMore={() => {}}
                   hasNext={false}
                   onCityClick={handleOpenCity}
+                  loading={loading && cities.length === 0}
                 />
               </>
             ) : (
@@ -159,6 +184,8 @@ export const CitiesPage = () => {
                       sorting={sorting}
                       setSorting={setSorting}
                       onDeleteAll={handleDeleteAll}
+                      showPinnedOnly={showPinnedOnly}
+                      setShowPinnedOnly={setShowPinnedOnly}
                     />
                   </AppCard>
                 )}
@@ -174,13 +201,15 @@ export const CitiesPage = () => {
                   </Flex>
                 ) : (
                   <CitiesList
-                    key={`${sorting.sortBy}-${sorting.sortOrder}`}
-                    cities={cities}
+                    key={`${sorting.sortBy}-${sorting.sortOrder}-${showPinnedOnly}`}
+                    cities={filteredCities}
                     removingCityId={removingId}
                     onRemove={handleRemove}
+                    onTogglePinned={handleTogglePinned}
                     loadMore={loadMoreStable}
-                    hasNext={hasNext}
+                    hasNext={hasNext && !showPinnedOnly}
                     onCityClick={handleOpenCity}
+                    loading={loading && cities.length === 0}
                   />
                 )}
               </>
