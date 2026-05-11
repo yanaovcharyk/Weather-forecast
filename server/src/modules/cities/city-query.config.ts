@@ -1,34 +1,61 @@
-import { createCursorHandler } from '../../shared/query/builders/create-cursor-handler';
-import { createEqualsFilterHandler, createLikeFilterHandler } from '../../shared/query/builders/create-filter-handler';
-import { createSortHandler } from '../../shared/query/builders/create-sort-handler';
-import { FilterOperator } from '../../shared/query/enums/filter-operator.enum';
+import { createCursorHandler } from '../../shared/query/pagination/create-cursor-handler';
+import { createSortHandler } from '../../shared/query/sorting/create-sort-handler';
 import { CityEntity } from './entities';
-import { CitySortField } from './services/cities.service';
+
+export enum CitySortField {
+  CITY = 'city',
+  CREATED_AT = 'createdAt',
+  IS_PINNED = 'isPinned',
+}
+
+export enum CityQueryColumn {
+  CITY = 'city.city',
+  CREATED_AT = 'city.createdAt',
+  IS_PINNED = 'city.isPinned',
+  ID = 'city.id',
+}
 
 export const CITY_SORT_HANDLERS = {
-  city: createSortHandler('city.city', 'city.id'),
-  createdAt: createSortHandler('city.createdAt', 'city.id'),
-  isPinned: createSortHandler('city.isPinned', 'city.id'),
+  [CitySortField.CITY]: createSortHandler(
+    CityQueryColumn.CITY,
+    CityQueryColumn.ID,
+  ),
+
+  [CitySortField.CREATED_AT]: createSortHandler(
+    CityQueryColumn.CREATED_AT,
+    CityQueryColumn.ID,
+  ),
+
+  [CitySortField.IS_PINNED]: createSortHandler(
+    CityQueryColumn.IS_PINNED,
+    CityQueryColumn.ID,
+  ),
 };
 
 export const CITY_CURSOR_HANDLERS = {
-  city: createCursorHandler('city.city', 'city.id'),
-  createdAt: createCursorHandler('city.createdAt', 'city.id'),
-  isPinned: createCursorHandler('city.isPinned', 'city.id'),
+  [CitySortField.CITY]: createCursorHandler(
+    CityQueryColumn.CITY,
+    CityQueryColumn.ID,
+  ),
+
+  [CitySortField.CREATED_AT]: createCursorHandler(
+    CityQueryColumn.CREATED_AT,
+    CityQueryColumn.ID,
+  ),
+
+  [CitySortField.IS_PINNED]: createCursorHandler(
+    CityQueryColumn.IS_PINNED,
+    CityQueryColumn.ID,
+  ),
 };
 
-export const CITY_FILTER_HANDLERS = {
-  city: {
-    [FilterOperator.LIKE]: createLikeFilterHandler('city.city'),
-  },
-  isPinned: {
-    [FilterOperator.EQ]: createEqualsFilterHandler('city.isPinned'),
-  },
-};
+export const CITY_CURSOR_VALUES: Record<
+  CitySortField,
+  (city: CityEntity) => unknown
+> = {
+  [CitySortField.CITY]: (city) => city.city,
 
-export const CITY_CURSOR_VALUES: Record<CitySortField, (city: CityEntity) => unknown> = {
-  city: (city) => city.city,
-  createdAt: (city) => city.createdAt,
-  isPinned: (city) => city.isPinned,
-};
+  [CitySortField.CREATED_AT]: (city) => city.createdAt,
 
+  [CitySortField.IS_PINNED]: (city) => city.isPinned,
+};

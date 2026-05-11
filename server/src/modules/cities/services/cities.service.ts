@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, SelectQueryBuilder } from 'typeorm';
 import { WeatherService } from '../../weather/services/weather.service';
 import { CityEntity } from '../entities/city.entity';
 import { ICityOutput } from '../interfaces/city.interface';
@@ -8,18 +8,17 @@ import { AddCityInput } from '../dto/add-city.input';
 import { CitiesConnection } from '../dto/cities-connection.output';
 import { CitiesQueryInput } from '../dto/cities-query.input';
 import { mapToOutput } from '../mappers/city.mapper';
-import { Base64CursorService } from '../../../shared/query/services/base64-cursor.service';
 
 import {
   CITY_CURSOR_HANDLERS,
   CITY_CURSOR_VALUES,
   CITY_SORT_HANDLERS,
+  CitySortField,
 } from '../city-query.config';
 
-import { buildConnection } from '../../../shared/query/builders/build-connection';
-import { SortOrder } from '../../../shared/query/enums/sort-order.enum';
-
-export type CitySortField = 'city' | 'createdAt' | 'isPinned';
+import { SortOrder } from '../../../shared/query/sorting/sort-order.enum';
+import { decodeCursor } from '../../../shared/query/pagination/cursor/decode-cursor';
+import { buildConnection } from '../../../shared/query/pagination/build-connection';
 
 @Injectable()
 export class CitiesService {
@@ -27,19 +26,33 @@ export class CitiesService {
     @InjectRepository(CityEntity)
     private readonly cityRepository: Repository<CityEntity>,
     private readonly weatherService: WeatherService,
-    private readonly cursorService: Base64CursorService,
   ) {}
 
   async getCities(userId: string): Promise<ICityOutput[]> {
     const cities = await this.cityRepository.find({
       where: { userId },
-
       order: {
         createdAt: 'DESC',
       },
     });
 
     return cities.map(mapToOutput);
+  }
+
+  async getCityById(userId: string, id: number): Promise<ICityOutput> {
+    const city = await this.cityRepository.findOne({
+      where: { id, userId },
+    });
+
+    if (!city) {
+      throw new NotFoundException('City not found');
+    }
+
+    return mapToOutput(city);
+  }
+
+  async getWeatherForCity(lat: number, lon: number) {
+    return this.weatherService.getWeatherPreview({ lat, lon });
   }
 
   async addCity(userId: string, input: AddCityInput) {
@@ -95,61 +108,76 @@ export class CitiesService {
     });
   }
 
-  async getCityById(userId: string, id: number): Promise<ICityOutput> {
-    const city = await this.cityRepository.findOne({
-      where: { id, userId },
-    });
-
-    if (!city) {
-      throw new NotFoundException('City not found');
-    }
-
-    return mapToOutput(city);
-  }
-
-  async getWeatherForCity(lat: number, lon: number) {
-    return this.weatherService.getWeatherPreview({ lat, lon });
-  }
-
   async getCitiesPaginated(
     userId: string,
     query: CitiesQueryInput,
   ): Promise<CitiesConnection> {
-    const qb = this.cityRepository
+    const queryBuilder = this.cityRepository
       .createQueryBuilder('city')
       .where('city.userId = :userId', { userId });
 
-    const sortBy: CitySortField = query.sorting?.sortBy ?? 'createdAt';
-    const sortOrder = query.sorting?.sortOrder ?? SortOrder.DESC;
+    const { sortBy, sortOrder } = this.applySorting(queryBuilder, query);
+    this.applyCursor(queryBuilder, query, sortBy, sortOrder);
+    const limit = query.pagination.limit;
+    this.applyPagination(queryBuilder, limit);
+    const cities = await queryBuilder.getMany();
 
+    return this.toConnection(cities, limit, sortBy);
+  }
+
+  private applySorting(
+    qb: SelectQueryBuilder<CityEntity>,
+    query: CitiesQueryInput,
+  ): {
+    sortBy: CitySortField;
+    sortOrder: SortOrder;
+  } {
+    const sortBy: CitySortField =
+      query.sorting?.sortBy ?? CitySortField.CREATED_AT;
+    const sortOrder = query.sorting?.sortOrder ?? SortOrder.DESC;
     const sortHandler = CITY_SORT_HANDLERS[sortBy];
     sortHandler(qb, sortOrder);
+    return { sortBy, sortOrder };
+  }
 
-    const limit = query.pagination.limit;
-
-    if (query.pagination.cursor) {
-      const decoded = this.cursorService.decode(query.pagination.cursor) as {
-        value: unknown;
-        id: number;
-      };
-
-      const cursorHandler = CITY_CURSOR_HANDLERS[sortBy];
-      cursorHandler(qb, decoded.value, decoded.id, sortOrder);
+  private applyCursor(
+    qb: SelectQueryBuilder<CityEntity>,
+    query: CitiesQueryInput,
+    sortBy: CitySortField,
+    sortOrder: SortOrder,
+  ): void {
+    if (!query.pagination.cursor) {
+      return;
     }
 
+    const decoded = decodeCursor<{
+      value: unknown;
+      id: number;
+    }>(query.pagination.cursor);
+
+    const cursorHandler = CITY_CURSOR_HANDLERS[sortBy];
+    cursorHandler(qb, decoded.value, decoded.id, sortOrder);
+  }
+
+  private applyPagination(
+    qb: SelectQueryBuilder<CityEntity>,
+    limit: number,
+  ): void {
     qb.take(limit + 1);
+  }
 
-    const cities = await qb.getMany();
-
+  private toConnection(
+    cities: CityEntity[],
+    limit: number,
+    sortBy: CitySortField,
+  ): CitiesConnection {
     const getCursorValue = CITY_CURSOR_VALUES[sortBy];
 
     return buildConnection({
       entities: cities,
-      first: limit,
-      mapNode: mapToOutput,
+      limit: limit,
+      mapEntityToNode: mapToOutput,
       getCursorValue,
-      encodeCursor: (payload: { value: unknown; id: number }) =>
-        this.cursorService.encode(payload),
     });
   }
 }

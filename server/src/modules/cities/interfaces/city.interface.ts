@@ -10,6 +10,6 @@ export interface ICityOutput {
     temperature: number;
     description: string;
     next3DaysTemperature: number[];
-    next3DaysDescription: string[];
+    next3DaysDescription: string[]; 
   };
 }
