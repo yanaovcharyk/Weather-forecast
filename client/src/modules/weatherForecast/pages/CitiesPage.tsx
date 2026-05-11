@@ -1,21 +1,15 @@
 import { Row, Col, App, Button, Flex } from 'antd';
-import { useCallback, useState } from 'react';
-
+import { useCallback, useEffect, useState } from 'react';
 import { useRemoveCity, useAddCity } from '../hooks';
 import { useCitiesPaginated } from '../hooks/useCitiesPaginated';
 import { useRemoveAllCities } from '../hooks/useRemoveAllCities';
 import { useTogglePinned } from '../hooks/useTogglePinned';
-
 import { AddCityForm, CitiesList } from '../components';
 import { EmptyState, AppCard, PageLayout, Header } from '@/common/components';
-
 import { ScrollToTopButton } from '../../common/components/ScrollToTopButton';
-
 import { handleResult } from '@/common/utils';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { CitiesControls } from '../components/CitiesControlBar/CitiesControls';
-
 import type { City } from '../../common/types';
 
 type SortingState = {
@@ -24,12 +18,20 @@ type SortingState = {
 };
 
 export const CitiesPage = () => {
-  const [sorting, setSorting] = useState<SortingState>({
-    sortBy: 'createdAt',
-    sortOrder: 'DESC',
-  });
+  const [params, setParams] = useSearchParams();
 
-  const [showPinnedOnly, setShowPinnedOnly] = useState(false);
+  const initialSorting: SortingState = {
+    sortBy: (params.get('sortBy') as 'createdAt' | 'city') ?? 'createdAt',
+    sortOrder: (params.get('sortOrder') as 'ASC' | 'DESC') ?? 'DESC',
+  };
+
+  const initialPinned = params.get('showPinnedOnly') === 'true';
+  const existingId = params.get('existingId');
+
+  const [sorting, setSorting] = useState<SortingState>(initialSorting);
+  const [showPinnedOnly, setShowPinnedOnly] = useState(initialPinned);
+
+  const [existingCity, setExistingCity] = useState<City | null>(null);
 
   const { message } = App.useApp();
   const navigate = useNavigate();
@@ -47,7 +49,6 @@ export const CitiesPage = () => {
   const { togglePinned } = useTogglePinned();
 
   const [removingId, setRemovingId] = useState<number | null>(null);
-  const [existingCity, setExistingCity] = useState<City | null>(null);
   const [adding, setAdding] = useState(false);
 
   const notifyError = useCallback(
@@ -60,6 +61,22 @@ export const CitiesPage = () => {
     [message],
   );
 
+  const controlsDisabled = {
+    sorting: cities.length <= 1,
+    deleteAll: cities.length === 0,
+    pinnedFilter: cities.every((c) => !c.isPinned),
+  };
+
+  useEffect(() => {
+    const next = new URLSearchParams(params);
+
+    next.set('sortBy', sorting.sortBy);
+    next.set('sortOrder', sorting.sortOrder);
+    next.set('showPinnedOnly', String(showPinnedOnly));
+
+    setParams(next);
+  }, [sorting, showPinnedOnly, setParams, params]);
+
   const handleAddCity = useCallback(
     async (lat: number, lon: number, city: string) => {
       if (adding) return;
@@ -69,8 +86,17 @@ export const CitiesPage = () => {
       try {
         const result = await addCity(lat, lon, city);
 
-        if (!result.ok && result.code === 'CITY_EXISTS') {
+        if (
+          !result.ok &&
+          result.code === 'CITY_EXISTS' &&
+          result.existingCity
+        ) {
+          const next = new URLSearchParams(params);
+          next.set('existingId', String(result.existingCity.id));
+          setParams(next);
+
           setExistingCity(result.existingCity);
+
           message.info(`City ${city} already exists`);
           return;
         }
@@ -90,7 +116,7 @@ export const CitiesPage = () => {
         setAdding(false);
       }
     },
-    [adding, addCity, message, notifyError, notifySuccess],
+    [adding, addCity, params, setParams, message, notifyError, notifySuccess],
   );
 
   const handleRemove = useCallback(
@@ -100,7 +126,11 @@ export const CitiesPage = () => {
       try {
         await removeCity(id);
 
-        if (existingCity?.id === id) {
+        if (existingId && Number(existingId) === id) {
+          const next = new URLSearchParams(params);
+          next.delete('existingId');
+          setParams(next);
+
           setExistingCity(null);
         }
 
@@ -116,12 +146,16 @@ export const CitiesPage = () => {
         setRemovingId(null);
       }
     },
-    [removeCity, existingCity, notifyError, notifySuccess],
+    [removeCity, existingId, params, setParams, notifyError, notifySuccess],
   );
 
   const handleTogglePinned = useCallback(
     async (id: number) => {
       await togglePinned(id);
+
+      setExistingCity((prev) =>
+        prev && prev.id === id ? { ...prev, isPinned: !prev.isPinned } : prev,
+      );
     },
     [togglePinned],
   );
@@ -141,7 +175,13 @@ export const CitiesPage = () => {
     });
   }, [removeAllCities, notifyError, notifySuccess]);
 
-  const handleBack = () => setExistingCity(null);
+  const handleBack = () => {
+    const next = new URLSearchParams(params);
+    next.delete('existingId');
+    setParams(next);
+
+    setExistingCity(null);
+  };
 
   const filteredCities = showPinnedOnly
     ? cities.filter((c) => c.isPinned)
@@ -163,7 +203,7 @@ export const CitiesPage = () => {
                 </AppCard>
 
                 <CitiesList
-                  key={`${sorting.sortBy}-${sorting.sortOrder}-${showPinnedOnly}`}
+                  key={`existing-${existingCity.id}`}
                   cities={[existingCity]}
                   removingCityId={removingId}
                   onRemove={handleRemove}
@@ -178,17 +218,16 @@ export const CitiesPage = () => {
               <>
                 <AddCityForm onSubmit={handleAddCity} disabled={adding} />
 
-                {cities.length >= 2 && (
-                  <AppCard>
-                    <CitiesControls
-                      sorting={sorting}
-                      setSorting={setSorting}
-                      onDeleteAll={handleDeleteAll}
-                      showPinnedOnly={showPinnedOnly}
-                      setShowPinnedOnly={setShowPinnedOnly}
-                    />
-                  </AppCard>
-                )}
+                <AppCard>
+                  <CitiesControls
+                    sorting={sorting}
+                    setSorting={setSorting}
+                    onDeleteAll={handleDeleteAll}
+                    showPinnedOnly={showPinnedOnly}
+                    setShowPinnedOnly={setShowPinnedOnly}
+                    disabledStates={controlsDisabled}
+                  />
+                </AppCard>
 
                 {isEmpty ? (
                   <Flex

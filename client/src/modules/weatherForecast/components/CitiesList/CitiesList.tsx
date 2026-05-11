@@ -1,7 +1,8 @@
-import { Col, Row } from 'antd';
+import { Col, Row, Spin } from 'antd';
 import React, { useEffect, useRef } from 'react';
 
 import { CityCard } from '../CityCard/CityCard';
+import styles from './CitiesList.module.scss';
 
 import type { City } from '../../../common/types';
 
@@ -24,6 +25,7 @@ export const CitiesList = React.memo(function CitiesList({
   onCityClick,
   loadMore,
   hasNext,
+  loading,
 }: Props) {
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -55,8 +57,8 @@ export const CitiesList = React.memo(function CitiesList({
   }, [hasNext, loadMore, cities.length]);
 
   return (
-    <>
-      <Row gutter={[12, 12]}>
+    <div className={styles.wrapper}>
+      <Row gutter={[12, 12]} className={loading ? styles.blocked : undefined}>
         {cities.map((city) => (
           <Col key={city.id} xs={24} sm={24} md={12}>
             <CityCard
@@ -73,6 +75,12 @@ export const CitiesList = React.memo(function CitiesList({
       </Row>
 
       {hasNext && <div ref={loaderRef} style={{ height: 20 }} />}
-    </>
+
+      {loading && (
+        <div className={styles.overlay}>
+          <Spin size="large" />
+        </div>
+      )}
+    </div>
   );
 });

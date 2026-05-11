@@ -10,12 +10,19 @@ type SortingState = {
   sortOrder: 'ASC' | 'DESC';
 };
 
+type DisabledStates = {
+  sorting: boolean;
+  pinnedFilter: boolean;
+  deleteAll: boolean;
+};
+
 type Props = {
   sorting: SortingState;
   setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
   onDeleteAll: () => Promise<void>;
   showPinnedOnly: boolean;
   setShowPinnedOnly: React.Dispatch<React.SetStateAction<boolean>>;
+  disabledStates: DisabledStates;
 };
 
 export const CitiesControls = ({
@@ -24,6 +31,7 @@ export const CitiesControls = ({
   onDeleteAll,
   showPinnedOnly,
   setShowPinnedOnly,
+  disabledStates,
 }: Props) => {
   const handleDeleteAll = useCallback(async () => {
     await onDeleteAll();
@@ -46,26 +54,38 @@ export const CitiesControls = ({
         <Row>
           <Checkbox
             checked={showPinnedOnly}
+            disabled={disabledStates.pinnedFilter}
             onChange={(e) => setShowPinnedOnly(e.target.checked)}
             className={styles.pinnedCheckbox}
           >
-            Pinned only
+            Favourites only
           </Checkbox>
         </Row>
-        <Text className={styles.label}>Sort by</Text>
+
+        <Text
+          className={
+            disabledStates.sorting
+              ? `${styles.label} ${styles.disabledLabel}`
+              : styles.label
+          }
+        >
+          Sort by:
+        </Text>
 
         <Row className={styles.controls}>
           <Select
             value={sorting.sortBy}
             className={styles.select}
+            disabled={disabledStates.sorting}
             onChange={(value) => setSorting((s) => ({ ...s, sortBy: value }))}
             options={[
-              { label: 'City', value: 'city' },
+              { label: 'City name', value: 'city' },
               { label: 'Date added', value: 'createdAt' },
             ]}
           />
 
           <Button
+            disabled={disabledStates.sorting}
             icon={
               sorting.sortOrder === 'ASC' ? (
                 <ArrowUpOutlined />
@@ -84,7 +104,11 @@ export const CitiesControls = ({
       </Col>
 
       <Col span={8} className={styles.deleteCol}>
-        <Button danger onClick={showDeleteAllModal}>
+        <Button
+          danger
+          disabled={disabledStates.deleteAll}
+          onClick={showDeleteAllModal}
+        >
           Delete all
         </Button>
       </Col>
