@@ -1,6 +1,6 @@
 import { gql } from '@apollo/client';
 
-export const CITIES_QUERY = gql`
+export const CITIES_PAGINATED = gql`
   query CitiesPaginated($query: CitiesQueryInput!) {
     citiesPaginated(query: $query) {
       edges {
@@ -88,33 +88,6 @@ export const GET_WEATHER = gql`
       description
       next3DaysTemperature
       next3DaysDescription
-    }
-  }
-`;
-
-export const CITIES_PAGINATED = gql`
-  query CitiesPaginated($query: CitiesQueryInput!) {
-    citiesPaginated(query: $query) {
-      edges {
-        node {
-          id
-          city
-          lat
-          lon
-          isPinned
-          weather {
-            temperature
-            description
-            next3DaysTemperature
-            next3DaysDescription
-          }
-        }
-        cursor
-      }
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
     }
   }
 `;

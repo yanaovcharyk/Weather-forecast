@@ -47,7 +47,9 @@ export const useCitiesPaginated = (
         },
       },
       updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev;
+        if (!fetchMoreResult) {
+          return prev;
+        }
 
         return {
           citiesPaginated: {
@@ -60,7 +62,7 @@ export const useCitiesPaginated = (
         };
       },
     });
-  }, [data, fetchMore, sorting]);
+  }, [data, fetchMore, sorting, showPinnedOnly]);
 
   return {
     cities: data?.citiesPaginated?.edges.map((e) => e.node) ?? [],

@@ -10,7 +10,9 @@ export const useAddCityForm = (
 
   const handleSubmit = useCallback(
     async ({ city }: { city?: string }) => {
-      if (!city) return;
+      if (!city) {
+        return;
+      }
 
       const parsed = JSON.parse(city);
 
