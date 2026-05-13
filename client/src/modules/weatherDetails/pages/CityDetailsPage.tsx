@@ -5,15 +5,16 @@ import { useCityWeather } from '../hooks/useCityWeather';
 import { CurrentWeatherCard } from '../components/CurrentWeatherCard/CurrentWeatherCard';
 import { HourlyForecast } from '../components/HourlyForecast/HourlyForecast';
 import { DailyForecast } from '../components/DailyForecast/DailyForecast';
-import { useNavigate } from 'react-router';
+import { useNavigate, useSearchParams } from 'react-router';
 import { BlurLoaderOverlay } from '../../common/components/BlurLoaderOverlay/BlurLoaderOverlay';
 
 export const CityDetailsPage = () => {
   const { city, weather, loading, error } = useCityWeather();
   const navigate = useNavigate();
+  const [params] = useSearchParams();
 
   const handleBack = () => {
-    navigate('/');
+    navigate(`/?${params.toString()}`);
   };
 
   if (error) {

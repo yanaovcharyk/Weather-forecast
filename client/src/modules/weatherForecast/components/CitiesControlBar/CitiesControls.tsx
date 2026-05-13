@@ -4,17 +4,7 @@ import { useCallback } from 'react';
 import Text from 'antd/es/typography/Text';
 
 import styles from './CitiesControls.module.scss';
-
-type SortingState = {
-  sortBy: 'createdAt' | 'city';
-  sortOrder: 'ASC' | 'DESC';
-};
-
-type DisabledStates = {
-  sorting: boolean;
-  pinnedFilter: boolean;
-  deleteAll: boolean;
-};
+import type { DisabledStates, SortingState } from '../../types';
 
 type Props = {
   sorting: SortingState;
@@ -54,7 +44,6 @@ export const CitiesControls = ({
         <Row>
           <Checkbox
             checked={showPinnedOnly}
-            disabled={disabledStates.pinnedFilter}
             onChange={(e) => setShowPinnedOnly(e.target.checked)}
             className={styles.pinnedCheckbox}
           >

@@ -1,15 +1,55 @@
 import { useMutation } from '@apollo/client/react';
-import { CITIES_PAGINATED, TOGGLE_CITY_PIN } from '../api/weatherApi';
+
+import { TOGGLE_CITY_PIN } from '../api/weatherApi';
+
+type ToggleCityPinMutation = {
+  togglePinnedCity: {
+    __typename: 'CityOutput';
+    id: number;
+    isPinned: boolean;
+  };
+};
+
+type ToggleCityPinVariables = {
+  id: number;
+};
 
 export const useTogglePinned = () => {
-  const [toggleCityPinMutation, { loading }] = useMutation(TOGGLE_CITY_PIN, {
-    refetchQueries: [CITIES_PAGINATED],
-    awaitRefetchQueries: true,
-  });
+  const [toggleCityPinMutation, { loading }] = useMutation<
+    ToggleCityPinMutation,
+    ToggleCityPinVariables
+  >(TOGGLE_CITY_PIN);
 
-  const togglePinned = async (id: number) => {
+  const togglePinned = async (id: number, currentPinned: boolean) => {
     await toggleCityPinMutation({
       variables: { id },
+
+      optimisticResponse: {
+        togglePinnedCity: {
+          __typename: 'CityOutput',
+          id,
+          isPinned: !currentPinned,
+        },
+      },
+
+      update(cache, { data }) {
+        const city = data?.togglePinnedCity;
+        if (!city) {
+          return;
+        }
+
+        cache.modify({
+          id: cache.identify({
+            __typename: 'CityOutput',
+            id: city.id,
+          }),
+          fields: {
+            isPinned() {
+              return city.isPinned;
+            },
+          },
+        });
+      },
     });
   };
 

@@ -10,7 +10,7 @@ type Props = {
   cities: City[];
   removingCityId: number | null;
   onRemove: (id: number, city: string) => void;
-  onTogglePinned: (id: number) => void;
+  onTogglePinned: (id: number, currentPinned: boolean) => void;
   onCityClick?: (id: number) => void;
   loadMore: () => void;
   hasNext: boolean;
@@ -65,7 +65,7 @@ export const CitiesList = React.memo(function CitiesList({
               city={city.city}
               weather={city.weather}
               isPinned={city.isPinned}
-              onTogglePinned={() => onTogglePinned(city.id)}
+              onTogglePinned={() => onTogglePinned(city.id, city.isPinned)}
               onRemove={() => onRemove(city.id, city.city)}
               loading={removingCityId === city.id}
               onClick={() => onCityClick?.(city.id)}

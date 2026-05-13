@@ -40,3 +40,14 @@ export type CitiesPaginatedResponse = {
     pageInfo: PageInfo;
   };
 };
+
+export type SortingState = {
+  sortBy: 'createdAt' | 'city';
+  sortOrder: 'ASC' | 'DESC';
+};
+
+export type DisabledStates = {
+  sorting: boolean;
+  pinnedFilter: boolean;
+  deleteAll: boolean;
+};

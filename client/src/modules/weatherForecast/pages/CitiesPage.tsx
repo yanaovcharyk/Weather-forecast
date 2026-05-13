@@ -11,11 +11,7 @@ import { handleResult } from '@/common/utils';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { CitiesControls } from '../components/CitiesControlBar/CitiesControls';
 import type { City } from '../../common/types';
-
-type SortingState = {
-  sortBy: 'createdAt' | 'city';
-  sortOrder: 'ASC' | 'DESC';
-};
+import type { SortingState } from '../types';
 
 export const CitiesPage = () => {
   const [params, setParams] = useSearchParams();
@@ -150,8 +146,8 @@ export const CitiesPage = () => {
   );
 
   const handleTogglePinned = useCallback(
-    async (id: number) => {
-      await togglePinned(id);
+    async (id: number, currentPinned: boolean) => {
+      await togglePinned(id, currentPinned);
 
       setExistingCity((prev) =>
         prev && prev.id === id ? { ...prev, isPinned: !prev.isPinned } : prev,
@@ -161,8 +157,10 @@ export const CitiesPage = () => {
   );
 
   const handleOpenCity = useCallback(
-    (id: number) => navigate(`/cities/${id}`),
-    [navigate],
+    (id: number) => {
+      navigate(`/cities/${id}?${params.toString()}`);
+    },
+    [navigate, params],
   );
 
   const handleDeleteAll = useCallback(async () => {

@@ -35,11 +35,50 @@ export const createApolloClient = ({
 
     cache: new InMemoryCache({
       typePolicies: {
+        City: {
+          keyFields: ['id'],
+        },
+
         Query: {
           fields: {
             citiesPaginated: {
-              keyArgs: ['query'],
-              merge: false,
+              keyArgs(args) {
+                return JSON.stringify({
+                  sorting: args?.query?.sorting,
+                  showPinnedOnly: args?.query?.showPinnedOnly,
+                });
+              },
+
+              merge(existing, incoming, { args, readField }) {
+                const isFirstPage = !args?.query?.pagination?.cursor;
+
+                if (isFirstPage) {
+                  return incoming;
+                }
+
+                const existingEdges = existing?.edges ?? [];
+                const incomingEdges = incoming?.edges ?? [];
+                const mergedEdges = [...existingEdges];
+
+                for (const edge of incomingEdges) {
+                  const nodeId = readField('id', edge.node);
+
+                  const alreadyExists = mergedEdges.some(
+                    (existingEdge) =>
+                      readField('id', existingEdge.node) === nodeId,
+                  );
+
+                  if (!alreadyExists) {
+                    mergedEdges.push(edge);
+                  }
+                }
+
+                return {
+                  __typename: incoming.__typename,
+                  edges: mergedEdges,
+                  pageInfo: incoming.pageInfo,
+                };
+              },
             },
           },
         },

@@ -1,17 +1,46 @@
 import { useMutation } from '@apollo/client/react';
 import { REMOVE_CITY_MUTATION } from '../api/weatherApi';
 import type { RemoveCityMutation, RemoveCityVariables } from '../types';
+import type { Reference } from '@apollo/client';
 
 export const useRemoveCity = () => {
   const [mutate, { loading, error }] = useMutation<
     RemoveCityMutation,
     RemoveCityVariables
-  >(REMOVE_CITY_MUTATION);
+  >(REMOVE_CITY_MUTATION, {
+    update(cache, _, { variables }) {
+      const deletedId = variables?.id;
 
-  const removeCity = async (id: number): Promise<void> => {
+      cache.modify({
+        fields: {
+          citiesPaginated(existingConnection = {}, { readField }) {
+            return {
+              ...existingConnection,
+
+              edges: existingConnection.edges.filter((edgeRef: Reference) => {
+                return (
+                  readField('id', readField('node', edgeRef)) !== deletedId
+                );
+              }),
+            };
+          },
+        },
+      });
+
+      cache.evict({
+        id: cache.identify({
+          __typename: 'City',
+          id: deletedId,
+        }),
+      });
+
+      cache.gc();
+    },
+  });
+
+  const removeCity = async (id: number) => {
     await mutate({
       variables: { id },
-      refetchQueries: ['CitiesPaginated'],
     });
   };
 
