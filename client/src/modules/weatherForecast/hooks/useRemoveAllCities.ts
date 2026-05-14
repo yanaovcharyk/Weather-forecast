@@ -1,13 +1,9 @@
 import { useMutation } from '@apollo/client/react';
-import { GraphQLError } from 'graphql';
 
 import { REMOVE_ALL_CITIES } from '../api/weatherApi';
 
 type RemoveAllCitiesMutation = {
-  removeAllCities: {
-    ok: boolean;
-    code?: string;
-  };
+  removeAllCities: boolean;
 };
 
 export const useRemoveAllCities = () => {
@@ -24,14 +20,10 @@ export const useRemoveAllCities = () => {
 
               return {
                 __typename: existingConnection.__typename,
-
                 edges: [],
-
                 pageInfo: {
                   __typename: 'PageInfo',
-
                   hasNextPage: false,
-
                   endCursor: null,
                 },
               };
@@ -47,20 +39,14 @@ export const useRemoveAllCities = () => {
   const removeAllCities = async () => {
     try {
       const { data } = await mutate();
-
       return {
-        ok: data?.removeAllCities.ok ?? false,
-
-        code: data?.removeAllCities.code,
+        ok: data?.removeAllCities === true,
+        code: undefined,
       };
-    } catch (error) {
-      const gqlErrors = error as readonly GraphQLError[];
-
-      const code = gqlErrors[0]?.extensions?.code as string | undefined;
-
+    } catch {
       return {
-        ok: false as const,
-        code,
+        ok: false,
+        code: undefined,
       };
     }
   };

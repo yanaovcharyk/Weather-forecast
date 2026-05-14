@@ -74,7 +74,7 @@ export const CitiesList = React.memo(function CitiesList({
         ))}
       </Row>
 
-      {hasNext && <div ref={loaderRef} style={{ height: 20 }} />}
+      {hasNext && <div ref={loaderRef} className={styles.hasNext} />}
 
       {loading && (
         <div className={styles.overlay}>

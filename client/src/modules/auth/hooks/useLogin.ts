@@ -1,7 +1,6 @@
 import { useMutation } from '@apollo/client/react';
 import { useNavigate } from 'react-router-dom';
-import { App } from 'antd';
-
+import { useToast } from '@/common/hooks/useToast';
 import { LOGIN_MUTATION } from '../api';
 import type { LoginFormValues, LoginMutationResponse } from '../types';
 import { useAuth } from './useAuth';
@@ -10,7 +9,7 @@ import { extractErrorCode, mapErrorCodeToMessage } from '@/common/utils';
 export const useLogin = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
-  const { message } = App.useApp();
+  const { toast } = useToast();
 
   const [loginMutation, { loading }] = useMutation<LoginMutationResponse>(
     LOGIN_MUTATION,
@@ -26,15 +25,15 @@ export const useLogin = () => {
       });
 
       if (!data?.login?.success) {
-        message.error('Invalid email or password');
+        toast('error', 'Invalid email or password');
         return;
       }
 
       login();
-      message.success('Logged in successfully');
+      toast('success', 'Logged in successfully');
       navigate('/');
     } catch (err) {
-      message.error(mapErrorCodeToMessage(extractErrorCode(err)));
+      toast('error', mapErrorCodeToMessage(extractErrorCode(err)));
     }
   };
 

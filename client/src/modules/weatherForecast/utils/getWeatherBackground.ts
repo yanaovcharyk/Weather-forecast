@@ -1,77 +1,35 @@
 type WeatherConditionMapping = {
-  matchesCondition: (description: string) => boolean;
+  keywords: string[];
   background: string;
 };
 
 const weatherConditionMappings: WeatherConditionMapping[] = [
+  { keywords: ['clear'], background: '/images/weather/clear.webp' },
+  { keywords: ['few clouds'], background: '/images/weather/few-clouds.webp' },
   {
-    matchesCondition: (d) => d.includes('clear'),
-    background: '/images/weather/clear.webp',
-  },
-
-  {
-    matchesCondition: (d) => d.includes('few clouds'),
-    background: '/images/weather/few-clouds.webp',
-  },
-  {
-    matchesCondition: (d) => d.includes('scattered'),
+    keywords: ['scattered'],
     background: '/images/weather/scattered-clouds.webp',
   },
+  { keywords: ['broken'], background: '/images/weather/broken-clouds.webp' },
+  { keywords: ['overcast'], background: '/images/weather/overcast.webp' },
   {
-    matchesCondition: (d) => d.includes('broken'),
-    background: '/images/weather/broken-clouds.webp',
-  },
-  {
-    matchesCondition: (d) => d.includes('overcast'),
-    background: '/images/weather/overcast.webp',
-  },
-
-  {
-    matchesCondition: (d) => d.includes('drizzle') || d.includes('light rain'),
+    keywords: ['drizzle', 'light rain'],
     background: '/images/weather/drizzle.webp',
   },
+  { keywords: ['rain'], background: '/images/weather/rain.webp' },
+  { keywords: ['thunderstorm'], background: '/images/weather/storm.webp' },
+  { keywords: ['snow'], background: '/images/weather/snow.webp' },
+  { keywords: ['sleet'], background: '/images/weather/sleet.webp' },
   {
-    matchesCondition: (d) => d.includes('rain'),
-    background: '/images/weather/rain.webp',
-  },
-
-  {
-    matchesCondition: (d) => d.includes('thunderstorm'),
-    background: '/images/weather/storm.webp',
-  },
-
-  {
-    matchesCondition: (d) => d.includes('snow'),
-    background: '/images/weather/snow.webp',
-  },
-  {
-    matchesCondition: (d) => d.includes('sleet'),
-    background: '/images/weather/sleet.webp',
-  },
-
-  {
-    matchesCondition: (d) =>
-      d.includes('mist') ||
-      d.includes('fog') ||
-      d.includes('haze') ||
-      d.includes('smoke'),
+    keywords: ['mist', 'fog', 'haze', 'smoke'],
     background: '/images/weather/mist.webp',
   },
-
   {
-    matchesCondition: (d) =>
-      d.includes('dust') || d.includes('sand') || d.includes('ash'),
+    keywords: ['dust', 'sand', 'ash'],
     background: '/images/weather/dust.webp',
   },
-
-  {
-    matchesCondition: (d) => d.includes('tornado'),
-    background: '/images/weather/tornado.webp',
-  },
-  {
-    matchesCondition: (d) => d.includes('squall'),
-    background: '/images/weather/wind.webp',
-  },
+  { keywords: ['tornado'], background: '/images/weather/tornado.webp' },
+  { keywords: ['squall'], background: '/images/weather/wind.webp' },
 ];
 
 export const getWeatherBackground = (description?: string) => {
@@ -81,8 +39,8 @@ export const getWeatherBackground = (description?: string) => {
 
   const normalized = description.toLowerCase();
 
-  const rule = weatherConditionMappings.find((r) =>
-    r.matchesCondition(normalized),
+  const rule = weatherConditionMappings.find(({ keywords }) =>
+    keywords.some((keyword) => normalized.includes(keyword)),
   );
 
   return rule?.background ?? '/images/weather/default.webp';

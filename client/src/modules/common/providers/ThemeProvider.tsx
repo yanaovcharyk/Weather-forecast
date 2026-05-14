@@ -21,6 +21,8 @@ export const ThemeProvider = ({ children }: Props) => {
           colorBgLayout: '#D7E3F8',
           borderRadius: 8,
           colorBgContainer: '#F0F6FF',
+          colorIcon: '#234C75',
+          colorIconHover: '#234C75',
 
           marginXXS: 6,
           marginXS: 8,

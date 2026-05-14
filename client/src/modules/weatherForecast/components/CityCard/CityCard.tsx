@@ -38,7 +38,7 @@ export const CityCard = React.memo(function CityCard({
 
   const isDisabled = loading;
 
-  const days = getNextDays(4);
+  const days = getNextDays(3);
 
   if (!loaded) {
     return (
@@ -119,7 +119,7 @@ export const CityCard = React.memo(function CityCard({
                 style={{ flex: 1 }}
               >
                 <AppText size="sm" strong>
-                  {days[i + 1]?.label}
+                  {days[i]?.label}
                 </AppText>
 
                 <AppText strong>{t}°C</AppText>

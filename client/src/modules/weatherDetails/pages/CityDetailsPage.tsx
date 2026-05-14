@@ -40,11 +40,15 @@ export const CityDetailsPage = () => {
 
         <BlurLoaderOverlay loading={loading || !weather || !city}>
           {city && weather && (
-            <>
+            <Space
+              orientation="vertical"
+              size="large"
+              style={{ width: '100%' }}
+            >
               <CurrentWeatherCard city={city} weather={weather} />
               <HourlyForecast hourly={weather.hourly} />
               <DailyForecast daily={weather.daily} />
-            </>
+            </Space>
           )}
         </BlurLoaderOverlay>
       </Space>
