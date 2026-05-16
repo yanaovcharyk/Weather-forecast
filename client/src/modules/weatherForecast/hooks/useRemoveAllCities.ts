@@ -30,8 +30,6 @@ export const useRemoveAllCities = () => {
             },
           },
         });
-
-        cache.gc();
       },
     },
   );

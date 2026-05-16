@@ -33,8 +33,6 @@ export const useRemoveCity = () => {
           id: deletedId,
         }),
       });
-
-      cache.gc();
     },
   });
 

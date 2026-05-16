@@ -25,8 +25,6 @@ export const useAddCity = () => {
         cache.evict({
           fieldName: 'citiesPaginated',
         });
-
-        cache.gc();
       },
     },
   );
