@@ -6,10 +6,6 @@ import { BaseEntity } from '@shared/types/base.entity';
 @Entity('cities')
 @ObjectType()
 export class CityEntity extends BaseEntity {
-  @PrimaryGeneratedColumn()
-  @Field(() => Int)
-  id!: number;
-
   @Column()
   @Field()
   city!: string;

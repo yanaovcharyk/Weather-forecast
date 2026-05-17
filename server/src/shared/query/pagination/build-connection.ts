@@ -7,7 +7,7 @@ type ConnectionBuilderParams<TEntity, TNode> = {
   getCursorValue: (entity: TEntity) => unknown;
 };
 
-export const buildConnection = <TEntity extends { id: number }, TNode>({
+export const buildConnection = <TEntity extends { id: string }, TNode>({
   entities,
   limit,
   mapEntityToNode: mapNode,

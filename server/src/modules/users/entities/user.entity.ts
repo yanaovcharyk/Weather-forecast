@@ -5,10 +5,6 @@ import { BaseEntity } from '@shared/types/base.entity';
 @Entity('users')
 @ObjectType()
 export class UserEntity extends BaseEntity {
-  @PrimaryGeneratedColumn('uuid')
-  @Field(() => ID)
-  id!: string;
-
   @Column({ unique: true })
   email!: string;
 

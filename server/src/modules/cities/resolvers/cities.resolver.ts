@@ -1,5 +1,6 @@
 import {
-  Resolver, Query, Mutation, Args, Context, Int, Parent, ResolveField,
+  Resolver, Query, Mutation, Args, Context, Parent, ResolveField,
+  ID,
 } from '@nestjs/graphql';
 import { UseGuards, UsePipes } from '@nestjs/common';
 import { CitiesService, CitiesQueryService } from '../services';
@@ -38,7 +39,7 @@ export class CitiesResolver {
   @Query(() => CityOutput)
   async city(
     @Context() ctx: GQLContext,
-    @Args('id', { type: () => Int }) id: number,
+    @Args('id', { type: () => ID }) id: string,
   ): Promise<ICityOutput> {
     return this.citiesService.getCityById(ctx.req.user.userId, id);
   }
@@ -56,7 +57,7 @@ export class CitiesResolver {
   @Mutation(() => CityOutput)
   async removeCity(
     @Context() ctx: GQLContext,
-    @Args('id', { type: () => Int }) id: number,
+    @Args('id', { type: () => ID }) id: string,
   ): Promise<ICityOutput> {
     return this.citiesService.removeCity(ctx.req.user.userId, id);
   }
@@ -72,7 +73,7 @@ export class CitiesResolver {
   @Mutation(() => CityOutput)
   async togglePinnedCity(
     @Context() ctx: GQLContext,
-    @Args('id', { type: () => Int }) id: number,
+    @Args('id', { type: () => ID }) id: string,
   ): Promise<ICityOutput> {
     return this.citiesService.togglePinned(ctx.req.user.userId, id);
   }

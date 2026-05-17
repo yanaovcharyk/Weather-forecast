@@ -1,5 +1,5 @@
 export interface ICityOutput {
-  id: number;
+  id: string;
   city: string;
   lat: number;
   lon: number;

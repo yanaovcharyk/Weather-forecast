@@ -1,10 +1,10 @@
-import { ObjectType, Field, Int, Float } from '@nestjs/graphql';
+import { ObjectType, Field, Float, ID } from '@nestjs/graphql';
 import { WeatherOutput } from '../../weather/dto';
 
 @ObjectType()
 export class CityOutput {
-  @Field(() => Int)
-  id!: number;
+  @Field(() => ID)
+  id!: string;
 
   @Field()
   city!: string;

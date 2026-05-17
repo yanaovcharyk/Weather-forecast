@@ -44,7 +44,7 @@ export const GET_WEATHER_DETAILS = gql`
 `;
 
 export const GET_CITY_BY_ID = gql`
-  query GetCityById($id: Int!) {
+  query GetCityById($id: ID!) {
     city(id: $id) {
       id
       city

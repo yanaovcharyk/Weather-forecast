@@ -63,7 +63,7 @@ export const ADD_CITY_MUTATION = gql`
 `;
 
 export const REMOVE_CITY_MUTATION = gql`
-  mutation RemoveCity($id: Int!) {
+  mutation RemoveCity($id: ID!) {
     removeCity(id: $id) {
       id
     }
@@ -99,7 +99,7 @@ export const REMOVE_ALL_CITIES = gql`
 `;
 
 export const TOGGLE_CITY_PIN = gql`
-  mutation TogglePinnedCity($id: Int!) {
+  mutation TogglePinnedCity($id: ID!) {
     togglePinnedCity(id: $id) {
       id
       isPinned
