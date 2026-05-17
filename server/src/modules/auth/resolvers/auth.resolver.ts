@@ -26,8 +26,13 @@ export class AuthResolver {
 
   @Mutation(() => AuthOutput)
   @UseGuards(RefreshJwtGuard)
-  async refreshTokens(@Context() ctx: GQLContext) {
+  async logout(@Context() ctx: GQLContext) {
+    return this.authService.logout(ctx.req.user.userId, ctx.res);
+  }
 
+  @Mutation(() => AuthOutput)
+  @UseGuards(RefreshJwtGuard)
+  async refreshTokens(@Context() ctx: GQLContext) {
     return this.authService.rotateRefreshToken(
       ctx.req.user.refreshToken,
       ctx.req,

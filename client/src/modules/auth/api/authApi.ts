@@ -13,3 +13,11 @@ export const ME_QUERY = gql`
     me
   }
 `;
+
+export const LOGOUT_MUTATION = gql`
+  mutation Logout {
+    logout {
+      success
+    }
+  }
+`;

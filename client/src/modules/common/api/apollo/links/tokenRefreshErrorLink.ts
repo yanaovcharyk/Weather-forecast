@@ -47,7 +47,6 @@ export const createTokenRefreshErrorLink = ({
 
             tokenRefreshCoordinator.refreshAccessToken().catch((error) => {
               performLogout();
-              displayErrorMessage('Session expired. Please login again.');
               responseObserver.error(error);
             });
 

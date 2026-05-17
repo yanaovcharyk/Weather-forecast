@@ -19,9 +19,7 @@ export class AuthService {
 
   async login(input: LoginInput, req: Request, res: Response) {
     const user = await this.validateUser(input.email, input.password);
-
     const tokens = await this.generateTokens(user);
-
     this.setCookies(res, tokens);
 
     return { success: true };
@@ -29,10 +27,22 @@ export class AuthService {
 
   async register(input: RegisterInput, req: Request, res: Response) {
     const user = await this.usersService.register(input);
-
     const tokens = await this.generateTokens(user);
-
     this.setCookies(res, tokens);
+
+    return { success: true };
+  }
+
+  async logout(userId: string, res: Response) {
+    const user = await this.usersService.findById(userId);
+    if (!user) {
+      throw new UnauthorizedException();
+    }
+    await this.usersService.updateRefreshTokenVersion(
+      user.id,
+      user.refreshTokenVersion + 1,
+    );
+    this.cookieService.clearAuthCookies(res);
 
     return { success: true };
   }
@@ -54,15 +64,10 @@ export class AuthService {
     }
 
     const newVersion = user.refreshTokenVersion + 1;
-
     await this.usersService.updateRefreshTokenVersion(user.id, newVersion);
-
     user.refreshTokenVersion = newVersion;
-
     const tokens = await this.generateTokens(user);
-
     this.setCookies(res, tokens);
-
     return { success: true };
   }
 
@@ -105,4 +110,3 @@ export class AuthService {
     this.cookieService.setRefreshToken(res, tokens.refreshToken);
   }
 }
-

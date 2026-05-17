@@ -34,6 +34,11 @@ export class AuthCookieService {
     return req.cookies?.refreshToken ?? null;
   }
 
+  clearAuthCookies(res: Response) {
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+  }
+
   private getAccessTokenMaxAge(): number {
     const expires = this.config.get('jwt.accessExpires', { infer: true });
 
