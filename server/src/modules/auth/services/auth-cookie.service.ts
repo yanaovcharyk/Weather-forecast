@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-import { AppConfig } from '../../../shared/types/app.config';
+import { IAppConfig } from '../../../shared/types/app.config';
 
 enum TokenName {
   ACCESS = 'accessToken',
@@ -13,7 +13,7 @@ type MsString = `${number}${'ms' | 's' | 'm' | 'h' | 'd'}`;
 
 @Injectable()
 export class AuthCookieService {
-  constructor(private readonly config: ConfigService<AppConfig>) {}
+  constructor(private readonly config: ConfigService<IAppConfig>) {}
 
   private get cookieOptions() {
     const isProd = this.config.get('nodeEnv', { infer: true }) === 'production';
@@ -77,21 +77,11 @@ export class AuthCookieService {
   }
 
   setAccessToken(res: Response, token: string) {
-    this.setToken(
-      res,
-      token,
-      TokenName.ACCESS,
-      this.getAccessTokenMaxAge(),
-    );
+    this.setToken(res, token, TokenName.ACCESS, this.getAccessTokenMaxAge());
   }
 
   setRefreshToken(res: Response, token: string) {
-    this.setToken(
-      res,
-      token,
-      TokenName.REFRESH,
-      this.getRefreshTokenMaxAge(),
-    );
+    this.setToken(res, token, TokenName.REFRESH, this.getRefreshTokenMaxAge());
   }
 
   clearAccessToken(res: Response) {

@@ -1,7 +1,7 @@
-import { AppConfig } from '../types/app.config';
+import { IAppConfig } from '../types/app.config';
 import { Env } from './env.schema';
 
-export const configuration = (env: Env): AppConfig => ({
+export const configuration = (env: Env): IAppConfig => ({
   nodeEnv: env.NODE_ENV,
   port: env.PORT,
 
@@ -23,7 +23,7 @@ export const configuration = (env: Env): AppConfig => ({
     accessSecret: env.JWT_ACCESS_SECRET,
     refreshSecret: env.JWT_REFRESH_SECRET,
     accessExpires: env.JWT_ACCESS_EXPIRES,
-    refreshExpires: env.JWT_REFRESH_EXPIRES
+    refreshExpires: env.JWT_REFRESH_EXPIRES,
   },
 
   weatherApi: {

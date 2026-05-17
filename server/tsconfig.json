@@ -14,11 +14,13 @@
 
     "baseUrl": "./src",
     "paths": {
-      "@services/*": ["modules/services/*"],
+      "@weather/*": ["modules/weather/*"],
+      "@auth/*": ["modules/auth/*"],
+      "@users/*": ["modules/users/*"],
+      "@cities/*": ["modules/cities/*"],
       "@controllers/*": ["modules/controllers/*"],
       "@database/*": ["modules/database/*"],
-      "@errors/*": ["errors/*"],
-      "@types/*": ["types/*"]
+      "@shared/*": ["shared/*"]
     }
   }
 }

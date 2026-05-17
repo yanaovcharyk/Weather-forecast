@@ -1,9 +1,7 @@
-import { Card, Typography, Flex } from 'antd';
+import { Card, Flex } from 'antd';
 import type { HourlyWeather } from '../../types';
-
 import styles from './HourlyForecast.module.scss';
-
-const { Text } = Typography;
+import { AppText } from '../../../common/components/Typography';
 
 type Props = {
   hourly: HourlyWeather[];
@@ -23,9 +21,9 @@ export const HourlyForecast = ({ hourly }: Props) => {
             }}
           >
             <Flex vertical align="center" gap={6} className={styles.content}>
-              <Text strong className={styles.time}>
+              <AppText strong className={styles.time}>
                 {h.time}
-              </Text>
+              </AppText>
 
               <img
                 src={`https://openweathermap.org/img/wn/${h.icon}.png`}
@@ -33,11 +31,11 @@ export const HourlyForecast = ({ hourly }: Props) => {
                 className={styles.icon}
               />
 
-              <Text className={styles.temp}>{Math.round(h.temp)}°C</Text>
+              <AppText className={styles.temp}>{Math.round(h.temp)}°C</AppText>
 
-              <Text className={styles.feels}>
+              <AppText className={styles.feels}>
                 Feels {Math.round(h.feelsLike)}°C
-              </Text>
+              </AppText>
             </Flex>
           </Card>
         ))}

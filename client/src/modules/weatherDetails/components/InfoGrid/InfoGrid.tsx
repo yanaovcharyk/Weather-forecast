@@ -1,5 +1,6 @@
-import { Flex, Typography, theme } from 'antd';
+import { Flex, theme } from 'antd';
 import styles from './InfoGrid.module.scss';
+import { AppText } from '@/common/components/Typography';
 
 type InfoItem = {
   label: string;
@@ -29,7 +30,7 @@ export const InfoGrid = ({ items, column = 2 }: Props) => {
         >
           {row.map((item) => (
             <div key={item.label} className={styles.item}>
-              <Typography.Text
+              <AppText
                 className={styles.label}
                 style={{
                   fontSize: token.fontSizeSM,
@@ -37,9 +38,9 @@ export const InfoGrid = ({ items, column = 2 }: Props) => {
                 }}
               >
                 {item.label}
-              </Typography.Text>
+              </AppText>
 
-              <Typography.Text
+              <AppText
                 strong
                 className={styles.value}
                 style={{
@@ -48,7 +49,7 @@ export const InfoGrid = ({ items, column = 2 }: Props) => {
                 }}
               >
                 {item.value}
-              </Typography.Text>
+              </AppText>
             </div>
           ))}
         </div>

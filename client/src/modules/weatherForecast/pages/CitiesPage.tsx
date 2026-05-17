@@ -1,15 +1,21 @@
 import { Row, Col, Flex } from 'antd';
-import { useCitiesPaginated } from '../hooks/useCitiesPaginated';
-import { AddCityForm, CitiesList } from '../components';
-import { EmptyState, AppCard, PageLayout, Header } from '@/common/components';
-import { ScrollToTopButton } from '../../common/components/ScrollToTopButton';
-import { CitiesControls } from '../components/CitiesControlBar/CitiesControls';
-import { useSortingParams } from '../hooks/useSortingParams';
-import { useCityActions } from '../hooks/useCityActions';
+import {
+  AddCityForm,
+  CitiesList,
+  CitiesControls,
+  ExistingCityLayout,
+} from '../components';
+import {
+  EmptyState,
+  AppCard,
+  PageLayout,
+  Header,
+  ScrollToTopButton,
+} from '@/common/components';
+import { useSortingParams, useCityActions, useCitiesPaginated } from '../hooks';
 import { useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
-import { ExistingCityLayout } from '../components/ExistingCityLayout/ExistingCityLayout';
-import { useToast } from '../../common/hooks/useToast';
+import { useToast } from '@/common/hooks/useToast';
 
 export const CitiesPage = () => {
   const { sorting, setSorting, showPinnedOnly, setShowPinnedOnly } =

@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { IUserOutput } from '../interfaces/user-output.interface';
+import { IUserOutput } from '../interfaces';
 
 @ObjectType()
 export class UserOutput implements IUserOutput {

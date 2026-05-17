@@ -1,15 +1,15 @@
 import { BrowserRouter } from 'react-router-dom';
-import './App.css';
-import { AppProviders } from '@/common/providers';
+import { AppProvider } from '@/common/providers';
 import { AppRouter } from '@/common/components/Routers';
 import { App as AntApp } from 'antd';
+import './App.css';
 
 export const App = () => (
   <AntApp>
-    <AppProviders>
+    <AppProvider>
       <BrowserRouter>
         <AppRouter />
       </BrowserRouter>
-    </AppProviders>
+    </AppProvider>
   </AntApp>
 );

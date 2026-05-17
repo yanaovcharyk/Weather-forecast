@@ -1,11 +1,9 @@
 import { Col, Flex, Row, theme } from 'antd';
 import type { WeatherDetails } from '../../types';
-import { InfoGrid } from '../InfoGrid/InfoGrid';
-import { BackgroundCard } from '../../../common/components';
-import { getWeatherBackground } from '../../../weatherForecast/utils';
-import { AppTitle } from '../../../common/components/Typography/Title/AppTitle';
-import { AppText } from '../../../common/components/Typography/Text/AppText';
-
+import { InfoGrid } from '../InfoGrid/';
+import { BackgroundCard } from '@/common/components';
+import { getWeatherBackground } from '@/weatherForecast/utils';
+import { AppTitle, AppText } from '@/common/components/Typography';
 import styles from './CurrentWeatherCard.module.scss';
 
 type Props = {

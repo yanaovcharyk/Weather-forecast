@@ -5,7 +5,8 @@ import classNames from 'classnames';
 type InfoCardProps = CardProps & {
   headerLeft?: React.ReactNode;
   headerRight?: React.ReactNode;
-  backgroundImage?: React.ReactNode;
+  backgroundImage?: string;
+  showSkeleton?: boolean;
 };
 
 export const BackgroundCard = ({
@@ -13,6 +14,7 @@ export const BackgroundCard = ({
   headerLeft,
   headerRight,
   backgroundImage,
+  showSkeleton,
   className,
   ...props
 }: InfoCardProps) => {
@@ -26,12 +28,19 @@ export const BackgroundCard = ({
     >
       <div className={styles.wrapper}>
         {backgroundImage && (
-          <div
-            className={styles.background}
-            style={
-              { '--bg-image': `url(${backgroundImage})` } as React.CSSProperties
-            }
-          />
+          <>
+            <img
+              src={backgroundImage}
+              alt=""
+              fetchPriority="high"
+              className={styles.backgroundImage}
+            />
+            <div className={styles.backgroundOverlay} />
+          </>
+        )}
+
+        {showSkeleton && !backgroundImage && (
+          <div className={styles.backgroundSkeleton} />
         )}
 
         <div className={styles.content}>{children}</div>

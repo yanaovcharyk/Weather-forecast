@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { AppConfig } from '../../../shared/types/app.config';
+import { IAppConfig } from '../../../shared/types/app.config';
 import { throwUnauthorized } from '../../../shared/errors/unautorized.error';
 import {
   IAccessJwtPayload,
@@ -17,7 +17,7 @@ export class AuthTokenService {
 
   constructor(
     private readonly jwt: JwtService,
-    private readonly config: ConfigService<AppConfig>,
+    private readonly config: ConfigService<IAppConfig>,
   ) {
     const jwtConfig = this.config.get('jwt', { infer: true })!;
     this.accessSecret = jwtConfig.accessSecret;

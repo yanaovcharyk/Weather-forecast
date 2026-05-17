@@ -1,11 +1,11 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { AppConfig } from '../types/app.config';
+import { IAppConfig } from '../types/app.config';
 import { CreateUsers001 } from '../../modules/database/migrations/001-create-users';
 import { CreateCities002 } from '../../modules/database/migrations/002-create-cities';
 
 export const databaseConfig = (
-  configService: ConfigService<AppConfig>,
+  configService: ConfigService<IAppConfig>,
 ): TypeOrmModuleOptions => {
   const isProd = configService.get('nodeEnv', { infer: true }) === 'production';
 

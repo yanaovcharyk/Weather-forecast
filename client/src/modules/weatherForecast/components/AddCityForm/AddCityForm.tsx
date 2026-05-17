@@ -1,6 +1,5 @@
 import { Col, Form, Row, Select } from 'antd';
 import { EmptyState, AppCard, PrimaryButton } from '@/common/components';
-
 import type { AddCityFormProps } from './types';
 import { useAddCityForm } from '@/weatherForecast/hooks/useAddCityForm';
 import { useIsMobile } from '@/common/hooks/useIsMobile';

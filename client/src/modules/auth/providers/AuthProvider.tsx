@@ -2,10 +2,7 @@ import { useMemo, useCallback } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { ME_QUERY } from '../api/authApi';
 import { AuthContext } from '../contexts/AuthContext';
-
-interface MeQuery {
-  me: boolean;
-}
+import type { MeQuery } from '../types';
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { data, loading, refetch } = useQuery<MeQuery>(ME_QUERY, {

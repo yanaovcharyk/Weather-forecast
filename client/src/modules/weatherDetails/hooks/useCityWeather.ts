@@ -1,8 +1,6 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client/react';
-
 import type { GetCityByIdResponse, GetWeatherDetailsResponse } from '../types';
-
 import { GET_CITY_BY_ID, GET_WEATHER_DETAILS } from '../api/cityWeatherApi';
 
 export const useCityWeather = () => {

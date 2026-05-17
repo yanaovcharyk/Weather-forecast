@@ -1,12 +1,17 @@
 import { Space, Alert, Button } from 'antd';
-import { PageLayout, Header, AppCard } from '@/common/components';
-
-import { useCityWeather } from '../hooks/useCityWeather';
-import { CurrentWeatherCard } from '../components/CurrentWeatherCard/CurrentWeatherCard';
-import { HourlyForecast } from '../components/HourlyForecast/HourlyForecast';
-import { DailyForecast } from '../components/DailyForecast/DailyForecast';
 import { useNavigate, useSearchParams } from 'react-router';
-import { BlurLoaderOverlay } from '../../common/components/BlurLoaderOverlay/BlurLoaderOverlay';
+import { useCityWeather } from '../hooks/useCityWeather';
+import {
+  PageLayout,
+  Header,
+  AppCard,
+  BlurLoaderOverlay,
+} from '@/common/components';
+import {
+  CurrentWeatherCard,
+  HourlyForecast,
+  DailyForecast,
+} from '../components';
 
 export const CityDetailsPage = () => {
   const { city, weather, loading, error } = useCityWeather();

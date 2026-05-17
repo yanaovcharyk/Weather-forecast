@@ -13,20 +13,15 @@ export class CitiesService {
     private readonly cityRepository: Repository<CityEntity>,
   ) {}
 
-  async getCityById( userId: string, id: number): Promise<ICityOutput> {
-    const city = await this.findCityOrFail( userId, id );
-
+  async getCityById(userId: string, id: number): Promise<ICityOutput> {
+    const city = await this.findCityOrFail(userId, id);
     return mapToOutput(city);
   }
 
-  async addCity( userId: string, input: AddCityInput) {
-    const exists =
-      await this.cityRepository.findOne({
-        where: {
-          userId,
-          city: input.city,
-        },
-      });
+  async addCity(userId: string, input: AddCityInput) {
+    const exists = await this.cityRepository.findOne({
+      where: { userId, city: input.city },
+    });
 
     if (exists) {
       return {
@@ -44,8 +39,7 @@ export class CitiesService {
       lon: input.lon,
     });
 
-    const saved =
-      await this.cityRepository.save(city);
+    const saved = await this.cityRepository.save(city);
 
     return {
       ok: true,
@@ -55,40 +49,27 @@ export class CitiesService {
     };
   }
 
-  async removeCity( userId: string, id: number): Promise<ICityOutput> {
-    const city = await this.findCityOrFail( userId, id );
+  async removeCity(userId: string, id: number): Promise<ICityOutput> {
+    const city = await this.findCityOrFail(userId, id);
     const result = mapToOutput(city);
     await this.cityRepository.remove(city);
-
     return result;
   }
 
-  async removeAllCities( userId: string): Promise<void> {
+  async removeAllCities(userId: string): Promise<void> {
     await this.cityRepository.delete({ userId });
   }
 
-  async togglePinned( userId: string, id: number ): Promise<ICityOutput> {
-    const city = await this.findCityOrFail( userId, id );
+  async togglePinned(userId: string, id: number): Promise<ICityOutput> {
+    const city = await this.findCityOrFail(userId, id);
     city.isPinned = !city.isPinned;
     const saved = await this.cityRepository.save(city);
-
     return mapToOutput(saved);
   }
 
-  private async findCityOrFail( userId: string, id: number): Promise<CityEntity> {
-    const city = await this.cityRepository.findOne({
-        where: {
-          id,
-          userId,
-        },
-      });
-
-    if (!city) {
-      throw new NotFoundException(
-        'City not found',
-      );
-    }
-
+  private async findCityOrFail(userId: string, id: number): Promise<CityEntity> {
+    const city = await this.cityRepository.findOne({ where: { id, userId } });
+    if (!city) throw new NotFoundException('City not found');
     return city;
   }
 }

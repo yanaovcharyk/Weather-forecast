@@ -1,7 +1,7 @@
 import { Button } from 'antd';
-import type { City } from '../../../common/types';
-import { AppCard } from '../../../common/components';
-import { CitiesList } from '../CitiesList/CitiesList';
+import type { City } from '@/common/types';
+import { AppCard } from '@/common/components';
+import { CitiesList } from '../CitiesList';
 
 interface Props {
   existingCity: City;

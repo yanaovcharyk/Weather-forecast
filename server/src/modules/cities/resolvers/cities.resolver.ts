@@ -1,25 +1,14 @@
 import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Context,
-  Int,
-  Parent,
-  ResolveField,
+  Resolver, Query, Mutation, Args, Context, Int, Parent, ResolveField,
 } from '@nestjs/graphql';
 import { UseGuards, UsePipes } from '@nestjs/common';
-import { CitiesService } from '../services/cities.service';
-import { CitiesQueryService } from '../services/cities-query.service';
-import { WeatherService } from '../../weather/services/weather.service';
-import { AddCityInput, CityOutput } from '../dto';
+import { CitiesService, CitiesQueryService } from '../services';
+import { WeatherService } from '@weather/services/weather.service';
 import { ICityOutput, GQLContext } from '../interfaces';
-import { WeatherOutput } from '../../weather/dto';
-import { AccessJwtGuard } from '../../auth/guards';
-import { CitiesConnection } from '../dto/cities-connection.output';
-import { CitiesQueryInput } from '../dto/cities-query.input';
-import { AddCityResult } from '../dto/add-city.result';
-import { createValidationPipe } from '../../../shared/utils/create-validation-pipe.util';
+import { WeatherOutput } from '@weather/dto';
+import { AccessJwtGuard } from '@auth/guards';
+import { CitiesConnection, CitiesQueryInput, AddCityResult, AddCityInput, CityOutput } from '../dto';
+import { createValidationPipe } from '@shared/utils/create-validation-pipe.util';
 
 @Resolver(() => CityOutput)
 export class CitiesResolver {
@@ -32,9 +21,7 @@ export class CitiesResolver {
   @UseGuards(AccessJwtGuard)
   @Query(() => [CityOutput])
   async cities(@Context() ctx: GQLContext): Promise<ICityOutput[]> {
-    const userId = ctx.req.user.userId;
-
-    return this.citiesQueryService.getCities(userId);
+    return this.citiesQueryService.getCities(ctx.req.user.userId);
   }
 
   @UseGuards(AccessJwtGuard)
@@ -42,62 +29,42 @@ export class CitiesResolver {
   @UsePipes(createValidationPipe())
   async citiesPaginated(
     @Context() ctx: GQLContext,
-    @Args('query', {
-      type: () => CitiesQueryInput,
-    })
-    query: CitiesQueryInput,
+    @Args('query', { type: () => CitiesQueryInput }) query: CitiesQueryInput,
   ): Promise<CitiesConnection> {
-    const userId = ctx.req.user.userId;
-
-    return this.citiesQueryService.getCitiesPaginated(userId, query);
+    return this.citiesQueryService.getCitiesPaginated(ctx.req.user.userId, query);
   }
 
   @UseGuards(AccessJwtGuard)
   @Query(() => CityOutput)
   async city(
     @Context() ctx: GQLContext,
-    @Args('id', {
-      type: () => Int,
-    })
-    id: number,
+    @Args('id', { type: () => Int }) id: number,
   ): Promise<ICityOutput> {
-    const userId = ctx.req.user.userId;
-
-    return this.citiesService.getCityById(userId, id);
+    return this.citiesService.getCityById(ctx.req.user.userId, id);
   }
 
   @UseGuards(AccessJwtGuard)
   @Mutation(() => AddCityResult)
   async addCity(
     @Context() ctx: GQLContext,
-    @Args('input')
-    input: AddCityInput,
+    @Args('input') input: AddCityInput,
   ) {
-    const userId = ctx.req.user.userId;
-
-    return this.citiesService.addCity(userId, input);
+    return this.citiesService.addCity(ctx.req.user.userId, input);
   }
 
   @UseGuards(AccessJwtGuard)
   @Mutation(() => CityOutput)
   async removeCity(
     @Context() ctx: GQLContext,
-    @Args('id', {
-      type: () => Int,
-    })
-    id: number,
+    @Args('id', { type: () => Int }) id: number,
   ): Promise<ICityOutput> {
-    const userId = ctx.req.user.userId;
-
-    return this.citiesService.removeCity(userId, id);
+    return this.citiesService.removeCity(ctx.req.user.userId, id);
   }
 
   @UseGuards(AccessJwtGuard)
   @Mutation(() => Boolean)
   async removeAllCities(@Context() ctx: GQLContext): Promise<boolean> {
-    const userId = ctx.req.user.userId;
-    await this.citiesService.removeAllCities(userId);
-
+    await this.citiesService.removeAllCities(ctx.req.user.userId);
     return true;
   }
 
@@ -105,23 +72,13 @@ export class CitiesResolver {
   @Mutation(() => CityOutput)
   async togglePinnedCity(
     @Context() ctx: GQLContext,
-    @Args('id', {
-      type: () => Int,
-    })
-    id: number,
+    @Args('id', { type: () => Int }) id: number,
   ): Promise<ICityOutput> {
-    const userId = ctx.req.user.userId;
-
-    return this.citiesService.togglePinned(userId, id);
+    return this.citiesService.togglePinned(ctx.req.user.userId, id);
   }
 
-  @ResolveField(() => WeatherOutput, {
-    nullable: true,
-  })
+  @ResolveField(() => WeatherOutput, { nullable: true })
   async weather(@Parent() city: CityOutput) {
-    return this.weatherService.getWeatherPreview({
-      lat: city.lat,
-      lon: city.lon,
-    });
+    return this.weatherService.getWeatherPreview({ lat: city.lat, lon: city.lon });
   }
 }

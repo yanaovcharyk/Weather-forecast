@@ -2,7 +2,7 @@ import { useCallback } from 'react';
 import { useQuery } from '@apollo/client/react';
 
 import { CITIES_PAGINATED } from '../api/weatherApi';
-import type { City } from '../../common/types';
+import type { City } from '@/common/types';
 import type { SortingState } from '../types';
 
 type CitiesQuery = {

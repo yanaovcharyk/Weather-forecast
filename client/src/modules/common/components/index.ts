@@ -7,3 +7,6 @@ export { EmptyState } from './EmptyState';
 export { Header } from './Header/Header';
 export { BackgroundCard } from './Card/BackgroundCard/BackgroundCard';
 export { BackgroundCardSkeleton } from './Card/BackgroundCard/BackgroundCardSkeleton';
+export { BlurLoaderOverlay } from './BlurLoaderOverlay/BlurLoaderOverlay';
+export { ConfirmModal } from './ConfirmModal/ConfirmModal';
+export { ScrollToTopButton } from './Button/ScrollToTopButton';

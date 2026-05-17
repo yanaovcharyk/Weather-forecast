@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { HttpModule } from '@nestjs/axios';
-import { WeatherResolver } from './resolvers/';
+import { WeatherResolver } from './resolvers';
 import { WeatherService } from './services';
 import { ConfigService } from '@nestjs/config';
-import { geoConfig, weatherConfig } from '../../shared/config/weather.config';
+import { geoConfig, weatherConfig } from '@shared/config/weather.config';
 
 @Module({
   imports: [HttpModule],

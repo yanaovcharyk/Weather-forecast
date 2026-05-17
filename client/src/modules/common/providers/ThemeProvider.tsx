@@ -1,6 +1,5 @@
 import { ConfigProvider, theme as antdTheme } from 'antd';
 import type { ReactNode } from 'react';
-
 const { defaultAlgorithm } = antdTheme;
 
 type Props = {

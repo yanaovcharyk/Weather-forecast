@@ -1,10 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import { Row, Col, Select, Button, Checkbox } from 'antd';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
-
-import styles from './CitiesControls.module.scss';
 import type { DisabledStates, SortingState } from '../../types';
-import { ConfirmModal } from '../../../common/components/ConfirmModal/ConfirmModal';
+import { ConfirmModal } from '@/common/components';
+import styles from './CitiesControls.module.scss';
 
 type Props = {
   sorting: SortingState;

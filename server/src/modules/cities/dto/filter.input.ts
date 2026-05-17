@@ -1,5 +1,5 @@
 import { Field, InputType, registerEnumType } from '@nestjs/graphql';
-import { FilterOperator } from '../../../shared/query/enums/filter-operator.enum';
+import { FilterOperator } from '@shared/query/constants';
 
 registerEnumType(FilterOperator, {
   name: 'FilterOperator',

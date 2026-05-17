@@ -1,17 +1,12 @@
+import React from 'react';
 import { Button, Flex } from 'antd';
 import { getWeatherBackground, getNextDays } from '@/weatherForecast/utils';
 import { CloseOutlined, HeartFilled, HeartOutlined } from '@ant-design/icons';
-
 import { BackgroundCard, BackgroundCardSkeleton } from '@/common/components';
-
 import type { City } from '@/common/types';
-
-import { AppText } from '@/common/components/Typography/Text/AppText';
+import { AppText, AppTitle } from '@/common/components/Typography';
 import { useSmartBackground } from '@/common/hooks';
-import { AppTitle } from '@/common/components/Typography/Title/AppTitle';
-
 import styles from './CityCard.module.scss';
-import React from 'react';
 
 export interface CityCardProps {
   city: string;

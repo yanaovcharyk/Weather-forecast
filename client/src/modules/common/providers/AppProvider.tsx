@@ -1,7 +1,7 @@
 import { ThemeProvider } from './ThemeProvider';
-import { AuthProvider } from '@/auth/providers/AuthProvider';
+import { AuthProvider } from '@/auth/providers';
 import { ToastProvider } from './ToastProvider';
-import { AppApolloProvider } from '../api/apollo/providers/AppApolloProvider';
+import { AppApolloProvider } from '../api/apollo';
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => (
   <ToastProvider>
