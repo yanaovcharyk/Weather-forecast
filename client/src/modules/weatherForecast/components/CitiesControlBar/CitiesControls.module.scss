@@ -6,12 +6,13 @@
   margin-top: 8px;
   display: flex;
   align-items: center;
+  
   color: rgba(14, 55, 102, 0.85);
+  gap: 16px;
 }
 
 .pinnedCheckbox {
   color:rgba(14, 55, 102, 0.85);
-  padding-bottom: 8px;
 }
 
 .select {

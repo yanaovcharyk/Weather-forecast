@@ -43,16 +43,6 @@ export const CitiesControls: React.FC<Props> = ({
     <>
       <Row>
         <Col span={16}>
-          <Row>
-            <Checkbox
-              checked={showPinnedOnly}
-              onChange={(e) => setShowPinnedOnly(e.target.checked)}
-              className={styles.pinnedCheckbox}
-            >
-              Favourites only
-            </Checkbox>
-          </Row>
-
           <div
             className={
               disabledStates.sorting
@@ -64,33 +54,45 @@ export const CitiesControls: React.FC<Props> = ({
           </div>
 
           <Row className={styles.controls}>
-            <Select
-              value={sorting.sortBy}
-              className={styles.select}
-              disabled={disabledStates.sorting}
-              onChange={(value) => setSorting((s) => ({ ...s, sortBy: value }))}
-              options={[
-                { label: 'City name', value: 'city' },
-                { label: 'Date added', value: 'createdAt' },
-              ]}
-            />
+            <div>
+              <Select
+                value={sorting.sortBy}
+                className={styles.select}
+                disabled={disabledStates.sorting}
+                onChange={(value) =>
+                  setSorting((s) => ({ ...s, sortBy: value }))
+                }
+                options={[
+                  { label: 'City name', value: 'city' },
+                  { label: 'Date added', value: 'createdAt' },
+                ]}
+              />
 
-            <Button
-              disabled={disabledStates.sorting}
-              icon={
-                sorting.sortOrder === 'ASC' ? (
-                  <ArrowUpOutlined />
-                ) : (
-                  <ArrowDownOutlined />
-                )
-              }
-              onClick={() =>
-                setSorting((s) => ({
-                  ...s,
-                  sortOrder: s.sortOrder === 'ASC' ? 'DESC' : 'ASC',
-                }))
-              }
-            />
+              <Button
+                disabled={disabledStates.sorting}
+                icon={
+                  sorting.sortOrder === 'ASC' ? (
+                    <ArrowUpOutlined />
+                  ) : (
+                    <ArrowDownOutlined />
+                  )
+                }
+                onClick={() =>
+                  setSorting((s) => ({
+                    ...s,
+                    sortOrder: s.sortOrder === 'ASC' ? 'DESC' : 'ASC',
+                  }))
+                }
+              />
+            </div>
+
+            <Checkbox
+              checked={showPinnedOnly}
+              onChange={(e) => setShowPinnedOnly(e.target.checked)}
+              className={styles.pinnedCheckbox}
+            >
+              Favourites only
+            </Checkbox>
           </Row>
         </Col>
 
