@@ -24,7 +24,7 @@ export const Header = () => {
 
   return (
     <>
-      <Flex align="center" justify="space-between" style={{ height: '100%' }}>
+      <Flex align="center" justify="space-between" className={styles.inner}>
         <Shadow type="text" direction="bottom">
           <Link to="/" className={styles.link}>
             <Title style={{ margin: 0 }} level={3}>
