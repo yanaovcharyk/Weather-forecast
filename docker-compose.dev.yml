@@ -1,0 +1,51 @@
+services:
+  postgres:
+    image: postgres:16.2
+    container_name: weather-postgres
+    restart: always
+    env_file:
+      - .env
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    ports:
+      - "${DB_PORT}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    container_name: weather-server
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "${PORT}:${SERVER_INTERNAL_PORT}"
+    depends_on:
+      - postgres
+    volumes:
+      - ./server:/app
+      - /app/node_modules
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+
+  client:
+    build:
+      context: ./client
+    container_name: weather-client
+    ports:
+      - "${CLIENT_PORT}:${CLIENT_INTERNAL_PORT}"
+    environment:
+      VITE_API_BASE: http://localhost:${PORT}
+      CHOKIDAR_USEPOLLING: "true"
+    depends_on:
+      - server
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+
+volumes:
+  postgres_data:

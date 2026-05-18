@@ -42,12 +42,7 @@ export const createApolloClient = ({
         Query: {
           fields: {
             citiesPaginated: {
-              keyArgs(args) {
-                return JSON.stringify({
-                  sorting: args?.query?.sorting,
-                  showPinnedOnly: args?.query?.showPinnedOnly,
-                });
-              },
+              keyArgs: ['query', ['sorting', 'showPinnedOnly']],
 
               merge(existing, incoming, { args, readField }) {
                 const isFirstPage = !args?.query?.pagination?.cursor;

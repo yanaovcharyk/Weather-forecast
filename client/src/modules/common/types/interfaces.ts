@@ -6,7 +6,7 @@ export interface Weather {
 }
 
 export interface City {
-  id: number;
+  id: string;
   city: string;
   lat: number;
   lon: number;

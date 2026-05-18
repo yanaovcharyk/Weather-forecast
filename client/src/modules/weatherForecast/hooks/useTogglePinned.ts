@@ -5,13 +5,13 @@ import { TOGGLE_CITY_PIN } from '../api/weatherApi';
 type ToggleCityPinMutation = {
   togglePinnedCity: {
     __typename: 'CityOutput';
-    id: number;
+    id: string;
     isPinned: boolean;
   };
 };
 
 type ToggleCityPinVariables = {
-  id: number;
+  id: string;
 };
 
 export const useTogglePinned = () => {
@@ -20,7 +20,7 @@ export const useTogglePinned = () => {
     ToggleCityPinVariables
   >(TOGGLE_CITY_PIN);
 
-  const togglePinned = async (id: number, currentPinned: boolean) => {
+  const togglePinned = async (id: string, currentPinned: boolean) => {
     await toggleCityPinMutation({
       variables: { id },
 

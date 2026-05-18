@@ -1,5 +1,11 @@
 import {
-  Resolver, Query, Mutation, Args, Context, Parent, ResolveField,
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Context,
+  Parent,
+  ResolveField,
   ID,
 } from '@nestjs/graphql';
 import { UseGuards, UsePipes } from '@nestjs/common';
@@ -8,7 +14,13 @@ import { WeatherService } from '@weather/services/weather.service';
 import { ICityOutput, GQLContext } from '../interfaces';
 import { WeatherOutput } from '@weather/dto';
 import { AccessJwtGuard } from '@auth/guards';
-import { CitiesConnection, CitiesQueryInput, AddCityResult, AddCityInput, CityOutput } from '../dto';
+import {
+  CitiesConnection,
+  CitiesQueryInput,
+  AddCityOutput,
+  AddCityInput,
+  CityOutput,
+} from '../dto';
 import { createValidationPipe } from '@shared/utils/create-validation-pipe.util';
 
 @Resolver(() => CityOutput)
@@ -32,7 +44,10 @@ export class CitiesResolver {
     @Context() ctx: GQLContext,
     @Args('query', { type: () => CitiesQueryInput }) query: CitiesQueryInput,
   ): Promise<CitiesConnection> {
-    return this.citiesQueryService.getCitiesPaginated(ctx.req.user.userId, query);
+    return this.citiesQueryService.getCitiesPaginated(
+      ctx.req.user.userId,
+      query,
+    );
   }
 
   @UseGuards(AccessJwtGuard)
@@ -45,7 +60,7 @@ export class CitiesResolver {
   }
 
   @UseGuards(AccessJwtGuard)
-  @Mutation(() => AddCityResult)
+  @Mutation(() => AddCityOutput)
   async addCity(
     @Context() ctx: GQLContext,
     @Args('input') input: AddCityInput,
@@ -80,6 +95,9 @@ export class CitiesResolver {
 
   @ResolveField(() => WeatherOutput, { nullable: true })
   async weather(@Parent() city: CityOutput) {
-    return this.weatherService.getWeatherPreview({ lat: city.lat, lon: city.lon });
+    return this.weatherService.getWeatherPreview({
+      lat: city.lat,
+      lon: city.lon,
+    });
   }
 }

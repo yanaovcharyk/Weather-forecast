@@ -6,10 +6,10 @@ import styles from './CitiesList.module.scss';
 
 type Props = {
   cities: City[];
-  removingCityId: number | null;
-  onRemove: (id: number, city: string) => void;
-  onTogglePinned: (id: number, currentPinned: boolean) => void;
-  onCityClick?: (id: number) => void;
+  removingCityId: string | null;
+  onRemove: (id: string, city: string) => void;
+  onTogglePinned: (id: string, currentPinned: boolean) => void;
+  onCityClick?: (id: string) => void;
   loadMore: () => void;
   hasNext: boolean;
   loading?: boolean;

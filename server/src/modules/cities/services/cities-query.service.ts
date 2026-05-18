@@ -10,8 +10,9 @@ import {
   CitySortField,
   SORT_CONFIG,
 } from '../city-query.config';
-import { SortOrder } from '@shared/query/constants';
-import { decodeCursor, buildConnection } from '@shared/query/pagination';
+import { SortOrder } from '@shared/constants';
+import { buildConnection } from '@shared/utils/build-connection';
+import { decodeCursor } from '@shared/utils/decode-cursor';
 
 @Injectable()
 export class CitiesQueryService {

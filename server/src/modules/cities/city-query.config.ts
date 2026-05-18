@@ -1,6 +1,6 @@
 import { SelectQueryBuilder } from 'typeorm';
 import { CityEntity } from './entities';
-import { SortOrder } from '../../shared/query/constants';
+import { SortOrder } from '../../shared/constants';
 
 export enum CitySortField {
   CITY = 'city',

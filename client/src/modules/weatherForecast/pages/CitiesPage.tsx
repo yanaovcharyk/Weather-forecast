@@ -63,7 +63,7 @@ export const CitiesPage = () => {
 
   const isEmpty = !loading && filteredCities.length === 0;
   const handleBack = () => setCurrentlySelectedCity(null);
-  const handleOpenCity = (id: number) => {
+  const handleOpenCity = (id: string) => {
     navigate(`/cities/${id}`);
   };
 

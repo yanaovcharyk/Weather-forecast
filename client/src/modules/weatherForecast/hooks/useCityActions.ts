@@ -27,7 +27,7 @@ export const useCityActions = ({
 
   const [isAddingCity, setIsAddingCity] = useState(false);
   const [currentlyRemovingCityId, setCurrentlyRemovingCityId] = useState<
-    number | null
+    string | null
   >(null);
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -85,14 +85,11 @@ export const useCityActions = ({
   );
 
   const handleRemoveCity = useCallback(
-    async (cityId: number, cityName: string) => {
+    async (cityId: string, cityName: string) => {
       setCurrentlyRemovingCityId(cityId);
       try {
         await removeCity(cityId);
-        if (
-          selectedExistingCityId &&
-          Number(selectedExistingCityId) === cityId
-        ) {
+        if (selectedExistingCityId && selectedExistingCityId === cityId) {
           const updatedParams = new URLSearchParams(searchParams);
           updatedParams.delete('existingId');
           setSearchParams(updatedParams);
@@ -121,7 +118,7 @@ export const useCityActions = ({
   );
 
   const handleTogglePinned = useCallback(
-    async (cityId: number, isCurrentPinned: boolean) => {
+    async (cityId: string, isCurrentPinned: boolean) => {
       await togglePinned(cityId, isCurrentPinned);
       setCurrentlySelectedCity((previousCity) =>
         previousCity && previousCity.id === cityId

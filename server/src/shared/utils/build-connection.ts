@@ -1,4 +1,4 @@
-import { encodeCursor } from './cursor/encode-cursor';
+import { encodeCursor } from './encode-cursor';
 
 type ConnectionBuilderParams<TEntity, TNode> = {
   entities: TEntity[];

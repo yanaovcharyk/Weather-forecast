@@ -1,10 +1,10 @@
 export interface RemoveCityVariables {
-  id: number;
+  id: string;
 }
 
 export interface RemoveCityMutation {
   removeCity: {
-    id: number;
+    id: string;
     __typename: string;
   };
 }
@@ -17,7 +17,7 @@ export type Weather = {
 };
 
 export type City = {
-  id: number;
+  id: string;
   city: string;
   lat: number;
   lon: number;

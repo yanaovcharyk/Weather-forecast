@@ -1,8 +1,8 @@
-import { Field, ObjectType } from "@nestjs/graphql";
-import { CityOutput } from "./city.output";
+import { Field, ObjectType } from '@nestjs/graphql';
+import { CityOutput } from './city.output';
 
 @ObjectType()
-export class AddCityResult {
+export class AddCityOutput {
   @Field()
   ok!: boolean;
 

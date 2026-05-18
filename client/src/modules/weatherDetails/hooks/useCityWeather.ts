@@ -5,7 +5,9 @@ import { GET_CITY_BY_ID, GET_WEATHER_DETAILS } from '../api/cityWeatherApi';
 
 export const useCityWeather = () => {
   const { id } = useParams();
-  const cityId = Number(id);
+  console.log({ id });
+  const cityId = id;
+  console.log({ cityId });
 
   const {
     data: cityData,

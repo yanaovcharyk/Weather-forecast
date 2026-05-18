@@ -6,11 +6,11 @@ import { CitiesList } from '../CitiesList';
 interface Props {
   existingCity: City;
   onBack: () => void;
-  removingId: number | null;
-  onRemove: (id: number, city: string) => void;
-  onTogglePinned: (id: number, currentPinned: boolean) => void;
+  removingId: string | null;
+  onRemove: (id: string, city: string) => void;
+  onTogglePinned: (id: string, currentPinned: boolean) => void;
   loading: boolean;
-  onCityClick: (id: number) => void;
+  onCityClick: (id: string) => void;
 }
 
 export const ExistingCityLayout = ({

@@ -36,7 +36,7 @@ export const useRemoveCity = () => {
     },
   });
 
-  const removeCity = async (id: number) => {
+  const removeCity = async (id: string) => {
     await mutate({
       variables: { id },
     });
