@@ -1,9 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
+import { AppLoggerService } from '@logger/services';
 
 @Injectable()
 export class WeatherService {
+  private readonly logger;
+
   constructor(
     private readonly httpService: HttpService,
     @Inject('WEATHER_CONFIG')
@@ -15,11 +18,19 @@ export class WeatherService {
     private readonly geoConfig: {
       baseUrl: string;
     },
-  ) {}
+    loggerService: AppLoggerService,
+  ) {
+    this.logger = loggerService.child(WeatherService.name);
+  }
 
   async searchCities(query: string) {
+    this.logger.info('searchCities called');
+    this.logger.debug('searchCities params', { query });
+
     const { apiKey } = this.weatherConfig;
     const { baseUrl } = this.geoConfig;
+
+    const start = Date.now();
 
     const response = await firstValueFrom(
       this.httpService.get(`${baseUrl}/direct`, {
@@ -31,6 +42,13 @@ export class WeatherService {
       }),
     );
 
+    const duration = Date.now() - start;
+
+    this.logger.debug('searchCities API response received', {
+      durationMs: duration,
+      count: response.data?.length ?? 0,
+    });
+
     const cities = response.data;
 
     return cities.map((city: any) => ({
@@ -41,46 +59,40 @@ export class WeatherService {
     }));
   }
 
-  async getWeatherDetails({
-    lat,
-    lon,
-  }: {
-    lat: number;
-    lon: number;
-  }) {
+  async getWeatherDetails({ lat, lon }: { lat: number; lon: number }) {
+    this.logger.info('getWeatherDetails called');
+    this.logger.debug('getWeatherDetails params', { lat, lon });
+
     const { apiKey, weatherBaseUrl } = this.weatherConfig;
+
+    const start = Date.now();
 
     const [currentRes, forecastRes] = await Promise.all([
       firstValueFrom(
         this.httpService.get(`${weatherBaseUrl}/weather`, {
-          params: {
-            lat,
-            lon,
-            appid: apiKey,
-            units: 'metric',
-          },
+          params: { lat, lon, appid: apiKey, units: 'metric' },
         }),
       ),
       firstValueFrom(
         this.httpService.get(`${weatherBaseUrl}/forecast`, {
-          params: {
-            lat,
-            lon,
-            appid: apiKey,
-            units: 'metric',
-          },
+          params: { lat, lon, appid: apiKey, units: 'metric' },
         }),
       ),
     ]);
+
+    const duration = Date.now() - start;
+
+    this.logger.debug('getWeatherDetails API responses received', {
+      durationMs: duration,
+      forecastItems: forecastRes.data?.list?.length ?? 0,
+    });
 
     const current = currentRes.data;
     const forecast = forecastRes.data;
 
     const timezone = forecast.city?.timezone ?? 0;
     const formatTime = (unix: number) =>
-    new Date((unix + timezone) * 1000)
-      .toISOString()
-      .slice(11, 16);
+      new Date((unix + timezone) * 1000).toISOString().slice(11, 16);
 
     const hourly = forecast.list.slice(0, 9).map((item: any) => ({
       time: formatTime(item.dt),
@@ -124,31 +136,27 @@ export class WeatherService {
               pressure.length,
           ),
           clouds: Math.round(
-            clouds.reduce((a: number, b: number) => a + b, 0) /
-              clouds.length,
+            clouds.reduce((a: number, b: number) => a + b, 0) / clouds.length,
           ),
           windSpeed: Math.round(
-            wind.reduce((a: number, b: number) => a + b, 0) /
-              wind.length,
+            wind.reduce((a: number, b: number) => a + b, 0) / wind.length,
           ),
           pop: Math.round(
-            (pop.reduce((a: number, b: number) => a + b, 0) /
-              pop.length) *
-              100,
+            (pop.reduce((a: number, b: number) => a + b, 0) / pop.length) * 100,
           ),
           feelsLike: Math.round(
-            feels.reduce((a: number, b: number) => a + b, 0) /
-              feels.length,
+            feels.reduce((a: number, b: number) => a + b, 0) / feels.length,
           ),
         };
       });
 
-    return {
-      coordinates: {
-        lat,
-        lon,
-      },
+    this.logger.debug('getWeatherDetails processed forecast', {
+      hourlyCount: hourly.length,
+      dailyCount: daily.length,
+    });
 
+    return {
+      coordinates: { lat, lon },
       current: {
         temp: Math.round(current.main.temp),
         feelsLike: Math.round(current.main.feels_like),
@@ -160,24 +168,21 @@ export class WeatherService {
         sunrise: formatTime(current.sys.sunrise),
         sunset: formatTime(current.sys.sunset),
       },
-
       hourly,
       daily,
-
       meta: {
         timezone: forecast.city?.timezone?.toString?.() ?? '',
       },
     };
   }
 
-  async getWeatherPreview({
-    lat,
-    lon,
-  }: {
-    lat: number;
-    lon: number;
-  }) {
+  async getWeatherPreview({ lat, lon }: { lat: number; lon: number }) {
+    this.logger.info('getWeatherPreview called');
+    this.logger.debug('getWeatherPreview params', { lat, lon });
+
     const full = await this.getWeatherDetails({ lat, lon });
+
+    this.logger.debug('getWeatherPreview processed');
 
     return {
       temperature: full.current.temp,

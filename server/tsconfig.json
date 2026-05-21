@@ -17,6 +17,7 @@
       "@weather/*": ["modules/weather/*"],
       "@auth/*": ["modules/auth/*"],
       "@users/*": ["modules/users/*"],
+      "@logger/*": ["modules/logger/*"],
       "@cities/*": ["modules/cities/*"],
       "@controllers/*": ["modules/controllers/*"],
       "@database/*": ["modules/database/*"],

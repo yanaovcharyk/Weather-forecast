@@ -7,4 +7,3 @@ export class AppHealthController {
     return { status: 'ok' };
   }
 }
-

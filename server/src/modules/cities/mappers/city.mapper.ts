@@ -1,7 +1,7 @@
+import { CityOutput } from '../dto';
 import { CityEntity } from '../entities/city.entity';
-import { ICityOutput } from '../interfaces/city.interface';
 
-export function mapToOutput(city: CityEntity): ICityOutput {
+export function mapToOutput(city: CityEntity): CityOutput {
   return {
     id: city.id,
     city: city.city,

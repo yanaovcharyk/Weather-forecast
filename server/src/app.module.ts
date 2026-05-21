@@ -8,18 +8,16 @@ import { graphqlConfig } from './shared/config/graphql.config';
 import { DatabaseModule } from './modules/database/database.module';
 import { AppHealthController } from './app.controller';
 import { AppConfigModule } from './shared/config/config.module';
+import { LoggerModule } from './modules/logger/logger.module';
 
 @Module({
   imports: [
     AppConfigModule,
-
+    LoggerModule,
     GraphQLModule.forRoot(graphqlConfig),
-
     DatabaseModule.forRoot(),
-
     AuthModule,
     CitiesModule,
-
     WeatherModule,
   ],
   controllers: [AppHealthController],
