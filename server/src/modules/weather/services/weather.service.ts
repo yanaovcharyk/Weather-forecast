@@ -2,6 +2,8 @@ import { Inject, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { AppLoggerService } from '@logger/services';
+import { CoordinatesParams } from '../types';
+import { ICitySuggestion, IWeatherCurrent, IWeatherDetails, IWeatherPreview } from '../interfaces';
 
 @Injectable()
 export class WeatherService {
@@ -23,7 +25,7 @@ export class WeatherService {
     this.logger = loggerService.child(WeatherService.name);
   }
 
-  async searchCities(query: string) {
+  async searchCities(query: string): Promise<ICitySuggestion> {
     this.logger.info('searchCities called');
     this.logger.debug('searchCities params', { query });
 
@@ -59,7 +61,7 @@ export class WeatherService {
     }));
   }
 
-  async getWeatherDetails({ lat, lon }: { lat: number; lon: number }) {
+  async getWeatherDetails({ lat, lon }: CoordinatesParams): Promise<IWeatherDetails> {
     this.logger.info('getWeatherDetails called');
     this.logger.debug('getWeatherDetails params', { lat, lon });
 
@@ -176,7 +178,7 @@ export class WeatherService {
     };
   }
 
-  async getWeatherPreview({ lat, lon }: { lat: number; lon: number }) {
+  async getWeatherPreview({ lat, lon }: CoordinatesParams): Promise<IWeatherPreview> {
     this.logger.info('getWeatherPreview called');
     this.logger.debug('getWeatherPreview params', { lat, lon });
 

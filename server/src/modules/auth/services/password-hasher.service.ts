@@ -4,6 +4,12 @@ import * as crypto from 'crypto';
 import { IPasswordHasher } from '../interfaces/password-hasher.interface';
 import { AppLoggerService } from '../../logger/services/app-logger.service';
 
+import {
+  HashPasswordParams,
+  ComparePasswordParams,
+  HashPasswordResult,
+} from '../types';
+
 const ITERATIONS = 100_000;
 const KEY_LENGTH = 64;
 const DIGEST = 'sha512';
@@ -16,7 +22,9 @@ export class Pbkdf2PasswordHasher implements IPasswordHasher {
     this.logger = loggerService.child(Pbkdf2PasswordHasher.name);
   }
 
-  async hash(password: string) {
+  async hash(params: HashPasswordParams): Promise<HashPasswordResult> {
+    const { password } = params;
+
     this.logger.debug('Hashing password');
 
     const salt = crypto.randomBytes(16).toString('hex');
@@ -27,10 +35,15 @@ export class Pbkdf2PasswordHasher implements IPasswordHasher {
 
     this.logger.info('Password hashed successfully');
 
-    return { hash, salt };
+    return {
+      hash,
+      salt,
+    };
   }
 
-  async compare(password: string, hash: string, salt: string) {
+  async compare(params: ComparePasswordParams): Promise<boolean> {
+    const { password, hash, salt } = params;
+
     this.logger.debug('Comparing password hash');
 
     const hashed = crypto

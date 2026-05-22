@@ -33,7 +33,6 @@ export class AuthTokenService {
     this.accessExpires = jwtConfig.accessExpires;
     this.refreshExpires = jwtConfig.refreshExpires;
 
-    // 🔥 child logger (context автоматичний)
     this.logger = loggerService.child(AuthTokenService.name);
 
     this.logger.info('AuthTokenService initialized', {

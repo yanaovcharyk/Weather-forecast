@@ -6,6 +6,7 @@ import { AppLoggerService } from './services/app-logger.service';
 import { LoggerContextService } from './services/logger-context.service';
 import { GraphqlContextInterceptor } from './graphql-context.interceptor';
 
+
 @Global()
 @Module({
   imports: [WinstonModule.forRoot(winstonConfig)],
@@ -13,7 +14,6 @@ import { GraphqlContextInterceptor } from './graphql-context.interceptor';
   providers: [
     AppLoggerService,
     LoggerContextService,
-
     {
       provide: APP_INTERCEPTOR,
       useClass: GraphqlContextInterceptor,

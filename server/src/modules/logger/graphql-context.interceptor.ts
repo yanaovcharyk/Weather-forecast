@@ -24,7 +24,6 @@ export class GraphqlContextInterceptor
     const gql = GqlExecutionContext.create(context);
 
     const ctx = gql.getContext();
-    // console.log(ctx);
 
     return this.contextService.run(
       {

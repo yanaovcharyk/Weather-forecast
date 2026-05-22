@@ -1,18 +1,25 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Request, Response } from 'express';
 import { GraphQLError } from 'graphql';
 
 import { AuthTokenService } from './auth-token.service';
 import { Pbkdf2PasswordHasher } from './password-hasher.service';
 import { AuthCookieService } from './auth-cookie.service';
 
-import { LoginInput, RegisterInput } from '../dto';
-
 import { UserService } from '@users/services/user.service';
-import { UserEntity } from '@users/entities';
-
 import { AppLoggerService } from '../../logger/services/app-logger.service';
 import { LoggerContextService } from '../../logger/services/logger-context.service';
+
+import { IUserEntity } from '../../users/interfaces';
+
+import {
+  LoginParams,
+  RegisterParams,
+  LogoutParams,
+  RotateRefreshTokenParams,
+  TokenPair,
+} from '../types';
+
+import { IAuthOutput } from '../interfaces/auth.output.interface';
 
 @Injectable()
 export class AuthService {
@@ -29,7 +36,9 @@ export class AuthService {
     this.logger = loggerService.child(AuthService.name);
   }
 
-  async login(input: LoginInput, req: Request, res: Response) {
+  async login(params: LoginParams): Promise<IAuthOutput> {
+    const { input, req, res } = params;
+
     this.logger.info('Login attempt started', {
       email: input.email,
       ip: req.ip,
@@ -37,21 +46,12 @@ export class AuthService {
 
     const user = await this.validateUser(input.email, input.password);
 
-    this.logger.debug('User credentials validated', {
-      email: user.email,
-    });
-
     const tokens = await this.generateTokens(user);
-
-    this.logger.debug('JWT tokens generated');
 
     this.setCookies(res, tokens);
 
-    this.logger.debug('Authentication cookies set');
-
     this.logger.info('User login success', {
       email: user.email,
-      ip: req.ip,
     });
 
     this.contextService.printContext('AUTH SERVICE');
@@ -59,25 +59,18 @@ export class AuthService {
     return { success: true };
   }
 
-  async register(input: RegisterInput, req: Request, res: Response) {
+  async register(params: RegisterParams): Promise<IAuthOutput> {
+    const { input, req, res } = params;
+
     this.logger.info('User registration started', {
       email: input.email,
-      ip: req.ip,
     });
 
     const user = await this.usersService.register(input);
 
-    this.logger.debug('User created successfully', {
-      email: user.email,
-    });
-
     const tokens = await this.generateTokens(user);
 
-    this.logger.debug('JWT tokens generated after registration');
-
     this.setCookies(res, tokens);
-
-    this.logger.debug('Authentication cookies set after registration');
 
     this.logger.info('User registered successfully', {
       email: user.email,
@@ -87,143 +80,95 @@ export class AuthService {
     return { success: true };
   }
 
-  async logout(userId: string, res: Response) {
+  async logout(params: LogoutParams): Promise<IAuthOutput> {
+    const { userId, res } = params;
+
     this.logger.info('Logout started');
 
     const user = await this.usersService.findById(userId);
 
     if (!user) {
-      this.logger.warn('Logout failed: user not found');
-
       throw new UnauthorizedException();
     }
 
     const nextVersion = user.refreshTokenVersion + 1;
 
-    await this.usersService.updateRefreshTokenVersion(user.id, nextVersion);
-
-    this.logger.debug('Refresh token version incremented during logout', {
-      oldVersion: user.refreshTokenVersion,
-      newVersion: nextVersion,
+    await this.usersService.updateRefreshTokenVersion({
+      userId: user.id,
+      version: nextVersion,
     });
 
     this.cookieService.clearAuthCookies(res);
 
-    this.logger.debug('Authentication cookies cleared');
-
-    this.logger.info('User logout success', {
-      email: user.email,
-    });
-
     return { success: true };
   }
 
-  async rotateRefreshToken(oldToken: string, req: Request, res: Response) {
+  async rotateRefreshToken(
+    params: RotateRefreshTokenParams,
+  ): Promise<IAuthOutput> {
+    const { oldToken, req, res } = params;
+
     this.logger.info('Refresh token rotation started', {
       ip: req.ip,
     });
 
     const payload = await this.jwtService.verifyRefreshToken(oldToken);
 
-    this.logger.debug('Refresh token verified', {
-      version: payload.version,
-    });
-
     const user = await this.usersService.findById(payload.userId);
 
     if (!user) {
-      this.logger.warn('Refresh token rotation failed: user not found');
-
       throw new GraphQLError('Unauthorized', {
-        extensions: {
-          code: 'UNAUTHENTICATED',
-        },
+        extensions: { code: 'UNAUTHENTICATED' },
       });
     }
 
     if (payload.version !== user.refreshTokenVersion) {
-      this.logger.warn('Invalid refresh token version detected', {
-        tokenVersion: payload.version,
-        actualVersion: user.refreshTokenVersion,
-      });
-
       throw new GraphQLError('Unauthorized', {
-        extensions: {
-          code: 'UNAUTHENTICATED',
-        },
+        extensions: { code: 'UNAUTHENTICATED' },
       });
     }
 
     const newVersion = user.refreshTokenVersion + 1;
 
-    await this.usersService.updateRefreshTokenVersion(user.id, newVersion);
-
-    this.logger.debug('Refresh token version updated', {
-      oldVersion: user.refreshTokenVersion,
-      newVersion,
+    await this.usersService.updateRefreshTokenVersion({
+      userId: user.id,
+      version: newVersion,
     });
 
     user.refreshTokenVersion = newVersion;
 
     const tokens = await this.generateTokens(user);
 
-    this.logger.debug('JWT tokens generated during refresh rotation', {
-      version: newVersion,
-    });
-
     this.setCookies(res, tokens);
-
-    this.logger.debug('Authentication cookies updated after refresh rotation');
-
-    this.logger.info('Refresh token rotated successfully', {
-      version: newVersion,
-      ip: req.ip,
-    });
 
     return { success: true };
   }
 
-  private async validateUser(email: string, password: string) {
-    this.logger.debug('Validating user credentials', {
-      email,
-    });
-
+  private async validateUser(
+    email: string,
+    password: string,
+  ): Promise<IUserEntity> {
     const user = await this.usersService.findByEmail(email);
 
     if (!user) {
-      this.logger.warn('Login failed: user not found', {
-        email,
-      });
-
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const isValid = await this.passwordHasher.compare(
+    const isValid = await this.passwordHasher.compare({
       password,
-      user.password,
-      user.salt,
+      hash: user.password,
+      salt: user.salt,
+    }
     );
 
     if (!isValid) {
-      this.logger.warn('Login failed: invalid password', {
-        email,
-      });
-
       throw new UnauthorizedException('Invalid credentials');
     }
-
-    this.logger.debug('User credentials validation successful', {
-      email: user.email,
-    });
 
     return user;
   }
 
-  private async generateTokens(user: UserEntity) {
-    this.logger.debug('Generating JWT tokens', {
-      refreshTokenVersion: user.refreshTokenVersion,
-    });
-
+  private async generateTokens(user: IUserEntity): Promise<TokenPair> {
     const accessToken = await this.jwtService.createAccessToken({
       userId: user.id,
       email: user.email,
@@ -236,27 +181,14 @@ export class AuthService {
       type: 'refresh',
     });
 
-    this.logger.debug('JWT tokens generated successfully');
-
     return {
       accessToken,
       refreshToken,
     };
   }
 
-  private setCookies(
-    res: Response,
-    tokens: {
-      accessToken: string;
-      refreshToken: string;
-    },
-  ) {
-    this.logger.debug('Setting authentication cookies');
-
+  private setCookies(res: any, tokens: TokenPair): void {
     this.cookieService.setAccessToken(res, tokens.accessToken);
-
     this.cookieService.setRefreshToken(res, tokens.refreshToken);
-
-    this.logger.debug('Authentication cookies set successfully');
   }
 }

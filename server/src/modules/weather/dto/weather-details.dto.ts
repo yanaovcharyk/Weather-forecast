@@ -1,7 +1,12 @@
 import { Field, Float, ObjectType } from '@nestjs/graphql';
+import { IWeatherCurrent } from '../interfaces/weather-current.interface';
+import { IDailyWeather } from '../interfaces/daily-weather.interface';
+import { IHourlyWeather } from '../interfaces/hourly-weather.interface';
+import { IWeatherMeta } from '../interfaces/weather-meta.interface';
+import { IWeatherDetails } from '../interfaces/weather-details.interface';
 
 @ObjectType()
-export class WeatherCurrent {
+export class WeatherCurrent implements IWeatherCurrent {
   @Field(() => Float)
   temp!: number;
 
@@ -31,7 +36,7 @@ export class WeatherCurrent {
 }
 
 @ObjectType()
-export class DailyWeather {
+export class DailyWeather implements IDailyWeather {
   @Field()
   date!: string;
 
@@ -67,7 +72,7 @@ export class DailyWeather {
 }
 
 @ObjectType()
-export class HourlyWeather {
+export class HourlyWeather implements IHourlyWeather {
   @Field()
   time!: string;
 
@@ -82,7 +87,7 @@ export class HourlyWeather {
 }
 
 @ObjectType()
-export class WeatherMeta {
+export class WeatherMeta implements IWeatherMeta {
   @Field()
   timezone!: string;
 }

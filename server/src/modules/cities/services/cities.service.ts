@@ -4,8 +4,9 @@ import { Repository } from 'typeorm';
 import { CityEntity } from '../entities/city.entity';
 import { mapToOutput } from '../mappers/city.mapper';
 import { AppLoggerService } from '@logger/services';
-import { AddCityOutput, CityOutput } from '../dto';
 import { AddCityParams, CityByIdParams, UserIdParams } from '../types';
+import { ICityOutput } from '../interfaces/city.output.interface';
+import { IAddCityOutput } from '../interfaces/add-city.output.interface';
 
 @Injectable()
 export class CitiesService {
@@ -19,7 +20,7 @@ export class CitiesService {
     this.logger = loggerService.child(CitiesService.name);
   }
 
-  async getCityById(params: CityByIdParams): Promise<CityOutput> {
+  async getCityById(params: CityByIdParams): Promise<ICityOutput> {
     const { userId, id } = params;
 
     this.logger.info('getCityById called');
@@ -32,7 +33,7 @@ export class CitiesService {
     return mapToOutput(city);
   }
 
-  async addCity(params: AddCityParams): Promise<AddCityOutput> {
+  async addCity(params: AddCityParams): Promise<IAddCityOutput> {
     const { userId, input } = params;
 
     this.logger.info('addCity called');
@@ -82,7 +83,7 @@ export class CitiesService {
     };
   }
 
-  async removeCity(params: CityByIdParams): Promise<CityOutput> {
+  async removeCity(params: CityByIdParams): Promise<ICityOutput> {
     const { userId, id } = params;
 
     this.logger.info('removeCity called');
@@ -110,7 +111,7 @@ export class CitiesService {
     });
   }
 
-  async togglePinned(params: CityByIdParams): Promise<CityOutput> {
+  async togglePinned(params: CityByIdParams): Promise<ICityOutput> {
     const { userId, id } = params;
 
     this.logger.info('togglePinned called');

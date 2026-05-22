@@ -1,6 +1,7 @@
-export interface IPasswordHasher {
-  hash(password: string): Promise<{ hash: string; salt: string }>;
-  compare(password: string, hash: string, salt: string): Promise<boolean>;
-}
+import { HashPasswordParams, ComparePasswordParams, HashPasswordResult } from '../types';
 
-export const PASSWORD_HASHER = Symbol('PASSWORD_HASHER');
+export interface IPasswordHasher {
+  hash(params: HashPasswordParams): Promise<HashPasswordResult>;
+
+  compare(params: ComparePasswordParams): Promise<boolean>;
+}

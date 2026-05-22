@@ -1,9 +1,6 @@
 import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
-
 import { UseGuards } from '@nestjs/common';
-
-import { LoginInput, RegisterInput, LoginOutput, AuthOutput } from '../dto';
-
+import { LoginInput, RegisterInput, AuthOutput } from '../dto';
 import { GQLContext } from '../../cities/interfaces';
 import { AuthService } from '../services';
 import { AccessJwtGuard, RefreshJwtGuard } from '../guards';
@@ -20,19 +17,21 @@ export class AuthResolver {
     this.logger = loggerService.child(AuthResolver.name);
   }
 
-  @Mutation(() => LoginOutput)
+  @Mutation(() => AuthOutput)
   async login(@Args('input') input: LoginInput, @Context() ctx: GQLContext) {
     this.logger.info('Login mutation called', {
       email: input.email,
       ip: ctx.req.ip,
     });
 
-    await this.authService.login(input, ctx.req, ctx.res);
-
-    return { success: true };
+    return this.authService.login({
+      input,
+      req: ctx.req,
+      res: ctx.res,
+    });
   }
 
-  @Mutation(() => LoginOutput)
+  @Mutation(() => AuthOutput)
   async register(
     @Args('input') input: RegisterInput,
     @Context() ctx: GQLContext,
@@ -42,9 +41,11 @@ export class AuthResolver {
       ip: ctx.req.ip,
     });
 
-    await this.authService.register(input, ctx.req, ctx.res);
-
-    return { success: true };
+    return this.authService.register({
+      input,
+      req: ctx.req,
+      res: ctx.res,
+    });
   }
 
   @Mutation(() => AuthOutput)
@@ -54,7 +55,10 @@ export class AuthResolver {
       userId: ctx.req.user.userId,
     });
 
-    return this.authService.logout(ctx.req.user.userId, ctx.res);
+    return this.authService.logout({
+      userId: ctx.req.user.userId,
+      res: ctx.res,
+    });
   }
 
   @Mutation(() => AuthOutput)
@@ -65,11 +69,11 @@ export class AuthResolver {
       ip: ctx.req.ip,
     });
 
-    return this.authService.rotateRefreshToken(
-      ctx.req.user.refreshToken,
-      ctx.req,
-      ctx.res,
-    );
+    return this.authService.rotateRefreshToken({
+      oldToken: ctx.req.user.refreshToken,
+      req: ctx.req,
+      res: ctx.res,
+    });
   }
 
   @Query(() => Boolean)

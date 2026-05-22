@@ -2,17 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { Response, Request } from 'express';
 import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
-
 import { IAppConfig } from '../../../shared/types/app.config';
 import { AppLoggerService } from '../../logger/services/app-logger.service';
 import { LoggerContextService } from '../../logger/services/logger-context.service';
-
-enum TokenName {
-  ACCESS = 'accessToken',
-  REFRESH = 'refreshToken',
-}
-
-type MsString = `${number}${'ms' | 's' | 'm' | 'h' | 'd'}`;
+import { MsString, TokenName } from '../types';
 
 @Injectable()
 export class AuthCookieService {
@@ -59,7 +52,7 @@ export class AuthCookieService {
     return token;
   }
 
-  clearAuthCookies(res: Response) {
+  clearAuthCookies(res: Response): void {
     this.logger.info('Clearing auth cookies');
 
     res.clearCookie(TokenName.ACCESS, this.cookieOptions);
@@ -116,7 +109,7 @@ export class AuthCookieService {
     token: string,
     name: TokenName,
     maxAge: number,
-  ) {
+  ): void {
     this.logger.debug('Setting auth cookie', {
       tokenType: name,
       maxAge,
@@ -130,25 +123,25 @@ export class AuthCookieService {
     this.contextService.printContext('COOKIE SERVICE');
   }
 
-  setAccessToken(res: Response, token: string) {
+  setAccessToken(res: Response, token: string): void {
     this.logger.info('Setting access token cookie');
 
     this.setToken(res, token, TokenName.ACCESS, this.getAccessTokenMaxAge());
   }
 
-  setRefreshToken(res: Response, token: string) {
+  setRefreshToken(res: Response, token: string): void {
     this.logger.info('Setting refresh token cookie');
 
     this.setToken(res, token, TokenName.REFRESH, this.getRefreshTokenMaxAge());
   }
 
-  clearAccessToken(res: Response) {
+  clearAccessToken(res: Response): void {
     this.logger.warn('Clearing access token cookie');
 
     res.clearCookie(TokenName.ACCESS, this.cookieOptions);
   }
 
-  clearRefreshToken(res: Response) {
+  clearRefreshToken(res: Response): void {
     this.logger.warn('Clearing refresh token cookie', {
       token: TokenName.REFRESH,
     });

@@ -1,8 +1,9 @@
 import { ObjectType, Field, Float, ID } from '@nestjs/graphql';
 import { WeatherOutput } from '../../weather/dto';
+import { ICityOutput } from '../interfaces/city.output.interface';
 
 @ObjectType()
-export class CityOutput {
+export class CityOutput implements ICityOutput {
   @Field(() => ID)
   id!: string;
 

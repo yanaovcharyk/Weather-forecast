@@ -5,6 +5,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Pbkdf2PasswordHasher } from '@auth/services/password-hasher.service';
 import { RegisterInput } from '@auth/dto';
 import { AppLoggerService } from '@logger/services';
+import { UpdateRefreshTokenVersionParams } from '../types';
+import { IUserEntity } from '../interfaces';
 
 @Injectable()
 export class UserService {
@@ -19,21 +21,23 @@ export class UserService {
     this.logger = loggerService.child(UserService.name);
   }
 
-  async findByEmail(email: string): Promise<UserEntity | null> {
+  async findByEmail(email: string): Promise<IUserEntity | null> {
     this.logger.debug('findByEmail called', { email });
     return this.userRepository.findOne({ where: { email } });
   }
 
-  async findById(id: string): Promise<UserEntity | null> {
+  async findById(id: string): Promise<IUserEntity | null> {
     this.logger.debug('findById called', { id });
     return this.userRepository.findOne({ where: { id } });
   }
 
-  async register(input: RegisterInput): Promise<UserEntity> {
+  async register(input: RegisterInput): Promise<IUserEntity> {
     this.logger.info('register called');
     this.logger.debug('register params', { email: input.email });
 
-    const { hash, salt } = await this.passwordHasher.hash(input.password);
+    const { hash, salt } = await this.passwordHasher.hash({
+      password: input.password,
+    });
 
     const user = this.userRepository.create({
       email: input.email,
@@ -48,16 +52,16 @@ export class UserService {
     return saved;
   }
 
-  async createUser(data: Partial<UserEntity>): Promise<UserEntity> {
+  async createUser(data: Partial<UserEntity>): Promise<IUserEntity> {
     this.logger.debug('createUser called');
     const user = this.userRepository.create(data);
     return this.userRepository.save(user);
   }
 
   async updateRefreshTokenVersion(
-    userId: string,
-    version: number,
+    params: UpdateRefreshTokenVersionParams,
   ): Promise<void> {
+    const { userId, version } = params;
     this.logger.info('updateRefreshTokenVersion called', { userId, version });
 
     await this.userRepository.update(userId, {
