@@ -1,5 +1,3 @@
-import { CityOutput } from '../dto';
-import { CityEntity } from '../entities/city.entity';
 import { ICityEntity } from '../interfaces/city.entity.interface';
 import { ICityOutput } from '../interfaces/city.output.interface';
 

@@ -1,34 +1,16 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { CitiesSortingInput } from './cities-sorting.input';
-import { FilterInput } from './filter.input';
-import { PaginationInput } from '../../../shared/dto/pagination.input';
 import { Type } from 'class-transformer';
-import {
-  IsBoolean,
-  IsDefined,
-  IsOptional,
-  ValidateNested,
-} from 'class-validator';
+import { IsBoolean, IsOptional, ValidateNested } from 'class-validator';
+import { CitiesSortingInput } from './cities-sorting.input';
+import { BaseQueryInput } from '../../../shared/graphql/dto/base-query.input';
 
 @InputType()
-export class CitiesQueryInput {
-  @Field(() => PaginationInput)
-  @ValidateNested()
-  @Type(() => PaginationInput)
-  @IsDefined()
-  pagination!: PaginationInput;
-
+export class CitiesQueryInput extends BaseQueryInput<CitiesSortingInput> {
   @Field(() => CitiesSortingInput, { nullable: true })
   @ValidateNested()
   @Type(() => CitiesSortingInput)
   @IsOptional()
-  sorting?: CitiesSortingInput;
-
-  @Field(() => [FilterInput], { nullable: true })
-  @ValidateNested({ each: true })
-  @Type(() => FilterInput)
-  @IsOptional()
-  filters?: FilterInput[];
+  declare sorting?: CitiesSortingInput;
 
   @Field(() => Boolean, { nullable: true })
   @IsOptional()

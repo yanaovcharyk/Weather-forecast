@@ -1,20 +1,15 @@
 import { Field, InputType, registerEnumType } from '@nestjs/graphql';
-import { IsEnum, IsOptional } from 'class-validator';
-import { SortOrder } from '../../../shared/constants';
+import { IsOptional } from 'class-validator';
 import { CitySortField } from '../city-query.config';
+import { BaseSortingInput } from '../../../shared/graphql/dto/base-sorting.input';
 
-registerEnumType(SortOrder, {
-  name: 'SortOrder',
+registerEnumType(CitySortField, {
+  name: 'CitySortField',
 });
 
 @InputType()
-export class CitiesSortingInput {
+export class CitiesSortingInput extends BaseSortingInput {
   @Field(() => String, { nullable: true })
   @IsOptional()
   sortBy?: CitySortField;
-
-  @Field(() => SortOrder, { nullable: true })
-  @IsOptional()
-  @IsEnum(SortOrder)
-  sortOrder?: SortOrder;
 }
