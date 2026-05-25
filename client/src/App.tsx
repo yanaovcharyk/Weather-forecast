@@ -3,12 +3,17 @@ import { AppProvider } from '@/common/providers';
 import { AppRouter } from '@/common/components/Routers';
 import { App as AntApp } from 'antd';
 import './App.css';
+import { ErrorBoundary } from './modules/logger/ErrorBoundary';
+import { RouteLogger } from './modules/logger/RouteLogger';
 
 export const App = () => (
   <AntApp>
     <AppProvider>
       <BrowserRouter>
-        <AppRouter />
+        <ErrorBoundary>
+          <RouteLogger />
+          <AppRouter />
+        </ErrorBoundary>
       </BrowserRouter>
     </AppProvider>
   </AntApp>

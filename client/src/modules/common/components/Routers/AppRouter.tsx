@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { registry } from './registry';
 import { applyGuards } from './guards';
+import { ErrorBoundary } from '../../../logger/ErrorBoundary';
 
 export const AppRouter = () => {
   const routes = registry.flatMap((module) => module.routes);
@@ -15,7 +16,9 @@ export const AppRouter = () => {
           <Route
             key={i}
             path={route.path}
-            element={applyGuards(route, element)}
+            element={
+              <ErrorBoundary>{applyGuards(route, element)}</ErrorBoundary>
+            }
           />
         );
       })}

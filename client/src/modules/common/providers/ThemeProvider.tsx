@@ -81,6 +81,11 @@ export const ThemeProvider = ({ children }: Props) => {
             titleMarginTop: 0,
             titleMarginBottom: 0,
           },
+
+          Alert: {
+            colorTextHeading: '#234C75',
+            colorText: '#234C75',
+          },
         },
       }}
     >

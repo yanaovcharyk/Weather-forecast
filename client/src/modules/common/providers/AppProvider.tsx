@@ -2,13 +2,16 @@ import { ThemeProvider } from './ThemeProvider';
 import { AuthProvider } from '@/auth/providers';
 import { ToastProvider } from './ToastProvider';
 import { AppApolloProvider } from '../api/apollo';
+import { LoggerContextProvider } from '../../logger';
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => (
   <ToastProvider>
-    <AppApolloProvider>
-      <AuthProvider>
-        <ThemeProvider>{children}</ThemeProvider>
-      </AuthProvider>
-    </AppApolloProvider>
+    <LoggerContextProvider>
+      <AppApolloProvider>
+        <AuthProvider>
+          <ThemeProvider>{children}</ThemeProvider>
+        </AuthProvider>
+      </AppApolloProvider>
+    </LoggerContextProvider>
   </ToastProvider>
 );

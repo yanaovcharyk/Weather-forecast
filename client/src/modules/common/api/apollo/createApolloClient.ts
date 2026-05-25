@@ -7,6 +7,7 @@ import {
 
 import { AccessTokenRefreshCoordinator } from './auth/AccessTokenRefreshCoordinator';
 import { createTokenRefreshErrorLink } from './links/tokenRefreshErrorLink';
+import { apolloLoggerLink } from './links/apolloLoggerLink';
 
 type CreateApolloClientParams = {
   performLogout: () => void;
@@ -31,7 +32,7 @@ export const createApolloClient = ({
   });
 
   return new ApolloClient({
-    link: ApolloLink.from([tokenRefreshErrorLink, httpLink]),
+    link: ApolloLink.from([apolloLoggerLink, tokenRefreshErrorLink, httpLink]),
 
     cache: new InMemoryCache({
       typePolicies: {
