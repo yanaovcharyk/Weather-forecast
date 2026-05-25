@@ -9,31 +9,45 @@ import {
   ComparePasswordParams,
   HashPasswordResult,
 } from '../types';
+import { LogMethod } from '../../../shared/logging/log-method.decorator';
 
 const ITERATIONS = 100_000;
 const KEY_LENGTH = 64;
 const DIGEST = 'sha512';
 
 @Injectable()
-export class Pbkdf2PasswordHasher implements IPasswordHasher {
+export class Pbkdf2PasswordHasher
+  implements IPasswordHasher
+{
   private readonly logger;
 
   constructor(loggerService: AppLoggerService) {
-    this.logger = loggerService.child(Pbkdf2PasswordHasher.name);
+    this.logger =
+      loggerService.child(Pbkdf2PasswordHasher.name);
   }
 
-  async hash(params: HashPasswordParams): Promise<HashPasswordResult> {
+  @LogMethod({
+    logArgs: false,
+    logResult: false,
+  })
+  async hash(
+    params: HashPasswordParams,
+  ): Promise<HashPasswordResult> {
     const { password } = params;
 
-    this.logger.debug('Hashing password');
-
-    const salt = crypto.randomBytes(16).toString('hex');
-
-    const hash = crypto
-      .pbkdf2Sync(password, salt, ITERATIONS, KEY_LENGTH, DIGEST)
+    const salt = crypto
+      .randomBytes(16)
       .toString('hex');
 
-    this.logger.info('Password hashed successfully');
+    const hash = crypto
+      .pbkdf2Sync(
+        password,
+        salt,
+        ITERATIONS,
+        KEY_LENGTH,
+        DIGEST,
+      )
+      .toString('hex');
 
     return {
       hash,
@@ -41,19 +55,31 @@ export class Pbkdf2PasswordHasher implements IPasswordHasher {
     };
   }
 
-  async compare(params: ComparePasswordParams): Promise<boolean> {
+  @LogMethod({
+    logArgs: false,
+    logResult: false,
+  })
+  async compare(
+    params: ComparePasswordParams,
+  ): Promise<boolean> {
     const { password, hash, salt } = params;
 
-    this.logger.debug('Comparing password hash');
-
     const hashed = crypto
-      .pbkdf2Sync(password, salt, ITERATIONS, KEY_LENGTH, DIGEST)
+      .pbkdf2Sync(
+        password,
+        salt,
+        ITERATIONS,
+        KEY_LENGTH,
+        DIGEST,
+      )
       .toString('hex');
 
     const isMatch = hashed === hash;
 
     if (!isMatch) {
-      this.logger.warn('Password comparison failed');
+      this.logger.warn(
+        'Password comparison failed',
+      );
     }
 
     return isMatch;

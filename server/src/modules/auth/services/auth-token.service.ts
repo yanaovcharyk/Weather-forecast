@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
 import { IAppConfig } from '../../../shared/types/app.config';
+
 import { throwUnauthorized } from '../../../shared/errors/unautorized.error';
 
 import {
@@ -11,6 +12,8 @@ import {
 } from '../interfaces/jwt-payload.interfaces';
 
 import { AppLoggerService } from '../../logger/services/app-logger.service';
+
+import { LogMethod } from '@shared/logging/log-method.decorator';
 
 @Injectable()
 export class AuthTokenService {
@@ -26,27 +29,39 @@ export class AuthTokenService {
     private readonly config: ConfigService<IAppConfig>,
     loggerService: AppLoggerService,
   ) {
-    const jwtConfig = this.config.get('jwt', { infer: true })!;
+    const jwtConfig =
+      this.config.get('jwt', {
+        infer: true,
+      })!;
 
     this.accessSecret = jwtConfig.accessSecret;
     this.refreshSecret = jwtConfig.refreshSecret;
-    this.accessExpires = jwtConfig.accessExpires;
-    this.refreshExpires = jwtConfig.refreshExpires;
 
-    this.logger = loggerService.child(AuthTokenService.name);
+    this.accessExpires =
+      jwtConfig.accessExpires;
 
-    this.logger.info('AuthTokenService initialized', {
-      accessExpires: this.accessExpires,
-      refreshExpires: this.refreshExpires,
-    });
+    this.refreshExpires =
+      jwtConfig.refreshExpires;
+
+    this.logger =
+      loggerService.child(AuthTokenService.name);
+
+    this.logger.info(
+      'AuthTokenService initialized',
+      {
+        accessExpires: this.accessExpires,
+        refreshExpires: this.refreshExpires,
+      },
+    );
   }
 
-  async createAccessToken(tokenPayload: IAccessJwtPayload): Promise<string> {
-    this.logger.debug('Creating access token', {
-      userId: tokenPayload.userId,
-      email: tokenPayload.email,
-    });
-
+  @LogMethod({
+    logArgs: false,
+    logResult: false,
+  })
+  async createAccessToken(
+    tokenPayload: IAccessJwtPayload,
+  ): Promise<string> {
     return this.createToken(
       tokenPayload,
       this.accessSecret,
@@ -54,12 +69,13 @@ export class AuthTokenService {
     );
   }
 
-  async createRefreshToken(tokenPayload: IRefreshJwtPayload): Promise<string> {
-    this.logger.debug('Creating refresh token', {
-      userId: tokenPayload.userId,
-      version: tokenPayload.version,
-    });
-
+  @LogMethod({
+    logArgs: false,
+    logResult: false,
+  })
+  async createRefreshToken(
+    tokenPayload: IRefreshJwtPayload,
+  ): Promise<string> {
     return this.createToken(
       tokenPayload,
       this.refreshSecret,
@@ -67,9 +83,13 @@ export class AuthTokenService {
     );
   }
 
-  async verifyAccessToken(token: string): Promise<IAccessJwtPayload> {
-    this.logger.debug('Verifying access token');
-
+  @LogMethod({
+    logArgs: false,
+    logResult: false,
+  })
+  async verifyAccessToken(
+    token: string,
+  ): Promise<IAccessJwtPayload> {
     return this.verifyToken<IAccessJwtPayload>(
       token,
       this.accessSecret,
@@ -77,9 +97,13 @@ export class AuthTokenService {
     );
   }
 
-  async verifyRefreshToken(token: string): Promise<IRefreshJwtPayload> {
-    this.logger.debug('Verifying refresh token');
-
+  @LogMethod({
+    logArgs: false,
+    logResult: false,
+  })
+  async verifyRefreshToken(
+    token: string,
+  ): Promise<IRefreshJwtPayload> {
     return this.verifyToken<IRefreshJwtPayload>(
       token,
       this.refreshSecret,
@@ -93,18 +117,19 @@ export class AuthTokenService {
     expiresIn: string,
   ): Promise<string> {
     try {
-      const token = await this.jwt.signAsync<T>(tokenPayload, {
-        secret,
-        expiresIn: expiresIn as any,
-      });
-
-      this.logger.debug('JWT token created successfully');
-
-      return token;
+      return await this.jwt.signAsync<T>(
+        tokenPayload,
+        {
+          secret,
+          expiresIn: expiresIn as any,
+        },
+      );
     } catch (error: unknown) {
       this.logger.error(
         'Failed to create JWT token',
-        error instanceof Error ? error : undefined,
+        error instanceof Error
+          ? error
+          : undefined,
         {
           stage: 'signAsync',
         },
@@ -120,15 +145,22 @@ export class AuthTokenService {
     errorMessage: string,
   ): Promise<T> {
     try {
-      const payload = await this.jwt.verifyAsync<T>(token, { secret });
-
-      this.logger.debug('JWT token verified successfully');
-
-      return payload;
+      return await this.jwt.verifyAsync<T>(
+        token,
+        {
+          secret,
+        },
+      );
     } catch (error) {
-      this.logger.warn('JWT verification failed', {
-        error: error instanceof Error ? error.message : 'Unknown error',
-      });
+      this.logger.warn(
+        'JWT verification failed',
+        {
+          error:
+            error instanceof Error
+              ? error.message
+              : 'Unknown error',
+        },
+      );
 
       throwUnauthorized(errorMessage);
     }

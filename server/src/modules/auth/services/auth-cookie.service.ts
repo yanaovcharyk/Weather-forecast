@@ -1,11 +1,21 @@
 import { Injectable } from '@nestjs/common';
-import { Response, Request } from 'express';
+
+import {
+  Response,
+  Request,
+} from 'express';
+
 import { ConfigService } from '@nestjs/config';
+
 import ms from 'ms';
+
 import { IAppConfig } from '../../../shared/types/app.config';
+
 import { AppLoggerService } from '../../logger/services/app-logger.service';
-import { LoggerContextService } from '../../logger/services/logger-context.service';
+
 import { MsString, TokenName } from '../types';
+
+import { LogMethod } from '@shared/logging/log-method.decorator';
 
 @Injectable()
 export class AuthCookieService {
@@ -13,14 +23,17 @@ export class AuthCookieService {
 
   constructor(
     private readonly config: ConfigService<IAppConfig>,
-    private contextService: LoggerContextService,
     loggerService: AppLoggerService,
   ) {
-    this.logger = loggerService.child(AuthCookieService.name);
+    this.logger =
+      loggerService.child(AuthCookieService.name);
   }
 
   private get cookieOptions() {
-    const isProd = this.config.get('nodeEnv', { infer: true }) === 'production';
+    const isProd =
+      this.config.get('nodeEnv', {
+        infer: true,
+      }) === 'production';
 
     return {
       httpOnly: true,
@@ -30,37 +43,52 @@ export class AuthCookieService {
     };
   }
 
-  getAccessToken(req: Request): string | null {
-    const token = req.cookies?.accessToken ?? null;
-
-    this.logger.debug('Access token extracted from cookies', {
-      hasToken: Boolean(token),
-      ip: req.ip,
-    });
-
-    return token;
+  @LogMethod({
+    logArgs: false,
+    logResult: false,
+    logExecutionTime: false,
+  })
+  getAccessToken(
+    req: Request,
+  ): string | null {
+    return req.cookies?.accessToken ?? null;
   }
 
-  getRefreshToken(req: Request): string | null {
-    const token = req.cookies?.refreshToken ?? null;
-
-    this.logger.debug('Refresh token extracted from cookies', {
-      hasToken: Boolean(token),
-      ip: req.ip,
-    });
-
-    return token;
+  @LogMethod({
+    logArgs: false,
+    logResult: false,
+    logExecutionTime: false,
+  })
+  getRefreshToken(
+    req: Request,
+  ): string | null {
+    return req.cookies?.refreshToken ?? null;
   }
 
+  @LogMethod({
+    logArgs: false,
+    logResult: false,
+    logExecutionTime: false,
+  })
   clearAuthCookies(res: Response): void {
-    this.logger.info('Clearing auth cookies');
+    res.clearCookie(
+      TokenName.ACCESS,
+      this.cookieOptions,
+    );
 
-    res.clearCookie(TokenName.ACCESS, this.cookieOptions);
-    res.clearCookie(TokenName.REFRESH, this.cookieOptions);
+    res.clearCookie(
+      TokenName.REFRESH,
+      this.cookieOptions,
+    );
   }
 
   private getAccessTokenMaxAge(): number {
-    const expires = this.config.get('jwt.accessExpires', { infer: true });
+    const expires = this.config.get(
+      'jwt.accessExpires',
+      {
+        infer: true,
+      },
+    );
 
     if (!expires) {
       this.logger.error(
@@ -68,14 +96,21 @@ export class AuthCookieService {
         new Error('Missing config'),
       );
 
-      throw new Error('jwt.accessExpires is not defined');
+      throw new Error(
+        'jwt.accessExpires is not defined',
+      );
     }
 
     return this.parseMs(expires);
   }
 
   private getRefreshTokenMaxAge(): number {
-    const expires = this.config.get('jwt.refreshExpires', { infer: true });
+    const expires = this.config.get(
+      'jwt.refreshExpires',
+      {
+        infer: true,
+      },
+    );
 
     if (!expires) {
       this.logger.error(
@@ -83,7 +118,9 @@ export class AuthCookieService {
         new Error('Missing config'),
       );
 
-      throw new Error('jwt.refreshExpires is not defined');
+      throw new Error(
+        'jwt.refreshExpires is not defined',
+      );
     }
 
     return this.parseMs(expires);
@@ -98,7 +135,9 @@ export class AuthCookieService {
         new Error('Invalid ms format'),
       );
 
-      throw new Error(`Invalid ms value: ${value}`);
+      throw new Error(
+        `Invalid ms value: ${value}`,
+      );
     }
 
     return result;
@@ -110,42 +149,71 @@ export class AuthCookieService {
     name: TokenName,
     maxAge: number,
   ): void {
-    this.logger.debug('Setting auth cookie', {
-      tokenType: name,
-      maxAge,
-    });
-
     res.cookie(name, token, {
       ...this.cookieOptions,
       maxAge,
     });
-
-    this.contextService.printContext('COOKIE SERVICE');
   }
 
-  setAccessToken(res: Response, token: string): void {
-    this.logger.info('Setting access token cookie');
-
-    this.setToken(res, token, TokenName.ACCESS, this.getAccessTokenMaxAge());
+  @LogMethod({
+    logArgs: false,
+    logResult: false,
+    logExecutionTime: false,
+  })
+  setAccessToken(
+    res: Response,
+    token: string,
+  ): void {
+    this.setToken(
+      res,
+      token,
+      TokenName.ACCESS,
+      this.getAccessTokenMaxAge(),
+    );
   }
 
-  setRefreshToken(res: Response, token: string): void {
-    this.logger.info('Setting refresh token cookie');
-
-    this.setToken(res, token, TokenName.REFRESH, this.getRefreshTokenMaxAge());
+  @LogMethod({
+    logArgs: false,
+    logResult: false,
+    logExecutionTime: false,
+  })
+  setRefreshToken(
+    res: Response,
+    token: string,
+  ): void {
+    this.setToken(
+      res,
+      token,
+      TokenName.REFRESH,
+      this.getRefreshTokenMaxAge(),
+    );
   }
 
-  clearAccessToken(res: Response): void {
-    this.logger.warn('Clearing access token cookie');
-
-    res.clearCookie(TokenName.ACCESS, this.cookieOptions);
+  @LogMethod({
+    logArgs: false,
+    logResult: false,
+    logExecutionTime: false,
+  })
+  clearAccessToken(
+    res: Response,
+  ): void {
+    res.clearCookie(
+      TokenName.ACCESS,
+      this.cookieOptions,
+    );
   }
 
-  clearRefreshToken(res: Response): void {
-    this.logger.warn('Clearing refresh token cookie', {
-      token: TokenName.REFRESH,
-    });
-
-    res.clearCookie(TokenName.REFRESH, this.cookieOptions);
+  @LogMethod({
+    logArgs: false,
+    logResult: false,
+    logExecutionTime: false,
+  })
+  clearRefreshToken(
+    res: Response,
+  ): void {
+    res.clearCookie(
+      TokenName.REFRESH,
+      this.cookieOptions,
+    );
   }
 }

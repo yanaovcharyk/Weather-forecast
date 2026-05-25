@@ -3,7 +3,12 @@ import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { AppLoggerService } from '@logger/services';
 import { CoordinatesParams } from '../types';
-import { ICitySuggestion, IWeatherCurrent, IWeatherDetails, IWeatherPreview } from '../interfaces';
+import {
+  ICitySuggestion,
+  IWeatherDetails,
+  IWeatherPreview,
+} from '../interfaces';
+import { LogMethod } from '@shared/logging/log-method.decorator';
 
 @Injectable()
 export class WeatherService {
@@ -25,10 +30,8 @@ export class WeatherService {
     this.logger = loggerService.child(WeatherService.name);
   }
 
+  @LogMethod()
   async searchCities(query: string): Promise<ICitySuggestion> {
-    this.logger.info('searchCities called');
-    this.logger.debug('searchCities params', { query });
-
     const { apiKey } = this.weatherConfig;
     const { baseUrl } = this.geoConfig;
 
@@ -46,14 +49,12 @@ export class WeatherService {
 
     const duration = Date.now() - start;
 
-    this.logger.debug('searchCities API response received', {
+    this.logger.info('searchCities: API response received', {
       durationMs: duration,
       count: response.data?.length ?? 0,
     });
 
-    const cities = response.data;
-
-    return cities.map((city: any) => ({
+    return response.data.map((city: any) => ({
       name: city.name,
       country: city.country,
       lat: city.lat,
@@ -61,10 +62,11 @@ export class WeatherService {
     }));
   }
 
-  async getWeatherDetails({ lat, lon }: CoordinatesParams): Promise<IWeatherDetails> {
-    this.logger.info('getWeatherDetails called');
-    this.logger.debug('getWeatherDetails params', { lat, lon });
-
+  @LogMethod()
+  async getWeatherDetails({
+    lat,
+    lon,
+  }: CoordinatesParams): Promise<IWeatherDetails> {
     const { apiKey, weatherBaseUrl } = this.weatherConfig;
 
     const start = Date.now();
@@ -84,7 +86,7 @@ export class WeatherService {
 
     const duration = Date.now() - start;
 
-    this.logger.debug('getWeatherDetails API responses received', {
+    this.logger.info('getWeatherDetails: API responses received', {
       durationMs: duration,
       forecastItems: forecastRes.data?.list?.length ?? 0,
     });
@@ -93,6 +95,7 @@ export class WeatherService {
     const forecast = forecastRes.data;
 
     const timezone = forecast.city?.timezone ?? 0;
+
     const formatTime = (unix: number) =>
       new Date((unix + timezone) * 1000).toISOString().slice(11, 16);
 
@@ -128,7 +131,6 @@ export class WeatherService {
           max: Math.round(Math.max(...temps)),
           description: items[0].weather[0].description,
           icon: items[0].weather[0].icon,
-
           humidity: Math.round(
             humidity.reduce((a: number, b: number) => a + b, 0) /
               humidity.length,
@@ -138,7 +140,8 @@ export class WeatherService {
               pressure.length,
           ),
           clouds: Math.round(
-            clouds.reduce((a: number, b: number) => a + b, 0) / clouds.length,
+            clouds.reduce((a: number, b: number) => a + b, 0) /
+              clouds.length,
           ),
           windSpeed: Math.round(
             wind.reduce((a: number, b: number) => a + b, 0) / wind.length,
@@ -152,7 +155,7 @@ export class WeatherService {
         };
       });
 
-    this.logger.debug('getWeatherDetails processed forecast', {
+    this.logger.info('getWeatherDetails: processed forecast', {
       hourlyCount: hourly.length,
       dailyCount: daily.length,
     });
@@ -178,13 +181,14 @@ export class WeatherService {
     };
   }
 
-  async getWeatherPreview({ lat, lon }: CoordinatesParams): Promise<IWeatherPreview> {
-    this.logger.info('getWeatherPreview called');
-    this.logger.debug('getWeatherPreview params', { lat, lon });
-
+  @LogMethod()
+  async getWeatherPreview({
+    lat,
+    lon,
+  }: CoordinatesParams): Promise<IWeatherPreview> {
     const full = await this.getWeatherDetails({ lat, lon });
 
-    this.logger.debug('getWeatherPreview processed');
+    this.logger.info('getWeatherPreview: processed');
 
     return {
       temperature: full.current.temp,

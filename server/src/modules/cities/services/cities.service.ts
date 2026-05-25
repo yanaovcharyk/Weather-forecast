@@ -7,6 +7,7 @@ import { AppLoggerService } from '@logger/services';
 import { AddCityParams, CityByIdParams, UserIdParams } from '../types';
 import { ICityOutput } from '../interfaces/city.output.interface';
 import { IAddCityOutput } from '../interfaces/add-city.output.interface';
+import { LogMethod } from '../../../shared/logging/log-method.decorator';
 
 @Injectable()
 export class CitiesService {
@@ -20,28 +21,15 @@ export class CitiesService {
     this.logger = loggerService.child(CitiesService.name);
   }
 
+  @LogMethod()
   async getCityById(params: CityByIdParams): Promise<ICityOutput> {
-    const { userId, id } = params;
-
-    this.logger.info('getCityById called');
-    this.logger.debug('getCityById params', { id });
-
-    const city = await this.findCityOrFail({ userId, id });
-
-    this.logger.debug('getCityById succeeded', { id: city.id });
-
+    const city = await this.findCityOrFail(params);
     return mapToOutput(city);
   }
 
+  @LogMethod()
   async addCity(params: AddCityParams): Promise<IAddCityOutput> {
     const { userId, input } = params;
-
-    this.logger.info('addCity called');
-    this.logger.debug('addCity params', {
-      city: input.city,
-      lat: input.lat,
-      lon: input.lon,
-    });
 
     const exists = await this.cityRepository.findOne({
       where: { userId, city: input.city },
@@ -83,41 +71,35 @@ export class CitiesService {
     };
   }
 
+  @LogMethod()
   async removeCity(params: CityByIdParams): Promise<ICityOutput> {
-    const { userId, id } = params;
+    const city = await this.findCityOrFail(params);
 
-    this.logger.info('removeCity called');
-    this.logger.debug('removeCity params', { id });
-
-    const city = await this.findCityOrFail({ userId, id });
     const result = mapToOutput(city);
 
     await this.cityRepository.remove(city);
 
-    this.logger.info('removeCity: city removed', { id });
+    this.logger.info('removeCity: city removed', {
+      id: city.id,
+    });
 
     return result;
   }
 
+  @LogMethod()
   async removeAllCities(params: UserIdParams): Promise<void> {
-    const { userId } = params;
-
-    this.logger.info('removeAllCities called');
-
-    const result = await this.cityRepository.delete({ userId });
+    const result = await this.cityRepository.delete({
+      userId: params.userId,
+    });
 
     this.logger.info('removeAllCities: cities removed', {
       affected: result.affected ?? 0,
     });
   }
 
+  @LogMethod()
   async togglePinned(params: CityByIdParams): Promise<ICityOutput> {
-    const { userId, id } = params;
-
-    this.logger.info('togglePinned called');
-    this.logger.debug('togglePinned params', { id });
-
-    const city = await this.findCityOrFail({ userId, id });
+    const city = await this.findCityOrFail(params);
 
     const previous = city.isPinned;
     city.isPinned = !city.isPinned;
@@ -134,20 +116,14 @@ export class CitiesService {
   }
 
   private async findCityOrFail(params: CityByIdParams): Promise<CityEntity> {
-    const { userId, id } = params;
-
-    this.logger.debug('findCityOrFail called', { id });
-
     const city = await this.cityRepository.findOne({
-      where: { id, userId },
+      where: { id: params.id, userId: params.userId },
     });
 
     if (!city) {
-      this.logger.warn('findCityOrFail: city not found', { id });
+      this.logger.warn('City not found', { id: params.id });
       throw new NotFoundException('City not found');
     }
-
-    this.logger.debug('findCityOrFail: city found', { id: city.id });
 
     return city;
   }

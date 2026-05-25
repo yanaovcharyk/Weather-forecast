@@ -7,7 +7,7 @@ import { RegisterInput } from '@auth/dto';
 import { AppLoggerService } from '@logger/services';
 import { UpdateRefreshTokenVersionParams } from '../types';
 import { IUserEntity } from '../interfaces';
-
+import { LogResolver } from '../../../shared/logging';
 @Injectable()
 export class UserService {
   private readonly logger;
@@ -21,20 +21,18 @@ export class UserService {
     this.logger = loggerService.child(UserService.name);
   }
 
+  @LogResolver()
   async findByEmail(email: string): Promise<IUserEntity | null> {
-    this.logger.debug('findByEmail called', { email });
     return this.userRepository.findOne({ where: { email } });
   }
 
+  @LogResolver()
   async findById(id: string): Promise<IUserEntity | null> {
-    this.logger.debug('findById called', { id });
     return this.userRepository.findOne({ where: { id } });
   }
 
+  @LogResolver()
   async register(input: RegisterInput): Promise<IUserEntity> {
-    this.logger.info('register called');
-    this.logger.debug('register params', { email: input.email });
-
     const { hash, salt } = await this.passwordHasher.hash({
       password: input.password,
     });
@@ -47,25 +45,25 @@ export class UserService {
 
     const saved = await this.userRepository.save(user);
 
-    this.logger.info('User registered', { id: saved.id });
+    this.logger.info('User registered', {
+      userId: saved.id,
+    });
 
     return saved;
   }
 
+  @LogResolver()
   async createUser(data: Partial<UserEntity>): Promise<IUserEntity> {
-    this.logger.debug('createUser called');
     const user = this.userRepository.create(data);
     return this.userRepository.save(user);
   }
 
+  @LogResolver()
   async updateRefreshTokenVersion(
     params: UpdateRefreshTokenVersionParams,
   ): Promise<void> {
-    const { userId, version } = params;
-    this.logger.info('updateRefreshTokenVersion called', { userId, version });
-
-    await this.userRepository.update(userId, {
-      refreshTokenVersion: version,
+    await this.userRepository.update(params.userId, {
+      refreshTokenVersion: params.version,
     });
   }
 }

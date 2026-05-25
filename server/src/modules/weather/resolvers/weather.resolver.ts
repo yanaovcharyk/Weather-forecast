@@ -7,6 +7,7 @@ import {
   CitySearchInput,
 } from '../dto';
 import { AppLoggerService } from '@logger/services';
+import { LogResolver } from '@shared/logging';
 
 @Resolver()
 export class WeatherResolver {
@@ -19,14 +20,14 @@ export class WeatherResolver {
   }
 
   @Query(() => [CitySuggestion])
+  @LogResolver()
   async searchCities(@Args('input') input: CitySearchInput) {
-    this.logger.info('searchCities query called');
     return this.weatherService.searchCities(input.query);
   }
 
   @Query(() => WeatherDetailsOutput)
+  @LogResolver()
   async getWeatherDetails(@Args('input') input: GetWeatherInput) {
-    this.logger.info('getWeatherDetails query called');
     return this.weatherService.getWeatherDetails(input);
   }
 }

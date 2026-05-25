@@ -21,8 +21,9 @@ import {
   AddCityInput,
   CityOutput,
 } from '../dto';
-import { createValidationPipe } from '@shared/utils/create-validation-pipe.util';
+import { createValidationPipe } from '@shared/utils';
 import { AppLoggerService } from '@logger/services';
+import { LogResolver } from '@shared/logging';
 
 @Resolver(() => CityOutput)
 export class CitiesResolver {
@@ -39,21 +40,19 @@ export class CitiesResolver {
 
   @UseGuards(AccessJwtGuard)
   @Query(() => [CityOutput])
+  @LogResolver()
   async cities(@Context() ctx: GQLContext): Promise<CityOutput[]> {
-    this.logger.info('cities query called');
     return this.citiesQueryService.getCities({ userId: ctx.req.user.userId });
   }
 
   @UseGuards(AccessJwtGuard)
   @Query(() => CitiesConnection)
   @UsePipes(createValidationPipe())
+  @LogResolver()
   async citiesPaginated(
     @Context() ctx: GQLContext,
     @Args('query', { type: () => CitiesQueryInput }) query: CitiesQueryInput,
   ): Promise<CitiesConnection> {
-    this.logger.info('citiesPaginated query called');
-    this.logger.debug('citiesPaginated args', { query });
-
     return this.citiesQueryService.getCitiesPaginated({
       userId: ctx.req.user.userId,
       query,
@@ -62,13 +61,11 @@ export class CitiesResolver {
 
   @UseGuards(AccessJwtGuard)
   @Query(() => CityOutput)
+  @LogResolver()
   async city(
     @Context() ctx: GQLContext,
     @Args('id', { type: () => ID }) id: string,
   ): Promise<CityOutput> {
-    this.logger.info('city query called');
-    this.logger.debug('city args', { id });
-
     return this.citiesService.getCityById({
       userId: ctx.req.user.userId,
       id,
@@ -77,13 +74,11 @@ export class CitiesResolver {
 
   @UseGuards(AccessJwtGuard)
   @Mutation(() => AddCityOutput)
+  @LogResolver()
   async addCity(
     @Context() ctx: GQLContext,
     @Args('input') input: AddCityInput,
   ) {
-    this.logger.info('addCity mutation called');
-    this.logger.debug('addCity args', { input });
-
     return this.citiesService.addCity({
       userId: ctx.req.user.userId,
       input,
@@ -92,13 +87,11 @@ export class CitiesResolver {
 
   @UseGuards(AccessJwtGuard)
   @Mutation(() => CityOutput)
+  @LogResolver()
   async removeCity(
     @Context() ctx: GQLContext,
     @Args('id', { type: () => ID }) id: string,
   ): Promise<CityOutput> {
-    this.logger.info('removeCity mutation called');
-    this.logger.debug('removeCity args', { id });
-
     return this.citiesService.removeCity({
       userId: ctx.req.user.userId,
       id,
@@ -107,9 +100,8 @@ export class CitiesResolver {
 
   @UseGuards(AccessJwtGuard)
   @Mutation(() => Boolean)
+  @LogResolver()
   async removeAllCities(@Context() ctx: GQLContext): Promise<boolean> {
-    this.logger.info('removeAllCities mutation called');
-
     await this.citiesService.removeAllCities({
       userId: ctx.req.user.userId,
     });
@@ -119,13 +111,11 @@ export class CitiesResolver {
 
   @UseGuards(AccessJwtGuard)
   @Mutation(() => CityOutput)
+  @LogResolver()
   async togglePinnedCity(
     @Context() ctx: GQLContext,
     @Args('id', { type: () => ID }) id: string,
   ): Promise<CityOutput> {
-    this.logger.info('togglePinnedCity mutation called');
-    this.logger.debug('togglePinnedCity args', { id });
-
     return this.citiesService.togglePinned({
       userId: ctx.req.user.userId,
       id,
@@ -133,12 +123,8 @@ export class CitiesResolver {
   }
 
   @ResolveField(() => WeatherOutput, { nullable: true })
+  @LogResolver()
   async weather(@Parent() city: CityOutput) {
-    this.logger.debug('weather field resolver called', {
-      lat: city.lat,
-      lon: city.lon,
-    });
-
     return this.weatherService.getWeatherPreview({
       lat: city.lat,
       lon: city.lon,
