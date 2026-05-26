@@ -1,6 +1,6 @@
 import React from 'react';
-import { logger } from './Logger';
-import { ErrorPage } from '../common/components/ErrorPage/ErrorPage';
+import { logger } from '../../../logger/Logger';
+import { ErrorPage } from '../ErrorPage/ErrorPage';
 
 type Props = {
   children: React.ReactNode;

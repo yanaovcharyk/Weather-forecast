@@ -3,7 +3,7 @@ import { AppProvider } from '@/common/providers';
 import { AppRouter } from '@/common/components/Routers';
 import { App as AntApp } from 'antd';
 import './App.css';
-import { ErrorBoundary } from './modules/logger/ErrorBoundary';
+import { ErrorBoundary } from './modules/common/components/ErrorBoundary/ErrorBoundary';
 import { RouteLogger } from './modules/logger/RouteLogger';
 
 export const App = () => (

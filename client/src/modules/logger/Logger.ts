@@ -1,8 +1,5 @@
 import { loggerContext } from './LoggerContextStore';
-
-type LogLevel = 'info' | 'warn' | 'error' | 'debug';
-
-type LogMeta = Record<string, unknown>;
+import type { LogLevel, LogMeta } from './types';
 
 class Logger {
   info(message: string, meta?: LogMeta) {
@@ -18,21 +15,15 @@ class Logger {
   }
 
   debug(message: string, meta?: LogMeta) {
-    if (import.meta.env.DEV) {
-      this.write('debug', message, meta);
-    }
+    this.write('debug', message, meta);
   }
 
   private write(level: LogLevel, message: string, meta?: LogMeta) {
     const payload = {
       timestamp: new Date().toISOString(),
-
       level,
-
       message,
-
       ...loggerContext.get(),
-
       ...(meta ?? {}),
     };
 
