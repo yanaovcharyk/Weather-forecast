@@ -1,7 +1,13 @@
-import { loggerContext } from './LoggerContextStore';
-import type { ClientLogRecord, LogLevel, LogMetadata } from './types';
-import { loggerQueue } from './LoggerQueue';
-import { loggerRateLimiter } from './LoggerRateLimiter';
+import { loggerContext } from './context/LoggerContextStore';
+import {
+  DEFAULT_FIELDS_TO_MASK,
+  type ClientLogRecord,
+  type LogLevel,
+  type LogMetadata,
+} from './types';
+import { loggerQueue } from './pipeline/LoggerQueue';
+import { loggerRateLimiter } from './guards/LoggerRateLimiter';
+import { safeSerialize } from './utils/safe-serialize';
 
 class Logger {
   info(message: string, metadata?: LogMetadata): void {
@@ -26,7 +32,11 @@ class Logger {
     metadata?: LogMetadata,
   ): void {
     loggerRateLimiter.registerLogEvent();
+
     const currentLoggerContext = loggerContext.get();
+
+    const sanitizedMetadata = safeSerialize(metadata, DEFAULT_FIELDS_TO_MASK);
+
     const logRecord: ClientLogRecord = {
       timestamp: new Date().toISOString(),
       level,
@@ -35,7 +45,7 @@ class Logger {
       userId: currentLoggerContext.userId,
       sessionId: currentLoggerContext.sessionId,
       route: currentLoggerContext.route,
-      metadata,
+      metadata: sanitizedMetadata,
     };
 
     loggerQueue.addLogRecord(logRecord);

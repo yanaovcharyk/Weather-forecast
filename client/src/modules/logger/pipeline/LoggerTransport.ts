@@ -1,13 +1,13 @@
 import { print } from 'graphql';
 
-import { GRAPHQL_ENDPOINT } from './constants';
+import { GRAPHQL_ENDPOINT } from '../constants';
 
 import type {
   ClientLogRecord,
   SerializedClientLogRecord,
   SendLogsGraphQLRequestBody,
-} from './types';
-import { SEND_CLIENT_LOGS_MUTATION } from './api/loggerApi';
+} from '../types';
+import { SEND_CLIENT_LOGS_MUTATION } from '../api/loggerApi';
 
 export class LoggerTransport {
   private serializeLogsForTransport(

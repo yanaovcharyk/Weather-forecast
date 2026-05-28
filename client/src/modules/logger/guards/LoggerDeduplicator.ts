@@ -1,6 +1,6 @@
-import { LOGGER_DEDUPLICATION_WINDOW_IN_MS } from './constants';
+import { LOGGER_DEDUPLICATION_WINDOW_IN_MS } from '../constants';
 
-import type { ClientLogRecord } from './types';
+import type { ClientLogRecord } from '../types';
 
 export class LoggerDeduplicator {
   private duplicateLogCache = new Map<string, number>();

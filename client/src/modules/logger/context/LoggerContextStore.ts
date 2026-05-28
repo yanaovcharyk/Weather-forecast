@@ -1,4 +1,4 @@
-import type { ILoggerContext } from './types';
+import type { ILoggerContext } from '../types';
 
 class LoggerContextStore {
   private context: ILoggerContext = {};

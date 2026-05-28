@@ -4,7 +4,7 @@ import { AppRouter } from '@/common/components/Routers';
 import { App as AntApp } from 'antd';
 import './App.css';
 import { ErrorBoundary } from './modules/common/components/ErrorBoundary/ErrorBoundary';
-import { RouteLogger } from './modules/logger/RouteLogger';
+import { RouteLogger } from './modules/logger/hooks/RouteLogger';
 
 export const App = () => (
   <AntApp>

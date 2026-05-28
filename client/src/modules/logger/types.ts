@@ -1,76 +1,73 @@
 export type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 
-/**
- * Додаткові metadata поля для логів.
- */
 export type LogMetadata = Record<string, unknown>;
 
-/**
- * Context logger-а.
- */
 export interface ILoggerContext {
   requestId?: string;
-
   userId?: string;
-
   sessionId?: string;
-
   route?: string;
-
   context?: string;
 }
 
-/**
- * Внутрішня модель логу.
- */
 export interface ClientLogRecord {
   timestamp: string;
-
   level: LogLevel;
-
   message: string;
-
   requestId?: string;
-
   userId?: string;
-
   sessionId?: string;
-
   route?: string;
-
-  metadata?: LogMetadata;
+  metadata?: JsonValue;
 }
 
-/**
- * DTO для network transport.
- *
- * Object поля serialize-яться у string.
- */
 export interface SerializedClientLogRecord {
   timestamp: string;
-
   level: LogLevel;
-
   message: string;
-
   requestId?: string;
-
   userId?: string;
-
   sessionId?: string;
-
   route?: string;
-
   metadata?: string;
 }
 
-/**
- * GraphQL request body.
- */
 export interface SendLogsGraphQLRequestBody {
   query: string;
-
   variables: {
     input: SerializedClientLogRecord[];
   };
 }
+
+export type JsonPrimitive = string | number | boolean | null;
+
+export type JsonValue =
+  | JsonPrimitive
+  | JsonValue[]
+  | { [key: string]: JsonValue };
+
+export const DEFAULT_FIELDS_TO_MASK = [
+  'password',
+  'token',
+  'accessToken',
+  'refreshToken',
+  'authorization',
+  'cookie',
+  'set-cookie',
+  'secret',
+  'apiKey',
+] as const;
+
+export type ClientErrorLog = {
+  module: string;
+  requestId: string;
+  operationName: string;
+  executionTimeMs: number;
+  error: {
+    name?: string;
+    message: string;
+    stack?: string;
+    code?: string;
+  };
+  variables?: unknown;
+};

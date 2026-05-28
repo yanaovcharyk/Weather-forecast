@@ -1,5 +1,5 @@
-import { LOGGER_MAX_RETRY_COUNT, LOGGER_RETRY_DELAY_IN_MS } from './constants';
-import type { ClientLogRecord } from './types';
+import { LOGGER_MAX_RETRY_COUNT, LOGGER_RETRY_DELAY_IN_MS } from '../constants';
+import type { ClientLogRecord } from '../types';
 import { LoggerTransport } from './LoggerTransport';
 
 interface FailedLogBatchRetryTask {

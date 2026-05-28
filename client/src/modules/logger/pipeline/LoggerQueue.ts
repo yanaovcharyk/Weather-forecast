@@ -2,11 +2,11 @@ import {
   LOGGER_BATCH_SIZE,
   LOGGER_FLUSH_INTERVAL_IN_MS,
   LOGGER_MAX_QUEUE_SIZE,
-} from './constants';
-import type { ClientLogRecord } from './types';
+} from '../constants';
+import type { ClientLogRecord } from '../types';
 import { LoggerTransport } from './LoggerTransport';
 import { loggerRetryQueue } from './LoggerRetryQueue';
-import { loggerDeduplicator } from './LoggerDeduplicator';
+import { loggerDeduplicator } from '../guards/LoggerDeduplicator';
 
 export class LoggerQueue {
   private pendingLogRecords: ClientLogRecord[] = [];

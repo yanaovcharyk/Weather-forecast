@@ -1,5 +1,5 @@
 import { type PropsWithChildren, useEffect, useState } from 'react';
-import { loggerContext } from './LoggerContextStore';
+import { loggerContext } from '../context/LoggerContextStore';
 
 type Props = PropsWithChildren<{
   userId?: string | null;
