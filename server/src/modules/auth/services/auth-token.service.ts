@@ -29,39 +29,30 @@ export class AuthTokenService {
     private readonly config: ConfigService<IAppConfig>,
     loggerService: AppLoggerService,
   ) {
-    const jwtConfig =
-      this.config.get('jwt', {
-        infer: true,
-      })!;
+    const jwtConfig = this.config.get('jwt', {
+      infer: true,
+    })!;
 
     this.accessSecret = jwtConfig.accessSecret;
     this.refreshSecret = jwtConfig.refreshSecret;
 
-    this.accessExpires =
-      jwtConfig.accessExpires;
+    this.accessExpires = jwtConfig.accessExpires;
 
-    this.refreshExpires =
-      jwtConfig.refreshExpires;
+    this.refreshExpires = jwtConfig.refreshExpires;
 
-    this.logger =
-      loggerService.child(AuthTokenService.name);
+    this.logger = loggerService.child(AuthTokenService.name);
 
-    this.logger.info(
-      'AuthTokenService initialized',
-      {
-        accessExpires: this.accessExpires,
-        refreshExpires: this.refreshExpires,
-      },
-    );
+    this.logger.info('AuthTokenService initialized', {
+      accessExpires: this.accessExpires,
+      refreshExpires: this.refreshExpires,
+    });
   }
 
   @LogMethod({
-    logArgs: false,
-    logResult: false,
+    shouldLogArguments: false,
+    shouldLogResult: false,
   })
-  async createAccessToken(
-    tokenPayload: IAccessJwtPayload,
-  ): Promise<string> {
+  async createAccessToken(tokenPayload: IAccessJwtPayload): Promise<string> {
     return this.createToken(
       tokenPayload,
       this.accessSecret,
@@ -70,12 +61,10 @@ export class AuthTokenService {
   }
 
   @LogMethod({
-    logArgs: false,
-    logResult: false,
+    shouldLogArguments: false,
+    shouldLogResult: false,
   })
-  async createRefreshToken(
-    tokenPayload: IRefreshJwtPayload,
-  ): Promise<string> {
+  async createRefreshToken(tokenPayload: IRefreshJwtPayload): Promise<string> {
     return this.createToken(
       tokenPayload,
       this.refreshSecret,
@@ -84,12 +73,10 @@ export class AuthTokenService {
   }
 
   @LogMethod({
-    logArgs: false,
-    logResult: false,
+    shouldLogArguments: false,
+    shouldLogResult: false,
   })
-  async verifyAccessToken(
-    token: string,
-  ): Promise<IAccessJwtPayload> {
+  async verifyAccessToken(token: string): Promise<IAccessJwtPayload> {
     return this.verifyToken<IAccessJwtPayload>(
       token,
       this.accessSecret,
@@ -98,12 +85,10 @@ export class AuthTokenService {
   }
 
   @LogMethod({
-    logArgs: false,
-    logResult: false,
+    shouldLogArguments: false,
+    shouldLogResult: false,
   })
-  async verifyRefreshToken(
-    token: string,
-  ): Promise<IRefreshJwtPayload> {
+  async verifyRefreshToken(token: string): Promise<IRefreshJwtPayload> {
     return this.verifyToken<IRefreshJwtPayload>(
       token,
       this.refreshSecret,
@@ -117,19 +102,14 @@ export class AuthTokenService {
     expiresIn: string,
   ): Promise<string> {
     try {
-      return await this.jwt.signAsync<T>(
-        tokenPayload,
-        {
-          secret,
-          expiresIn: expiresIn as any,
-        },
-      );
+      return await this.jwt.signAsync<T>(tokenPayload, {
+        secret,
+        expiresIn: expiresIn as any,
+      });
     } catch (error: unknown) {
       this.logger.error(
         'Failed to create JWT token',
-        error instanceof Error
-          ? error
-          : undefined,
+        error instanceof Error ? error : undefined,
         {
           stage: 'signAsync',
         },
@@ -145,22 +125,13 @@ export class AuthTokenService {
     errorMessage: string,
   ): Promise<T> {
     try {
-      return await this.jwt.verifyAsync<T>(
-        token,
-        {
-          secret,
-        },
-      );
+      return await this.jwt.verifyAsync<T>(token, {
+        secret,
+      });
     } catch (error) {
-      this.logger.warn(
-        'JWT verification failed',
-        {
-          error:
-            error instanceof Error
-              ? error.message
-              : 'Unknown error',
-        },
-      );
+      this.logger.warn('JWT verification failed', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
 
       throwUnauthorized(errorMessage);
     }

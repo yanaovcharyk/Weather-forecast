@@ -1,72 +1,134 @@
 import { LoggerContext } from './logger-context';
+
 import { safeSerialize } from './sanitize';
 
 export type LogMethodOptions = {
-  logArgs?: boolean;
-  logResult?: boolean;
-  logExecutionTime?: boolean;
-  maskFields?: string[];
-  dropFields?: string[];
+  shouldLogArguments?: boolean;
+  shouldLogResult?: boolean;
+  shouldLogExecutionTime?: boolean;
+  fieldsToMask?: string[];
+  fieldsToRemove?: string[];
 };
 
-export function createLogMethodWrapper(options: LogMethodOptions) {
+export function createLogMethodWrapper(
+  options: LogMethodOptions,
+) {
+
   const {
-    logArgs = true,
-    logResult = false,
-    logExecutionTime = true,
-    maskFields = ['password', 'refreshToken', 'accessToken'],
-    dropFields = ['req', 'res', 'socket', 'client', '_doc'],
+    shouldLogArguments = true,
+    shouldLogResult = false,
+    shouldLogExecutionTime = true,
+    fieldsToMask = [
+      'password',
+      'refreshToken',
+      'accessToken',
+    ],
+    fieldsToRemove = [
+      'req',
+      'res',
+      'socket',
+      'client',
+      '_doc',
+    ],
   } = options;
 
-  return function wrap(
+  return function createMethodWrapper(
     originalMethod: Function,
-    context: LoggerContext,
+    loggerContext: LoggerContext,
     methodName: string,
     className: string,
   ) {
-    return async function (...args: any[]) {
-      const logger = context.logger;
-      const start = Date.now();
 
-      logger?.info(`${methodName} called`);
+    return async function wrappedMethod(
+      ...methodArguments: any[]
+    ) {
 
-      if (logArgs) {
-        const cleanedArgs = args
-          .map(arg => {
-            const sanitized = safeSerialize(arg, maskFields, dropFields);
+      const logger = loggerContext.logger;
 
-            return sanitized === '[FilteredRequestObject]'
-              ? undefined
-              : sanitized;
-          })
-          .filter(Boolean);
+      const executionStartTimestamp = Date.now();
 
-        logger?.debug(`${methodName} args`, {
-          args: cleanedArgs,
-        });
+      logger?.info(`${className}.${methodName} called`);
+
+      if (shouldLogArguments) {
+        const sanitizedArguments =
+          methodArguments
+            .map(argument => {
+              const sanitizedValue =
+                safeSerialize(
+                  argument,
+                  fieldsToMask,
+                  fieldsToRemove,
+                );
+
+              if (
+                sanitizedValue ===
+                '[FilteredRequestObject]'
+              ) {
+                return undefined;
+              }
+
+              return sanitizedValue;
+            })
+            .filter(
+              sanitizedValue =>
+                sanitizedValue !== undefined,
+            );
+
+        logger?.debug(
+          `${className}.${methodName} arguments`,
+          {
+            arguments: sanitizedArguments,
+          },
+        );
       }
 
       try {
-        const result = await originalMethod.apply(context, args);
+        const methodResult =
+          await originalMethod.apply(
+            loggerContext,
+            methodArguments,
+          );
 
-        if (logExecutionTime) {
-          logger?.debug(`${methodName} completed`, {
-            executionTimeMs: Date.now() - start,
-          });
+        if (shouldLogExecutionTime) {
+          logger?.debug(
+            `${className}.${methodName} completed`,
+            {
+              executionTimeMilliseconds:
+                Date.now() -
+                executionStartTimestamp,
+            },
+          );
         }
 
-        if (logResult) {
-          logger?.debug(`${methodName} result`, {
-            result: safeSerialize(result, maskFields, dropFields),
-          });
+        if (shouldLogResult) {
+          logger?.debug(
+            `${className}.${methodName} result`,
+            {
+              result: safeSerialize(
+                methodResult,
+                fieldsToMask,
+                fieldsToRemove,
+              ),
+            },
+          );
         }
 
-        return result;
+        return methodResult;
       } catch (error) {
-        logger?.error(`${methodName} failed`, {
-          error: error instanceof Error ? error.message : String(error),
-          executionTimeMs: Date.now() - start,
-        });
+
+        logger?.error(
+          `${className}.${methodName} failed`,
+          {
+            error:
+              error instanceof Error
+                ? error.message
+                : String(error),
+
+            executionTimeMilliseconds:
+              Date.now() -
+              executionStartTimestamp,
+          },
+        );
 
         throw error;
       }

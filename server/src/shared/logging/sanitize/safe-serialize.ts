@@ -1,10 +1,18 @@
 import { sanitizeValue } from './sanitize-value';
 
+/**
+ * Безпечна серіалізація значення.
+ */
 export function safeSerialize(
   value: any,
-  maskFields: string[] = [],
-  dropFields: string[] = [],
+  fieldsToMask: string[] = [],
+  fieldsToRemove: string[] = [],
 ) {
-  const seen = new WeakSet<object>();
-  return sanitizeValue(value, seen, maskFields, dropFields);
+  const visitedObjects = new WeakSet<object>();
+  return sanitizeValue(
+    value,
+    visitedObjects,
+    fieldsToMask,
+    fieldsToRemove,
+  );
 }

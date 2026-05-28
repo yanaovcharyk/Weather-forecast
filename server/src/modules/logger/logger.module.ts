@@ -5,6 +5,8 @@ import { winstonConfig } from './logger.config';
 import { AppLoggerService } from './services/app-logger.service';
 import { LoggerContextService } from './services/logger-context.service';
 import { GraphqlContextInterceptor } from './graphql-context.interceptor';
+import { ClientLogsResolver } from './resolvers/client-logs.resolver';
+import { ClientLoggerService } from './services/client-logger.service';
 
 
 @Global()
@@ -14,6 +16,8 @@ import { GraphqlContextInterceptor } from './graphql-context.interceptor';
   providers: [
     AppLoggerService,
     LoggerContextService,
+    ClientLogsResolver,
+    ClientLoggerService,
     {
       provide: APP_INTERCEPTOR,
       useClass: GraphqlContextInterceptor,

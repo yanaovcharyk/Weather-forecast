@@ -40,15 +40,12 @@ export class AuthService {
   }
 
   @LogMethod({
-    maskFields: ['password', 'refreshToken', 'accessToken'],
+    fieldsToMask: ['password', 'refreshToken', 'accessToken'],
   })
   async login(params: LoginParams): Promise<IAuthOutput> {
     const { input, res } = params;
 
-    const user = await this.validateUser(
-      input.email,
-      input.password,
-    );
+    const user = await this.validateUser(input.email, input.password);
 
     const tokens = await this.generateTokens(user);
 
@@ -65,11 +62,9 @@ export class AuthService {
   }
 
   @LogMethod({
-    maskFields: ['password', 'refreshToken', 'accessToken'],
+    fieldsToMask: ['password', 'refreshToken', 'accessToken'],
   })
-  async register(
-    params: RegisterParams,
-  ): Promise<IAuthOutput> {
+  async register(params: RegisterParams): Promise<IAuthOutput> {
     const { input, res } = params;
 
     const user = await this.usersService.register(input);
@@ -117,27 +112,21 @@ export class AuthService {
   }
 
   @LogMethod({
-    maskFields: ['refreshToken', 'accessToken'],
+    fieldsToMask: ['refreshToken', 'accessToken'],
   })
   async rotateRefreshToken(
     params: RotateRefreshTokenParams,
   ): Promise<IAuthOutput> {
     const { oldToken, res } = params;
 
-    const payload =
-      await this.jwtService.verifyRefreshToken(oldToken);
+    const payload = await this.jwtService.verifyRefreshToken(oldToken);
 
-    const user = await this.usersService.findById(
-      payload.userId,
-    );
+    const user = await this.usersService.findById(payload.userId);
 
     if (!user) {
-      this.logger.warn(
-        'Refresh token rotation failed: user not found',
-        {
-          userId: payload.userId,
-        },
-      );
+      this.logger.warn('Refresh token rotation failed: user not found', {
+        userId: payload.userId,
+      });
 
       throw new GraphQLError('Unauthorized', {
         extensions: { code: 'UNAUTHENTICATED' },
@@ -145,22 +134,18 @@ export class AuthService {
     }
 
     if (payload.version !== user.refreshTokenVersion) {
-      this.logger.warn(
-        'Refresh token version mismatch',
-        {
-          userId: user.id,
-          tokenVersion: payload.version,
-          currentVersion: user.refreshTokenVersion,
-        },
-      );
+      this.logger.warn('Refresh token version mismatch', {
+        userId: user.id,
+        tokenVersion: payload.version,
+        currentVersion: user.refreshTokenVersion,
+      });
 
       throw new GraphQLError('Unauthorized', {
         extensions: { code: 'UNAUTHENTICATED' },
       });
     }
 
-    const newVersion =
-      user.refreshTokenVersion + 1;
+    const newVersion = user.refreshTokenVersion + 1;
 
     await this.usersService.updateRefreshTokenVersion({
       userId: user.id,
@@ -188,58 +173,43 @@ export class AuthService {
     const user = await this.usersService.findByEmail(email);
 
     if (!user) {
-      this.logger.warn(
-        'Login failed: user not found',
-        {
-          email,
-        },
-      );
-
-      throw new UnauthorizedException(
-        'Invalid credentials',
-      );
-    }
-
-    const isValid =
-      await this.passwordHasher.compare({
-        password,
-        hash: user.password,
-        salt: user.salt,
+      this.logger.warn('Login failed: user not found', {
+        email,
       });
 
-    if (!isValid) {
-      this.logger.warn(
-        'Login failed: invalid password',
-        {
-          userId: user.id,
-          email,
-        },
-      );
+      throw new UnauthorizedException('Invalid credentials');
+    }
 
-      throw new UnauthorizedException(
-        'Invalid credentials',
-      );
+    const isValid = await this.passwordHasher.compare({
+      password,
+      hash: user.password,
+      salt: user.salt,
+    });
+
+    if (!isValid) {
+      this.logger.warn('Login failed: invalid password', {
+        userId: user.id,
+        email,
+      });
+
+      throw new UnauthorizedException('Invalid credentials');
     }
 
     return user;
   }
 
-  private async generateTokens(
-    user: IUserEntity,
-  ): Promise<TokenPair> {
-    const accessToken =
-      await this.jwtService.createAccessToken({
-        userId: user.id,
-        email: user.email,
-        type: 'access',
-      });
+  private async generateTokens(user: IUserEntity): Promise<TokenPair> {
+    const accessToken = await this.jwtService.createAccessToken({
+      userId: user.id,
+      email: user.email,
+      type: 'access',
+    });
 
-    const refreshToken =
-      await this.jwtService.createRefreshToken({
-        userId: user.id,
-        version: user.refreshTokenVersion,
-        type: 'refresh',
-      });
+    const refreshToken = await this.jwtService.createRefreshToken({
+      userId: user.id,
+      version: user.refreshTokenVersion,
+      type: 'refresh',
+    });
 
     return {
       accessToken,
@@ -247,18 +217,9 @@ export class AuthService {
     };
   }
 
-  private setCookies(
-    res: any,
-    tokens: TokenPair,
-  ): void {
-    this.cookieService.setAccessToken(
-      res,
-      tokens.accessToken,
-    );
+  private setCookies(res: any, tokens: TokenPair): void {
+    this.cookieService.setAccessToken(res, tokens.accessToken);
 
-    this.cookieService.setRefreshToken(
-      res,
-      tokens.refreshToken,
-    );
+    this.cookieService.setRefreshToken(res, tokens.refreshToken);
   }
 }

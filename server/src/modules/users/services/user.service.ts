@@ -7,7 +7,7 @@ import { RegisterInput } from '@auth/dto';
 import { AppLoggerService } from '@logger/services';
 import { UpdateRefreshTokenVersionParams } from '../types';
 import { IUserEntity } from '../interfaces';
-import { LogResolver } from '../../../shared/logging';
+import { LogResolver } from '@shared/logging';
 @Injectable()
 export class UserService {
   private readonly logger;

@@ -1,50 +1,121 @@
 import { loggerContext } from './LoggerContextStore';
-import type { LogLevel, LogMeta } from './types';
 
+import type { ClientLogRecord, LogLevel, LogMetadata } from './types';
+
+import { loggerQueue } from './LoggerQueue';
+
+import { loggerRateLimiter } from './LoggerRateLimiter';
+
+/**
+ * Головний logger application layer.
+ */
 class Logger {
-  info(message: string, meta?: LogMeta) {
-    this.write('info', message, meta);
+  /**
+   * Info log.
+   */
+  info(message: string, metadata?: LogMetadata): void {
+    this.createAndDispatchLogRecord('info', message, metadata);
   }
 
-  warn(message: string, meta?: LogMeta) {
-    this.write('warn', message, meta);
+  /**
+   * Warning log.
+   */
+  warn(message: string, metadata?: LogMetadata): void {
+    this.createAndDispatchLogRecord('warn', message, metadata);
   }
 
-  error(message: string, meta?: LogMeta) {
-    this.write('error', message, meta);
+  /**
+   * Error log.
+   */
+  error(message: string, metadata?: LogMetadata): void {
+    this.createAndDispatchLogRecord('error', message, metadata);
   }
 
-  debug(message: string, meta?: LogMeta) {
-    this.write('debug', message, meta);
+  /**
+   * Debug log.
+   */
+  debug(message: string, metadata?: LogMetadata): void {
+    this.createAndDispatchLogRecord('debug', message, metadata);
   }
 
-  private write(level: LogLevel, message: string, meta?: LogMeta) {
-    const payload = {
+  /**
+   * Створює log record
+   * та відправляє його у queue.
+   */
+  private createAndDispatchLogRecord(
+    level: LogLevel,
+
+    message: string,
+
+    metadata?: LogMetadata,
+  ): void {
+    /**
+     * Panic protection.
+     */
+    loggerRateLimiter.registerLogEvent();
+
+    /**
+     * Current logger context.
+     */
+    const currentLoggerContext = loggerContext.get();
+
+    /**
+     * Complete structured log record.
+     */
+    const logRecord: ClientLogRecord = {
       timestamp: new Date().toISOString(),
+
       level,
+
       message,
-      ...loggerContext.get(),
-      ...(meta ?? {}),
+
+      requestId: currentLoggerContext.requestId,
+
+      userId: currentLoggerContext.userId,
+
+      sessionId: currentLoggerContext.sessionId,
+
+      route: currentLoggerContext.route,
+
+      metadata,
     };
 
-    switch (level) {
+    /**
+     * Add log to queue.
+     */
+    loggerQueue.addLogRecord(logRecord);
+
+    /**
+     * Mirror log into browser console.
+     */
+    this.printLogToBrowserConsole(logRecord);
+  }
+
+  /**
+   * Console output helper.
+   */
+  private printLogToBrowserConsole(logRecord: ClientLogRecord): void {
+    switch (logRecord.level) {
       case 'info':
-        console.info(payload);
-        break;
+        console.info(logRecord);
+        return;
 
       case 'warn':
-        console.warn(payload);
-        break;
+        console.warn(logRecord);
+        return;
 
       case 'error':
-        console.error(payload);
-        break;
+        console.error(logRecord);
+        return;
 
       case 'debug':
-        console.debug(payload);
-        break;
+        console.debug(logRecord);
+        return;
     }
   }
 }
 
+/**
+ * Shared singleton logger instance.
+ */
 export const logger = new Logger();

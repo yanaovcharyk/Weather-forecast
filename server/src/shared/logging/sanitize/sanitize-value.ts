@@ -1,44 +1,64 @@
 import { isDangerObject } from './is-danger-object';
 
 export function sanitizeValue(
-  val: any,
-  seen: WeakSet<object>,
-  maskFields: string[],
-  dropFields: string[],
+  value: any,
+  visitedObjects: WeakSet<object>,
+  fieldsToMask: string[],
+  fieldsToRemove: string[],
 ): any {
-  if (val instanceof Error) {
-    return { message: val.message, name: val.name };
+  if (value instanceof Error) {
+    return {
+      message: value.message,
+      name: value.name,
+    };
   }
 
-  if (typeof val !== 'object' || val === null) return val;
+  const isPrimitive = typeof value !== 'object' || value === null;
 
-  if (seen.has(val)) return '[Circular]';
-  seen.add(val);
+  if (isPrimitive) {
+    return value;
+  }
 
-  if (isDangerObject(val)) {
+  if (visitedObjects.has(value)) {
+    return '[CircularReference]';
+  }
+
+  visitedObjects.add(value);
+
+  if (isDangerObject(value)) {
     return '[FilteredRequestObject]';
   }
 
-  if (Array.isArray(val)) {
-    return val.map(v =>
-      sanitizeValue(v, seen, maskFields, dropFields),
-    ).filter(v => v !== undefined);
+  if (Array.isArray(value)) {
+    return value
+      .map((arrayItem) =>
+        sanitizeValue(arrayItem, visitedObjects, fieldsToMask, fieldsToRemove),
+      )
+      .filter((sanitizedItem) => sanitizedItem !== undefined);
   }
 
-  const out: Record<string, any> = {};
+  const sanitizedObject: Record<string, any> = {};
 
-  for (const key of Object.keys(val)) {
-    if (dropFields.includes(key)) continue;
-
-    const value = val[key];
-
-    if (maskFields.includes(key)) {
-      out[key] = '***';
+  for (const objectKey of Object.keys(value)) {
+    if (fieldsToRemove.includes(objectKey)) {
       continue;
     }
 
-    out[key] = sanitizeValue(value, seen, maskFields, dropFields);
+    const objectValue = value[objectKey];
+
+    if (fieldsToMask.includes(objectKey)) {
+      sanitizedObject[objectKey] = '***';
+
+      continue;
+    }
+
+    sanitizedObject[objectKey] = sanitizeValue(
+      objectValue,
+      visitedObjects,
+      fieldsToMask,
+      fieldsToRemove,
+    );
   }
 
-  return out;
+  return sanitizedObject;
 }

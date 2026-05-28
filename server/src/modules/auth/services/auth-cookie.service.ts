@@ -1,9 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import {
-  Response,
-  Request,
-} from 'express';
+import { Response, Request } from 'express';
 
 import { ConfigService } from '@nestjs/config';
 
@@ -25,8 +22,7 @@ export class AuthCookieService {
     private readonly config: ConfigService<IAppConfig>,
     loggerService: AppLoggerService,
   ) {
-    this.logger =
-      loggerService.child(AuthCookieService.name);
+    this.logger = loggerService.child(AuthCookieService.name);
   }
 
   private get cookieOptions() {
@@ -44,51 +40,38 @@ export class AuthCookieService {
   }
 
   @LogMethod({
-    logArgs: false,
-    logResult: false,
-    logExecutionTime: false,
+    shouldLogArguments: false,
+    shouldLogResult: false,
+    shouldLogExecutionTime: false,
   })
-  getAccessToken(
-    req: Request,
-  ): string | null {
+  getAccessToken(req: Request): string | null {
     return req.cookies?.accessToken ?? null;
   }
 
   @LogMethod({
-    logArgs: false,
-    logResult: false,
-    logExecutionTime: false,
+    shouldLogArguments: false,
+    shouldLogResult: false,
+    shouldLogExecutionTime: false,
   })
-  getRefreshToken(
-    req: Request,
-  ): string | null {
+  getRefreshToken(req: Request): string | null {
     return req.cookies?.refreshToken ?? null;
   }
 
   @LogMethod({
-    logArgs: false,
-    logResult: false,
-    logExecutionTime: false,
+    shouldLogArguments: false,
+    shouldLogResult: false,
+    shouldLogExecutionTime: false,
   })
   clearAuthCookies(res: Response): void {
-    res.clearCookie(
-      TokenName.ACCESS,
-      this.cookieOptions,
-    );
+    res.clearCookie(TokenName.ACCESS, this.cookieOptions);
 
-    res.clearCookie(
-      TokenName.REFRESH,
-      this.cookieOptions,
-    );
+    res.clearCookie(TokenName.REFRESH, this.cookieOptions);
   }
 
   private getAccessTokenMaxAge(): number {
-    const expires = this.config.get(
-      'jwt.accessExpires',
-      {
-        infer: true,
-      },
-    );
+    const expires = this.config.get('jwt.accessExpires', {
+      infer: true,
+    });
 
     if (!expires) {
       this.logger.error(
@@ -96,21 +79,16 @@ export class AuthCookieService {
         new Error('Missing config'),
       );
 
-      throw new Error(
-        'jwt.accessExpires is not defined',
-      );
+      throw new Error('jwt.accessExpires is not defined');
     }
 
     return this.parseMs(expires);
   }
 
   private getRefreshTokenMaxAge(): number {
-    const expires = this.config.get(
-      'jwt.refreshExpires',
-      {
-        infer: true,
-      },
-    );
+    const expires = this.config.get('jwt.refreshExpires', {
+      infer: true,
+    });
 
     if (!expires) {
       this.logger.error(
@@ -118,9 +96,7 @@ export class AuthCookieService {
         new Error('Missing config'),
       );
 
-      throw new Error(
-        'jwt.refreshExpires is not defined',
-      );
+      throw new Error('jwt.refreshExpires is not defined');
     }
 
     return this.parseMs(expires);
@@ -135,9 +111,7 @@ export class AuthCookieService {
         new Error('Invalid ms format'),
       );
 
-      throw new Error(
-        `Invalid ms value: ${value}`,
-      );
+      throw new Error(`Invalid ms value: ${value}`);
     }
 
     return result;
@@ -156,64 +130,38 @@ export class AuthCookieService {
   }
 
   @LogMethod({
-    logArgs: false,
-    logResult: false,
-    logExecutionTime: false,
+    shouldLogArguments: false,
+    shouldLogResult: false,
+    shouldLogExecutionTime: false,
   })
-  setAccessToken(
-    res: Response,
-    token: string,
-  ): void {
-    this.setToken(
-      res,
-      token,
-      TokenName.ACCESS,
-      this.getAccessTokenMaxAge(),
-    );
+  setAccessToken(res: Response, token: string): void {
+    this.setToken(res, token, TokenName.ACCESS, this.getAccessTokenMaxAge());
   }
 
   @LogMethod({
-    logArgs: false,
-    logResult: false,
-    logExecutionTime: false,
+    shouldLogArguments: false,
+    shouldLogResult: false,
+    shouldLogExecutionTime: false,
   })
-  setRefreshToken(
-    res: Response,
-    token: string,
-  ): void {
-    this.setToken(
-      res,
-      token,
-      TokenName.REFRESH,
-      this.getRefreshTokenMaxAge(),
-    );
+  setRefreshToken(res: Response, token: string): void {
+    this.setToken(res, token, TokenName.REFRESH, this.getRefreshTokenMaxAge());
   }
 
   @LogMethod({
-    logArgs: false,
-    logResult: false,
-    logExecutionTime: false,
+    shouldLogArguments: false,
+    shouldLogResult: false,
+    shouldLogExecutionTime: false,
   })
-  clearAccessToken(
-    res: Response,
-  ): void {
-    res.clearCookie(
-      TokenName.ACCESS,
-      this.cookieOptions,
-    );
+  clearAccessToken(res: Response): void {
+    res.clearCookie(TokenName.ACCESS, this.cookieOptions);
   }
 
   @LogMethod({
-    logArgs: false,
-    logResult: false,
-    logExecutionTime: false,
+    shouldLogArguments: false,
+    shouldLogResult: false,
+    shouldLogExecutionTime: false,
   })
-  clearRefreshToken(
-    res: Response,
-  ): void {
-    res.clearCookie(
-      TokenName.REFRESH,
-      this.cookieOptions,
-    );
+  clearRefreshToken(res: Response): void {
+    res.clearCookie(TokenName.REFRESH, this.cookieOptions);
   }
 }

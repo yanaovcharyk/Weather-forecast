@@ -4,7 +4,9 @@ class LoggerContextStore {
   private context: ILoggerContext = {};
 
   get(): ILoggerContext {
-    return this.context;
+    return {
+      ...this.context,
+    };
   }
 
   set(partial: Partial<ILoggerContext>): void {

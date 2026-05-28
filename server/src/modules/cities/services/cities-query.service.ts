@@ -43,7 +43,7 @@ export class CitiesQueryService {
   }
 
   @LogMethod({
-    logResult: true,
+    shouldLogResult: true,
   })
   async getCities(params: GetCitiesParams): Promise<CityOutput[]> {
     const { userId } = params;
@@ -57,8 +57,8 @@ export class CitiesQueryService {
   }
 
   @LogMethod({
-    logArgs: true,
-    logExecutionTime: true,
+    shouldLogArguments: true,
+    shouldLogExecutionTime: true,
   })
   async getCitiesPaginated(
     params: GetCitiesPaginatedParams,
@@ -104,8 +104,7 @@ export class CitiesQueryService {
 
     const sortBy = query.sorting?.sortBy ?? CitySortField.CREATED_AT;
 
-    const sortOrder =
-      query.sorting?.sortOrder ?? SortOrder.DESC;
+    const sortOrder = query.sorting?.sortOrder ?? SortOrder.DESC;
 
     SORT_CONFIG[sortBy].orderBy(qb, sortOrder);
 
@@ -143,17 +142,13 @@ export class CitiesQueryService {
   }
 
   @LogMethod()
-  private applyPagination(
-    params: ApplyPaginationParams,
-  ): void {
+  private applyPagination(params: ApplyPaginationParams): void {
     const { qb, limit } = params;
 
     qb.take(limit + 1);
   }
 
-  private toConnection(
-    params: ToConnectionParams,
-  ): CitiesConnection {
+  private toConnection(params: ToConnectionParams): CitiesConnection {
     const { cities, limit, sortBy } = params;
 
     const getCursorValue = CITY_CURSOR_VALUES[sortBy];

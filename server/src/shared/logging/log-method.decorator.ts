@@ -1,19 +1,43 @@
 import { LoggerContext } from './logger-context';
-import { LogMethodOptions, createLogMethodWrapper } from './log-method.core';
 
-export function LogMethod(options: LogMethodOptions = {}): MethodDecorator {
-  const wrap = createLogMethodWrapper(options);
+import {
+  LogMethodOptions,
+  createLogMethodWrapper,
+} from './log-method.core';
 
-  return (_target, propertyKey, descriptor: PropertyDescriptor) => {
-    const originalMethod = descriptor.value;
+export function LogMethod(
+  options: LogMethodOptions = {},
+): MethodDecorator {
 
-    descriptor.value = async function (this: LoggerContext, ...args: any[]) {
-      const className = this.constructor?.name ?? 'Unknown';
+  const createWrappedMethod =
+    createLogMethodWrapper(options);
+
+  return (
+    target,
+    propertyKey,
+    descriptor: PropertyDescriptor,
+  ) => {
+    const originalMethodImplementation =
+      descriptor.value;
+
+    descriptor.value = async function (
+      this: LoggerContext,
+      ...methodArguments: any[]
+    ) {
+      const className =
+        this.constructor?.name ?? 'UnknownClass';
+
       const methodName = String(propertyKey);
 
-      const wrapped = wrap(originalMethod, this, methodName, className);
+      const wrappedMethod =
+        createWrappedMethod(
+          originalMethodImplementation,
+          this,
+          methodName,
+          className,
+        );
 
-      return wrapped(...args);
+      return wrappedMethod(...methodArguments);
     };
 
     return descriptor;

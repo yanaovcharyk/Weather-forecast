@@ -1,12 +1,17 @@
-export function isDangerObject(val: any): boolean {
+export function isDangerObject(
+  value: any,
+): boolean {
+  const isObject = value !== null && typeof value === 'object';
+
+  if (!isObject) {
+    return false;
+  }
   return (
-    val &&
-    typeof val === 'object' &&
-    ('req' in val ||
-      'res' in val ||
-      'socket' in val ||
-      '_readableState' in val ||
-      'headers' in val ||
-      'connection' in val)
+    'req' in value ||
+    'res' in value ||
+    'socket' in value ||
+    '_readableState' in value ||
+    'headers' in value ||
+    'connection' in value
   );
 }
