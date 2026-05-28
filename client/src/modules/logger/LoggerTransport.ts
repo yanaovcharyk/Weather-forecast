@@ -1,3 +1,5 @@
+import { print } from 'graphql';
+
 import { GRAPHQL_ENDPOINT } from './constants';
 
 import type {
@@ -5,34 +7,21 @@ import type {
   SerializedClientLogRecord,
   SendLogsGraphQLRequestBody,
 } from './types';
+import { SEND_CLIENT_LOGS_MUTATION } from './api/loggerApi';
 
-/**
- * Відповідає за network transport логів.
- */
 export class LoggerTransport {
-  /**
-   * Перетворює internal log model
-   * у transport DTO.
-   */
   private serializeLogsForTransport(
     logRecords: ClientLogRecord[],
   ): SerializedClientLogRecord[] {
     return logRecords.map(
       (logRecord): SerializedClientLogRecord => ({
         timestamp: logRecord.timestamp,
-
         level: logRecord.level,
-
         message: logRecord.message,
-
         requestId: logRecord.requestId,
-
         userId: logRecord.userId,
-
         sessionId: logRecord.sessionId,
-
         route: logRecord.route,
-
         metadata:
           logRecord.metadata !== undefined
             ? JSON.stringify(logRecord.metadata)
@@ -41,40 +30,32 @@ export class LoggerTransport {
     );
   }
 
-  /**
-   * Відправка логів через fetch.
-   */
+  private createRequestBody(
+    logRecords: ClientLogRecord[],
+  ): SendLogsGraphQLRequestBody {
+    return {
+      query: print(SEND_CLIENT_LOGS_MUTATION),
+
+      variables: {
+        input: this.serializeLogsForTransport(logRecords),
+      },
+    };
+  }
+
   async send(logRecords: ClientLogRecord[]): Promise<void> {
     if (logRecords.length === 0) {
       return;
     }
 
-    const serializedLogs = this.serializeLogsForTransport(logRecords);
-
-    const graphqlRequestBody: SendLogsGraphQLRequestBody = {
-      query: `
-          mutation SendClientLogs(
-            $input: [ClientLogInput!]!
-          ) {
-            sendClientLogs(input: $input)
-          }
-        `,
-
-      variables: {
-        input: serializedLogs,
-      },
-    };
+    const graphqlRequestBody = this.createRequestBody(logRecords);
 
     try {
       await fetch(GRAPHQL_ENDPOINT, {
         method: 'POST',
-
         headers: {
           'Content-Type': 'application/json',
         },
-
         credentials: 'include',
-
         body: JSON.stringify(graphqlRequestBody),
       });
     } catch (networkError: unknown) {
@@ -82,29 +63,12 @@ export class LoggerTransport {
     }
   }
 
-  /**
-   * Відправка логів при закритті сторінки.
-   */
   sendOnPageClose(logRecords: ClientLogRecord[]): void {
     if (logRecords.length === 0) {
       return;
     }
 
-    const serializedLogs = this.serializeLogsForTransport(logRecords);
-
-    const graphqlRequestBody: SendLogsGraphQLRequestBody = {
-      query: `
-          mutation SendClientLogs(
-            $input: [ClientLogInput!]!
-          ) {
-            sendClientLogs(input: $input)
-          }
-        `,
-
-      variables: {
-        input: serializedLogs,
-      },
-    };
+    const graphqlRequestBody = this.createRequestBody(logRecords);
 
     navigator.sendBeacon(GRAPHQL_ENDPOINT, JSON.stringify(graphqlRequestBody));
   }

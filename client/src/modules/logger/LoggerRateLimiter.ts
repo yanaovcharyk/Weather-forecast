@@ -3,34 +3,19 @@ import {
   LOGGER_RATE_LIMIT_WINDOW_IN_MS,
 } from './constants';
 
-/**
- * Захист від infinite logging loops.
- */
 export class LoggerRateLimiter {
-  /**
-   * Timestamp кожного log event.
-   */
   private logTimestamps: number[] = [];
 
-  /**
-   * Реєструє log event.
-   */
   registerLogEvent(): void {
     const currentTimestamp = Date.now();
 
     this.logTimestamps.push(currentTimestamp);
 
-    /**
-     * Видаляємо старі timestamps.
-     */
     this.logTimestamps = this.logTimestamps.filter(
       (existingTimestamp) =>
         currentTimestamp - existingTimestamp < LOGGER_RATE_LIMIT_WINDOW_IN_MS,
     );
 
-    /**
-     * Panic protection.
-     */
     if (this.logTimestamps.length > LOGGER_MAX_LOGS_PER_MINUTE) {
       throw new Error(
         [
