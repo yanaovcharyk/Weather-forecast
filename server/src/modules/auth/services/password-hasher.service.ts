@@ -9,7 +9,7 @@ import {
   ComparePasswordParams,
   HashPasswordResult,
 } from '../types';
-import { LogMethod } from '../../../shared/logging/log-method.decorator';
+import { LogMethod } from '../../../shared/logging/decorators/log-method.decorator';
 
 const ITERATIONS = 100_000;
 const KEY_LENGTH = 64;
@@ -23,10 +23,7 @@ export class Pbkdf2PasswordHasher implements IPasswordHasher {
     this.logger = loggerService.child(Pbkdf2PasswordHasher.name);
   }
 
-  @LogMethod({
-    shouldLogArguments: false,
-    shouldLogResult: false,
-  })
+  @LogMethod()
   async hash(params: HashPasswordParams): Promise<HashPasswordResult> {
     const { password } = params;
 

@@ -22,7 +22,7 @@ import {
 
 import { IAuthOutput } from '../interfaces/auth.output.interface';
 
-import { LogMethod } from '@shared/logging/log-method.decorator';
+import { LogMethod } from '@shared/logging/decorators/log-method.decorator';
 
 @Injectable()
 export class AuthService {
@@ -39,9 +39,7 @@ export class AuthService {
     this.logger = loggerService.child(AuthService.name);
   }
 
-  @LogMethod({
-    fieldsToMask: ['password', 'refreshToken', 'accessToken'],
-  })
+  @LogMethod()
   async login(params: LoginParams): Promise<IAuthOutput> {
     const { input, res } = params;
 
@@ -61,9 +59,7 @@ export class AuthService {
     return { success: true };
   }
 
-  @LogMethod({
-    fieldsToMask: ['password', 'refreshToken', 'accessToken'],
-  })
+  @LogMethod()
   async register(params: RegisterParams): Promise<IAuthOutput> {
     const { input, res } = params;
 
@@ -111,9 +107,7 @@ export class AuthService {
     return { success: true };
   }
 
-  @LogMethod({
-    fieldsToMask: ['refreshToken', 'accessToken'],
-  })
+  @LogMethod()
   async rotateRefreshToken(
     params: RotateRefreshTokenParams,
   ): Promise<IAuthOutput> {

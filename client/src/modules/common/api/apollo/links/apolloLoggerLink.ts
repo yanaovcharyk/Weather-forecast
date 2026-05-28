@@ -1,8 +1,8 @@
 import { ApolloLink } from '@apollo/client';
 import { Observable } from 'rxjs';
 import { logger } from '../../../../logger/Logger';
-import { normalizeError } from '../../../../logger/helpers/normalizeError';
-import { safeVariables } from '../../../../logger/helpers/safeVariables';
+import { normalizeError } from '../../../../logger/utils/normalizeError';
+import { safeVariables } from '../../../../logger/utils/safeVariables';
 
 const MODULE = 'Apollo';
 

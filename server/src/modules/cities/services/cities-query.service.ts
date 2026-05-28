@@ -28,7 +28,7 @@ import {
 } from '../types';
 
 import { AppLoggerService } from '@logger/services';
-import { LogMethod } from '@shared/logging/log-method.decorator';
+import { LogMethod } from '@shared/logging/decorators/log-method.decorator';
 
 @Injectable()
 export class CitiesQueryService {
@@ -58,7 +58,6 @@ export class CitiesQueryService {
 
   @LogMethod({
     shouldLogArguments: true,
-    shouldLogExecutionTime: true,
   })
   async getCitiesPaginated(
     params: GetCitiesPaginatedParams,

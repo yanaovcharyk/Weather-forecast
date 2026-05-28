@@ -24,7 +24,6 @@ export class LoggerRetryQueue {
     } catch {
       await this.retryFailedBatch({
         logRecords: retryTask.logRecords,
-
         currentRetryAttempt: retryTask.currentRetryAttempt + 1,
       });
     }

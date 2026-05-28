@@ -1,23 +1,15 @@
 import { Injectable } from '@nestjs/common';
-
 import { Response, Request } from 'express';
-
 import { ConfigService } from '@nestjs/config';
-
 import ms from 'ms';
-
-import { IAppConfig } from '../../../shared/types/app.config';
-
-import { AppLoggerService } from '../../logger/services/app-logger.service';
-
+import { IAppConfig } from '@shared/types/app.config';
+import { AppLoggerService } from '@logger/services/app-logger.service';
 import { MsString, TokenName } from '../types';
-
-import { LogMethod } from '@shared/logging/log-method.decorator';
+import { LogMethod } from '@shared/logging/decorators/log-method.decorator';
 
 @Injectable()
 export class AuthCookieService {
   private readonly logger;
-
   constructor(
     private readonly config: ConfigService<IAppConfig>,
     loggerService: AppLoggerService,
@@ -39,32 +31,19 @@ export class AuthCookieService {
     };
   }
 
-  @LogMethod({
-    shouldLogArguments: false,
-    shouldLogResult: false,
-    shouldLogExecutionTime: false,
-  })
+  @LogMethod()
   getAccessToken(req: Request): string | null {
     return req.cookies?.accessToken ?? null;
   }
 
-  @LogMethod({
-    shouldLogArguments: false,
-    shouldLogResult: false,
-    shouldLogExecutionTime: false,
-  })
+  @LogMethod()
   getRefreshToken(req: Request): string | null {
     return req.cookies?.refreshToken ?? null;
   }
 
-  @LogMethod({
-    shouldLogArguments: false,
-    shouldLogResult: false,
-    shouldLogExecutionTime: false,
-  })
+  @LogMethod()
   clearAuthCookies(res: Response): void {
     res.clearCookie(TokenName.ACCESS, this.cookieOptions);
-
     res.clearCookie(TokenName.REFRESH, this.cookieOptions);
   }
 
@@ -129,38 +108,22 @@ export class AuthCookieService {
     });
   }
 
-  @LogMethod({
-    shouldLogArguments: false,
-    shouldLogResult: false,
-    shouldLogExecutionTime: false,
-  })
+  @LogMethod()
   setAccessToken(res: Response, token: string): void {
     this.setToken(res, token, TokenName.ACCESS, this.getAccessTokenMaxAge());
   }
 
-  @LogMethod({
-    shouldLogArguments: false,
-    shouldLogResult: false,
-    shouldLogExecutionTime: false,
-  })
+  @LogMethod()
   setRefreshToken(res: Response, token: string): void {
     this.setToken(res, token, TokenName.REFRESH, this.getRefreshTokenMaxAge());
   }
 
-  @LogMethod({
-    shouldLogArguments: false,
-    shouldLogResult: false,
-    shouldLogExecutionTime: false,
-  })
+  @LogMethod()
   clearAccessToken(res: Response): void {
     res.clearCookie(TokenName.ACCESS, this.cookieOptions);
   }
 
-  @LogMethod({
-    shouldLogArguments: false,
-    shouldLogResult: false,
-    shouldLogExecutionTime: false,
-  })
+  @LogMethod()
   clearRefreshToken(res: Response): void {
     res.clearCookie(TokenName.REFRESH, this.cookieOptions);
   }

@@ -48,7 +48,7 @@ class Logger {
       metadata: sanitizedMetadata,
     };
 
-    loggerQueue.addLogRecord(logRecord);
+    loggerQueue.addLog(logRecord);
     this.printLogToBrowserConsole(logRecord);
   }
 

@@ -8,7 +8,7 @@ import {
   IWeatherDetails,
   IWeatherPreview,
 } from '../interfaces';
-import { LogMethod } from '@shared/logging/log-method.decorator';
+import { LogMethod } from '@shared/logging/decorators/log-method.decorator';
 
 @Injectable()
 export class WeatherService {
@@ -140,8 +140,7 @@ export class WeatherService {
               pressure.length,
           ),
           clouds: Math.round(
-            clouds.reduce((a: number, b: number) => a + b, 0) /
-              clouds.length,
+            clouds.reduce((a: number, b: number) => a + b, 0) / clouds.length,
           ),
           windSpeed: Math.round(
             wind.reduce((a: number, b: number) => a + b, 0) / wind.length,

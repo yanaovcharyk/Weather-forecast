@@ -13,7 +13,7 @@ import {
 
 import { AppLoggerService } from '../../logger/services/app-logger.service';
 
-import { LogMethod } from '@shared/logging/log-method.decorator';
+import { LogMethod } from '@shared/logging/decorators/log-method.decorator';
 
 @Injectable()
 export class AuthTokenService {
@@ -48,10 +48,7 @@ export class AuthTokenService {
     });
   }
 
-  @LogMethod({
-    shouldLogArguments: false,
-    shouldLogResult: false,
-  })
+  @LogMethod()
   async createAccessToken(tokenPayload: IAccessJwtPayload): Promise<string> {
     return this.createToken(
       tokenPayload,
@@ -60,10 +57,7 @@ export class AuthTokenService {
     );
   }
 
-  @LogMethod({
-    shouldLogArguments: false,
-    shouldLogResult: false,
-  })
+  @LogMethod()
   async createRefreshToken(tokenPayload: IRefreshJwtPayload): Promise<string> {
     return this.createToken(
       tokenPayload,
@@ -72,10 +66,7 @@ export class AuthTokenService {
     );
   }
 
-  @LogMethod({
-    shouldLogArguments: false,
-    shouldLogResult: false,
-  })
+  @LogMethod()
   async verifyAccessToken(token: string): Promise<IAccessJwtPayload> {
     return this.verifyToken<IAccessJwtPayload>(
       token,
@@ -84,10 +75,7 @@ export class AuthTokenService {
     );
   }
 
-  @LogMethod({
-    shouldLogArguments: false,
-    shouldLogResult: false,
-  })
+  @LogMethod()
   async verifyRefreshToken(token: string): Promise<IRefreshJwtPayload> {
     return this.verifyToken<IRefreshJwtPayload>(
       token,

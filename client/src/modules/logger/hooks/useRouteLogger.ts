@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation } from 'react-router-dom';
 import { logger } from '../Logger';
 
-export function RouteLogger() {
+export function useRouteLogger() {
   const location = useLocation();
 
   useEffect(() => {
@@ -11,6 +11,4 @@ export function RouteLogger() {
       search: location.search,
     });
   }, [location.pathname, location.search]);
-
-  return null;
 }

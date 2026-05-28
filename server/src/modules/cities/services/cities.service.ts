@@ -7,7 +7,7 @@ import { AppLoggerService } from '@logger/services';
 import { AddCityParams, CityByIdParams, UserIdParams } from '../types';
 import { ICityOutput } from '../interfaces/city.output.interface';
 import { IAddCityOutput } from '../interfaces/add-city.output.interface';
-import { LogMethod } from '../../../shared/logging/log-method.decorator';
+import { LogMethod } from '../../../shared/logging/decorators/log-method.decorator';
 
 @Injectable()
 export class CitiesService {

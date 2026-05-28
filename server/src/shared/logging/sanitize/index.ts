@@ -1,1 +1,1 @@
-export { safeSerialize } from './safe-serialize';
+export { sanitizeForLogging as safeSerialize } from './sanitize-for-logging';

@@ -9,74 +9,89 @@ import { loggerRetryQueue } from './LoggerRetryQueue';
 import { loggerDeduplicator } from '../guards/LoggerDeduplicator';
 
 export class LoggerQueue {
-  private pendingLogRecords: ClientLogRecord[] = [];
+  private queuedLogs: ClientLogRecord[] = [];
+
   private readonly loggerTransport = new LoggerTransport();
 
   constructor() {
-    this.startAutomaticFlushScheduler();
+    this.startAutoSendScheduler();
 
     this.registerPageCloseListeners();
   }
-  addLogRecord(logRecord: ClientLogRecord): void {
+
+  addLog(logRecord: ClientLogRecord): void {
     if (loggerDeduplicator.shouldSkipLog(logRecord)) {
       return;
     }
-    if (this.pendingLogRecords.length >= LOGGER_MAX_QUEUE_SIZE) {
-      this.pendingLogRecords.shift();
+
+    if (this.queuedLogs.length >= LOGGER_MAX_QUEUE_SIZE) {
+      this.removeOldestLog();
     }
 
-    this.pendingLogRecords.push(logRecord);
-    if (this.pendingLogRecords.length >= LOGGER_BATCH_SIZE) {
-      void this.flushPendingLogs();
+    this.queuedLogs.push(logRecord);
+
+    if (this.queuedLogs.length >= LOGGER_BATCH_SIZE) {
+      void this.sendQueuedLogs();
     }
   }
 
-  async flushPendingLogs(): Promise<void> {
-    if (this.pendingLogRecords.length === 0) {
+  async sendQueuedLogs(): Promise<void> {
+    if (this.queuedLogs.length === 0) {
       return;
     }
 
-    const logBatchToSend = [...this.pendingLogRecords];
+    const logsToSend = this.copyQueuedLogs();
 
-    this.pendingLogRecords = [];
+    this.clearQueuedLogs();
 
     try {
-      await this.loggerTransport.send(logBatchToSend);
+      await this.loggerTransport.send(logsToSend);
     } catch {
       await loggerRetryQueue.retryFailedBatch({
-        logRecords: logBatchToSend,
-
+        logRecords: logsToSend,
         currentRetryAttempt: 0,
       });
     }
   }
 
-  private startAutomaticFlushScheduler(): void {
+  private startAutoSendScheduler(): void {
     window.setInterval(() => {
-      void this.flushPendingLogs();
+      void this.sendQueuedLogs();
     }, LOGGER_FLUSH_INTERVAL_IN_MS);
   }
 
   private registerPageCloseListeners(): void {
-    const flushLogsBeforePageClose = (): void => {
-      if (this.pendingLogRecords.length === 0) {
+    const sendLogsBeforePageClose = (): void => {
+      if (this.queuedLogs.length === 0) {
         return;
       }
 
-      const logBatchToSend = [...this.pendingLogRecords];
+      const logsToSend = this.copyQueuedLogs();
 
-      this.pendingLogRecords = [];
+      this.clearQueuedLogs();
 
-      this.loggerTransport.sendOnPageClose(logBatchToSend);
+      this.loggerTransport.sendOnPageClose(logsToSend);
     };
 
-    window.addEventListener('beforeunload', flushLogsBeforePageClose);
+    window.addEventListener('beforeunload', sendLogsBeforePageClose);
 
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'hidden') {
-        flushLogsBeforePageClose();
+        sendLogsBeforePageClose();
       }
     });
+  }
+
+  private clearQueuedLogs(): void {
+    this.queuedLogs = [];
+  }
+
+  private copyQueuedLogs(): ClientLogRecord[] {
+    return [...this.queuedLogs];
+  }
+
+  private removeOldestLog(): void {
+    this.queuedLogs.shift();
   }
 }
 
