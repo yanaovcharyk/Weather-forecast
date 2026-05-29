@@ -1,5 +1,5 @@
 import React from 'react';
-import { logger } from '../../../logger/Logger';
+import { logger } from '../../../logger/services/LoggerService';
 import { ErrorPage } from '../ErrorPage/ErrorPage';
 
 type Props = {

@@ -1,3 +1,3 @@
 export { LoggerContextProvider } from './providers/LoggerContextProvider';
 export { loggerContext } from './context/LoggerContextStore';
-export { logger } from './Logger';
+export { logger } from './services/LoggerService';

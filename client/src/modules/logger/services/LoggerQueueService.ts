@@ -1,21 +1,16 @@
-import {
-  LOGGER_BATCH_SIZE,
-  LOGGER_FLUSH_INTERVAL_IN_MS,
-  LOGGER_MAX_QUEUE_SIZE,
-} from '../constants';
+import { LOGGER_BATCH_SIZE, LOGGER_FLUSH_INTERVAL_IN_MS } from '../constants';
 import type { ClientLogRecord } from '../types';
-import { LoggerTransport } from './LoggerTransport';
-import { loggerRetryQueue } from './LoggerRetryQueue';
+import { GraphQLLoggerTransport } from './GraphQLLoggerTransport';
+import { loggerRetryQueue } from './LoggerRetryService';
 import { loggerDeduplicator } from '../guards/LoggerDeduplicator';
 
 export class LoggerQueue {
   private queuedLogs: ClientLogRecord[] = [];
 
-  private readonly loggerTransport = new LoggerTransport();
+  private readonly loggerTransport = new GraphQLLoggerTransport();
 
   constructor() {
     this.startAutoSendScheduler();
-
     this.registerPageCloseListeners();
   }
 
@@ -24,14 +19,12 @@ export class LoggerQueue {
       return;
     }
 
-    if (this.queuedLogs.length >= LOGGER_MAX_QUEUE_SIZE) {
-      this.removeOldestLog();
-    }
-
     this.queuedLogs.push(logRecord);
 
     if (this.queuedLogs.length >= LOGGER_BATCH_SIZE) {
-      void this.sendQueuedLogs();
+      this.sendQueuedLogs().catch((error: unknown) => {
+        console.error('Failed to send queued logs', error);
+      });
     }
   }
 
@@ -41,7 +34,6 @@ export class LoggerQueue {
     }
 
     const logsToSend = this.copyQueuedLogs();
-
     this.clearQueuedLogs();
 
     try {
@@ -56,7 +48,9 @@ export class LoggerQueue {
 
   private startAutoSendScheduler(): void {
     window.setInterval(() => {
-      void this.sendQueuedLogs();
+      this.sendQueuedLogs().catch((error: unknown) => {
+        console.error('Failed to auto send logs', error);
+      });
     }, LOGGER_FLUSH_INTERVAL_IN_MS);
   }
 
@@ -88,10 +82,6 @@ export class LoggerQueue {
 
   private copyQueuedLogs(): ClientLogRecord[] {
     return [...this.queuedLogs];
-  }
-
-  private removeOldestLog(): void {
-    this.queuedLogs.shift();
   }
 }
 

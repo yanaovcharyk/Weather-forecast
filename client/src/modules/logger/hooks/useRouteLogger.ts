@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { logger } from '../Logger';
+import { logger } from '../services/LoggerService';
 
 export function useRouteLogger() {
   const location = useLocation();

@@ -1,6 +1,6 @@
 import { LOGGER_MAX_RETRY_COUNT, LOGGER_RETRY_DELAY_IN_MS } from '../constants';
 import type { ClientLogRecord } from '../types';
-import { LoggerTransport } from './LoggerTransport';
+import { GraphQLLoggerTransport } from './GraphQLLoggerTransport';
 
 interface FailedLogBatchRetryTask {
   logRecords: ClientLogRecord[];
@@ -8,7 +8,7 @@ interface FailedLogBatchRetryTask {
 }
 
 export class LoggerRetryQueue {
-  private readonly loggerTransport = new LoggerTransport();
+  private readonly loggerTransport = new GraphQLLoggerTransport();
 
   async retryFailedBatch(retryTask: FailedLogBatchRetryTask): Promise<void> {
     if (retryTask.currentRetryAttempt >= LOGGER_MAX_RETRY_COUNT) {

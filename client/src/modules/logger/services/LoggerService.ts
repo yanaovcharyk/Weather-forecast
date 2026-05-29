@@ -1,13 +1,13 @@
-import { loggerContext } from './context/LoggerContextStore';
+import { loggerContext } from '../context/LoggerContextStore';
 import {
   DEFAULT_FIELDS_TO_MASK,
   type ClientLogRecord,
   type LogLevel,
   type LogMetadata,
-} from './types';
-import { loggerQueue } from './pipeline/LoggerQueue';
-import { loggerRateLimiter } from './guards/LoggerRateLimiter';
-import { safeSerialize } from './utils/safe-serialize';
+} from '../types';
+import { loggerQueue } from './LoggerQueueService';
+import { loggerRateLimiter } from '../guards/LoggerRateLimiter';
+import { safeSerialize } from '../utils/safe-serialize';
 
 class Logger {
   info(message: string, metadata?: LogMetadata): void {

@@ -1,6 +1,6 @@
 import { ApolloLink } from '@apollo/client';
 import { Observable } from 'rxjs';
-import { logger } from '../../../../logger/Logger';
+import { logger } from '../../../../logger/services/LoggerService';
 import { normalizeError } from '../../../../logger/utils/normalizeError';
 import { safeVariables } from '../../../../logger/utils/safeVariables';
 

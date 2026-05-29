@@ -71,3 +71,8 @@ export type ClientErrorLog = {
   };
   variables?: unknown;
 };
+
+export interface ILoggerTransport {
+  send(logRecords: ClientLogRecord[]): Promise<void>;
+  sendOnPageClose(logRecords: ClientLogRecord[]): void;
+}
