@@ -1,5 +1,5 @@
 export const LOGGER_BATCH_SIZE = 20;
-export const LOGGER_FLUSH_INTERVAL_IN_MS = 10000;
+export const LOGGER_FLUSH_INTERVAL_IN_MS = 60000;
 
 export const LOGGER_MAX_RETRY_COUNT = 5;
 export const LOGGER_RETRY_DELAY_IN_MS = 3000;
@@ -9,5 +9,3 @@ export const LOGGER_DEDUPLICATION_CLEANUP_INTERVAL_IN_MS = 10000;
 
 export const LOGGER_MAX_LOGS_PER_MINUTE = 3000;
 export const LOGGER_RATE_LIMIT_WINDOW_IN_MS = 60000;
-
-export const LOGGER_API_URL = import.meta.env.LOGGER_API_URL;

@@ -3,6 +3,7 @@ import { Observable } from 'rxjs';
 import { logger } from '../../../../logger/services/LoggerService';
 import { normalizeError } from '../../../../logger/utils/normalizeError';
 import { safeVariables } from '../../../../logger/utils/safeVariables';
+import { loggerContext } from '../../../../logger/context/LoggerContextStore';
 
 const MODULE = 'Apollo';
 
@@ -17,6 +18,11 @@ export const apolloLoggerLink = new ApolloLink((operation, forward) => {
     },
     requestId,
   }));
+
+  loggerContext.set({
+    ...loggerContext.get(),
+    requestId,
+  });
 
   logger.debug('GraphQL request initialized', {
     module: MODULE,
