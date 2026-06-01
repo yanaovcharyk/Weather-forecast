@@ -6,6 +6,11 @@ import { Request, Response } from 'express';
 export const graphqlConfig: ApolloDriverConfig = {
   driver: ApolloDriver,
   autoSchemaFile: true,
+  fieldResolverEnhancers: [
+    'guards',
+    'interceptors',
+    'filters',
+  ],
   context: ({ req, res }: { req: Request; res: Response }) => ({
     req,
     res,

@@ -9,26 +9,19 @@ import { GqlExecutionContext } from '@nestjs/graphql';
 import { LoggerContextService } from './services/logger-context.service';
 
 @Injectable()
-export class GraphqlContextInterceptor
-  implements NestInterceptor
-{
-  constructor(
-    private readonly contextService: LoggerContextService,
-  ) {}
+export class GraphqlContextInterceptor implements NestInterceptor {
+  constructor(private readonly contextService: LoggerContextService) {}
 
-  intercept(
-    context: ExecutionContext,
-    next: CallHandler,
-  ): Observable<any> {
+  intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const gql = GqlExecutionContext.create(context);
 
-    const ctx = gql.getContext();
+    console.log('FIELD:', gql.getInfo()?.fieldName);
 
     return this.contextService.run(
       {
-        requestId: ctx.requestId,
-        userId: ctx.req?.user?.userId,
-        ip: ctx.req?.ip,
+        requestId: gql.getContext().requestId,
+        userId: gql.getContext().req?.user?.userId,
+        ip: gql.getContext().req?.ip,
       },
       () => next.handle(),
     );
