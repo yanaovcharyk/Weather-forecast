@@ -1,11 +1,11 @@
 import { LOGGER_BATCH_SIZE, LOGGER_FLUSH_INTERVAL_IN_MS } from '../constants';
-import type { ClientLogRecord } from '../types';
+import type { IClientLogRecord } from '../types';
 import { GraphQLLoggerTransport } from './GraphQLLoggerTransport';
 import { loggerRetryQueue } from './LoggerRetryService';
 import { loggerDeduplicator } from '../guards/LoggerDeduplicator';
 
 export class LoggerQueue {
-  private queuedLogs: ClientLogRecord[] = [];
+  private queuedLogs: IClientLogRecord[] = [];
 
   private readonly loggerTransport = new GraphQLLoggerTransport();
 
@@ -14,7 +14,7 @@ export class LoggerQueue {
     this.registerPageCloseListeners();
   }
 
-  addLog(logRecord: ClientLogRecord): void {
+  addLog(logRecord: IClientLogRecord): void {
     if (loggerDeduplicator.shouldSkipLog(logRecord)) {
       return;
     }
@@ -80,7 +80,7 @@ export class LoggerQueue {
     this.queuedLogs = [];
   }
 
-  private copyQueuedLogs(): ClientLogRecord[] {
+  private copyQueuedLogs(): IClientLogRecord[] {
     return [...this.queuedLogs];
   }
 }

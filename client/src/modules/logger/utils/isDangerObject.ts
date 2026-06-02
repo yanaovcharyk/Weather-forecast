@@ -1,4 +1,5 @@
-import { isObject } from './is-object';
+import { isObject } from './isObject';
+
 export function isDangerObject(value: unknown): boolean {
   if (!isObject(value)) {
     return false;

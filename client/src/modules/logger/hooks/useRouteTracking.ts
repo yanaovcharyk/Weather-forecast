@@ -1,12 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-
 import { loggerContext } from '../context/LoggerContextStore';
-import { routerLogger } from '../loggers';
+import { createLogger } from '../utils/createLogger';
+
+export const routerLogger = createLogger('Router');
 
 export function useRouteTracking() {
   const location = useLocation();
-
   const previousPath = useRef(location.pathname);
 
   useEffect(() => {

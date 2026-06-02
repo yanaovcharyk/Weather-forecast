@@ -2,40 +2,40 @@ export type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 
 export type LogMetadata = Record<string, unknown>;
 
+// export interface ILoggerContext {
+//   requestId?: string;
+//   userId?: string;
+//   sessionId?: string;
+//   route?: string;
+//   context?: string;
+// }
+
+// export interface ClientLogRecord {
+//   timestamp: string;
+//   level: LogLevel;
+//   message: string;
+//   requestId?: string;
+//   userId?: string;
+//   sessionId?: string;
+//   route?: string;
+//   metadata?: JsonValue;
+// }
+
 export interface ILoggerContext {
   requestId?: string;
   userId?: string;
   sessionId?: string;
   route?: string;
-  context?: string;
 }
 
-export interface ClientLogRecord {
-  timestamp: string;
-  level: LogLevel;
-  message: string;
-  requestId?: string;
-  userId?: string;
-  sessionId?: string;
-  route?: string;
-  metadata?: JsonValue;
-}
-
-export interface LoggerContext {
-  requestId?: string;
-  userId?: string;
-  sessionId?: string;
-  route?: string;
-}
-
-export interface ClientLogRecord extends LoggerContext {
+export interface IClientLogRecord extends ILoggerContext {
   timestamp: string;
   level: LogLevel;
   message: string;
   metadata?: JsonValue;
 }
 
-export interface SerializedClientLogRecord {
+export interface ISerializedClientLogRecord {
   timestamp: string;
   level: LogLevel;
   message: string;
@@ -46,10 +46,10 @@ export interface SerializedClientLogRecord {
   metadata?: string;
 }
 
-export interface SendLogsGraphQLRequestBody {
+export interface ISendLogsGraphQLRequestBody {
   query: string;
   variables: {
-    input: SerializedClientLogRecord[];
+    input: ISerializedClientLogRecord[];
   };
 }
 
@@ -87,6 +87,6 @@ export type ClientErrorLog = {
 };
 
 export interface ILoggerTransport {
-  send(logRecords: ClientLogRecord[]): Promise<void>;
-  sendOnPageClose(logRecords: ClientLogRecord[]): void;
+  send(logRecords: IClientLogRecord[]): Promise<void>;
+  sendOnPageClose(logRecords: IClientLogRecord[]): void;
 }

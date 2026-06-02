@@ -1,13 +1,13 @@
 import { loggerContext } from '../context/LoggerContextStore';
 import {
   DEFAULT_FIELDS_TO_MASK,
-  type ClientLogRecord,
+  type IClientLogRecord,
   type LogLevel,
   type LogMetadata,
 } from '../types';
 import { loggerQueue } from './LoggerQueueService';
 import { loggerRateLimiter } from '../guards/LoggerRateLimiter';
-import { safeSerialize } from '../utils/safe-serialize';
+import { sanitizeForLogging } from '../utils/sanitizeForLogging';
 
 export class Logger {
   private readonly defaultMetadata: LogMetadata;
@@ -39,6 +39,24 @@ export class Logger {
     this.createAndDispatchLogRecord('debug', message, metadata);
   }
 
+  orModule(importMetaUrl: string): Logger {
+    return this.child({
+      module: this.getModuleName(importMetaUrl),
+    });
+  }
+
+  private getModuleName(importMetaUrl: string): string {
+    const path = new URL(importMetaUrl).pathname;
+
+    const segments = path.split('/').filter(Boolean);
+
+    const modulesIndex = segments.indexOf('modules');
+
+    return modulesIndex >= 0
+      ? (segments[modulesIndex + 1] ?? 'Unknown')
+      : 'Unknown';
+  }
+
   private createAndDispatchLogRecord(
     level: LogLevel,
     message: string,
@@ -53,12 +71,12 @@ export class Logger {
       ...metadata,
     };
 
-    const sanitizedMetadata = safeSerialize(
+    const sanitizedMetadata = sanitizeForLogging(
       mergedMetadata,
       DEFAULT_FIELDS_TO_MASK,
     );
 
-    const logRecord: ClientLogRecord = {
+    const logRecord: IClientLogRecord = {
       timestamp: new Date().toISOString(),
       level,
       message,
@@ -72,7 +90,7 @@ export class Logger {
     this.printLogToBrowserConsole(logRecord);
   }
 
-  private printLogToBrowserConsole(logRecord: ClientLogRecord): void {
+  private printLogToBrowserConsole(logRecord: IClientLogRecord): void {
     switch (logRecord.level) {
       case 'info':
         console.info(logRecord);

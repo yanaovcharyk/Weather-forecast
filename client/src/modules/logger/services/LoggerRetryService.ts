@@ -1,9 +1,9 @@
 import { LOGGER_MAX_RETRY_COUNT, LOGGER_RETRY_DELAY_IN_MS } from '../constants';
-import type { ClientLogRecord } from '../types';
+import type { IClientLogRecord } from '../types';
 import { GraphQLLoggerTransport } from './GraphQLLoggerTransport';
 
 interface FailedLogBatchRetryTask {
-  logRecords: ClientLogRecord[];
+  logRecords: IClientLogRecord[];
   currentRetryAttempt: number;
 }
 

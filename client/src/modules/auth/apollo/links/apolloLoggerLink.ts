@@ -1,9 +1,10 @@
 import { ApolloLink } from '@apollo/client';
 import { Observable } from 'rxjs';
-import { normalizeError } from '../../../../logger/utils/normalizeError';
-import { safeVariables } from '../../../../logger/utils/safeVariables';
-import { loggerContext } from '../../../../logger/context/LoggerContextStore';
-import { apolloLogger } from '../../../../logger/loggers';
+import { normalizeError } from '@/logger/utils/normalizeError';
+import { loggerContext } from '@/logger/context/LoggerContextStore';
+import { createLogger } from '@/logger/utils/createLogger';
+
+export const apolloLogger = createLogger('Apollo');
 
 export const apolloLoggerLink = new ApolloLink((operation, forward) => {
   const requestId = crypto.randomUUID();
@@ -24,15 +25,12 @@ export const apolloLoggerLink = new ApolloLink((operation, forward) => {
 
   apolloLogger.debug('GraphQL request initialized', {
     operationName: operation.operationName,
+    variables: operation.variables,
   });
 
   apolloLogger.info('GraphQL request started', {
     operationName: operation.operationName,
-    variables: safeVariables(operation.variables),
-  });
-
-  apolloLogger.debug('GraphQL variables snapshot', {
-    variables: safeVariables(operation.variables),
+    variables: operation.variables,
   });
 
   return new Observable((observer) => {
@@ -75,7 +73,7 @@ export const apolloLoggerLink = new ApolloLink((operation, forward) => {
           operationName: operation.operationName,
           executionTimeMs: duration,
           error: normalizeError(error),
-          variables: safeVariables(operation.variables),
+          variables: operation.variables,
         });
 
         observer.error(error);
@@ -83,14 +81,12 @@ export const apolloLoggerLink = new ApolloLink((operation, forward) => {
 
       complete: () => {
         apolloLogger.debug('GraphQL observable completed');
-
         observer.complete();
       },
     });
 
     return () => {
       apolloLogger.debug('GraphQL request unsubscribed');
-
       subscription.unsubscribe();
     };
   });

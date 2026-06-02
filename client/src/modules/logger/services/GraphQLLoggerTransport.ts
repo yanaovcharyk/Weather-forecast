@@ -1,9 +1,9 @@
 import { print } from 'graphql';
 
 import type {
-  ClientLogRecord,
-  SerializedClientLogRecord,
-  SendLogsGraphQLRequestBody,
+  IClientLogRecord,
+  ISerializedClientLogRecord,
+  ISendLogsGraphQLRequestBody,
   ILoggerTransport,
 } from '../types';
 import { SEND_CLIENT_LOGS_MUTATION } from '../api/loggerApi';
@@ -11,8 +11,8 @@ import { ENV } from '../../../config/env';
 
 export class GraphQLLoggerTransport implements ILoggerTransport {
   private serializeLogsForTransport(
-    logRecords: ClientLogRecord[],
-  ): SerializedClientLogRecord[] {
+    logRecords: IClientLogRecord[],
+  ): ISerializedClientLogRecord[] {
     return logRecords.map(({ metadata, ...rest }) => ({
       ...rest,
 
@@ -21,8 +21,8 @@ export class GraphQLLoggerTransport implements ILoggerTransport {
   }
 
   private createRequestBody(
-    logRecords: ClientLogRecord[],
-  ): SendLogsGraphQLRequestBody {
+    logRecords: IClientLogRecord[],
+  ): ISendLogsGraphQLRequestBody {
     return {
       query: print(SEND_CLIENT_LOGS_MUTATION),
 
@@ -32,7 +32,7 @@ export class GraphQLLoggerTransport implements ILoggerTransport {
     };
   }
 
-  async send(logRecords: ClientLogRecord[]): Promise<void> {
+  async send(logRecords: IClientLogRecord[]): Promise<void> {
     if (logRecords.length === 0) {
       return;
     }
@@ -53,7 +53,7 @@ export class GraphQLLoggerTransport implements ILoggerTransport {
     }
   }
 
-  sendOnPageClose(logRecords: ClientLogRecord[]): void {
+  sendOnPageClose(logRecords: IClientLogRecord[]): void {
     if (logRecords.length === 0) {
       return;
     }

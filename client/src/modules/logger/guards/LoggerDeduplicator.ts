@@ -3,7 +3,7 @@ import {
   LOGGER_DEDUPLICATION_CLEANUP_INTERVAL_IN_MS,
 } from '../constants';
 
-import type { ClientLogRecord } from '../types';
+import type { IClientLogRecord } from '../types';
 
 export class LoggerDeduplicator {
   private duplicateLogCache = new Map<string, number>();
@@ -12,7 +12,7 @@ export class LoggerDeduplicator {
     this.startCleanupScheduler();
   }
 
-  shouldSkipLog(logRecord: ClientLogRecord): boolean {
+  shouldSkipLog(logRecord: IClientLogRecord): boolean {
     const currentTimestamp = Date.now();
 
     const logDeduplicationKey = JSON.stringify({
