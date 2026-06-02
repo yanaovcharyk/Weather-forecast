@@ -13,21 +13,11 @@ export class GraphQLLoggerTransport implements ILoggerTransport {
   private serializeLogsForTransport(
     logRecords: ClientLogRecord[],
   ): SerializedClientLogRecord[] {
-    return logRecords.map(
-      (logRecord): SerializedClientLogRecord => ({
-        timestamp: logRecord.timestamp,
-        level: logRecord.level,
-        message: logRecord.message,
-        requestId: logRecord.requestId,
-        userId: logRecord.userId,
-        sessionId: logRecord.sessionId,
-        route: logRecord.route,
-        metadata:
-          logRecord.metadata !== undefined
-            ? JSON.stringify(logRecord.metadata)
-            : undefined,
-      }),
-    );
+    return logRecords.map(({ metadata, ...rest }) => ({
+      ...rest,
+
+      metadata: metadata !== undefined ? JSON.stringify(metadata) : undefined,
+    }));
   }
 
   private createRequestBody(

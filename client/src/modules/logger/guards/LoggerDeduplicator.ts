@@ -18,6 +18,7 @@ export class LoggerDeduplicator {
     const logDeduplicationKey = JSON.stringify({
       level: logRecord.level,
       message: logRecord.message,
+      metadata: logRecord.metadata,
     });
 
     const previousLogTimestamp =

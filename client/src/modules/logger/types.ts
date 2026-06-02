@@ -21,6 +21,20 @@ export interface ClientLogRecord {
   metadata?: JsonValue;
 }
 
+export interface LoggerContext {
+  requestId?: string;
+  userId?: string;
+  sessionId?: string;
+  route?: string;
+}
+
+export interface ClientLogRecord extends LoggerContext {
+  timestamp: string;
+  level: LogLevel;
+  message: string;
+  metadata?: JsonValue;
+}
+
 export interface SerializedClientLogRecord {
   timestamp: string;
   level: LogLevel;

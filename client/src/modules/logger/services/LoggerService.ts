@@ -9,7 +9,20 @@ import { loggerQueue } from './LoggerQueueService';
 import { loggerRateLimiter } from '../guards/LoggerRateLimiter';
 import { safeSerialize } from '../utils/safe-serialize';
 
-class Logger {
+export class Logger {
+  private readonly defaultMetadata: LogMetadata;
+
+  constructor(defaultMetadata: LogMetadata = {}) {
+    this.defaultMetadata = defaultMetadata;
+  }
+
+  child(metadata: LogMetadata): Logger {
+    return new Logger({
+      ...this.defaultMetadata,
+      ...metadata,
+    });
+  }
+
   info(message: string, metadata?: LogMetadata): void {
     this.createAndDispatchLogRecord('info', message, metadata);
   }
@@ -35,16 +48,23 @@ class Logger {
 
     const currentLoggerContext = loggerContext.get();
 
-    const sanitizedMetadata = safeSerialize(metadata, DEFAULT_FIELDS_TO_MASK);
+    const mergedMetadata = {
+      ...this.defaultMetadata,
+      ...metadata,
+    };
+
+    const sanitizedMetadata = safeSerialize(
+      mergedMetadata,
+      DEFAULT_FIELDS_TO_MASK,
+    );
 
     const logRecord: ClientLogRecord = {
       timestamp: new Date().toISOString(),
       level,
       message,
-      requestId: currentLoggerContext.requestId,
-      userId: currentLoggerContext.userId,
-      sessionId: currentLoggerContext.sessionId,
-      route: currentLoggerContext.route,
+
+      ...currentLoggerContext,
+
       metadata: sanitizedMetadata,
     };
 

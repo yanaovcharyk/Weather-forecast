@@ -13,7 +13,6 @@ export function LoggerContextProvider({ children, userId }: Props) {
       loggerContext.set({
         userId: userId ?? undefined,
         sessionId,
-        route: window.location.pathname,
       });
     };
 

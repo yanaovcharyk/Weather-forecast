@@ -1,10 +1,10 @@
-import { useRouteLogger } from '../hooks/useRouteLogger';
+import { useRouteTracking } from '../hooks/useRouteTracking';
 
 export function RouteLoggerProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  useRouteLogger();
+  useRouteTracking();
   return children;
 }

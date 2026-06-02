@@ -1,6 +1,6 @@
 import React from 'react';
-import { logger } from '../../../logger/services/LoggerService';
 import { ErrorPage } from '../ErrorPage/ErrorPage';
+import { errorBoundaryLogger } from '../../../logger/loggers';
 
 type Props = {
   children: React.ReactNode;
@@ -10,14 +10,14 @@ type State = {
   hasError: boolean;
 };
 
-function cleanComponentStack(stack?: string | null) {
+function cleanComponentStack(stack?: string | null): string[] {
   if (!stack) {
     return [];
   }
 
   return stack
     .split('\n')
-    .map((l) => l.trim())
+    .map((line) => line.trim())
     .filter(Boolean)
     .filter((line) => {
       return (
@@ -56,13 +56,10 @@ export class ErrorBoundary extends React.Component<Props, State> {
     };
   }
 
-  componentDidCatch(error: Error, info: React.ErrorInfo) {
+  componentDidCatch(error: Error, info: React.ErrorInfo): void {
     const normalizedError = normalizeReactError(error, info);
 
-    logger.error('React render crash', {
-      module: 'React',
-      route: window.location.pathname,
-
+    errorBoundaryLogger.error('React render crash', {
       error: normalizedError,
 
       ui: {
@@ -71,15 +68,13 @@ export class ErrorBoundary extends React.Component<Props, State> {
       },
     });
 
-    logger.debug('React error debug snapshot', {
-      module: 'React',
-      route: window.location.pathname,
+    errorBoundaryLogger.debug('React error debug snapshot', {
       componentStackSize: normalizedError.ui.stackDepth,
       errorName: error.name,
     });
   }
 
-  render() {
+  render(): React.ReactNode {
     if (this.state.hasError) {
       return <ErrorPage />;
     }
