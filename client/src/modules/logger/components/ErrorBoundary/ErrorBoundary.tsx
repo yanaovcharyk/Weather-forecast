@@ -1,7 +1,7 @@
 import React from 'react';
-import { ErrorPage } from '../ErrorPage/ErrorPage';
 import { createLogger } from '@/logger/utils/createLogger';
-import { normalizeReactError } from '../../utils/normalizeReactError';
+import { normalizeReactError } from '@/common/utils/normalizeReactError';
+import { ErrorPage } from '@/common/components/ErrorPage/ErrorPage';
 
 type Props = {
   children: React.ReactNode;
@@ -11,7 +11,8 @@ type State = {
   hasError: boolean;
 };
 
-const errorBoundaryLogger = createLogger('ErrorBoundary');
+const logger = createLogger('ErrorBoundary');
+
 export class ErrorBoundary extends React.Component<Props, State> {
   state: State = {
     hasError: false,
@@ -26,18 +27,8 @@ export class ErrorBoundary extends React.Component<Props, State> {
   componentDidCatch(error: Error, info: React.ErrorInfo): void {
     const normalizedError = normalizeReactError(error, info);
 
-    errorBoundaryLogger.error('React render crash', {
+    logger.error('react.render.crash', {
       error: normalizedError,
-
-      ui: {
-        rootComponent: normalizedError.ui.rootComponent,
-        stackDepth: normalizedError.ui.stackDepth,
-      },
-    });
-
-    errorBoundaryLogger.debug('React error debug snapshot', {
-      componentStackSize: normalizedError.ui.stackDepth,
-      errorName: error.name,
     });
   }
 

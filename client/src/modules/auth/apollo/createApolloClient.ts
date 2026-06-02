@@ -5,7 +5,7 @@ import {
   HttpLink,
 } from '@apollo/client';
 
-import { AccessTokenRefreshCoordinator } from './auth/AccessTokenRefreshCoordinator';
+import { AccessTokenRefreshCoordinator } from './tokens/AccessTokenRefreshCoordinator';
 import { createTokenRefreshErrorLink } from './links/tokenRefreshErrorLink';
 import { apolloLoggerLink } from './links/apolloLoggerLink';
 

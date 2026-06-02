@@ -5,9 +5,11 @@ import {
   type LogLevel,
   type LogMetadata,
 } from '../types';
+
 import { loggerQueue } from './LoggerQueueService';
 import { loggerRateLimiter } from '../guards/LoggerRateLimiter';
 import { sanitizeForLogging } from '../utils/sanitizeForLogging';
+import { LoggerOperation } from './LoggerOperation';
 
 export class Logger {
   private readonly defaultMetadata: LogMetadata;
@@ -21,6 +23,10 @@ export class Logger {
       ...this.defaultMetadata,
       ...metadata,
     });
+  }
+
+  operation(event: string, metadata?: LogMetadata): LoggerOperation {
+    return new LoggerOperation(this, event, metadata);
   }
 
   info(message: string, metadata?: LogMetadata): void {
@@ -39,7 +45,7 @@ export class Logger {
     this.createAndDispatchLogRecord('debug', message, metadata);
   }
 
-  orModule(importMetaUrl: string): Logger {
+  forModule(importMetaUrl: string): Logger {
     return this.child({
       module: this.getModuleName(importMetaUrl),
     });
@@ -47,9 +53,7 @@ export class Logger {
 
   private getModuleName(importMetaUrl: string): string {
     const path = new URL(importMetaUrl).pathname;
-
     const segments = path.split('/').filter(Boolean);
-
     const modulesIndex = segments.indexOf('modules');
 
     return modulesIndex >= 0
@@ -80,9 +84,7 @@ export class Logger {
       timestamp: new Date().toISOString(),
       level,
       message,
-
       ...currentLoggerContext,
-
       metadata: sanitizedMetadata,
     };
 

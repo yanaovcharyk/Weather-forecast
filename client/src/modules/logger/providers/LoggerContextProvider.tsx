@@ -11,6 +11,7 @@ export function LoggerContextProvider({ children, userId }: Props) {
   useEffect(() => {
     const updateContext = () => {
       loggerContext.set({
+        ...loggerContext.get(),
         userId: userId ?? undefined,
         sessionId,
       });

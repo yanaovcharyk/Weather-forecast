@@ -1,6 +1,6 @@
 import { ApolloLink } from '@apollo/client';
 import { Observable } from 'rxjs';
-import { normalizeError } from '@/logger/utils/normalizeError';
+
 import { loggerContext } from '@/logger/context/LoggerContextStore';
 import { createLogger } from '@/logger/utils/createLogger';
 
@@ -8,7 +8,6 @@ export const apolloLogger = createLogger('Apollo');
 
 export const apolloLoggerLink = new ApolloLink((operation, forward) => {
   const requestId = crypto.randomUUID();
-  const startedAt = performance.now();
 
   operation.setContext(({ headers = {} }) => ({
     headers: {
@@ -23,12 +22,7 @@ export const apolloLoggerLink = new ApolloLink((operation, forward) => {
     requestId,
   });
 
-  apolloLogger.debug('GraphQL request initialized', {
-    operationName: operation.operationName,
-    variables: operation.variables,
-  });
-
-  apolloLogger.info('GraphQL request started', {
+  const operationLogging = apolloLogger.operation('graphql.request', {
     operationName: operation.operationName,
     variables: operation.variables,
   });
@@ -36,57 +30,37 @@ export const apolloLoggerLink = new ApolloLink((operation, forward) => {
   return new Observable((observer) => {
     const subscription = forward(operation).subscribe({
       next: (result) => {
-        const duration = Math.round(performance.now() - startedAt);
+        const hasErrors = Boolean(result.errors?.length);
 
-        apolloLogger.debug('GraphQL response received', {
-          operationName: operation.operationName,
-          hasErrors: Boolean(result.errors?.length),
-          dataKeys: result.data ? Object.keys(result.data) : [],
-        });
-
-        apolloLogger.info('GraphQL request completed', {
-          operationName: operation.operationName,
-          executionTimeMs: duration,
-          hasErrors: Boolean(result.errors?.length),
-        });
-
-        if (result.errors?.length) {
-          apolloLogger.warn('GraphQL response contains errors', {
-            operationName: operation.operationName,
-            errorsCount: result.errors.length,
+        if (hasErrors) {
+          operationLogging.warn('graphql.response.errors', {
+            errorsCount: result.errors?.length,
           });
         }
 
+        operationLogging.success({
+          hasErrors,
+        });
+
         observer.next(result);
-        observer.complete();
       },
 
       error: (error) => {
-        const duration = Math.round(performance.now() - startedAt);
-
-        apolloLogger.debug('GraphQL request failed (raw error captured)', {
-          operationName: operation.operationName,
-          rawError: String(error),
-        });
-
-        apolloLogger.error('GraphQL request failed', {
-          operationName: operation.operationName,
-          executionTimeMs: duration,
-          error: normalizeError(error),
-          variables: operation.variables,
-        });
+        operationLogging.fail(error);
 
         observer.error(error);
       },
 
       complete: () => {
-        apolloLogger.debug('GraphQL observable completed');
         observer.complete();
       },
     });
 
     return () => {
-      apolloLogger.debug('GraphQL request unsubscribed');
+      apolloLogger.debug('graphql.request.unsubscribed', {
+        operationName: operation.operationName,
+      });
+
       subscription.unsubscribe();
     };
   });
