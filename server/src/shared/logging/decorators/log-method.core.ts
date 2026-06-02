@@ -11,6 +11,12 @@ export function createLogMethodWrapper(options: LogMethodOptions) {
     fieldsToRemove = DEFAULT_FIELDS_TO_REMOVE,
   } = options;
 
+  const logIfEnabled = (condition: boolean, callback: () => void) => {
+    if (condition) {
+      callback();
+    }
+  };
+
   return function createMethodWrapper(
     originalMethod: Function,
     loggerContext: LoggerContext,
@@ -24,7 +30,7 @@ export function createLogMethodWrapper(options: LogMethodOptions) {
 
       logger?.info(`${className}.${methodName} called`);
 
-      if (shouldLogArguments) {
+      logIfEnabled(shouldLogArguments, () => {
         const sanitizedArguments = methodArguments
           .map((argument) => {
             const sanitizedValue = safeSerialize(
@@ -33,18 +39,19 @@ export function createLogMethodWrapper(options: LogMethodOptions) {
               fieldsToRemove,
             );
 
-            if (sanitizedValue === '[FilteredRequestObject]') {
-              return undefined;
-            }
-
-            return sanitizedValue;
+            return sanitizedValue === '[FilteredRequestObject]'
+              ? undefined
+              : sanitizedValue;
           })
-          .filter((sanitizedValue) => sanitizedValue !== undefined);
+          .filter(
+            (value): value is Exclude<typeof value, undefined> =>
+              value !== undefined,
+          );
 
         logger?.debug(`${className}.${methodName} arguments`, {
           arguments: sanitizedArguments,
         });
-      }
+      });
 
       try {
         const methodResult = await originalMethod.apply(
@@ -52,22 +59,23 @@ export function createLogMethodWrapper(options: LogMethodOptions) {
           methodArguments,
         );
 
-        if (shouldLogExecutionTime) {
+        logIfEnabled(shouldLogExecutionTime, () => {
           logger?.debug(`${className}.${methodName} completed`, {
             executionTimeMilliseconds: Date.now() - executionStartTimestamp,
           });
-        }
+        });
 
-        if (shouldLogResult) {
+        logIfEnabled(shouldLogResult, () => {
           logger?.debug(`${className}.${methodName} result`, {
             result: safeSerialize(methodResult, fieldsToMask, fieldsToRemove),
           });
-        }
+        });
 
         return methodResult;
       } catch (error) {
         logger?.error(`${className}.${methodName} failed`, {
           error: error instanceof Error ? error.message : String(error),
+
           executionTimeMilliseconds: Date.now() - executionStartTimestamp,
         });
 
