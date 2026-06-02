@@ -14,5 +14,7 @@ export interface LoginMutationResponse {
 export type LoginFormValues = z.infer<typeof schema>;
 
 export interface MeQuery {
-  me: boolean;
+  me: {
+    userId: string;
+  };
 }

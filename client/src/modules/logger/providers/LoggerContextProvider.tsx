@@ -1,18 +1,13 @@
 import { type PropsWithChildren, useEffect, useState } from 'react';
 import { loggerContext } from '../context/LoggerContextStore';
 
-type Props = PropsWithChildren<{
-  userId?: string | null;
-}>;
-
-export function LoggerContextProvider({ children, userId }: Props) {
+export function LoggerContextProvider({ children }: PropsWithChildren) {
   const [sessionId] = useState(() => crypto.randomUUID());
 
   useEffect(() => {
     const updateContext = () => {
       loggerContext.set({
         ...loggerContext.get(),
-        userId: userId ?? undefined,
         sessionId,
       });
     };
@@ -25,7 +20,7 @@ export function LoggerContextProvider({ children, userId }: Props) {
       window.removeEventListener('popstate', updateContext);
       loggerContext.clear();
     };
-  }, [userId, sessionId]);
+  }, [sessionId]);
 
   return children;
 }

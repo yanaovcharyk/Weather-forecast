@@ -1,7 +1,8 @@
-import { useMemo, useCallback } from 'react';
+import { useMemo, useCallback, useEffect } from 'react';
 import { useQuery } from '@apollo/client/react';
 import { ME_QUERY } from '../api/authApi';
 import { AuthContext } from '../contexts/AuthContext';
+import { loggerContext } from '@/logger/context/LoggerContextStore';
 import type { MeQuery } from '../types';
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
@@ -10,13 +11,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     errorPolicy: 'all',
   });
 
-  const isAuthenticated = !!data?.me;
+  const userId = data?.me?.userId;
+
+  const isAuthenticated = !!userId;
+
+  useEffect(() => {
+    loggerContext.set({
+      ...loggerContext.get(),
+      userId: userId ?? undefined,
+    });
+  }, [userId]);
 
   const login = useCallback(async () => {
     await refetch();
   }, [refetch]);
 
   const logout = useCallback(() => {
+    loggerContext.set({
+      ...loggerContext.get(),
+      userId: undefined,
+    });
+
     window.location.href = '/login';
   }, []);
 

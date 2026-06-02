@@ -10,7 +10,9 @@ export const LOGIN_MUTATION = gql`
 
 export const ME_QUERY = gql`
   query Me {
-    me
+    me {
+      userId
+    }
   }
 `;
 
