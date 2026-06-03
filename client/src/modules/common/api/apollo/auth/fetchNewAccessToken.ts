@@ -1,5 +1,6 @@
 import type { GraphQLResponse } from '@/common/types';
 import { config } from '@/common/config';
+import { REFRESH_TOKENS_MUTATION_STRING } from '../graphql/mutations';
 
 interface RefreshTokensResponse {
   refreshTokens: {
@@ -14,13 +15,7 @@ export const fetchNewAccessToken = async (): Promise<boolean> => {
     keepalive: true,
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      query: `
-        mutation {
-          refreshTokens {
-            success
-          }
-        }
-      `,
+      query: REFRESH_TOKENS_MUTATION_STRING,
     }),
   });
 

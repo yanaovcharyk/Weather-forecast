@@ -1,6 +1,6 @@
 import { useMemo, useCallback, useEffect } from 'react';
 import { useQuery } from '@apollo/client/react';
-import { ME_QUERY } from '../api/authApi';
+import { ME_QUERY } from '../graphql';
 import { AuthContext } from '../contexts/AuthContext';
 import { loggerContext } from '@/logger/context/LoggerContextStore';
 import type { MeQuery } from '../types';

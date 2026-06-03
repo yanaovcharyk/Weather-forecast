@@ -1,12 +1,10 @@
-import { print } from 'graphql';
-
 import type {
   IClientLogRecord,
   ISerializedClientLogRecord,
   ISendLogsGraphQLRequestBody,
   ILoggerTransport,
 } from '../types';
-import { SEND_CLIENT_LOGS_MUTATION } from '../api/loggerApi';
+import { SEND_CLIENT_LOGS_MUTATION_STRING } from '../graphql';
 import { config } from '@/common/config';
 
 export class GraphQLLoggerTransport implements ILoggerTransport {
@@ -24,7 +22,7 @@ export class GraphQLLoggerTransport implements ILoggerTransport {
     logRecords: IClientLogRecord[],
   ): ISendLogsGraphQLRequestBody {
     return {
-      query: print(SEND_CLIENT_LOGS_MUTATION),
+      query: SEND_CLIENT_LOGS_MUTATION_STRING,
 
       variables: {
         input: this.serializeLogsForTransport(logRecords),

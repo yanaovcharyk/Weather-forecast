@@ -8,14 +8,6 @@ export const LOGIN_MUTATION = gql`
   }
 `;
 
-export const ME_QUERY = gql`
-  query Me {
-    me {
-      userId
-    }
-  }
-`;
-
 export const LOGOUT_MUTATION = gql`
   mutation Logout {
     logout {

@@ -1,7 +1,7 @@
 import { useLazyQuery } from '@apollo/client/react';
 import { useMemo, useRef } from 'react';
 
-import { SEARCH_CITIES } from '../api';
+import { SEARCH_CITIES } from '../graphql';
 import type {
   SearchCitiesData,
   SearchCitiesVars,

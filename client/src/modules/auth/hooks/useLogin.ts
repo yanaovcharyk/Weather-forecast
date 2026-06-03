@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client/react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/common/hooks/useToast';
-import { LOGIN_MUTATION } from '../api';
+import { LOGIN_MUTATION } from '../graphql';
 import type { LoginFormValues, LoginMutationResponse } from '../types';
 import { useAuth } from './useAuth';
 import { extractErrorCode, mapErrorCodeToMessage } from '@/common/utils';
