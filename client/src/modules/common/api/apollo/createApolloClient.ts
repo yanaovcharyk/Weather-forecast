@@ -8,6 +8,7 @@ import {
 import { AccessTokenRefreshCoordinator } from './auth/AccessTokenRefreshCoordinator';
 import { createTokenRefreshErrorLink } from './links/tokenRefreshErrorLink';
 import { apolloLoggerLink } from './links/apolloLoggerLink';
+import { config } from '@/common/config';
 
 type CreateApolloClientParams = {
   performLogout: () => void;
@@ -21,7 +22,7 @@ export const createApolloClient = ({
   const tokenRefreshCoordinator = new AccessTokenRefreshCoordinator();
 
   const httpLink = new HttpLink({
-    uri: import.meta.env.VITE_API_BASE + '/graphql',
+    uri: config.apiBaseUrl + config.graphqlPath,
     credentials: 'include',
   });
 

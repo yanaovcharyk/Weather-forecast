@@ -1,4 +1,5 @@
 import type { GraphQLResponse } from '@/common/types';
+import { config } from '@/common/config';
 
 interface RefreshTokensResponse {
   refreshTokens: {
@@ -7,7 +8,7 @@ interface RefreshTokensResponse {
 }
 
 export const fetchNewAccessToken = async (): Promise<boolean> => {
-  const res = await fetch(import.meta.env.VITE_API_BASE + '/graphql', {
+  const res = await fetch(config.apiBaseUrl + config.graphqlPath, {
     method: 'POST',
     credentials: 'include',
     keepalive: true,

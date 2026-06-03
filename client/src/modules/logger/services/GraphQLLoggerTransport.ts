@@ -7,7 +7,7 @@ import type {
   ILoggerTransport,
 } from '../types';
 import { SEND_CLIENT_LOGS_MUTATION } from '../api/loggerApi';
-import { ENV } from '../../../config/env';
+import { config } from '@/common/config';
 
 export class GraphQLLoggerTransport implements ILoggerTransport {
   private serializeLogsForTransport(
@@ -40,7 +40,7 @@ export class GraphQLLoggerTransport implements ILoggerTransport {
     const graphqlRequestBody = this.createRequestBody(logRecords);
 
     try {
-      await fetch(ENV.loggerApiUrl, {
+      await fetch(config.loggerApiUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -60,6 +60,9 @@ export class GraphQLLoggerTransport implements ILoggerTransport {
 
     const graphqlRequestBody = this.createRequestBody(logRecords);
 
-    navigator.sendBeacon(ENV.loggerApiUrl, JSON.stringify(graphqlRequestBody));
+    navigator.sendBeacon(
+      config.loggerApiUrl,
+      JSON.stringify(graphqlRequestBody),
+    );
   }
 }
