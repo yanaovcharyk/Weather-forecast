@@ -13,19 +13,15 @@ export class AccessJwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   constructor(
     config: ConfigService,
-
     loggerService: AppLoggerService,
-
     private readonly loggerContext: LoggerContextService,
   ) {
     super({
       jwtFromRequest: (req: Request) => req.cookies?.accessToken,
-
       secretOrKey: config.get<string>('jwt.accessSecret')!,
     });
 
     this.logger = loggerService.child(AccessJwtStrategy.name);
-
     this.logger.info('AccessJwtStrategy initialized');
   }
 

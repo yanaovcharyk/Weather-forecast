@@ -11,3 +11,8 @@ export interface IRefreshJwtPayload extends IBaseJwtPayload {
   type: 'refresh';
   version: number;
 }
+export interface IRefreshJwtUser extends IRefreshJwtPayload {
+  refreshToken: string;
+}
+
+export interface IAccessJwtUser extends IAccessJwtPayload {}

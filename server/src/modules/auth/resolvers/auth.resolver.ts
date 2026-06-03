@@ -7,6 +7,13 @@ import { AccessJwtGuard, RefreshJwtGuard } from '../guards';
 import { AppLoggerService } from '../../logger/services/app-logger.service';
 import { LogResolver } from '../../../shared/logging';
 import { MeOutput } from '../dto/me.output';
+import {
+  IAccessJwtPayload,
+  IAccessJwtUser,
+  IRefreshJwtPayload,
+  IRefreshJwtUser,
+} from '../interfaces/jwt-payload.interfaces';
+import { CurrentUser } from '../decorators/current-user.decorator';
 
 @Resolver()
 export class AuthResolver {
@@ -45,9 +52,12 @@ export class AuthResolver {
   @Mutation(() => AuthOutput)
   @UseGuards(RefreshJwtGuard)
   @LogResolver()
-  async logout(@Context() ctx: GQLContext) {
+  async logout(
+    @CurrentUser() user: IRefreshJwtUser,
+    @Context() ctx: GQLContext,
+  ) {
     return this.authService.logout({
-      userId: ctx.req.user.userId,
+      userId: user.userId,
       res: ctx.res,
     });
   }
@@ -55,9 +65,11 @@ export class AuthResolver {
   @Mutation(() => AuthOutput)
   @UseGuards(RefreshJwtGuard)
   @LogResolver()
-  async refreshTokens(@Context() ctx: GQLContext) {
+  async refreshTokens(
+    @CurrentUser() user: IRefreshJwtUser,
+    @Context() ctx: GQLContext) {
     return this.authService.rotateRefreshToken({
-      oldToken: ctx.req.user.refreshToken,
+      oldToken: user.refreshToken,
       req: ctx.req,
       res: ctx.res,
     });
@@ -65,9 +77,9 @@ export class AuthResolver {
 
   @Query(() => MeOutput)
   @UseGuards(AccessJwtGuard)
-  async me(@Context() ctx: GQLContext) {
+  async me(@CurrentUser() user: IAccessJwtUser) {
     return {
-      userId: ctx.req.user.userId,
+      userId: user.userId,
     };
   }
 }

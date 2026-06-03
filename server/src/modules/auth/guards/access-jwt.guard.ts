@@ -12,7 +12,7 @@ export function createJwtAuthGuard(strategy: string): Type<any> {
 
     constructor(
       loggerService: AppLoggerService,
-      private readonly contextService: LoggerContextService,
+      private readonly loggerContextService: LoggerContextService,
     ) {
       super();
       this.logger = loggerService.child('JwtAuthGuard');
@@ -20,7 +20,7 @@ export function createJwtAuthGuard(strategy: string): Type<any> {
 
     getRequest(context: ExecutionContext) {
       const req = GqlExecutionContext.create(context).getContext().req;
-      this.contextService.printContext('JWT GUARD');
+      this.loggerContextService.printContext('JWT GUARD');
 
       this.logger.debug('JWT guard extracting request', {
         strategy,
