@@ -1,20 +1,18 @@
-import { z } from 'zod';
-
-export const schema = z.object({
-  email: z.string().email('Invalid email'),
-  password: z.string().min(3, 'Password must be at least 3 characters'),
-});
-
-export interface LoginMutationResponse {
+export interface ILoginMutationResponse {
   login: {
     success: boolean;
   };
 }
 
-export type LoginFormValues = z.infer<typeof schema>;
-
-export interface MeQuery {
+export interface IMeQuery {
   me: {
     userId: string;
   };
+}
+
+export interface IAuthContextValue {
+  login: () => void;
+  logout: () => void;
+  isAuthenticated: boolean;
+  loading: boolean;
 }

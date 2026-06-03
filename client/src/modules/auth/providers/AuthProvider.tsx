@@ -3,10 +3,10 @@ import { useQuery } from '@apollo/client/react';
 import { ME_QUERY } from '../graphql';
 import { AuthContext } from '../contexts/AuthContext';
 import { loggerContext } from '@/logger/context/LoggerContextStore';
-import type { MeQuery } from '../types';
+import type { IMeQuery } from '../types';
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const { data, loading, refetch } = useQuery<MeQuery>(ME_QUERY, {
+  const { data, loading, refetch } = useQuery<IMeQuery>(ME_QUERY, {
     fetchPolicy: 'network-only',
     errorPolicy: 'all',
   });

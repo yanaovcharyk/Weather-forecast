@@ -1,24 +1,23 @@
 import { Form, Input } from 'antd';
 import { useForm, useController } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-
 import { useLogin } from '../hooks/useLogin';
-import { schema, type LoginFormValues } from '../types';
 import { PrimaryButton } from '@/common/components';
+import { loginFormSchema, type LoginFormInput } from '../validation';
 
 export const LoginForm = () => {
   const { loginUser, loading } = useLogin();
 
-  const { handleSubmit, control } = useForm<LoginFormValues>({
-    resolver: zodResolver(schema),
+  const { handleSubmit, control } = useForm<LoginFormInput>({
+    resolver: zodResolver(loginFormSchema),
     defaultValues: {
       email: '',
       password: '',
     },
   });
 
-  const email = useController<LoginFormValues>({ name: 'email', control });
-  const password = useController<LoginFormValues>({
+  const email = useController<LoginFormInput>({ name: 'email', control });
+  const password = useController<LoginFormInput>({
     name: 'password',
     control,
   });

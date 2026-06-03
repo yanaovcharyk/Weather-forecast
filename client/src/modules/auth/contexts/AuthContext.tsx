@@ -1,11 +1,5 @@
 import { createContext } from 'react';
-
-export interface IAuthContextValue {
-  login: () => void;
-  logout: () => void;
-  isAuthenticated: boolean;
-  loading: boolean;
-}
+import type { IAuthContextValue } from '../types';
 
 export const AuthContext = createContext<IAuthContextValue>({
   login: () => {},
