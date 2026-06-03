@@ -7,7 +7,7 @@ import {
 } from '../types';
 
 import { loggerQueue } from './LoggerQueueService';
-import { loggerRateLimiter } from '../guards/LoggerRateLimiter';
+import { loggerRateLimiter } from './LoggerRateLimiter';
 import { sanitizeForLogging } from '../utils/sanitizeForLogging';
 import { LoggerOperation } from './LoggerOperation';
 
