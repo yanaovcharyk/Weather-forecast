@@ -3,10 +3,10 @@ import { Button, Flex } from 'antd';
 import { getWeatherBackground, getNextDays } from '@/weatherForecast/utils';
 import { CloseOutlined, HeartFilled, HeartOutlined } from '@ant-design/icons';
 import { BackgroundCard, BackgroundCardSkeleton } from '@/common/components';
-import type { City } from '@/common/types';
 import { AppText, AppTitle } from '@/common/components/Typography';
 import { useSmartBackground } from '@/common/hooks';
 import styles from './CityCard.module.scss';
+import type { City } from '../../types';
 
 export interface CityCardProps {
   city: string;

@@ -1,8 +1,7 @@
-import type { AppRoute } from '@/common/types/AppRoute';
-import type { IAppModule } from '@/common/types/IAppModule';
+import type { IRoutableModule, AppRoute } from '@/common/types';
 import { CitiesPage } from './pages/CitiesPage';
 
-class WeatherModule implements IAppModule {
+class WeatherModule implements IRoutableModule {
   name = 'weatherForecast';
 
   routes: AppRoute[] = [

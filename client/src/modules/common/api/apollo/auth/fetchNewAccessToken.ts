@@ -1,12 +1,6 @@
-import type { GraphQLResponse } from '@/common/types';
 import { config } from '@/common/config';
 import { REFRESH_TOKENS_MUTATION_STRING } from '../graphql/mutations';
-
-interface RefreshTokensResponse {
-  refreshTokens: {
-    success: boolean;
-  };
-}
+import type { GraphQLResponse, IRefreshTokensResponse } from '../types';
 
 export const fetchNewAccessToken = async (): Promise<boolean> => {
   const res = await fetch(config.apiBaseUrl + config.graphqlPath, {
@@ -19,6 +13,6 @@ export const fetchNewAccessToken = async (): Promise<boolean> => {
     }),
   });
 
-  const json: GraphQLResponse<RefreshTokensResponse> = await res.json();
+  const json: GraphQLResponse<IRefreshTokensResponse> = await res.json();
   return json.data?.refreshTokens.success === true;
 };

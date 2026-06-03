@@ -2,40 +2,32 @@ import { useCallback } from 'react';
 import { useQuery } from '@apollo/client/react';
 
 import { CITIES_PAGINATED } from '../graphql';
-import type { City } from '@/common/types';
-import type { SortingState } from '../types';
-
-type CitiesQuery = {
-  citiesPaginated: {
-    edges: { node: City }[];
-    pageInfo: {
-      hasNextPage: boolean;
-      endCursor?: string;
-    };
-  };
-};
+import type { CitiesPaginatedResponse, SortingState } from '../types';
 
 export const useCitiesPaginated = (
   sorting: SortingState,
   showPinnedOnly: boolean,
 ) => {
-  const { data, loading, fetchMore } = useQuery<CitiesQuery>(CITIES_PAGINATED, {
-    variables: {
-      query: {
-        pagination: {
-          limit: 10,
-          cursor: null,
+  const { data, loading, fetchMore } = useQuery<CitiesPaginatedResponse>(
+    CITIES_PAGINATED,
+    {
+      variables: {
+        query: {
+          pagination: {
+            limit: 10,
+            cursor: null,
+          },
+
+          sorting,
+          showPinnedOnly,
         },
-
-        sorting,
-        showPinnedOnly,
       },
+
+      notifyOnNetworkStatusChange: true,
+
+      fetchPolicy: 'cache-and-network',
     },
-
-    notifyOnNetworkStatusChange: true,
-
-    fetchPolicy: 'cache-and-network',
-  });
+  );
 
   const loadMore = useCallback(() => {
     const pageInfo = data?.citiesPaginated?.pageInfo;

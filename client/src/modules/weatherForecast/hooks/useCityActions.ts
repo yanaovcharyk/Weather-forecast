@@ -5,7 +5,7 @@ import { useAddCity } from './useAddCity';
 import { useRemoveCity } from './useRemoveCity';
 import { useRemoveAllCities } from './useRemoveAllCities';
 import { useTogglePinned } from './useTogglePinned';
-import type { City } from '@/common/types';
+import type { City } from '../types';
 
 type NotificationFunction = (message: string) => void;
 

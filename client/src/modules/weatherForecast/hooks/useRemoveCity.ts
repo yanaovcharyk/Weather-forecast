@@ -1,12 +1,12 @@
 import { useMutation } from '@apollo/client/react';
 import { REMOVE_CITY_MUTATION } from '../graphql';
-import type { RemoveCityMutation, RemoveCityVariables } from '../types';
+import type { IRemoveCityMutation, IRemoveCityVariables } from '../types';
 import type { Reference } from '@apollo/client';
 
 export const useRemoveCity = () => {
   const [mutate, { loading, error }] = useMutation<
-    RemoveCityMutation,
-    RemoveCityVariables
+    IRemoveCityMutation,
+    IRemoveCityVariables
   >(REMOVE_CITY_MUTATION, {
     update(cache, _, { variables }) {
       const deletedId = variables?.id;

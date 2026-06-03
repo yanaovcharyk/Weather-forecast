@@ -1,8 +1,8 @@
-export interface RemoveCityVariables {
+export interface IRemoveCityVariables {
   id: string;
 }
 
-export interface RemoveCityMutation {
+export interface IRemoveCityMutation {
   removeCity: {
     id: string;
     __typename: string;
@@ -21,6 +21,7 @@ export type City = {
   city: string;
   lat: number;
   lon: number;
+  isPinned: boolean;
   weather?: Weather | null;
 };
 

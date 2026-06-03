@@ -1,8 +1,8 @@
 import { Col, Row, Spin } from 'antd';
 import React, { useEffect, useRef } from 'react';
 import { CityCard } from '../CityCard';
-import type { City } from '@/common/types';
 import styles from './CitiesList.module.scss';
+import type { City } from '../../types';
 
 type Props = {
   cities: City[];

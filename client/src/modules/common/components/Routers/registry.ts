@@ -1,7 +1,10 @@
-import type { IAppModule } from '@/common/types/IAppModule';
+import type { IRoutableModule } from '@/common/types';
 
-const modules = import.meta.glob<{ default: IAppModule }>('@/*/module.ts', {
-  eager: true,
-});
+const modules = import.meta.glob<{ default: IRoutableModule }>(
+  '@/*/module.ts',
+  {
+    eager: true,
+  },
+);
 
 export const registry = Object.values(modules).map((module) => module.default);

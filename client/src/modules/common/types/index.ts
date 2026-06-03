@@ -1,8 +1,2 @@
-export type {
-  Weather,
-  City,
-  CitiesQuery,
-  AddCityMutation,
-  GraphQLFormattedError,
-  GraphQLResponse,
-} from './interfaces';
+export type { IRoutableModule } from './IRoutableModule';
+export type { AppRoute } from './AppRoute';
