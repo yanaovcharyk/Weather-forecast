@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client/react';
-import { REMOVE_CITY_MUTATION } from '../graphql/queries';
+import { REMOVE_CITY_MUTATION } from '../graphql';
 import type { RemoveCityMutation, RemoveCityVariables } from '../types';
 import type { Reference } from '@apollo/client';
 

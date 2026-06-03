@@ -1,4 +1,4 @@
-import { Form, Input, theme } from 'antd';
+import { Form, Input } from 'antd';
 import { useForm, useController } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -7,7 +7,6 @@ import { schema, type LoginFormValues } from '../types';
 import { PrimaryButton } from '@/common/components';
 
 export const LoginForm = () => {
-  const { token } = theme.useToken();
   const { loginUser, loading } = useLogin();
 
   const { handleSubmit, control } = useForm<LoginFormValues>({
@@ -24,8 +23,6 @@ export const LoginForm = () => {
     control,
   });
 
-  const inputStyle = { color: token.colorPrimary };
-
   return (
     <Form layout="vertical" onFinish={handleSubmit(loginUser)}>
       <Form.Item
@@ -33,7 +30,7 @@ export const LoginForm = () => {
         validateStatus={email.fieldState.error ? 'error' : undefined}
         help={email.fieldState.error?.message}
       >
-        <Input {...email.field} style={inputStyle} />
+        <Input {...email.field} />
       </Form.Item>
 
       <Form.Item
@@ -41,7 +38,7 @@ export const LoginForm = () => {
         validateStatus={password.fieldState.error ? 'error' : undefined}
         help={password.fieldState.error?.message}
       >
-        <Input.Password {...password.field} style={inputStyle} />
+        <Input.Password {...password.field} />
       </Form.Item>
 
       <PrimaryButton htmlType="submit" block loading={loading}>

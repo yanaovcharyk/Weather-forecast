@@ -44,6 +44,7 @@ export const ThemeProvider = ({ children }: Props) => {
             hoverBorderColor: '#234C75',
             activeBorderColor: '#3379bf',
             colorBgContainer: '#ffffff',
+            colorText: '#234C75',
           },
 
           Select: {
