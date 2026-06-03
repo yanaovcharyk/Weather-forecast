@@ -10,6 +10,8 @@ import { loggerQueue } from './LoggerQueueService';
 import { loggerRateLimiter } from './LoggerRateLimiter';
 import { sanitizeForLogging } from '../utils/sanitizeForLogging';
 import { LoggerOperation } from './LoggerOperation';
+import { config } from '@/common/config';
+import { shouldLog } from '../utils/shouldLog';
 
 export class Logger {
   private readonly defaultMetadata: LogMetadata;
@@ -50,6 +52,10 @@ export class Logger {
     message: string,
     metadata?: LogMetadata,
   ): void {
+    if (!shouldLog(level)) {
+      return;
+    }
+
     loggerRateLimiter.registerLogEvent();
 
     const currentLoggerContext = loggerContext.get();
@@ -73,7 +79,10 @@ export class Logger {
     };
 
     loggerQueue.addLog(logRecord);
-    this.printLogToBrowserConsole(logRecord);
+
+    if (config.loggerConsole === 'true') {
+      this.printLogToBrowserConsole(logRecord);
+    }
   }
 
   private printLogToBrowserConsole(logRecord: IClientLogRecord): void {
