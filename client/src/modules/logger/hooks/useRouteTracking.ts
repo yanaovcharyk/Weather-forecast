@@ -8,7 +8,6 @@ export const routerLogger = createLogger('Router');
 
 export function useRouteTracking() {
   const location = useLocation();
-
   const previousPath = useRef(location.pathname);
 
   useEffect(() => {

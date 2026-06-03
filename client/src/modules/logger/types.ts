@@ -2,25 +2,6 @@ export type LogLevel = 'info' | 'warn' | 'error' | 'debug';
 
 export type LogMetadata = Record<string, unknown>;
 
-// export interface ILoggerContext {
-//   requestId?: string;
-//   userId?: string;
-//   sessionId?: string;
-//   route?: string;
-//   context?: string;
-// }
-
-// export interface ClientLogRecord {
-//   timestamp: string;
-//   level: LogLevel;
-//   message: string;
-//   requestId?: string;
-//   userId?: string;
-//   sessionId?: string;
-//   route?: string;
-//   metadata?: JsonValue;
-// }
-
 export interface ILoggerContext {
   requestId?: string;
   userId?: string;

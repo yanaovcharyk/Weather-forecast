@@ -1,7 +1,7 @@
 import { logger } from '../services/LoggerService';
 
-export function createLogger(module: string) {
+export function createLogger(moduleName: string) {
   return logger.child({
-    module,
+    moduleName,
   });
 }

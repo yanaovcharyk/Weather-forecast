@@ -45,22 +45,6 @@ export class Logger {
     this.createAndDispatchLogRecord('debug', message, metadata);
   }
 
-  forModule(importMetaUrl: string): Logger {
-    return this.child({
-      module: this.getModuleName(importMetaUrl),
-    });
-  }
-
-  private getModuleName(importMetaUrl: string): string {
-    const path = new URL(importMetaUrl).pathname;
-    const segments = path.split('/').filter(Boolean);
-    const modulesIndex = segments.indexOf('modules');
-
-    return modulesIndex >= 0
-      ? (segments[modulesIndex + 1] ?? 'Unknown')
-      : 'Unknown';
-  }
-
   private createAndDispatchLogRecord(
     level: LogLevel,
     message: string,

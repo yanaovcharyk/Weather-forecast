@@ -1,6 +1,6 @@
 import { ApolloLink } from '@apollo/client';
 import { Observable } from 'rxjs';
-import type { AccessTokenRefreshCoordinator } from '../tokens/AccessTokenRefreshCoordinator';
+import type { AccessTokenRefreshCoordinator } from '../auth/AccessTokenRefreshCoordinator';
 import {
   extractErrorCode,
   isTokenError,
