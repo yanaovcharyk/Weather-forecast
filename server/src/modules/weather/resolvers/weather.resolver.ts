@@ -1,4 +1,5 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
 import { WeatherService } from '../services';
 import {
   WeatherDetailsOutput,
@@ -8,6 +9,7 @@ import {
 } from '../dto';
 import { AppLoggerService } from '@logger/services';
 import { LogResolver } from '@shared/logging';
+import { AccessJwtGuard } from '../../auth/guards';
 
 @Resolver()
 export class WeatherResolver {
@@ -19,12 +21,14 @@ export class WeatherResolver {
     this.logger = loggerService.child(WeatherResolver.name);
   }
 
+  @UseGuards(AccessJwtGuard)
   @Query(() => [CitySuggestion])
   @LogResolver()
   async searchCities(@Args('input') input: CitySearchInput) {
     return this.weatherService.searchCities(input.query);
   }
 
+  @UseGuards(AccessJwtGuard)
   @Query(() => WeatherDetailsOutput)
   @LogResolver()
   async getWeatherDetails(@Args('input') input: GetWeatherInput) {

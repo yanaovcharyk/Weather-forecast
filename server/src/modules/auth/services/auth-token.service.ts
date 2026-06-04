@@ -1,18 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-
-import { IAppConfig } from '../../../shared/types/app.config';
-
-import { throwUnauthorized } from '../../../shared/errors/unautorized.error';
-
+import { IAppConfig } from '@shared/types/app.config';
+import { throwUnauthorized } from '@shared/errors/unautorized.error';
 import {
   IAccessJwtPayload,
   IRefreshJwtPayload,
 } from '../interfaces/jwt-payload.interfaces';
-
-import { AppLoggerService } from '../../logger/services/app-logger.service';
-
+import { AppLoggerService } from '@logger/services/app-logger.service';
 import { LogMethod } from '@shared/logging/decorators/log-method.decorator';
 
 @Injectable()
@@ -35,17 +30,10 @@ export class AuthTokenService {
 
     this.accessSecret = jwtConfig.accessSecret;
     this.refreshSecret = jwtConfig.refreshSecret;
-
     this.accessExpires = jwtConfig.accessExpires;
-
     this.refreshExpires = jwtConfig.refreshExpires;
 
     this.logger = loggerService.child(AuthTokenService.name);
-
-    this.logger.info('AuthTokenService initialized', {
-      accessExpires: this.accessExpires,
-      refreshExpires: this.refreshExpires,
-    });
   }
 
   @LogMethod()

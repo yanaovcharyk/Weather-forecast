@@ -4,9 +4,10 @@ import { WeatherResolver } from './resolvers';
 import { WeatherService } from './services';
 import { ConfigService } from '@nestjs/config';
 import { geoConfig, weatherConfig } from '@shared/config/weather.config';
+import { AuthModule } from '../auth';
 
 @Module({
-  imports: [HttpModule],
+  imports: [HttpModule, AuthModule],
   providers: [
     WeatherResolver, 
     WeatherService,
