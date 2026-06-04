@@ -5,12 +5,11 @@ import { AuthResolver } from './resolvers';
 
 import { AuthTokenService } from './services/auth-token.service';
 
-import { AccessJwtStrategy, RefreshJwtStrategy } from './strategies';
-
 import { UsersModule } from '../users/user.module';
 import { AuthService } from './services/auth.service';
 import { Pbkdf2PasswordHasher } from './services';
 import { AuthCookieService } from './services/auth-cookie.service';
+import { AccessJwtGuard, RefreshJwtGuard } from './guards';
 
 @Module({
   imports: [UsersModule, PassportModule, JwtModule.register({})],
@@ -22,12 +21,12 @@ import { AuthCookieService } from './services/auth-cookie.service';
     AuthTokenService,
     AuthCookieService,
 
-    AccessJwtStrategy,
-    RefreshJwtStrategy,
-
-
     Pbkdf2PasswordHasher,
+
+    AccessJwtGuard,
+    RefreshJwtGuard,
   ],
-  exports: [AuthService, AuthTokenService, AuthCookieService],
+  exports: [JwtModule, AuthService, AuthTokenService, AuthCookieService, AccessJwtGuard,
+    RefreshJwtGuard],
 })
 export class AuthModule {}

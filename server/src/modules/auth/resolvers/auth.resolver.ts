@@ -1,16 +1,14 @@
 import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { LoginInput, RegisterInput, AuthOutput } from '../dto';
-import { GQLContext } from '../../cities/interfaces';
+import { IGQLContext } from '../../cities/interfaces';
 import { AuthService } from '../services';
 import { AccessJwtGuard, RefreshJwtGuard } from '../guards';
 import { AppLoggerService } from '../../logger/services/app-logger.service';
 import { LogResolver } from '../../../shared/logging';
 import { MeOutput } from '../dto/me.output';
 import {
-  IAccessJwtPayload,
   IAccessJwtUser,
-  IRefreshJwtPayload,
   IRefreshJwtUser,
 } from '../interfaces/jwt-payload.interfaces';
 import { CurrentUser } from '../decorators/current-user.decorator';
@@ -28,7 +26,7 @@ export class AuthResolver {
 
   @Mutation(() => AuthOutput)
   @LogResolver()
-  async login(@Args('input') input: LoginInput, @Context() ctx: GQLContext) {
+  async login(@Args('input') input: LoginInput, @Context() ctx: IGQLContext) {
     return this.authService.login({
       input,
       req: ctx.req,
@@ -40,7 +38,7 @@ export class AuthResolver {
   @LogResolver()
   async register(
     @Args('input') input: RegisterInput,
-    @Context() ctx: GQLContext,
+    @Context() ctx: IGQLContext,
   ) {
     return this.authService.register({
       input,
@@ -54,7 +52,7 @@ export class AuthResolver {
   @LogResolver()
   async logout(
     @CurrentUser() user: IRefreshJwtUser,
-    @Context() ctx: GQLContext,
+    @Context() ctx: IGQLContext,
   ) {
     return this.authService.logout({
       userId: user.userId,
@@ -67,7 +65,8 @@ export class AuthResolver {
   @LogResolver()
   async refreshTokens(
     @CurrentUser() user: IRefreshJwtUser,
-    @Context() ctx: GQLContext) {
+    @Context() ctx: IGQLContext,
+  ) {
     return this.authService.rotateRefreshToken({
       oldToken: user.refreshToken,
       req: ctx.req,

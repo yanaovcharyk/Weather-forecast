@@ -11,7 +11,6 @@ import {
 import { UseGuards, UsePipes } from '@nestjs/common';
 import { CitiesService, CitiesQueryService } from '../services';
 import { WeatherService } from '@weather/services/weather.service';
-import { GQLContext } from '../interfaces';
 import { WeatherOutput } from '@weather/dto';
 import { AccessJwtGuard } from '@auth/guards';
 import {
@@ -44,11 +43,9 @@ export class CitiesResolver {
   @UseGuards(AccessJwtGuard)
   @Query(() => [CityOutput])
   @LogResolver()
-  async cities(
-    @CurrentUser() user: IAccessJwtUser
-  ): Promise<CityOutput[]> {
+  async cities(@CurrentUser() user: IAccessJwtUser): Promise<CityOutput[]> {
     return this.citiesQueryService.getCities({
-      userId: user.userId
+      userId: user.userId,
     });
   }
 

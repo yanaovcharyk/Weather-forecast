@@ -14,14 +14,15 @@ export class GraphqlContextInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const gql = GqlExecutionContext.create(context);
+    const ctx = gql.getContext();
 
     console.log('FIELD:', gql.getInfo()?.fieldName);
 
     return this.contextService.run(
       {
-        requestId: gql.getContext().requestId,
-        userId: gql.getContext().req?.user?.userId,
-        ip: gql.getContext().req?.ip,
+        requestId: ctx.requestId,
+        userId: ctx.user?.userId,
+        ip: ctx.req?.ip,
       },
       () => next.handle(),
     );
