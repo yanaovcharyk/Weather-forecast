@@ -1,16 +1,18 @@
-export interface IBaseJwtPayload {
+export interface IAccessJwtPayload {
   userId: string;
-}
-
-export interface IAccessJwtPayload extends IBaseJwtPayload {
   email: string;
   type: 'access';
 }
 
-export interface IRefreshJwtPayload extends IBaseJwtPayload {
-  type: 'refresh';
+export interface IRefreshJwtPayload {
+  userId: string;
   version: number;
+  type: 'refresh';
 }
+
+export type JwtPayload =
+  | IAccessJwtPayload
+  | IRefreshJwtPayload;
 export interface IRefreshJwtUser extends IRefreshJwtPayload {
   refreshToken: string;
 }

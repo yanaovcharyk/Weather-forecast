@@ -23,7 +23,7 @@ import { createValidationPipe } from '@shared/utils';
 import { AppLoggerService, LoggerContextService } from '@logger/services';
 import { LogResolver } from '@shared/logging';
 import { CurrentUser } from '../../auth/decorators/current-user.decorator';
-import { IAccessJwtUser } from '../../auth/interfaces/jwt-payload.interfaces';
+import { ICurrentUser } from '../../auth/interfaces/user-context.interface';
 
 @Resolver(() => CityOutput)
 export class CitiesResolver {
@@ -42,9 +42,9 @@ export class CitiesResolver {
   @UseGuards(AccessJwtGuard)
   @Query(() => [CityOutput])
   @LogResolver()
-  async cities(@CurrentUser() user: IAccessJwtUser): Promise<CityOutput[]> {
+  async cities(@CurrentUser() user: ICurrentUser): Promise<CityOutput[]> {
     return this.citiesQueryService.getCities({
-      userId: user.userId,
+      userId: user.id,
     });
   }
 
@@ -53,11 +53,11 @@ export class CitiesResolver {
   @UsePipes(createValidationPipe())
   @LogResolver()
   async citiesPaginated(
-    @CurrentUser() user: IAccessJwtUser,
+    @CurrentUser() user: ICurrentUser,
     @Args('query', { type: () => CitiesQueryInput }) query: CitiesQueryInput,
   ): Promise<CitiesConnection> {
     return this.citiesQueryService.getCitiesPaginated({
-      userId: user.userId,
+      userId: user.id,
       query,
     });
   }
@@ -66,11 +66,11 @@ export class CitiesResolver {
   @Query(() => CityOutput)
   @LogResolver()
   async city(
-    @CurrentUser() user: IAccessJwtUser,
+    @CurrentUser() user: ICurrentUser,
     @Args('id', { type: () => ID }) id: string,
   ): Promise<CityOutput> {
     return this.citiesService.getCityById({
-      userId: user.userId,
+      userId: user.id,
       id,
     });
   }
@@ -79,11 +79,11 @@ export class CitiesResolver {
   @Mutation(() => AddCityOutput)
   @LogResolver()
   async addCity(
-    @CurrentUser() user: IAccessJwtUser,
+    @CurrentUser() user: ICurrentUser,
     @Args('input') input: AddCityInput,
   ) {
     return this.citiesService.addCity({
-      userId: user.userId,
+      userId: user.id,
       input,
     });
   }
@@ -92,11 +92,11 @@ export class CitiesResolver {
   @Mutation(() => CityOutput)
   @LogResolver()
   async removeCity(
-    @CurrentUser() user: IAccessJwtUser,
+    @CurrentUser() user: ICurrentUser,
     @Args('id', { type: () => ID }) id: string,
   ): Promise<CityOutput> {
     return this.citiesService.removeCity({
-      userId: user.userId,
+      userId: user.id,
       id,
     });
   }
@@ -104,9 +104,9 @@ export class CitiesResolver {
   @UseGuards(AccessJwtGuard)
   @Mutation(() => Boolean)
   @LogResolver()
-  async removeAllCities(@CurrentUser() user: IAccessJwtUser): Promise<boolean> {
+  async removeAllCities(@CurrentUser() user: ICurrentUser): Promise<boolean> {
     await this.citiesService.removeAllCities({
-      userId: user.userId,
+      userId: user.id,
     });
 
     return true;
@@ -116,11 +116,11 @@ export class CitiesResolver {
   @Mutation(() => CityOutput)
   @LogResolver()
   async togglePinnedCity(
-    @CurrentUser() user: IAccessJwtUser,
+    @CurrentUser() user: ICurrentUser,
     @Args('id', { type: () => ID }) id: string,
   ): Promise<CityOutput> {
     return this.citiesService.togglePinned({
-      userId: user.userId,
+      userId: user.id,
       id,
     });
   }

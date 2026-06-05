@@ -13,10 +13,7 @@ export abstract class BaseJwtGuard implements CanActivate {
 
   protected abstract getToken(req: any): string | null;
   protected abstract getSecret(): string;
-  protected abstract validatePayloadAndGetUser(
-    payload: any,
-    token: string,
-  ): any;
+  protected abstract validatePayload(payload: any, token: string): any;
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ctx = GqlExecutionContext.create(context).getContext();
@@ -35,8 +32,8 @@ export abstract class BaseJwtGuard implements CanActivate {
         secret: this.getSecret(),
       });
 
-      const user = this.validatePayloadAndGetUser(tokenPayload, token);
-      ctx.user = user;
+      ctx.jwtPayload = tokenPayload;
+      ctx.jwtToken = token;
 
       return true;
     } catch (error) {

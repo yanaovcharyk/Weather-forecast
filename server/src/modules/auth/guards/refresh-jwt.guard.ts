@@ -11,16 +11,9 @@ export class RefreshJwtGuard extends BaseJwtGuard {
     return this.configService.get<string>('jwt.refreshSecret')!;
   }
 
-  protected validatePayloadAndGetUser(payload: any, token: string) {
+  protected validatePayload(payload: any, token: string) {
     if (payload.type !== 'refresh') {
       throw new Error('Invalid token type');
     }
-
-    return {
-      userId: payload.userId,
-      version: payload.version,
-      type: payload.type,
-      refreshToken: token,
-    };
   }
 }
