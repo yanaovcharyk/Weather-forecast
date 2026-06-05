@@ -15,14 +15,10 @@ import { AccessJwtGuard, RefreshJwtGuard } from './guards';
   imports: [UsersModule, PassportModule, JwtModule.register({})],
   providers: [
     AuthResolver,
-
     AuthService,
-
     AuthTokenService,
     AuthCookieService,
-
     Pbkdf2PasswordHasher,
-
     AccessJwtGuard,
     RefreshJwtGuard,
   ],

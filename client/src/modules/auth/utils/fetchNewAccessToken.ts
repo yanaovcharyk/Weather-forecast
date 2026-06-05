@@ -1,6 +1,9 @@
 import { config } from '@/common/config';
 import { REFRESH_TOKENS_MUTATION_STRING } from '../graphql/mutations';
-import type { GraphQLResponse, IRefreshTokensResponse } from '../types';
+import type {
+  GraphQLResponse,
+  IRefreshTokensResponse,
+} from '../../common/api/apollo/types';
 
 export const fetchNewAccessToken = async (): Promise<boolean> => {
   const res = await fetch(config.apiBaseUrl + config.graphqlPath, {
