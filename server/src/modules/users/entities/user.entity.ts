@@ -1,6 +1,6 @@
 import { ObjectType } from '@nestjs/graphql';
 import { Entity, Column, } from 'typeorm';
-import { BaseEntity } from '@shared/types/base.entity';
+import { BaseEntity } from '@shared/entities';
 
 @Entity('users')
 @ObjectType()

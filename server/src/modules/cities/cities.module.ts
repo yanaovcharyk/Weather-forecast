@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CityEntity } from './entities';
 import { CitiesResolver } from './resolvers';
 import { CitiesService, CitiesQueryService } from './services';
-import { WeatherModule } from '../weather/weather.module';
+import { WeatherModule } from '../weather';
 import { AuthModule } from '../auth';
 
 @Module({

@@ -4,6 +4,13 @@ export type LoggerContext = {
   logger?: Logger;
 };
 
+export interface ILoggerContext {
+  requestId?: string;
+  userId?: string;
+  ip?: string;
+  context?: string;
+}
+
 export type LogMethodOptions = {
   shouldLogArguments?: boolean;
   shouldLogResult?: boolean;

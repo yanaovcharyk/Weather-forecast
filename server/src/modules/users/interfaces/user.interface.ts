@@ -1,4 +1,4 @@
-import { IBaseEntity } from "../../../shared/types/base.entity.interface";
+import { IBaseEntity } from "@shared/types";
 
 export interface IUserEntity extends IBaseEntity {
   email: string;

@@ -1,119 +1,72 @@
-import { Injectable }
-  from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { AppLoggerService } from './app-logger.service';
+import { ClientLogInput } from '@logger/dto';
 
-import { AppLoggerService }
-  from './app-logger.service';
-
-import { ClientLogInput }
-  from '../dto/client-log.input';
-
-type ParsedMeta =
-  Record<string, unknown>;
+type ParsedMeta = Record<string, unknown>;
 
 @Injectable()
 export class ClientLoggerService {
-  constructor(
-    private readonly logger:
-      AppLoggerService,
-  ) {}
+  constructor(private readonly logger: AppLoggerService) {}
 
-  writeLogs(
-    logs: ClientLogInput[],
-  ): void {
+  writeLogs(logs: ClientLogInput[]): void {
     for (const log of logs) {
       this.writeLog(log);
     }
   }
 
-  private writeLog(
-    log: ClientLogInput,
-  ): void {
-    const parsedMeta =
-      this.parseMeta(log.metadata);
+  private writeLog(log: ClientLogInput): void {
+    const parsedMeta = this.parseMeta(log.metadata);
 
     const meta = {
       source: 'client',
-
-      requestId:
-        log.requestId,
-
-      clientTimestamp:
-        log.timestamp,
-
-      clientUserId:
-        log.userId,
-
-      sessionId:
-        log.sessionId,
-
-      route:
-        log.route,
-
+      requestId: log.requestId,
+      clientTimestamp: log.timestamp,
+      clientUserId: log.userId,
+      sessionId: log.sessionId,
+      route: log.route,
       ...parsedMeta,
     };
 
     switch (log.level) {
       case 'error':
-        this.logger.error(
-          log.message,
-          undefined,
-          meta,
-        );
-
+        this.logger.error(log.message, undefined, meta);
         return;
 
       case 'warn':
-        this.logger.warn(
-          log.message,
-          meta,
-        );
-
+        this.logger.warn(log.message, meta);
         return;
 
       case 'debug':
-        this.logger.debug(
-          log.message,
-          meta,
-        );
-
+        this.logger.debug(log.message, meta);
         return;
 
       default:
-        this.logger.info(
-          log.message,
-          meta,
-        );
+        this.logger.info(log.message, meta);
     }
   }
 
-  private parseMeta(
-    meta?: string,
-  ): ParsedMeta {
+  private parseMeta(meta?: string): ParsedMeta {
     if (meta == null) {
       return {};
     }
 
     try {
-      const parsed =
-        JSON.parse(meta);
+      const parsed = JSON.parse(meta);
 
       if (
         parsed == null ||
-        typeof parsed !==
-          'object' ||
+        typeof parsed !== 'object' ||
         Array.isArray(parsed)
       ) {
         return {
-          invalidMeta:
-            'Meta is not an object',
+          invalidMeta: 'Meta is not an object',
         };
       }
 
       return parsed;
     } catch {
       return {
-        invalidMeta:
-          'Failed to parse meta JSON',
+        invalidMeta: 'Failed to parse meta JSON',
       };
     }
   }

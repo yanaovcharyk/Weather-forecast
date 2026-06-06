@@ -1,3 +1,5 @@
-export { IAddCityInput } from './add-city.interface';
+export { IAddCityInput } from './add-city.input.interface';
 export { ICityWithWeather } from './city-with-weather.interface';
-export { IGQLContext } from '../../auth/interfaces/gql-context.interface';
+export { ICityOutput } from './city.output.interface';
+export { ICityEntity } from './city.entity.interface';
+export { IAddCityOutput } from './add-city.output.interface';

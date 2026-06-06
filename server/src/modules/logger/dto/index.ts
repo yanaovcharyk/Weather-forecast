@@ -1,0 +1,1 @@
+export { ClientLogInput } from './client-log.input';

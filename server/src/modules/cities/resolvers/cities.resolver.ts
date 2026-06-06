@@ -8,8 +8,8 @@ import {
   ID,
 } from '@nestjs/graphql';
 import { UseGuards, UsePipes } from '@nestjs/common';
-import { CitiesService, CitiesQueryService } from '../services';
-import { WeatherService } from '@weather/services/weather.service';
+import { CitiesService, CitiesQueryService } from '@cities/services';
+import { WeatherService } from '@weather/services';
 import { WeatherOutput } from '@weather/dto';
 import { AccessJwtGuard } from '@auth/guards';
 import {
@@ -18,12 +18,12 @@ import {
   AddCityOutput,
   AddCityInput,
   CityOutput,
-} from '../dto';
+} from '@cities/dto';
 import { createValidationPipe } from '@shared/utils';
-import { AppLoggerService, LoggerContextService } from '@logger/services';
+import { AppLoggerService } from '@logger/services';
 import { LogResolver } from '@logger/index';
-import { CurrentUser } from '../../auth/decorators/current-user.decorator';
-import { ICurrentUser } from '../../auth/interfaces/user-context.interface';
+import { CurrentUser } from '@auth/decorators';
+import { ICurrentUser } from '@auth/interfaces';
 
 @Resolver(() => CityOutput)
 export class CitiesResolver {

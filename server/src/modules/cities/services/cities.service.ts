@@ -1,13 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CityEntity } from '../entities/city.entity';
-import { mapToOutput } from '../mappers/city.mapper';
+import { CityEntity } from '@cities/entities';
+import { mapToOutput } from '@cities/mappers';
 import { AppLoggerService } from '@logger/services';
-import { AddCityParams, CityByIdParams, UserIdParams } from '../types';
-import { ICityOutput } from '../interfaces/city.output.interface';
-import { IAddCityOutput } from '../interfaces/add-city.output.interface';
-import { LogMethod } from '../../logger/decorators/log-method.decorator';
+import { AddCityParams, CityByIdParams, UserIdParams } from '@cities/types';
+import { ICityOutput, IAddCityOutput } from '@cities/interfaces';
+import { LogMethod } from '@logger/decorators';
 
 @Injectable()
 export class CitiesService {
@@ -76,7 +75,6 @@ export class CitiesService {
     const city = await this.findCityOrFail(params);
 
     const result = mapToOutput(city);
-
     await this.cityRepository.remove(city);
 
     this.logger.info('removeCity: city removed', {

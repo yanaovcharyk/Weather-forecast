@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Type } from '@nestjs/common';
-import { PageInfo } from '../../modules/cities/dto';
+import { PageInfo } from './dto/page-info.dto';
 
 export function EdgeType<T>(classRef: Type<T>) {
   @ObjectType(`${classRef.name}Edge`)

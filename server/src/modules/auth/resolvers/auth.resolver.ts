@@ -1,14 +1,12 @@
 import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { LoginInput, RegisterInput, AuthOutput } from '../dto';
-import { IGQLContext } from '../../cities/interfaces';
-import { AuthService } from '../services';
-import { AccessJwtGuard, RefreshJwtGuard } from '../guards';
-import { AppLoggerService } from '../../logger/services/app-logger.service';
-import { LogResolver } from '../../logger';
-import { MeOutput } from '../dto/me.output';
-import { CurrentUser } from '../decorators/current-user.decorator';
-import { ICurrentUser } from '../interfaces/user-context.interface';
+import { LoginInput, RegisterInput, AuthOutput, MeOutput } from '@auth/dto';
+import { AuthService } from '@auth/services';
+import { AccessJwtGuard, RefreshJwtGuard } from '@auth/guards';
+import { AppLoggerService } from '@logger/services';
+import { LogResolver } from '@logger/decorators';
+import { CurrentUser } from '@auth/decorators';
+import { ICurrentUser, IGQLContext } from '@auth/interfaces';
 
 @Resolver()
 export class AuthResolver {

@@ -1,19 +1,11 @@
-import {
-  Args,
-  Mutation,
-  Resolver,
-} from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
-import { ClientLoggerService }
-  from '../services/client-logger.service';
-import { ClientLogInput } from '../dto/client-log.input';
-
+import { ClientLoggerService } from '@logger/services';
+import { ClientLogInput } from '@logger/dto';
 
 @Resolver()
 export class ClientLogsResolver {
-  constructor(
-    private readonly clientLoggerService: ClientLoggerService,
-  ) {}
+  constructor(private readonly clientLoggerService: ClientLoggerService) {}
 
   @Mutation(() => Boolean)
   async sendClientLogs(
@@ -22,8 +14,7 @@ export class ClientLogsResolver {
     })
     input: ClientLogInput[],
   ): Promise<boolean> {
-    this.clientLoggerService
-      .writeLogs(input);
+    this.clientLoggerService.writeLogs(input);
 
     return true;
   }

@@ -1,5 +1,6 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { CityOutput } from './city.output';
+import { PageInfo } from '@shared/graphql/dto/page-info.dto';
 
 @ObjectType()
 export class CityEdge {
@@ -8,15 +9,6 @@ export class CityEdge {
 
   @Field()
   cursor!: string;
-}
-
-@ObjectType()
-export class PageInfo {
-  @Field()
-  hasNextPage!: boolean;
-
-  @Field({ nullable: true })
-  endCursor?: string;
 }
 
 @ObjectType()

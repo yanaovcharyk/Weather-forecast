@@ -2,13 +2,13 @@ import { Inject, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 import { AppLoggerService } from '@logger/services';
-import { CoordinatesParams } from '../types';
+import { CoordinatesParams } from '@weather/types';
 import {
   ICitySuggestion,
   IWeatherDetails,
   IWeatherPreview,
-} from '../interfaces';
-import { LogMethod } from '@logger/decorators/log-method.decorator';
+} from '@weather/interfaces';
+import { LogMethod } from '@logger/decorators';
 
 @Injectable()
 export class WeatherService {
@@ -31,7 +31,7 @@ export class WeatherService {
   }
 
   @LogMethod()
-  async searchCities(query: string): Promise<ICitySuggestion> {
+  async searchCities(query: string): Promise<ICitySuggestion[]> {
     const { apiKey } = this.weatherConfig;
     const { baseUrl } = this.geoConfig;
 

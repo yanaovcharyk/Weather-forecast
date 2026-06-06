@@ -17,3 +17,4 @@ export const DEFAULT_FIELDS_TO_REMOVE = [
   'cookies',
   'connection',
 ];
+

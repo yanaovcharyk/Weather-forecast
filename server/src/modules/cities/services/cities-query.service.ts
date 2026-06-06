@@ -2,15 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { CityEntity } from '../entities/city.entity';
-import { CitiesConnection, CityOutput } from '../dto';
-import { mapToOutput } from '../mappers/city.mapper';
+import { CityEntity } from '@cities/entities';
+import { CitiesConnection, CityOutput } from '@cities/dto';
+import { mapToOutput } from '@cities/mappers';
 
 import {
   CITY_CURSOR_VALUES,
   CitySortField,
   SORT_CONFIG,
-} from '../city-query.config';
+} from '@cities/city-query.config';
 
 import { SortOrder } from '@shared/constants';
 
@@ -25,10 +25,10 @@ import {
   GetCitiesPaginatedParams,
   GetCitiesParams,
   ToConnectionParams,
-} from '../types';
+} from '@cities/types';
 
 import { AppLoggerService } from '@logger/services';
-import { LogMethod } from '@logger/decorators/log-method.decorator';
+import { LogMethod } from '@logger/decorators';
 
 @Injectable()
 export class CitiesQueryService {
@@ -102,7 +102,6 @@ export class CitiesQueryService {
     const { qb, query } = params;
 
     const sortBy = query.sorting?.sortBy ?? CitySortField.CREATED_AT;
-
     const sortOrder = query.sorting?.sortOrder ?? SortOrder.DESC;
 
     SORT_CONFIG[sortBy].orderBy(qb, sortOrder);
@@ -143,7 +142,6 @@ export class CitiesQueryService {
   @LogMethod()
   private applyPagination(params: ApplyPaginationParams): void {
     const { qb, limit } = params;
-
     qb.take(limit + 1);
   }
 

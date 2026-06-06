@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { LoggerContextService } from './services/logger-context.service';
+import { LoggerContextService } from '../services';
 
 @Injectable()
 export class GraphqlContextInterceptor implements NestInterceptor {

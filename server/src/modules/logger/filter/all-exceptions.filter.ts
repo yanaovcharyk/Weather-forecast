@@ -7,7 +7,7 @@ import {
 } from '@nestjs/common';
 
 import { GraphQLError } from 'graphql';
-import { AppLoggerService } from '../services/app-logger.service';
+import { AppLoggerService } from '@logger/services';
 
 @Catch()
 export class AllExceptionsFilter implements ExceptionFilter {

@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
-import { UserEntity } from '../entities/user.entity';
+import { UserEntity } from '@users/entities';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Pbkdf2PasswordHasher } from '@auth/services/password-hasher.service';
+import { Pbkdf2PasswordHasher } from '@auth/services';
 import { RegisterInput } from '@auth/dto';
 import { AppLoggerService } from '@logger/services';
-import { UpdateRefreshTokenVersionParams } from '../types';
-import { IUserEntity } from '../interfaces';
+import { UpdateRefreshTokenVersionParams } from '@users/types';
+import { IUserEntity } from '@users/interfaces';
 import { LogResolver } from '@logger/index';
 @Injectable()
 export class UserService {

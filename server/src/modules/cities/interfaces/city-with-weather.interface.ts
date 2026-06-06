@@ -1,4 +1,4 @@
-import { WeatherOutput } from '@weather/dto/weather.output';
+import { WeatherOutput } from '@weather/dto';
 
 export interface ICityWithWeather {
   id: string;

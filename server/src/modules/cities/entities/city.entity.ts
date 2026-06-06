@@ -1,6 +1,6 @@
 import { ObjectType, Field, Int, ID, Float } from '@nestjs/graphql';
-import { Entity, Column, PrimaryGeneratedColumn, Unique } from 'typeorm';
-import { BaseEntity } from '@shared/types/base.entity';
+import { Entity, Column, Unique } from 'typeorm';
+import { BaseEntity } from '@shared/entities';
 
 @Unique(['userId', 'lat', 'lon'])
 @Entity('cities')

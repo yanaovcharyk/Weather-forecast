@@ -5,6 +5,5 @@ export { CitiesSortingInput } from './cities-sorting.input';
 export { CityOutput } from './city.output';
 export {
   CityEdge,
-  PageInfo,
   CitiesConnection,
 } from './cities-connection.output';

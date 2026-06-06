@@ -1,0 +1,1 @@
+export { mapToOutput } from './city.mapper';

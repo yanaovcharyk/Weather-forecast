@@ -1,4 +1,4 @@
-import { IWeatherOutput } from "../../weather/interfaces/weather.output.interface";
+import { IWeatherOutput } from "@weather/interfaces";
 
 export interface ICityOutput {
   id: string;

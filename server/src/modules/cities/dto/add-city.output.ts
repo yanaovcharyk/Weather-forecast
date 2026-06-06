@@ -1,8 +1,9 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { CityOutput } from './city.output';
+import { IAddCityOutput } from '../interfaces/add-city.output.interface';
 
 @ObjectType()
-export class AddCityOutput {
+export class AddCityOutput implements IAddCityOutput {
   @Field()
   ok!: boolean;
 

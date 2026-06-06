@@ -1,15 +1,15 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { WeatherService } from '../services';
+import { WeatherService } from '@weather/services';
 import {
   WeatherDetailsOutput,
   CitySuggestion,
   GetWeatherInput,
   CitySearchInput,
-} from '../dto';
+} from '@weather/dto';
 import { AppLoggerService } from '@logger/services';
 import { LogResolver } from '@logger/index';
-import { AccessJwtGuard } from '../../auth/guards';
+import { AccessJwtGuard } from '@auth/guards';
 
 @Resolver()
 export class WeatherResolver {

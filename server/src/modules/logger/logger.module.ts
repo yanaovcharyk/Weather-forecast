@@ -1,13 +1,12 @@
 import { Global, Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { WinstonModule } from 'nest-winston';
-import { winstonConfig } from './logger.config';
+import { winstonConfig } from '../../shared/config/logger.config';
 import { AppLoggerService } from './services/app-logger.service';
 import { LoggerContextService } from './services/logger-context.service';
-import { GraphqlContextInterceptor } from './graphql-context.interceptor';
+import { GraphqlContextInterceptor } from './interceptors/graphql-context.interceptor';
 import { ClientLogsResolver } from './resolvers/client-logs.resolver';
 import { ClientLoggerService } from './services/client-logger.service';
-
 
 @Global()
 @Module({
