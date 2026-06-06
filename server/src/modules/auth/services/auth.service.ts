@@ -18,6 +18,7 @@ import {
   LogoutParams,
   RotateRefreshTokenParams,
   TokenPair,
+  TokenType,
 } from '../types';
 
 import { IAuthOutput } from '../interfaces/auth.output.interface';
@@ -34,7 +35,6 @@ export class AuthService {
     private readonly cookieService: AuthCookieService,
     private readonly passwordHasher: Pbkdf2PasswordHasher,
     loggerService: AppLoggerService,
-    private contextService: LoggerContextService,
   ) {
     this.logger = loggerService.child(AuthService.name);
   }
@@ -44,17 +44,10 @@ export class AuthService {
     const { input, res } = params;
 
     const user = await this.validateUser(input.email, input.password);
-
     const tokens = await this.generateTokens(user);
 
     this.setCookies(res, tokens);
-
-    this.logger.info('User login success', {
-      userId: user.id,
-      email: user.email,
-    });
-
-    this.contextService.printContext('AUTH SERVICE');
+    this.logger.info('User login success');
 
     return { success: true };
   }
@@ -71,7 +64,6 @@ export class AuthService {
 
     this.logger.info('User registered successfully', {
       userId: user.id,
-      email: user.email,
     });
 
     return { success: true };
@@ -174,9 +166,9 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const isValid = await this.passwordHasher.compare({
+    const isValid = await this.passwordHasher.validatePassword({
       password,
-      hash: user.password,
+      expectedHashPassword: user.password,
       salt: user.salt,
     });
 
@@ -195,14 +187,13 @@ export class AuthService {
   private async generateTokens(user: IUserEntity): Promise<TokenPair> {
     const accessToken = await this.jwtService.createAccessToken({
       userId: user.id,
-      email: user.email,
-      type: 'access',
+      type: TokenType.ACCESS,
     });
 
     const refreshToken = await this.jwtService.createRefreshToken({
       userId: user.id,
       version: user.refreshTokenVersion,
-      type: 'refresh',
+      type: TokenType.REFRESH,
     });
 
     return {

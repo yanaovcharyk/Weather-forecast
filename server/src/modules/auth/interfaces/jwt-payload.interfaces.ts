@@ -1,20 +1,14 @@
+import { TokenType } from "../types";
+
 export interface IAccessJwtPayload {
   userId: string;
-  email: string;
-  type: 'access';
+  type: TokenType.ACCESS;
 }
 
 export interface IRefreshJwtPayload {
   userId: string;
   version: number;
-  type: 'refresh';
+  type: TokenType.REFRESH;
 }
 
-export type JwtPayload =
-  | IAccessJwtPayload
-  | IRefreshJwtPayload;
-export interface IRefreshJwtUser extends IRefreshJwtPayload {
-  refreshToken: string;
-}
-
-export interface IAccessJwtUser extends IAccessJwtPayload {}
+export type JwtPayload = IAccessJwtPayload | IRefreshJwtPayload;

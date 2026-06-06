@@ -1,7 +1,10 @@
-import { HashPasswordParams, ComparePasswordParams, HashPasswordResult } from '../types';
+import {
+  HashPasswordParams,
+  ValidatePasswordParams,
+  HashPasswordResult,
+} from '../types';
 
 export interface IPasswordHasher {
   hash(params: HashPasswordParams): Promise<HashPasswordResult>;
-
-  compare(params: ComparePasswordParams): Promise<boolean>;
+  validatePassword(params: ValidatePasswordParams): Promise<boolean>;
 }

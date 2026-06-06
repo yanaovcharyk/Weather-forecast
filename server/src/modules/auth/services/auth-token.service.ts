@@ -6,7 +6,7 @@ import { throwUnauthorized } from '@shared/errors/unautorized.error';
 import {
   IAccessJwtPayload,
   IRefreshJwtPayload,
-} from '../interfaces/jwt-payload.interfaces';
+} from '../interfaces';
 import { AppLoggerService } from '@logger/services/app-logger.service';
 import { LogMethod } from '@shared/logging/decorators/log-method.decorator';
 

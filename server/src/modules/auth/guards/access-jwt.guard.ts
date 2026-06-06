@@ -1,18 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { BaseJwtGuard } from './base-jwt.guard';
+import { TokenType } from '@auth/types';
+import { IAccessJwtPayload } from '@auth/interfaces';
+import { Request } from 'express';
 
 @Injectable()
 export class AccessJwtGuard extends BaseJwtGuard {
-  protected getToken(req: any): string | null {
-    return req.cookies?.accessToken ?? null;
+  protected getToken(req: Request): string | null {
+    console.log('authCookieService', this.authCookieService);
+    return this.authCookieService.getAccessToken(req);
+    // return req.cookies?.accessToken ?? null;
   }
 
   protected getSecret(): string {
     return this.configService.get<string>('jwt.accessSecret')!;
   }
 
-  protected validatePayload(payload: any) {
-    if (payload.type !== 'access') {
+  protected validatePayload(payload: IAccessJwtPayload) {
+    if (payload.type !== TokenType.ACCESS) {
       throw new Error('Invalid token type');
     }
   }

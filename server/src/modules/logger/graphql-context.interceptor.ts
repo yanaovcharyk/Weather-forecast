@@ -21,7 +21,7 @@ export class GraphqlContextInterceptor implements NestInterceptor {
     return this.contextService.run(
       {
         requestId: ctx.requestId,
-        userId: ctx.user?.userId,
+        userId: ctx.jwtPayload?.userId,
         ip: ctx.req?.ip,
       },
       () => next.handle(),

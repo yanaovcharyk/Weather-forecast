@@ -65,9 +65,9 @@ export type HashPasswordParams = {
   password: string;
 };
 
-export type ComparePasswordParams = {
+export type ValidatePasswordParams = {
   password: string;
-  hash: string;
+  expectedHashPassword: string;
   salt: string;
 };
 
@@ -75,3 +75,5 @@ export type HashPasswordResult = {
   hash: string;
   salt: string;
 };
+
+export type ValidatePasswordResult = boolean;

@@ -31,12 +31,10 @@ export class AuthCookieService {
     };
   }
 
-  @LogMethod()
   getAccessToken(req: Request): string | null {
     return req.cookies?.accessToken ?? null;
   }
 
-  @LogMethod()
   getRefreshToken(req: Request): string | null {
     return req.cookies?.refreshToken ?? null;
   }

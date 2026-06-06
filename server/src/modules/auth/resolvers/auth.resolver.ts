@@ -9,7 +9,6 @@ import { LogResolver } from '../../../shared/logging';
 import { MeOutput } from '../dto/me.output';
 import { CurrentUser } from '../decorators/current-user.decorator';
 import { ICurrentUser } from '../interfaces/user-context.interface';
-import { CurrentToken } from '../decorators/current-token.decorator';
 
 @Resolver()
 export class AuthResolver {
@@ -62,11 +61,10 @@ export class AuthResolver {
   @UseGuards(RefreshJwtGuard)
   @LogResolver()
   async refreshTokens(
-    @CurrentToken() refreshToken: string,
     @Context() ctx: IGQLContext,
   ) {
     return this.authService.rotateRefreshToken({
-      oldToken: refreshToken,
+      oldToken: ctx.jwtToken,
       req: ctx.req,
       res: ctx.res,
     });
@@ -74,6 +72,7 @@ export class AuthResolver {
 
   @Query(() => MeOutput)
   @UseGuards(AccessJwtGuard)
+  @LogResolver()
   async me(@CurrentUser() user: ICurrentUser,) {
     return {
       userId: user.id,

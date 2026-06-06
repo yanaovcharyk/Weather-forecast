@@ -1,61 +1,65 @@
 import { Injectable } from '@nestjs/common';
-import * as crypto from 'crypto';
-
-import { IPasswordHasher } from '../interfaces/password-hasher.interface';
-import { AppLoggerService } from '../../logger/services/app-logger.service';
-
+import { pbkdf2Sync, randomBytes, timingSafeEqual } from 'crypto';
+import { IPasswordHasher } from '@auth/interfaces';
 import {
   HashPasswordParams,
-  ComparePasswordParams,
+  ValidatePasswordParams,
   HashPasswordResult,
-} from '../types';
-import { LogMethod } from '../../../shared/logging/decorators/log-method.decorator';
-
-const ITERATIONS = 100_000;
-const KEY_LENGTH = 64;
-const DIGEST = 'sha512';
+  ValidatePasswordResult,
+} from '@auth/types';
+import {
+  AuthErrorMessage,
+  PBKDF2_DIGEST_ALGORITHM,
+  PBKDF2_ENCODING,
+  PBKDF2_ITERATIONS,
+  PBKDF2_KEY_LENGTH,
+} from '@auth/constants';
+import { AppLoggerService } from '@logger/services';
+import { LogMethod } from '@shared/logging/decorators';
 
 @Injectable()
 export class Pbkdf2PasswordHasher implements IPasswordHasher {
   private readonly logger;
-
   constructor(loggerService: AppLoggerService) {
     this.logger = loggerService.child(Pbkdf2PasswordHasher.name);
+  }
+
+  private hashPasswordWithSalt(password: string, salt: string): string {
+    return pbkdf2Sync(
+      password,
+      salt,
+      PBKDF2_ITERATIONS,
+      PBKDF2_KEY_LENGTH,
+      PBKDF2_DIGEST_ALGORITHM,
+    ).toString(PBKDF2_ENCODING);
   }
 
   @LogMethod()
   async hash(params: HashPasswordParams): Promise<HashPasswordResult> {
     const { password } = params;
 
-    const salt = crypto.randomBytes(16).toString('hex');
+    const salt = randomBytes(16).toString(PBKDF2_ENCODING);
+    const hash = this.hashPasswordWithSalt(password, salt);
 
-    const hash = crypto
-      .pbkdf2Sync(password, salt, ITERATIONS, KEY_LENGTH, DIGEST)
-      .toString('hex');
-
-    return {
-      hash,
-      salt,
-    };
+    return { hash, salt };
   }
 
-  @LogMethod({
-    shouldLogArguments: false,
-    shouldLogResult: false,
-  })
-  async compare(params: ComparePasswordParams): Promise<boolean> {
-    const { password, hash, salt } = params;
+  @LogMethod()
+  async validatePassword(
+    params: ValidatePasswordParams,
+  ): Promise<ValidatePasswordResult> {
+    const { password, expectedHashPassword, salt } = params;
 
-    const hashed = crypto
-      .pbkdf2Sync(password, salt, ITERATIONS, KEY_LENGTH, DIGEST)
-      .toString('hex');
+    const candidateHashPassword = this.hashPasswordWithSalt(password, salt);
+    const isValid = timingSafeEqual(
+      Buffer.from(candidateHashPassword, PBKDF2_ENCODING),
+      Buffer.from(expectedHashPassword, PBKDF2_ENCODING),
+    );
 
-    const isMatch = hashed === hash;
-
-    if (!isMatch) {
-      this.logger.warn('Password comparison failed');
+    if (!isValid) {
+      this.logger.warn(AuthErrorMessage.COMPARISON_FAILED);
     }
 
-    return isMatch;
+    return isValid;
   }
 }

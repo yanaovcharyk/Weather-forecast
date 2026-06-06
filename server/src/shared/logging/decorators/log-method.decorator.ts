@@ -7,7 +7,7 @@ export function LogMethod(options: LogMethodOptions = {}): MethodDecorator {
   return (target, propertyKey, descriptor: PropertyDescriptor) => {
     const originalMethodImplementation = descriptor.value;
 
-    descriptor.value = async function (
+    descriptor.value = function (
       this: LoggerContext,
       ...methodArguments: any[]
     ) {

@@ -1,6 +1,9 @@
 import { LoggerContext, LogMethodOptions } from '../types';
 import { safeSerialize } from '../sanitize';
-import { DEFAULT_FIELDS_TO_MASK, DEFAULT_FIELDS_TO_REMOVE } from '../constants';
+import {
+  DEFAULT_FIELDS_TO_MASK,
+  DEFAULT_FIELDS_TO_REMOVE,
+} from '../constants';
 
 export function createLogMethodWrapper(options: LogMethodOptions) {
   const {
@@ -23,7 +26,7 @@ export function createLogMethodWrapper(options: LogMethodOptions) {
     methodName: string,
     className: string,
   ) {
-    return async function wrappedMethod(...methodArguments: any[]) {
+    return function wrappedMethod(...methodArguments: any[]) {
       const logger = loggerContext.logger;
 
       const executionStartTimestamp = Date.now();
@@ -54,29 +57,75 @@ export function createLogMethodWrapper(options: LogMethodOptions) {
       });
 
       try {
-        const methodResult = await originalMethod.apply(
+        const methodResult = originalMethod.apply(
           loggerContext,
           methodArguments,
         );
 
+        if (methodResult instanceof Promise) {
+          return methodResult
+            .then((result) => {
+              logIfEnabled(shouldLogExecutionTime, () => {
+                logger?.debug(`${className}.${methodName} completed`, {
+                  executionTimeMilliseconds:
+                    Date.now() - executionStartTimestamp,
+                });
+              });
+
+              logIfEnabled(shouldLogResult, () => {
+                logger?.debug(`${className}.${methodName} result`, {
+                  result: safeSerialize(
+                    result,
+                    fieldsToMask,
+                    fieldsToRemove,
+                  ),
+                });
+              });
+
+              return result;
+            })
+            .catch((error) => {
+              logger?.error(`${className}.${methodName} failed`, {
+                error:
+                  error instanceof Error
+                    ? error.message
+                    : String(error),
+
+                executionTimeMilliseconds:
+                  Date.now() - executionStartTimestamp,
+              });
+
+              throw error;
+            });
+        }
+
         logIfEnabled(shouldLogExecutionTime, () => {
           logger?.debug(`${className}.${methodName} completed`, {
-            executionTimeMilliseconds: Date.now() - executionStartTimestamp,
+            executionTimeMilliseconds:
+              Date.now() - executionStartTimestamp,
           });
         });
 
         logIfEnabled(shouldLogResult, () => {
           logger?.debug(`${className}.${methodName} result`, {
-            result: safeSerialize(methodResult, fieldsToMask, fieldsToRemove),
+            result: safeSerialize(
+              methodResult,
+              fieldsToMask,
+              fieldsToRemove,
+            ),
           });
         });
 
         return methodResult;
       } catch (error) {
         logger?.error(`${className}.${methodName} failed`, {
-          error: error instanceof Error ? error.message : String(error),
+          error:
+            error instanceof Error
+              ? error.message
+              : String(error),
 
-          executionTimeMilliseconds: Date.now() - executionStartTimestamp,
+          executionTimeMilliseconds:
+            Date.now() - executionStartTimestamp,
         });
 
         throw error;
