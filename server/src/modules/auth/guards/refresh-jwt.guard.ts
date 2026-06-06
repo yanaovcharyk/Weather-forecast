@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { BaseJwtGuard } from './base-jwt.guard';
-import { IRefreshJwtPayload } from '../interfaces';
+import { IRefreshJwtPayload } from '@auth/interfaces';
 import { Request } from 'express';
-import { TokenType } from '../types';
+import { TokenType } from '@auth/types';
 
 @Injectable()
 export class RefreshJwtGuard extends BaseJwtGuard {
   protected getToken(req: Request): string | null {
-    return req.cookies?.refreshToken ?? null;
+    return this.authCookieService.getRefreshToken(req);
   }
 
   protected getSecret(): string {

@@ -28,7 +28,7 @@ import {
 } from '../types';
 
 import { AppLoggerService } from '@logger/services';
-import { LogMethod } from '@shared/logging/decorators/log-method.decorator';
+import { LogMethod } from '@logger/decorators/log-method.decorator';
 
 @Injectable()
 export class CitiesQueryService {

@@ -21,7 +21,7 @@ import {
 } from '../dto';
 import { createValidationPipe } from '@shared/utils';
 import { AppLoggerService, LoggerContextService } from '@logger/services';
-import { LogResolver } from '@shared/logging';
+import { LogResolver } from '@logger/index';
 import { CurrentUser } from '../../auth/decorators/current-user.decorator';
 import { ICurrentUser } from '../../auth/interfaces/user-context.interface';
 
@@ -34,7 +34,6 @@ export class CitiesResolver {
     private readonly citiesQueryService: CitiesQueryService,
     private readonly weatherService: WeatherService,
     loggerService: AppLoggerService,
-    private readonly loggerContext: LoggerContextService,
   ) {
     this.logger = loggerService.child(CitiesResolver.name);
   }
@@ -128,8 +127,6 @@ export class CitiesResolver {
   @ResolveField(() => WeatherOutput, { nullable: true })
   @LogResolver()
   async weather(@Parent() city: CityOutput) {
-    this.loggerContext.printContext('CITY_RESOLVER_WEATHER');
-
     return this.weatherService.getWeatherPreview({
       lat: city.lat,
       lon: city.lon,

@@ -1,6 +1,6 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsEmail, MinLength } from 'class-validator';
-import { IAuthInput } from '../interfaces';
+import { IAuthInput } from '@auth/interfaces';
 
 @InputType()
 export class RegisterInput implements IAuthInput {

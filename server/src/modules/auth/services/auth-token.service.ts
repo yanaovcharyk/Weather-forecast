@@ -1,38 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-import { IAppConfig } from '@shared/types/app.config';
-import { throwUnauthorized } from '@shared/errors/unautorized.error';
-import {
-  IAccessJwtPayload,
-  IRefreshJwtPayload,
-} from '../interfaces';
-import { AppLoggerService } from '@logger/services/app-logger.service';
-import { LogMethod } from '@shared/logging/decorators/log-method.decorator';
+import { IAppConfig } from '@shared/types';
+import { IAccessJwtPayload, IRefreshJwtPayload, JwtPayload } from '@auth/interfaces';
+import { AppLoggerService } from '@logger/services';
+import { LogMethod } from '@logger/decorators';
+import { authTokenConfig, IAuthTokenConfig } from '@shared/config';
+import { SignOptions } from 'jsonwebtoken';
 
 @Injectable()
 export class AuthTokenService {
-  private readonly logger;
-
-  private readonly accessSecret: string;
-  private readonly refreshSecret: string;
-  private readonly accessExpires: string;
-  private readonly refreshExpires: string;
+  private readonly logger: AppLoggerService;
+  private readonly tokenConfig: IAuthTokenConfig;
 
   constructor(
     private readonly jwt: JwtService,
     private readonly config: ConfigService<IAppConfig>,
     loggerService: AppLoggerService,
   ) {
-    const jwtConfig = this.config.get('jwt', {
-      infer: true,
-    })!;
-
-    this.accessSecret = jwtConfig.accessSecret;
-    this.refreshSecret = jwtConfig.refreshSecret;
-    this.accessExpires = jwtConfig.accessExpires;
-    this.refreshExpires = jwtConfig.refreshExpires;
-
+    this.tokenConfig = authTokenConfig(config);
     this.logger = loggerService.child(AuthTokenService.name);
   }
 
@@ -40,8 +26,8 @@ export class AuthTokenService {
   async createAccessToken(tokenPayload: IAccessJwtPayload): Promise<string> {
     return this.createToken(
       tokenPayload,
-      this.accessSecret,
-      this.accessExpires,
+      this.tokenConfig.access.secret,
+      this.tokenConfig.access.expiresIn,
     );
   }
 
@@ -49,8 +35,8 @@ export class AuthTokenService {
   async createRefreshToken(tokenPayload: IRefreshJwtPayload): Promise<string> {
     return this.createToken(
       tokenPayload,
-      this.refreshSecret,
-      this.refreshExpires,
+      this.tokenConfig.refresh.secret,
+      this.tokenConfig.refresh.expiresIn,
     );
   }
 
@@ -58,8 +44,7 @@ export class AuthTokenService {
   async verifyAccessToken(token: string): Promise<IAccessJwtPayload> {
     return this.verifyToken<IAccessJwtPayload>(
       token,
-      this.accessSecret,
-      'Unauthorized',
+      this.tokenConfig.access.secret,
     );
   }
 
@@ -67,49 +52,27 @@ export class AuthTokenService {
   async verifyRefreshToken(token: string): Promise<IRefreshJwtPayload> {
     return this.verifyToken<IRefreshJwtPayload>(
       token,
-      this.refreshSecret,
-      'Invalid refresh token',
+      this.tokenConfig.refresh.secret,
     );
   }
 
-  private async createToken<T extends object>(
-    tokenPayload: T,
+  private async createToken(
+    tokenPayload: JwtPayload,
     secret: string,
-    expiresIn: string,
+    expiresIn: SignOptions['expiresIn'],
   ): Promise<string> {
-    try {
-      return await this.jwt.signAsync<T>(tokenPayload, {
+      return this.jwt.signAsync(tokenPayload, {
         secret,
-        expiresIn: expiresIn as any,
+        expiresIn,
       });
-    } catch (error: unknown) {
-      this.logger.error(
-        'Failed to create JWT token',
-        error instanceof Error ? error : undefined,
-        {
-          stage: 'signAsync',
-        },
-      );
-
-      throw error;
-    }
   }
 
-  private async verifyToken<T extends object>(
+  private async verifyToken<T extends JwtPayload>(
     token: string,
     secret: string,
-    errorMessage: string,
   ): Promise<T> {
-    try {
-      return await this.jwt.verifyAsync<T>(token, {
+      return this.jwt.verifyAsync<T>(token, {
         secret,
       });
-    } catch (error) {
-      this.logger.warn('JWT verification failed', {
-        error: error instanceof Error ? error.message : 'Unknown error',
-      });
-
-      throwUnauthorized(errorMessage);
-    }
   }
 }

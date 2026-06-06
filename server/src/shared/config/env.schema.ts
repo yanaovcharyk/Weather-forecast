@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { StringValue } from 'ms';
 
 const msRegex = /^\d+(ms|s|m|h|d)$/;
 
@@ -37,9 +38,10 @@ export const envSchema = z.object({
     .default('https://api.openweathermap.org/geo/1.0'),
 });
 
-type MsString = `${number}${'ms' | 's' | 'm' | 'h' | 'd'}`;
-
-export type Env = z.infer<typeof envSchema> & {
-  JWT_ACCESS_EXPIRES: MsString;
-  JWT_REFRESH_EXPIRES: MsString;
+export type Env = Omit<
+  z.infer<typeof envSchema>,
+  'JWT_ACCESS_EXPIRES' | 'JWT_REFRESH_EXPIRES'
+> & {
+  JWT_ACCESS_EXPIRES: StringValue;
+  JWT_REFRESH_EXPIRES: StringValue;
 };

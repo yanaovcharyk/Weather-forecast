@@ -8,7 +8,7 @@ import {
   CitySearchInput,
 } from '../dto';
 import { AppLoggerService } from '@logger/services';
-import { LogResolver } from '@shared/logging';
+import { LogResolver } from '@logger/index';
 import { AccessJwtGuard } from '../../auth/guards';
 
 @Resolver()

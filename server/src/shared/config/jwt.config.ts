@@ -1,12 +1,12 @@
 import { ConfigService } from '@nestjs/config';
 import { JwtModuleOptions } from '@nestjs/jwt';
-import { IAppConfig } from '../types/app.config';
+import { JwtConfigKey, IAppConfig } from '@shared/types';
 
 export const jwtConfig = (
   config: ConfigService<IAppConfig>,
 ): JwtModuleOptions => ({
-  secret: config.get('jwt.accessSecret', { infer: true }),
+  secret: config.get(JwtConfigKey.ACCESS_SECRET, { infer: true }),
   signOptions: {
-    expiresIn: config.get('jwt.accessExpires', { infer: true }),
+    expiresIn: config.get(JwtConfigKey.ACCESS_EXPIRES, { infer: true }),
   },
 });

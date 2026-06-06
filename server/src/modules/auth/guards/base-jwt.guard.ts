@@ -6,6 +6,7 @@ import { GraphQLError } from 'graphql';
 import { IGQLContext, JwtPayload } from '../interfaces';
 import { Request } from 'express';
 import { AuthCookieService } from '../services';
+import { AUTH_GRAPHQL_ERRORS, AuthErrorMessage } from '../constants';
 
 @Injectable()
 export abstract class BaseJwtGuard implements CanActivate {
@@ -17,19 +18,15 @@ export abstract class BaseJwtGuard implements CanActivate {
 
   protected abstract getToken(req: Request): string | null;
   protected abstract getSecret(): string;
-  protected abstract validatePayload(payload: JwtPayload, token: string): any;
+  protected abstract validatePayload(payload: JwtPayload, token: string): void;
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const ctx = GqlExecutionContext.create(context).getContext<IGQLContext>();
     const req = ctx.req;
-
-    console.log('COOKIES', req.cookies);
     const token = this.getToken(req);
 
     if (!token) {
-      throw new GraphQLError('Unauthorized', {
-        extensions: { code: 'UNAUTHENTICATED' },
-      });
+      throw AUTH_GRAPHQL_ERRORS.UNAUTHORIZED;
     }
 
     try {
@@ -40,21 +37,15 @@ export abstract class BaseJwtGuard implements CanActivate {
         },
       );
 
-      console.log('TOKEN PAYLOAD', tokenPayload);
-
       ctx.jwtPayload = tokenPayload;
       ctx.jwtToken = token;
 
       return true;
     } catch (error) {
-      console.error('JWT VERIFY FAILED');
+      console.error(AuthErrorMessage.JWT_VERIFICATION_FAILED);
       console.error(error);
 
-      throw new GraphQLError('Unauthorized', {
-        extensions: {
-          code: 'UNAUTHENTICATED',
-        },
-      });
+      throw AUTH_GRAPHQL_ERRORS.UNAUTHORIZED;
     }
   }
 }

@@ -1,3 +1,6 @@
+import { Request, Response } from 'express';
+import { LoginInput, RegisterInput } from './dto';
+
 export enum TokenType {
   ACCESS = 'access',
   REFRESH = 'refresh',
@@ -12,8 +15,6 @@ export type Tokens = {
   accessToken: string;
   refreshToken: string;
 };
-import { Request, Response } from 'express';
-import { LoginInput, RegisterInput } from './dto';
 
 export type LoginParams = {
   input: LoginInput;
@@ -58,8 +59,6 @@ export type GetTokenParams = {
   req: Request;
   type: TokenType;
 };
-
-export type MsString = `${number}${'ms' | 's' | 'm' | 'h' | 'd'}`;
 
 export type HashPasswordParams = {
   password: string;

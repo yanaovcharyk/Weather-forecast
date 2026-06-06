@@ -1,3 +1,4 @@
+import { StringValue } from 'ms';
 export interface IAppConfig {
   nodeEnv: 'development' | 'production';
   port: number;
@@ -19,8 +20,8 @@ export interface IAppConfig {
   jwt: {
     accessSecret: string;
     refreshSecret: string;
-    accessExpires: `${number}${'ms' | 's' | 'm' | 'h' | 'd'}`;
-    refreshExpires: `${number}${'ms' | 's' | 'm' | 'h' | 'd'}`;
+    accessExpires: StringValue;
+    refreshExpires: StringValue;
   };
 
   weatherApi: {

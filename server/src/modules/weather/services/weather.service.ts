@@ -8,7 +8,7 @@ import {
   IWeatherDetails,
   IWeatherPreview,
 } from '../interfaces';
-import { LogMethod } from '@shared/logging/decorators/log-method.decorator';
+import { LogMethod } from '@logger/decorators/log-method.decorator';
 
 @Injectable()
 export class WeatherService {

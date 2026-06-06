@@ -1,17 +1,9 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { GraphQLError } from 'graphql';
-
-import { AuthTokenService } from './auth-token.service';
-import { Pbkdf2PasswordHasher } from './password-hasher.service';
-import { AuthCookieService } from './auth-cookie.service';
-
-import { UserService } from '@users/services/user.service';
-
-import { AppLoggerService } from '../../logger/services/app-logger.service';
-import { LoggerContextService } from '../../logger/services/logger-context.service';
-
-import { IUserEntity } from '../../users/interfaces';
-
+import { UserService } from '@users/services';
+import { AppLoggerService } from '@logger/services';
+import { LogMethod } from '@logger/decorators';
+import { IUserEntity } from '@users/interfaces';
+import { IAuthOutput } from '@auth/interfaces';
 import {
   LoginParams,
   RegisterParams,
@@ -19,11 +11,11 @@ import {
   RotateRefreshTokenParams,
   TokenPair,
   TokenType,
-} from '../types';
-
-import { IAuthOutput } from '../interfaces/auth.output.interface';
-
-import { LogMethod } from '@shared/logging/decorators/log-method.decorator';
+} from '@auth/types';
+import { AUTH_GRAPHQL_ERRORS } from '../constants';
+import { AuthTokenService } from './auth-token.service';
+import { AuthCookieService } from './auth-cookie.service';
+import { Pbkdf2PasswordHasher } from './password-hasher.service';
 
 @Injectable()
 export class AuthService {
@@ -45,7 +37,6 @@ export class AuthService {
 
     const user = await this.validateUser(input.email, input.password);
     const tokens = await this.generateTokens(user);
-
     this.setCookies(res, tokens);
     this.logger.info('User login success');
 
@@ -57,11 +48,8 @@ export class AuthService {
     const { input, res } = params;
 
     const user = await this.usersService.register(input);
-
     const tokens = await this.generateTokens(user);
-
     this.setCookies(res, tokens);
-
     this.logger.info('User registered successfully', {
       userId: user.id,
     });
@@ -74,13 +62,11 @@ export class AuthService {
     const { userId, res } = params;
 
     const user = await this.usersService.findById(userId);
-
     if (!user) {
       this.logger.warn('Logout failed: user not found', {
         userId,
       });
-
-      throw new UnauthorizedException();
+      throw AUTH_GRAPHQL_ERRORS.UNAUTHORIZED;
     }
 
     const nextVersion = user.refreshTokenVersion + 1;
@@ -106,7 +92,6 @@ export class AuthService {
     const { oldToken, res } = params;
 
     const payload = await this.jwtService.verifyRefreshToken(oldToken);
-
     const user = await this.usersService.findById(payload.userId);
 
     if (!user) {
@@ -114,21 +99,16 @@ export class AuthService {
         userId: payload.userId,
       });
 
-      throw new GraphQLError('Unauthorized', {
-        extensions: { code: 'UNAUTHENTICATED' },
-      });
+      throw AUTH_GRAPHQL_ERRORS.UNAUTHORIZED;
     }
 
     if (payload.version !== user.refreshTokenVersion) {
       this.logger.warn('Refresh token version mismatch', {
-        userId: user.id,
         tokenVersion: payload.version,
         currentVersion: user.refreshTokenVersion,
       });
 
-      throw new GraphQLError('Unauthorized', {
-        extensions: { code: 'UNAUTHENTICATED' },
-      });
+      throw AUTH_GRAPHQL_ERRORS.UNAUTHORIZED;
     }
 
     const newVersion = user.refreshTokenVersion + 1;
@@ -139,11 +119,8 @@ export class AuthService {
     });
 
     user.refreshTokenVersion = newVersion;
-
     const tokens = await this.generateTokens(user);
-
     this.setCookies(res, tokens);
-
     this.logger.info('Refresh token rotated', {
       userId: user.id,
       version: newVersion,
@@ -204,7 +181,6 @@ export class AuthService {
 
   private setCookies(res: any, tokens: TokenPair): void {
     this.cookieService.setAccessToken(res, tokens.accessToken);
-
     this.cookieService.setRefreshToken(res, tokens.refreshToken);
   }
 }

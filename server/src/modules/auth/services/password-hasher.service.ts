@@ -15,7 +15,7 @@ import {
   PBKDF2_KEY_LENGTH,
 } from '@auth/constants';
 import { AppLoggerService } from '@logger/services';
-import { LogMethod } from '@shared/logging/decorators';
+import { LogMethod } from '@logger/decorators';
 
 @Injectable()
 export class Pbkdf2PasswordHasher implements IPasswordHasher {

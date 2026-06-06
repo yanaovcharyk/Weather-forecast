@@ -1,4 +1,5 @@
-import { isPrimitiveValue } from '../../utils/is-primitive-value';
+
+import { isPrimitiveValue } from '@shared/utils/is-primitive-value';
 import { SerializationPlaceholder, SerializeHandler } from '../types';
 import { isNonSerializableObject } from './is-non-serializable-object';
 

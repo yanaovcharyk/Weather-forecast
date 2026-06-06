@@ -7,6 +7,7 @@ export const PBKDF2_ENCODING = 'hex';
 
 export enum AuthErrorMessage {
   COMPARISON_FAILED = 'Password comparison failed',
+  JWT_VERIFICATION_FAILED = 'JWT verification failed',
 }
 
 export const AUTH_GRAPHQL_ERRORS = {
