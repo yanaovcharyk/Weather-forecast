@@ -71,13 +71,10 @@ export class CitiesService {
   @LogMethod()
   async removeCity(params: CityByIdParams): Promise<ICityOutput> {
     const city = await this.findCityOrFail(params);
+    const removedCity = { ...city };
     await this.cityRepository.remove(city);
 
-    this.logger.info('removeCity: city removed', {
-      id: city.id,
-    });
-
-    return city;
+    return removedCity;
   }
 
   @LogMethod()
