@@ -6,6 +6,7 @@ import { useRemoveCity } from './useRemoveCity';
 import { useRemoveAllCities } from './useRemoveAllCities';
 import { useTogglePinned } from './useTogglePinned';
 import type { City } from '../types';
+import { useCityByName } from './useCityByName';
 
 type NotificationFunction = (message: string) => void;
 
@@ -36,6 +37,8 @@ export const useCityActions = ({
   const [currentlySelectedCity, setCurrentlySelectedCity] =
     useState<City | null>(null);
 
+  const { getCityByName } = useCityByName();
+
   const handleAddCity = useCallback(
     async (lat: number, lon: number, city: string) => {
       if (isAddingCity) {
@@ -45,30 +48,23 @@ export const useCityActions = ({
       setIsAddingCity(true);
 
       try {
-        const result = await addCity(lat, lon, city);
-        if (
-          !result.ok &&
-          result.code === 'CITY_EXISTS' &&
-          result.existingCity
-        ) {
+        const existingCity = await getCityByName(city);
+
+        if (existingCity) {
           const updatedParams = new URLSearchParams(searchParams);
-          updatedParams.set('existingId', String(result.existingCity.id));
+          updatedParams.set('existingId', String(existingCity.id));
           setSearchParams(updatedParams);
-          setCurrentlySelectedCity(result.existingCity);
+          setCurrentlySelectedCity(existingCity);
           showInfoNotification(`City ${city} already exists`);
+
           return;
         }
-        handleResult(
-          {
-            ok: result.ok,
-            code: result.code ?? undefined,
-          },
-          {
-            successMessage: `City ${city} added successfully`,
-            notifyError: showErrorNotification,
-            notifySuccess: showSuccessNotification,
-          },
-        );
+
+        await addCity(lat, lon, city);
+
+        showSuccessNotification(`City ${city} added successfully`);
+      } catch {
+        showErrorNotification('Failed to add city');
       } finally {
         setIsAddingCity(false);
       }
@@ -76,11 +72,12 @@ export const useCityActions = ({
     [
       isAddingCity,
       addCity,
-      searchParams,
-      setSearchParams,
       showInfoNotification,
-      showErrorNotification,
       showSuccessNotification,
+      showErrorNotification,
+      getCityByName,
+      setSearchParams,
+      searchParams,
     ],
   );
 

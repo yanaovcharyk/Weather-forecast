@@ -3,12 +3,7 @@ import { ADD_CITY_MUTATION } from '../graphql';
 import type { City } from '../types';
 
 type AddCityMutation = {
-  addCity: {
-    ok: boolean;
-    code?: string;
-    city: City | null;
-    existingCity: City | null;
-  };
+  addCity: City;
 };
 
 export const useAddCity = () => {
@@ -16,32 +11,31 @@ export const useAddCity = () => {
     ADD_CITY_MUTATION,
     {
       update(cache, { data }) {
-        const addedCity = data?.addCity?.city;
-
-        if (!addedCity) {
+        if (!data?.addCity) {
           return;
         }
 
         cache.evict({
           fieldName: 'citiesPaginated',
         });
+
+        cache.gc();
       },
     },
   );
 
-  const addCity = async (lat: number, lon: number, city: string) => {
+  const addCity = async (
+    lat: number,
+    lon: number,
+    city: string,
+  ): Promise<City | null> => {
     const { data } = await mutate({
       variables: {
         input: { lat, lon, city },
       },
     });
 
-    return {
-      ok: data?.addCity.ok ?? false,
-      code: data?.addCity.code,
-      city: data?.addCity.city ?? null,
-      existingCity: data?.addCity.existingCity ?? null,
-    };
+    return data?.addCity ?? null;
   };
 
   return {

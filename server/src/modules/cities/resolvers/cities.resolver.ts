@@ -15,7 +15,6 @@ import { AccessJwtGuard } from '@auth/guards';
 import {
   CitiesConnection,
   CitiesQueryInput,
-  AddCityOutput,
   AddCityInput,
   CityOutput,
 } from '@cities/dto';
@@ -75,7 +74,20 @@ export class CitiesResolver {
   }
 
   @UseGuards(AccessJwtGuard)
-  @Mutation(() => AddCityOutput)
+  @Query(() => CityOutput, { nullable: true })
+  @LogResolver()
+  async cityByName(
+    @CurrentUser() user: ICurrentUser,
+    @Args('city') city: string,
+  ): Promise<CityOutput | null> {
+    return this.citiesService.getCityByName({
+      userId: user.id,
+      city,
+    });
+  }
+
+  @UseGuards(AccessJwtGuard)
+  @Mutation(() => CityOutput)
   @LogResolver()
   async addCity(
     @CurrentUser() user: ICurrentUser,

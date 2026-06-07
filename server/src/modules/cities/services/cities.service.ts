@@ -1,12 +1,20 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CityEntity } from '@cities/entities';
 import { AppLoggerService } from '@logger/services';
-import { AddCityParams, CityByIdParams, UserIdParams } from '@cities/types';
-import { ICityOutput, IAddCityOutput } from '@cities/interfaces';
+import {
+  AddCityParams,
+  CityByIdParams,
+  CityByNameParams,
+  UserIdParams,
+} from '@cities/types';
+import { ICityOutput } from '@cities/interfaces';
 import { LogMethod } from '@logger/decorators';
-
 @Injectable()
 export class CitiesService {
   private readonly logger;
@@ -26,25 +34,18 @@ export class CitiesService {
   }
 
   @LogMethod()
-  async addCity(params: AddCityParams): Promise<IAddCityOutput> {
+  async addCity(params: AddCityParams): Promise<ICityOutput> {
     const { userId, input } = params;
 
     const exists = await this.cityRepository.findOne({
-      where: { userId, city: input.city },
+      where: {
+        userId,
+        city: input.city,
+      },
     });
 
     if (exists) {
-      this.logger.info('addCity: city already exists', {
-        existingCityId: exists.id,
-        city: exists.city,
-      });
-
-      return {
-        ok: false,
-        code: 'CITY_EXISTS',
-        existingCity: exists,
-        city: null,
-      };
+      return exists;
     }
 
     const city = this.cityRepository.create({
@@ -54,19 +55,17 @@ export class CitiesService {
       lon: input.lon,
     });
 
-    const saved = await this.cityRepository.save(city);
+    return this.cityRepository.save(city);
+  }
 
-    this.logger.info('addCity: city created', {
-      id: saved.id,
-      city: saved.city,
+  @LogMethod()
+  async getCityByName(params: CityByNameParams): Promise<ICityOutput | null> {
+    return this.cityRepository.findOne({
+      where: {
+        userId: params.userId,
+        city: params.city,
+      },
     });
-
-    return {
-      ok: true,
-      code: null,
-      city: saved,
-      existingCity: null,
-    };
   }
 
   @LogMethod()

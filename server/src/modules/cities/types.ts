@@ -13,6 +13,11 @@ export type CityByIdParams = {
   id: string;
 };
 
+export interface CityByNameParams {
+  userId: string;
+  city: string;
+}
+
 export type AddCityParams = {
   userId: string;
   input: AddCityInput;
