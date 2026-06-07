@@ -1,6 +1,6 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import { CityOutput } from './city.output';
-import { IAddCityOutput } from '../interfaces/add-city.output.interface';
+import { IAddCityOutput } from '@cities/interfaces';
 
 @ObjectType()
 export class AddCityOutput implements IAddCityOutput {

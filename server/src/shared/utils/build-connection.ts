@@ -3,14 +3,12 @@ import { encodeCursor } from './encode-cursor';
 type ConnectionBuilderParams<TEntity, TNode> = {
   entities: TEntity[];
   limit: number;
-  mapEntityToNode: (entity: TEntity) => TNode;
   getCursorValue: (entity: TEntity) => unknown;
 };
 
 export const buildConnection = <TEntity extends { id: string }, TNode>({
   entities,
   limit,
-  mapEntityToNode: mapNode,
   getCursorValue,
 }: ConnectionBuilderParams<TEntity, TNode>) => {
   const hasNextPage = entities.length > limit;
@@ -18,11 +16,10 @@ export const buildConnection = <TEntity extends { id: string }, TNode>({
   const sliced = entities.slice(0, limit);
 
   const edges = sliced.map((entity) => ({
-    node: mapNode(entity),
+    node: entity,
 
     cursor: encodeCursor({
       value: getCursorValue(entity),
-
       id: entity.id,
     }),
   }));

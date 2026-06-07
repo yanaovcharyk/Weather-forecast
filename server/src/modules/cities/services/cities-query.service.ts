@@ -1,22 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-
 import { CityEntity } from '@cities/entities';
 import { CitiesConnection, CityOutput } from '@cities/dto';
-import { mapToOutput } from '@cities/mappers';
-
 import {
   CITY_CURSOR_VALUES,
   CitySortField,
   SORT_CONFIG,
 } from '@cities/city-query.config';
-
 import { SortOrder } from '@shared/constants';
-
 import { buildConnection } from '@shared/utils/build-connection';
 import { decodeCursor } from '@shared/utils/decode-cursor';
-
 import {
   ApplyCursorParams,
   ApplyPaginationParams,
@@ -26,7 +20,6 @@ import {
   GetCitiesParams,
   ToConnectionParams,
 } from '@cities/types';
-
 import { AppLoggerService } from '@logger/services';
 import { LogMethod } from '@logger/decorators';
 
@@ -53,7 +46,7 @@ export class CitiesQueryService {
       order: { createdAt: 'DESC' },
     });
 
-    return cities.map(mapToOutput);
+    return cities;
   }
 
   @LogMethod({
@@ -153,7 +146,6 @@ export class CitiesQueryService {
     return buildConnection({
       entities: cities,
       limit,
-      mapEntityToNode: mapToOutput,
       getCursorValue,
     });
   }

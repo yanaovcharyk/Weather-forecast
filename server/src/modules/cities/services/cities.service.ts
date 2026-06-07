@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CityEntity } from '@cities/entities';
-import { mapToOutput } from '@cities/mappers';
 import { AppLoggerService } from '@logger/services';
 import { AddCityParams, CityByIdParams, UserIdParams } from '@cities/types';
 import { ICityOutput, IAddCityOutput } from '@cities/interfaces';
@@ -23,7 +22,7 @@ export class CitiesService {
   @LogMethod()
   async getCityById(params: CityByIdParams): Promise<ICityOutput> {
     const city = await this.findCityOrFail(params);
-    return mapToOutput(city);
+    return city;
   }
 
   @LogMethod()
@@ -43,7 +42,7 @@ export class CitiesService {
       return {
         ok: false,
         code: 'CITY_EXISTS',
-        existingCity: mapToOutput(exists),
+        existingCity: exists,
         city: null,
       };
     }
@@ -65,7 +64,7 @@ export class CitiesService {
     return {
       ok: true,
       code: null,
-      city: mapToOutput(saved),
+      city: saved,
       existingCity: null,
     };
   }
@@ -73,15 +72,13 @@ export class CitiesService {
   @LogMethod()
   async removeCity(params: CityByIdParams): Promise<ICityOutput> {
     const city = await this.findCityOrFail(params);
-
-    const result = mapToOutput(city);
     await this.cityRepository.remove(city);
 
     this.logger.info('removeCity: city removed', {
       id: city.id,
     });
 
-    return result;
+    return city;
   }
 
   @LogMethod()
@@ -110,7 +107,7 @@ export class CitiesService {
       current: saved.isPinned,
     });
 
-    return mapToOutput(saved);
+    return saved;
   }
 
   private async findCityOrFail(params: CityByIdParams): Promise<CityEntity> {
