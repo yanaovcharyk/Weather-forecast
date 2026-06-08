@@ -35,7 +35,6 @@ export type LogoutParams = {
 
 export type RotateRefreshTokenParams = {
   oldToken: string;
-  req: Request;
   res: Response;
 };
 

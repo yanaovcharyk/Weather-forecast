@@ -58,7 +58,6 @@ export class AuthResolver {
   async refreshTokens(@Context() ctx: IGQLContext) {
     return this.authService.rotateRefreshToken({
       oldToken: ctx.jwtToken,
-      req: ctx.req,
       res: ctx.res,
     });
   }
