@@ -1,7 +1,16 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { createAuthContext } from '../../test/auth/auth-context';
-import { mockUser } from '../../test/auth/fixtures/auth-user.fixture';
+import { createAuthContext } from '@test/auth';
+import { AUTH_GRAPHQL_ERRORS } from '@auth/constants';
+import {
+  ACCESS_TOKEN_FIXTURE,
+  RAW_TOKEN_FIXTURE,
+  REFRESH_TOKEN_FIXTURE,
+  refreshJwtPayloadFixture,
+  MockUser,
+  LoginInputFixture,
+  RegisterInputFixture,
+} from '@test/auth/fixtures';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -12,21 +21,23 @@ describe('AuthService', () => {
     service = ctx.service;
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
   describe('login', () => {
     it('should login successfully', async () => {
-      ctx.usersService.findByEmail.mockResolvedValue(mockUser);
+      ctx.usersService.findByEmail.mockResolvedValue(MockUser);
       ctx.passwordHasher.validatePassword.mockResolvedValue(true);
-      ctx.tokenService.createAccessToken.mockResolvedValue('access');
-      ctx.tokenService.createRefreshToken.mockResolvedValue('refresh');
+
+      ctx.tokenService.createAccessToken.mockResolvedValue(
+        ACCESS_TOKEN_FIXTURE,
+      );
+
+      ctx.tokenService.createRefreshToken.mockResolvedValue(
+        REFRESH_TOKEN_FIXTURE,
+      );
 
       const result = await service.login({
         input: {
-          email: mockUser.email,
-          password: '123456',
+          ...LoginInputFixture,
+          email: MockUser.email,
         },
         req: ctx.req,
         res: ctx.res,
@@ -34,8 +45,15 @@ describe('AuthService', () => {
 
       expect(result).toEqual({ success: true });
 
-      expect(ctx.cookieService.setAccessToken).toHaveBeenCalled();
-      expect(ctx.cookieService.setRefreshToken).toHaveBeenCalled();
+      expect(ctx.cookieService.setAccessToken).toHaveBeenCalledWith(
+        ctx.res,
+        ACCESS_TOKEN_FIXTURE,
+      );
+
+      expect(ctx.cookieService.setRefreshToken).toHaveBeenCalledWith(
+        ctx.res,
+        REFRESH_TOKEN_FIXTURE,
+      );
     });
 
     it('should throw when user not found', async () => {
@@ -43,9 +61,23 @@ describe('AuthService', () => {
 
       await expect(
         service.login({
+          input: LoginInputFixture,
+          req: ctx.req,
+          res: ctx.res,
+        }),
+      ).rejects.toThrow(UnauthorizedException);
+    });
+
+    it('should throw when password is invalid', async () => {
+      ctx.usersService.findByEmail.mockResolvedValue(MockUser);
+      ctx.passwordHasher.validatePassword.mockResolvedValue(false);
+
+      await expect(
+        service.login({
           input: {
-            email: 'test@test.com',
-            password: '123456',
+            ...LoginInputFixture,
+            email: MockUser.email,
+            password: 'wrong-password',
           },
           req: ctx.req,
           res: ctx.res,
@@ -54,39 +86,148 @@ describe('AuthService', () => {
     });
   });
 
-  describe('logout', () => {
-    it('should logout user', async () => {
-      ctx.usersService.findById.mockResolvedValue(mockUser);
+  describe('register', () => {
+    it('should register user successfully', async () => {
+      ctx.usersService.register.mockResolvedValue(MockUser);
 
-      const result = await service.logout({
-        userId: mockUser.id,
+      ctx.tokenService.createAccessToken.mockResolvedValue(
+        ACCESS_TOKEN_FIXTURE,
+      );
+
+      ctx.tokenService.createRefreshToken.mockResolvedValue(
+        REFRESH_TOKEN_FIXTURE,
+      );
+
+      const result = await service.register({
+        input: {
+          ...RegisterInputFixture,
+          email: MockUser.email,
+        },
+        req: ctx.req,
         res: ctx.res,
       });
 
       expect(result).toEqual({ success: true });
 
-      expect(ctx.cookieService.clearAuthCookies).toHaveBeenCalled();
+      expect(ctx.usersService.register).toHaveBeenCalled();
+
+      expect(ctx.cookieService.setAccessToken).toHaveBeenCalledWith(
+        ctx.res,
+        ACCESS_TOKEN_FIXTURE,
+      );
+
+      expect(ctx.cookieService.setRefreshToken).toHaveBeenCalledWith(
+        ctx.res,
+        REFRESH_TOKEN_FIXTURE,
+      );
+    });
+  });
+
+  describe('logout', () => {
+    it('should logout user', async () => {
+      ctx.usersService.findById.mockResolvedValue(MockUser);
+
+      const result = await service.logout({
+        userId: MockUser.id,
+        res: ctx.res,
+      });
+
+      expect(result).toEqual({ success: true });
+
+      expect(ctx.usersService.updateRefreshTokenVersion).toHaveBeenCalledWith({
+        userId: MockUser.id,
+        version: MockUser.refreshTokenVersion + 1,
+      });
+
+      expect(ctx.cookieService.clearAuthCookies).toHaveBeenCalledWith(ctx.res);
+    });
+
+    it('should throw when user not found', async () => {
+      ctx.usersService.findById.mockResolvedValue(null);
+
+      await expect(
+        service.logout({
+          userId: 'unknown-user',
+          res: ctx.res,
+        }),
+      ).rejects.toBe(AUTH_GRAPHQL_ERRORS.UNAUTHORIZED);
     });
   });
 
   describe('rotateRefreshToken', () => {
     it('should rotate refresh token', async () => {
       ctx.tokenService.verifyRefreshToken.mockResolvedValue({
-        userId: mockUser.id,
-        version: 1,
+        ...refreshJwtPayloadFixture,
+        userId: MockUser.id,
+        version: MockUser.refreshTokenVersion,
       });
 
-      ctx.tokenService.createAccessToken.mockResolvedValue('access');
-      ctx.tokenService.createRefreshToken.mockResolvedValue('refresh');
+      ctx.usersService.findById.mockResolvedValue({
+        ...MockUser,
+      });
 
-      ctx.usersService.findById.mockResolvedValue(mockUser);
+      ctx.tokenService.createAccessToken.mockResolvedValue(
+        ACCESS_TOKEN_FIXTURE,
+      );
+
+      ctx.tokenService.createRefreshToken.mockResolvedValue(
+        REFRESH_TOKEN_FIXTURE,
+      );
 
       const result = await service.rotateRefreshToken({
-        oldToken: 'token',
+        oldToken: RAW_TOKEN_FIXTURE,
         res: ctx.res,
       });
 
       expect(result).toEqual({ success: true });
+
+      expect(ctx.usersService.updateRefreshTokenVersion).toHaveBeenCalledWith({
+        userId: MockUser.id,
+        version: MockUser.refreshTokenVersion + 1,
+      });
+
+      expect(ctx.cookieService.setAccessToken).toHaveBeenCalledWith(
+        ctx.res,
+        ACCESS_TOKEN_FIXTURE,
+      );
+
+      expect(ctx.cookieService.setRefreshToken).toHaveBeenCalledWith(
+        ctx.res,
+        REFRESH_TOKEN_FIXTURE,
+      );
+    });
+
+    it('should throw when user not found', async () => {
+      ctx.tokenService.verifyRefreshToken.mockResolvedValue(
+        refreshJwtPayloadFixture,
+      );
+
+      ctx.usersService.findById.mockResolvedValue(null);
+
+      await expect(
+        service.rotateRefreshToken({
+          oldToken: RAW_TOKEN_FIXTURE,
+          res: ctx.res,
+        }),
+      ).rejects.toBe(AUTH_GRAPHQL_ERRORS.UNAUTHORIZED);
+    });
+
+    it('should throw when refresh token version mismatch', async () => {
+      ctx.tokenService.verifyRefreshToken.mockResolvedValue(
+        refreshJwtPayloadFixture,
+      );
+
+      ctx.usersService.findById.mockResolvedValue({
+        ...MockUser,
+        refreshTokenVersion: 999,
+      });
+
+      await expect(
+        service.rotateRefreshToken({
+          oldToken: RAW_TOKEN_FIXTURE,
+          res: ctx.res,
+        }),
+      ).rejects.toBe(AUTH_GRAPHQL_ERRORS.UNAUTHORIZED);
     });
   });
 });

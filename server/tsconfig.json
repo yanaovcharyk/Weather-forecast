@@ -21,7 +21,8 @@
       "@cities/*": ["modules/cities/*"],
       "@controllers/*": ["modules/controllers/*"],
       "@database/*": ["modules/database/*"],
-      "@shared/*": ["shared/*"]
+      "@shared/*": ["shared/*"],
+      "@test/*": ["modules/test/*"],
     }
   }
 }

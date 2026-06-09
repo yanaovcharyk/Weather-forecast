@@ -1,11 +1,9 @@
-import { Test } from '@nestjs/testing';
 import { AuthService } from '@auth/services/auth.service';
 import { UserService } from '@users/services';
 import { AuthTokenService } from '@auth/services/auth-token.service';
 import { AuthCookieService } from '@auth/services/auth-cookie.service';
 import { Pbkdf2PasswordHasher } from '@auth/services/password-hasher.service';
 import { AppLoggerService } from '@logger/services';
-
 import { createLoggerMock } from '../mocks/logger.mock';
 import { createUserServiceMock } from '../mocks/user-service.mock';
 import { createAuthTokenServiceMock } from '../mocks/auth-token-service.mock';

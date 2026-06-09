@@ -1,6 +1,6 @@
 import { IUserEntity } from '@users/interfaces';
 
-export const mockUser: IUserEntity = {
+export const MockUser: IUserEntity = {
   id: '1',
   email: 'test@test.com',
   password: 'hashed-password',

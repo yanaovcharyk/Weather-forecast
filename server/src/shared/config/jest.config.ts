@@ -17,6 +17,8 @@ const config: Config = {
     '^@controllers/(.*)$': '<rootDir>/modules/controllers/$1',
     '^@database/(.*)$': '<rootDir>/modules/database/$1',
     '^@shared/(.*)$': '<rootDir>/shared/$1',
+    '^@test/(.*)$': '<rootDir>/modules/test/$1',
+
   },
 
   clearMocks: true,

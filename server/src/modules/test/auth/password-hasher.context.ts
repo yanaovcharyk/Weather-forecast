@@ -1,5 +1,3 @@
-import { Test } from '@nestjs/testing';
-
 import { Pbkdf2PasswordHasher } from '@auth/services/password-hasher.service';
 import { AppLoggerService } from '@logger/services';
 import { createLoggerMock } from '../mocks/logger.mock';

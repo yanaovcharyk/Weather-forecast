@@ -1,6 +1,14 @@
-import { TokenType } from '@auth/types';
 import { AuthTokenService } from './auth-token.service';
-import { createAuthTokenContext } from '../../test/auth/auth-token.context';
+import { createAuthTokenContext } from '@test/auth';
+import {
+  ACCESS_SECRET_FIXTURE,
+  ACCESS_TOKEN_FIXTURE,
+  RAW_TOKEN_FIXTURE,
+  REFRESH_SECRET_FIXTURE,
+  REFRESH_TOKEN_FIXTURE,
+  accessJwtPayloadFixture,
+  refreshJwtPayloadFixture,
+} from '@test/auth/fixtures';
 
 describe('AuthTokenService', () => {
   let service: AuthTokenService;
@@ -11,41 +19,79 @@ describe('AuthTokenService', () => {
     service = ctx.service;
   });
 
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+  describe('createAccessToken', () => {
+    it('should create access token', async () => {
+      ctx.jwt.signAsync.mockResolvedValue(ACCESS_TOKEN_FIXTURE);
 
-  it('should create access token', async () => {
-    ctx.jwt.signAsync.mockResolvedValue('access-token');
+      const payload = accessJwtPayloadFixture;
 
-    const result = await service.createAccessToken({
-      userId: '1',
-      type: TokenType.ACCESS,
+      const result = await service.createAccessToken(payload);
+
+      expect(result).toBe(ACCESS_TOKEN_FIXTURE);
+
+      expect(ctx.jwt.signAsync).toHaveBeenCalledWith(
+        payload,
+        expect.objectContaining({
+          secret: ACCESS_SECRET_FIXTURE,
+        }),
+      );
     });
-
-    expect(result).toBe('access-token');
-
-    expect(ctx.jwt.signAsync).toHaveBeenCalled();
   });
 
-  it('should verify refresh token', async () => {
-    const payload = {
-      userId: '1',
-      version: 1,
-      type: TokenType.REFRESH,
-    };
+  describe('createRefreshToken', () => {
+    it('should create refresh token', async () => {
+      ctx.jwt.signAsync.mockResolvedValue(REFRESH_TOKEN_FIXTURE);
 
-    ctx.jwt.verifyAsync.mockResolvedValue(payload);
+      const payload = refreshJwtPayloadFixture;
 
-    const result = await service.verifyRefreshToken('token');
+      const result = await service.createRefreshToken(payload);
 
-    expect(result).toEqual(payload);
+      expect(result).toBe(REFRESH_TOKEN_FIXTURE);
 
-    expect(ctx.jwt.verifyAsync).toHaveBeenCalledWith(
-      'token',
-      expect.objectContaining({
-        secret: 'refresh-secret',
-      }),
-    );
+      expect(ctx.jwt.signAsync).toHaveBeenCalledWith(
+        payload,
+        expect.objectContaining({
+          secret: REFRESH_SECRET_FIXTURE,
+        }),
+      );
+    });
+  });
+
+  describe('verifyAccessToken', () => {
+    it('should verify access token', async () => {
+      const payload = accessJwtPayloadFixture;
+
+      ctx.jwt.verifyAsync.mockResolvedValue(payload);
+
+      const result = await service.verifyAccessToken(RAW_TOKEN_FIXTURE);
+
+      expect(result).toEqual(payload);
+
+      expect(ctx.jwt.verifyAsync).toHaveBeenCalledWith(
+        RAW_TOKEN_FIXTURE,
+        expect.objectContaining({
+          secret: ACCESS_SECRET_FIXTURE,
+        }),
+      );
+    });
+  });
+
+  describe('verifyRefreshToken', () => {
+    it('should verify refresh token', async () => {
+      const payload = refreshJwtPayloadFixture;
+
+      ctx.jwt.verifyAsync.mockResolvedValue(payload);
+
+      const result = await service.verifyRefreshToken(RAW_TOKEN_FIXTURE);
+
+      expect(result).toEqual(payload);
+
+      expect(ctx.jwt.verifyAsync).toHaveBeenCalledWith(
+        RAW_TOKEN_FIXTURE,
+        expect.objectContaining({
+          secret: REFRESH_SECRET_FIXTURE,
+        }),
+      );
+    });
   });
 });
