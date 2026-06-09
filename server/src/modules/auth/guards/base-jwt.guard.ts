@@ -37,6 +37,8 @@ export abstract class BaseJwtGuard implements CanActivate {
         },
       );
 
+      this.validatePayload(tokenPayload, token);
+
       ctx.jwtPayload = tokenPayload;
       ctx.jwtToken = token;
 
