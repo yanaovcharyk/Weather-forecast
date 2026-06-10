@@ -13,23 +13,28 @@ export const buildConnection = <TEntity extends { id: string }, TNode>({
 }: ConnectionBuilderParams<TEntity, TNode>) => {
   const hasNextPage = entities.length > limit;
 
-  const sliced = entities.slice(0, limit);
+  const limitedEntities: TEntity[] = entities.slice(0, limit);
 
-  const edges = sliced.map((entity) => ({
-    node: entity,
-
-    cursor: encodeCursor({
+  const edges = limitedEntities.map((entity) => {
+    const cursor = encodeCursor({
       value: getCursorValue(entity),
       id: entity.id,
-    }),
-  }));
+    });
+
+    return {
+      node: entity,
+      cursor,
+    };
+  });
+
+  const endCursor = edges.length > 0 ? edges[edges.length - 1].cursor : undefined;
 
   return {
     edges,
 
     pageInfo: {
       hasNextPage,
-      endCursor: edges.length > 0 ? edges[edges.length - 1].cursor : undefined,
+      endCursor,
     },
   };
 };
