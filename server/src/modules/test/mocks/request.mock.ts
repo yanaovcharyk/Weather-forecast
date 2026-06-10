@@ -6,3 +6,5 @@ export function createMockRequest(): Request {
     headers: {},
   } as unknown as Request;
 }
+
+export type RequestMock = ReturnType<typeof createMockRequest>;

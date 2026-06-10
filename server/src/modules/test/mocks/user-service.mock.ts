@@ -8,6 +8,4 @@ export function createUserServiceMock() {
   };
 }
 
-export type UserServiceMock = ReturnType<
-  typeof createUserServiceMock
->;
+export type UserServiceMock = ReturnType<typeof createUserServiceMock>;

@@ -9,3 +9,5 @@ export function createResponseMock(): Response {
     json: jest.fn().mockReturnThis(),
   } as unknown as Response;
 }
+
+export type ResponseMock = ReturnType<typeof createResponseMock>;

@@ -1,11 +1,11 @@
 import { ConfigService } from '@nestjs/config';
 import { AuthCookieService } from '@auth/services/auth-cookie.service';
 import { AppLoggerService } from '@logger/services';
-import { createLoggerMock } from '../mocks/logger.mock';
-import { createMockRequest } from '../mocks/request.mock';
-import { createResponseMock } from '../mocks/response.mock';
-import { createConfigMock } from '../mocks/config.mock';
-import { createContext } from '../utils/create-context';
+import { createConfigMock } from '@test/mocks/config.mock';
+import { createLoggerMock } from '../../../mocks/logger.mock';
+import { createMockRequest } from '../../../mocks/request.mock';
+import { createResponseMock } from '../../../mocks/response.mock';
+import { createContext } from '../../../utils/create-context';
 
 export type AuthCookieTestContext = {
   service: AuthCookieService;

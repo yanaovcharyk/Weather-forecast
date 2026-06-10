@@ -3,15 +3,16 @@ import { JwtConfigKey } from '@shared/types/jwt.config';
 import { AUTH_GRAPHQL_ERRORS } from '@auth/constants';
 
 import {
-  createAccessJwtGuardContext,
-  AccessJwtGuardContext,
-} from '../../test/auth/access-jwt-guard.context';
+  createGuardContext,
+  GuardContext,
+} from '../../test/auth/contexts/guards/jwt-guard.context';
+import { AccessJwtGuard } from './access-jwt.guard';
 
 describe('AccessJwtGuard', () => {
-  let ctx: AccessJwtGuardContext;
+  let ctx: GuardContext<AccessJwtGuard>;
 
-  beforeEach(() => {
-    ctx = createAccessJwtGuardContext();
+  beforeEach(async () => {
+    ctx = await createGuardContext(AccessJwtGuard);
   });
 
   afterEach(() => {
@@ -28,29 +29,22 @@ describe('AccessJwtGuard', () => {
       };
 
       ctx.cookieService.getAccessToken.mockReturnValue(token);
-
       ctx.configService.get.mockReturnValue('access-secret');
-
       ctx.jwtService.verifyAsync.mockResolvedValue(payload);
 
-      await expect(
-        ctx.guard.canActivate({} as any),
-      ).resolves.toBe(true);
+      await expect(ctx.guard.canActivate({} as any)).resolves.toBe(true);
 
-      expect(
-        ctx.cookieService.getAccessToken,
-      ).toHaveBeenCalledWith(ctx.gqlContext.req);
+      expect(ctx.cookieService.getAccessToken).toHaveBeenCalledWith(
+        ctx.gqlContext.req,
+      );
 
       expect(ctx.configService.get).toHaveBeenCalledWith(
         JwtConfigKey.ACCESS_SECRET,
       );
 
-      expect(ctx.jwtService.verifyAsync).toHaveBeenCalledWith(
-        token,
-        {
-          secret: 'access-secret',
-        },
-      );
+      expect(ctx.jwtService.verifyAsync).toHaveBeenCalledWith(token, {
+        secret: 'access-secret',
+      });
 
       expect(ctx.gqlContext.jwtPayload).toEqual(payload);
       expect(ctx.gqlContext.jwtToken).toBe(token);
@@ -59,34 +53,28 @@ describe('AccessJwtGuard', () => {
     it('should throw when token is missing', async () => {
       ctx.cookieService.getAccessToken.mockReturnValue(null);
 
-      await expect(
-        ctx.guard.canActivate({} as any),
-      ).rejects.toBe(AUTH_GRAPHQL_ERRORS.UNAUTHORIZED);
+      await expect(ctx.guard.canActivate({} as any)).rejects.toBe(
+        AUTH_GRAPHQL_ERRORS.UNAUTHORIZED,
+      );
 
-      expect(
-        ctx.jwtService.verifyAsync,
-      ).not.toHaveBeenCalled();
+      expect(ctx.jwtService.verifyAsync).not.toHaveBeenCalled();
     });
 
     it('should throw when jwt verification fails', async () => {
       const token = 'access-token';
 
       ctx.cookieService.getAccessToken.mockReturnValue(token);
+      ctx.jwtService.verifyAsync.mockRejectedValue(new Error('jwt error'));
 
-      ctx.jwtService.verifyAsync.mockRejectedValue(
-        new Error('jwt error'),
+      await expect(ctx.guard.canActivate({} as any)).rejects.toBe(
+        AUTH_GRAPHQL_ERRORS.UNAUTHORIZED,
       );
-
-      await expect(
-        ctx.guard.canActivate({} as any),
-      ).rejects.toBe(AUTH_GRAPHQL_ERRORS.UNAUTHORIZED);
     });
 
     it('should throw when token type is invalid', async () => {
       const token = 'access-token';
 
       ctx.cookieService.getAccessToken.mockReturnValue(token);
-
       ctx.configService.get.mockReturnValue('access-secret');
 
       ctx.jwtService.verifyAsync.mockResolvedValue({
@@ -94,9 +82,9 @@ describe('AccessJwtGuard', () => {
         type: TokenType.REFRESH,
       });
 
-      await expect(
-        ctx.guard.canActivate({} as any),
-      ).rejects.toBe(AUTH_GRAPHQL_ERRORS.UNAUTHORIZED);
+      await expect(ctx.guard.canActivate({} as any)).rejects.toBe(
+        AUTH_GRAPHQL_ERRORS.UNAUTHORIZED,
+      );
     });
   });
 });

@@ -2,15 +2,16 @@ import { TokenType } from '@auth/types';
 import { AUTH_GRAPHQL_ERRORS } from '@auth/constants';
 
 import {
-  createRefreshJwtGuardContext,
-  RefreshJwtGuardContext,
-} from '../../test/auth/refresh-jwt-guard.context';
+  createGuardContext,
+  GuardContext,
+} from '../../test/auth/contexts/guards/jwt-guard.context';
+import { RefreshJwtGuard } from './refresh-jwt.guard';
 
 describe('RefreshJwtGuard', () => {
-  let ctx: RefreshJwtGuardContext;
+  let ctx: GuardContext<RefreshJwtGuard>;
 
-  beforeEach(() => {
-    ctx = createRefreshJwtGuardContext();
+  beforeEach(async () => {
+    ctx = await createGuardContext(RefreshJwtGuard);
   });
 
   afterEach(() => {
@@ -20,78 +21,51 @@ describe('RefreshJwtGuard', () => {
   describe('canActivate', () => {
     it('should authorize valid refresh token', async () => {
       const token = 'refresh-token';
+      const payload = { sub: '1', type: TokenType.REFRESH };
 
-      const payload = {
-        sub: '1',
-        type: TokenType.REFRESH,
-      };
-
-      ctx.cookieService.getRefreshToken.mockReturnValue(
-        token,
-      );
-
-      ctx.configService.get.mockReturnValue(
-        'refresh-secret',
-      );
-
+      ctx.cookieService.getRefreshToken.mockReturnValue(token);
+      ctx.configService.get.mockReturnValue('refresh-secret');
       ctx.jwtService.verifyAsync.mockResolvedValue(payload);
 
-      await expect(
-        ctx.guard.canActivate({} as any),
-      ).resolves.toBe(true);
+      await expect(ctx.guard.canActivate({} as any)).resolves.toBe(true);
 
-      expect(
-        ctx.cookieService.getRefreshToken,
-      ).toHaveBeenCalledWith(ctx.gqlContext.req);
-
-      expect(ctx.jwtService.verifyAsync).toHaveBeenCalledWith(
-        token,
-        {
-          secret: 'refresh-secret',
-        },
+      expect(ctx.cookieService.getRefreshToken).toHaveBeenCalledWith(
+        ctx.gqlContext.req,
       );
-
+      expect(ctx.jwtService.verifyAsync).toHaveBeenCalledWith(token, {
+        secret: 'refresh-secret',
+      });
       expect(ctx.gqlContext.jwtPayload).toEqual(payload);
       expect(ctx.gqlContext.jwtToken).toBe(token);
     });
 
     it('should throw when token is missing', async () => {
-      ctx.cookieService.getRefreshToken.mockReturnValue(
-        null,
-      );
+      ctx.cookieService.getRefreshToken.mockReturnValue(null);
 
-      await expect(
-        ctx.guard.canActivate({} as any),
-      ).rejects.toBe(AUTH_GRAPHQL_ERRORS.UNAUTHORIZED);
+      await expect(ctx.guard.canActivate({} as any)).rejects.toBe(
+        AUTH_GRAPHQL_ERRORS.UNAUTHORIZED,
+      );
     });
 
     it('should throw when jwt verification fails', async () => {
-      ctx.cookieService.getRefreshToken.mockReturnValue(
-        'token',
-      );
+      ctx.cookieService.getRefreshToken.mockReturnValue('token');
+      ctx.jwtService.verifyAsync.mockRejectedValue(new Error());
 
-      ctx.jwtService.verifyAsync.mockRejectedValue(
-        new Error(),
+      await expect(ctx.guard.canActivate({} as any)).rejects.toBe(
+        AUTH_GRAPHQL_ERRORS.UNAUTHORIZED,
       );
-
-      await expect(
-        ctx.guard.canActivate({} as any),
-      ).rejects.toBe(AUTH_GRAPHQL_ERRORS.UNAUTHORIZED);
     });
 
     it('should throw when token type is invalid', async () => {
-      ctx.cookieService.getRefreshToken.mockReturnValue(
-        'token',
-      );
-
+      ctx.cookieService.getRefreshToken.mockReturnValue('token');
       ctx.jwtService.verifyAsync.mockResolvedValue({
         sub: '1',
         type: TokenType.ACCESS,
       });
 
-      await expect(
-        ctx.guard.canActivate({} as any),
-      ).rejects.toBe(AUTH_GRAPHQL_ERRORS.UNAUTHORIZED);
+      await expect(ctx.guard.canActivate({} as any)).rejects.toBe(
+        AUTH_GRAPHQL_ERRORS.UNAUTHORIZED,
+      );
     });
   });
 });

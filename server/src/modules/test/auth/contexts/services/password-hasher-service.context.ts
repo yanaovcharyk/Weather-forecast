@@ -1,7 +1,7 @@
 import { Pbkdf2PasswordHasher } from '@auth/services/password-hasher.service';
 import { AppLoggerService } from '@logger/services';
-import { createLoggerMock } from '../mocks/logger.mock';
-import { createContext } from '../utils/create-context';
+import { createLoggerMock } from '../../../mocks/logger.mock';
+import { createContext } from '../../../utils/create-context';
 
 export type PasswordHasherContext = {
   service: Pbkdf2PasswordHasher;

@@ -1,16 +1,16 @@
 import { AuthResolver } from '@auth/resolvers/auth.resolver';
 import { AuthService } from '@auth/services';
 import { AppLoggerService } from '@logger/services';
-import { createLoggerMock } from '../mocks/logger.mock';
-import { createMockRequest } from '../mocks/request.mock';
-import { createResponseMock } from '../mocks/response.mock';
-import { createContext } from '../utils/create-context';
-import { IGQLContext } from '../../auth/interfaces';
-import { MockUser, RAW_TOKEN_FIXTURE } from './fixtures';
 import { AccessJwtGuard, RefreshJwtGuard } from '@auth/guards';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { AuthCookieService } from '@auth/services';
+import { createLoggerMock } from '../../../mocks/logger.mock';
+import { createMockRequest } from '../../../mocks/request.mock';
+import { createResponseMock } from '../../../mocks/response.mock';
+import { IGQLContext } from '../../../../auth/interfaces';
+import { createContext } from '../../../utils/create-context';
+import { MockUser, RAW_TOKEN_FIXTURE } from '../../fixtures';
 
 export function createAuthServiceMock() {
   return {
