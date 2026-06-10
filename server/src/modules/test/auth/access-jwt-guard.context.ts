@@ -1,48 +1,49 @@
-// import { JwtService } from '@nestjs/jwt';
-// import { ConfigService } from '@nestjs/config';
+import { GqlExecutionContext } from '@nestjs/graphql';
 
-// import { AccessJwtGuard } from '@auth/guards';
-// import { AuthCookieService } from '@auth/services';
+import { AccessJwtGuard } from '@auth/guards/access-jwt.guard';
+import { createJwtServiceMock } from './mocks/jwt-service.mock';
+import { createConfigMock } from '../mocks/config.mock';
+import { createAuthCookieServiceMock } from './mocks/auth-cookie-service.mock';
 
-// import { createJwtMock } from '../mocks/jwt.mock';
-// import { createConfigMock } from '../mocks/config.mock';
-// import { createAuthCookieServiceMock } from '../mocks/auth-cookie-service.mock';
-// import { createContext } from '../utils/create-context';
 
-// export type AccessJwtGuardTestContext = {
-//   guard: AccessJwtGuard;
-//   jwt: ReturnType<typeof createJwtMock>;
-//   config: ReturnType<typeof createConfigMock>;
-//   cookieService: ReturnType<typeof createAuthCookieServiceMock>;
-// };
+export type AccessJwtGuardContext = {
+  guard: AccessJwtGuard;
 
-// export async function createAccessJwtGuardContext(): Promise<AccessJwtGuardTestContext> {
-//   const jwt = createJwtMock();
-//   const config = createConfigMock();
-//   const cookieService = createAuthCookieServiceMock();
+  jwtService: ReturnType<typeof createJwtServiceMock>;
+  configService: ReturnType<typeof createConfigMock>;
+  cookieService: ReturnType<typeof createAuthCookieServiceMock>;
 
-//   const guard = await createContext(
-//     AccessJwtGuard,
-//     [
-//       {
-//         provide: JwtService,
-//         useValue: jwt,
-//       },
-//       {
-//         provide: ConfigService,
-//         useValue: config,
-//       },
-//       {
-//         provide: AuthCookieService,
-//         useValue: cookieService,
-//       },
-//     ],
-//   );
+  gqlContext: {
+    req: Record<string, unknown>;
+    jwtPayload?: unknown;
+    jwtToken?: string;
+  };
+};
 
-//   return {
-//     guard,
-//     jwt,
-//     config,
-//     cookieService,
-//   };
-// }
+export function createAccessJwtGuardContext(): AccessJwtGuardContext {
+  const jwtService = createJwtServiceMock();
+  const configService = createConfigMock();
+  const cookieService = createAuthCookieServiceMock();
+
+  const guard = new AccessJwtGuard(
+    jwtService as any,
+    configService as any,
+    cookieService as any,
+  );
+
+  const gqlContext = {
+    req: {},
+  };
+
+  jest.spyOn(GqlExecutionContext, 'create').mockReturnValue({
+    getContext: () => gqlContext,
+  } as any);
+
+  return {
+    guard,
+    jwtService,
+    configService,
+    cookieService,
+    gqlContext,
+  };
+}

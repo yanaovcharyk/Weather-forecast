@@ -4,3 +4,5 @@ export function createJwtMock() {
     verifyAsync: jest.fn(),
   };
 }
+
+export type JwtMock = ReturnType<typeof createJwtMock>;

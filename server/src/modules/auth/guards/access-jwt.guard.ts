@@ -16,7 +16,7 @@ export class AccessJwtGuard extends BaseJwtGuard {
     return this.configService.get<string>(JwtConfigKey.ACCESS_SECRET)!;
   }
 
-  protected validatePayload(payload: IAccessJwtPayload) {
+  protected validatePayload(payload: IAccessJwtPayload, token: string,) {
     if (payload.type !== TokenType.ACCESS) {
       throw new Error('Invalid token type');
     }

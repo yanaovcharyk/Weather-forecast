@@ -4,3 +4,5 @@ export function createConfigMock() {
     getOrThrow: jest.fn(),
   };
 }
+
+export type ConfigServiceMock = ReturnType<typeof createConfigMock>;

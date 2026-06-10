@@ -1,12 +1,16 @@
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { RefreshJwtGuard } from '@auth/guards/refresh-jwt.guard';
 import { createJwtServiceMock } from './mocks/jwt-service.mock';
 import { createConfigMock } from '../mocks/config.mock';
 import { createAuthCookieServiceMock } from './mocks/auth-cookie-service.mock';
+import { AuthCookieService } from '../../auth/services';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import { BaseJwtGuard } from '../../auth/guards';
+import { Test } from '@nestjs/testing';
+import { TestJwtGuard } from './test-jwt.guard';
 
-
-export type RefreshJwtGuardContext = {
-  guard: RefreshJwtGuard;
+export type BaseJwtGuardContext = {
+  guard: TestJwtGuard;
 
   jwtService: ReturnType<typeof createJwtServiceMock>;
   configService: ReturnType<typeof createConfigMock>;
@@ -19,16 +23,10 @@ export type RefreshJwtGuardContext = {
   };
 };
 
-export function createRefreshJwtGuardContext(): RefreshJwtGuardContext {
+export async function createBaseJwtGuardContext(): Promise<BaseJwtGuardContext> {
   const jwtService = createJwtServiceMock();
   const configService = createConfigMock();
   const cookieService = createAuthCookieServiceMock();
-
-  const guard = new RefreshJwtGuard(
-    jwtService as any,
-    configService as any,
-    cookieService as any,
-  );
 
   const gqlContext = {
     req: {},
@@ -36,10 +34,28 @@ export function createRefreshJwtGuardContext(): RefreshJwtGuardContext {
 
   jest.spyOn(GqlExecutionContext, 'create').mockReturnValue({
     getContext: () => gqlContext,
-  } as any);
+  } as never);
+
+  const moduleRef = await Test.createTestingModule({
+    providers: [
+      TestJwtGuard,
+      {
+        provide: JwtService,
+        useValue: jwtService,
+      },
+      {
+        provide: ConfigService,
+        useValue: configService,
+      },
+      {
+        provide: AuthCookieService,
+        useValue: cookieService,
+      },
+    ],
+  }).compile();
 
   return {
-    guard,
+    guard: moduleRef.get(TestJwtGuard),
     jwtService,
     configService,
     cookieService,
