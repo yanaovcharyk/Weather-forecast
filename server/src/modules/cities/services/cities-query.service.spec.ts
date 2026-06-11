@@ -62,13 +62,51 @@ describe('CitiesQueryService', () => {
         query: {
           showPinnedOnly: true,
           pagination: { limit: 1 },
-          sorting: { sortBy: CitySortField.CREATED_AT, sortOrder: SortOrder.DESC },
+          sorting: {
+            sortBy: CitySortField.CREATED_AT,
+            sortOrder: SortOrder.DESC,
+          },
         },
       });
 
       expect(logger.debug).toHaveBeenCalledWith('Filtering pinned cities only');
       expect(qb.andWhere).toHaveBeenCalledWith('city.isPinned = true');
       expect(result.edges).toHaveLength(1);
+    });
+
+    it('should not filter pinned cities when showPinnedOnly is false', async () => {
+      const qb = {
+        where: jest.fn().mockReturnThis(),
+        andWhere: jest.fn().mockReturnThis(),
+        orderBy: jest.fn().mockReturnThis(),
+        addOrderBy: jest.fn().mockReturnThis(),
+        take: jest.fn().mockReturnThis(),
+        getMany: jest.fn().mockResolvedValue([]),
+      };
+
+      repo.createQueryBuilder.mockReturnValue(qb);
+
+      (buildConnection as jest.Mock).mockReturnValue({
+        edges: [],
+        pageInfo: {
+          hasNextPage: false,
+          endCursor: null,
+        },
+      });
+
+      await service.getCitiesPaginated({
+        userId: 'u1',
+        query: {
+          showPinnedOnly: false,
+          pagination: { limit: 5 },
+        },
+      });
+
+      expect(logger.debug).not.toHaveBeenCalledWith(
+        'Filtering pinned cities only',
+      );
+
+      expect(qb.andWhere).not.toHaveBeenCalledWith('city.isPinned = true');
     });
 
     it('should apply cursor when provided', async () => {
@@ -93,13 +131,85 @@ describe('CitiesQueryService', () => {
         userId: 'u1',
         query: {
           pagination: { limit: 1, cursor: 'encoded-cursor' },
-          sorting: { sortBy: CitySortField.CREATED_AT, sortOrder: SortOrder.ASC },
+          sorting: {
+            sortBy: CitySortField.CREATED_AT,
+            sortOrder: SortOrder.ASC,
+          },
         },
       });
 
       expect(decodeCursor).toHaveBeenCalledWith('encoded-cursor');
       expect(qb.andWhere).toHaveBeenCalled();
       expect(result.pageInfo.endCursor).toBe('cursor-2');
+    });
+
+    it('should log decoded cursor when cursor is provided', async () => {
+      const qb = {
+        where: jest.fn().mockReturnThis(),
+        andWhere: jest.fn().mockReturnThis(),
+        orderBy: jest.fn().mockReturnThis(),
+        addOrderBy: jest.fn().mockReturnThis(),
+        take: jest.fn().mockReturnThis(),
+        getMany: jest.fn().mockResolvedValue([{ id: '4', city: 'Dnipro' }]),
+      };
+      repo.createQueryBuilder.mockReturnValue(qb);
+
+      const decodedCursor = { value: 'Dnipro', id: 4 };
+      (decodeCursor as jest.Mock).mockReturnValue(decodedCursor);
+
+      (buildConnection as jest.Mock).mockReturnValue({
+        edges: [{ node: { id: '4', city: 'Dnipro' }, cursor: 'cursor-4' }],
+        pageInfo: { hasNextPage: false, endCursor: 'cursor-4' },
+      });
+
+      await service.getCitiesPaginated({
+        userId: 'u1',
+        query: {
+          pagination: { limit: 1, cursor: 'encoded-cursor' },
+          sorting: {
+            sortBy: CitySortField.CREATED_AT,
+            sortOrder: SortOrder.DESC,
+          },
+        },
+      });
+
+      expect(logger.debug).toHaveBeenCalledWith('Applying decoded cursor', {
+        decoded: decodedCursor,
+      });
+      expect(qb.andWhere).toHaveBeenCalledWith(
+        expect.any(String),
+        expect.objectContaining(decodedCursor),
+      );
+    });
+
+    it('should not decode cursor when cursor is not provided', async () => {
+      const qb = {
+        where: jest.fn().mockReturnThis(),
+        andWhere: jest.fn().mockReturnThis(),
+        orderBy: jest.fn().mockReturnThis(),
+        addOrderBy: jest.fn().mockReturnThis(),
+        take: jest.fn().mockReturnThis(),
+        getMany: jest.fn().mockResolvedValue([]),
+      };
+
+      repo.createQueryBuilder.mockReturnValue(qb);
+
+      (buildConnection as jest.Mock).mockReturnValue({
+        edges: [],
+        pageInfo: {
+          hasNextPage: false,
+          endCursor: null,
+        },
+      });
+
+      await service.getCitiesPaginated({
+        userId: 'u1',
+        query: {
+          pagination: { limit: 5 },
+        },
+      });
+
+      expect(decodeCursor).not.toHaveBeenCalled();
     });
 
     it('should apply pagination with limit+1', async () => {
@@ -122,12 +232,44 @@ describe('CitiesQueryService', () => {
         userId: 'u1',
         query: {
           pagination: { limit: 5 },
-          sorting: { sortBy: CitySortField.CREATED_AT, sortOrder: SortOrder.DESC },
+          sorting: {
+            sortBy: CitySortField.CREATED_AT,
+            sortOrder: SortOrder.DESC,
+          },
         },
       });
 
       expect(qb.take).toHaveBeenCalledWith(6);
     });
+
+    it('should use default sorting when sorting is not provided', async () => {
+      const qb = {
+        where: jest.fn().mockReturnThis(),
+        andWhere: jest.fn().mockReturnThis(),
+        orderBy: jest.fn().mockReturnThis(),
+        addOrderBy: jest.fn().mockReturnThis(),
+        take: jest.fn().mockReturnThis(),
+        getMany: jest.fn().mockResolvedValue([]),
+      };
+
+      repo.createQueryBuilder.mockReturnValue(qb);
+
+      (buildConnection as jest.Mock).mockReturnValue({
+        edges: [],
+        pageInfo: {
+          hasNextPage: false,
+          endCursor: null,
+        },
+      });
+
+      await service.getCitiesPaginated({
+        userId: 'u1',
+        query: {
+          pagination: { limit: 5 },
+        },
+      });
+
+      expect(buildConnection).toHaveBeenCalled();
+    });
   });
 });
-

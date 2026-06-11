@@ -18,11 +18,23 @@ const config: Config = {
     '^@database/(.*)$': '<rootDir>/modules/database/$1',
     '^@shared/(.*)$': '<rootDir>/shared/$1',
     '^@test/(.*)$': '<rootDir>/modules/test/$1',
-
   },
 
   clearMocks: true,
   testTimeout: 30000,
+
+  coveragePathIgnorePatterns: [
+  '/node_modules/',
+  '/modules/test/',
+  '/dto/',
+  '/entities/',
+  '/shared/config/',
+  '\\.config\\.ts$',
+  '/migrations/',
+  '/resolvers/',
+  '/decorators/',
+  '/index\\.ts$',
+],
 };
 
 export default config;

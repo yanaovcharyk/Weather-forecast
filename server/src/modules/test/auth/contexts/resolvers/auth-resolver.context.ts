@@ -33,7 +33,6 @@ export type AuthResolverTestContext = {
 export async function createAuthResolverContext(): Promise<AuthResolverTestContext> {
   const authService = createAuthServiceMock();
   const logger = createLoggerMock();
-
   const req = createMockRequest();
   const res = createResponseMock();
 

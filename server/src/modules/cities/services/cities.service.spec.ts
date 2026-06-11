@@ -47,10 +47,9 @@ describe('CitiesService', () => {
         }),
       ).rejects.toThrow(NotFoundException);
 
-      expect(ctx.logger.warn).toHaveBeenCalledWith(
-        'City not found',
-        { id: '1' },
-      );
+      expect(ctx.logger.warn).toHaveBeenCalledWith('City not found', {
+        id: '1',
+      });
     });
   });
 
@@ -169,6 +168,23 @@ describe('CitiesService', () => {
         },
       );
     });
+
+    it('should log 0 when affected is undefined', async () => {
+      ctx.repo.delete.mockResolvedValue({
+        affected: undefined,
+      });
+
+      await service.removeAllCities({
+        userId: 'u1',
+      });
+
+      expect(ctx.logger.info).toHaveBeenCalledWith(
+        'removeAllCities: cities removed',
+        {
+          affected: 0,
+        },
+      );
+    });
   });
 
   describe('togglePinned', () => {
@@ -193,6 +209,49 @@ describe('CitiesService', () => {
       );
 
       expect(result.isPinned).toBe(true);
+    });
+
+    it('should unpin city when city is already pinned', async () => {
+      const pinnedCity = {
+        ...PinnedDniproCity,
+      };
+
+      const unpinnedCity = {
+        ...PinnedDniproCity,
+        isPinned: false,
+      };
+
+      ctx.repo.findOne.mockResolvedValue(pinnedCity);
+      ctx.repo.save.mockResolvedValue(unpinnedCity);
+
+      const result = await service.togglePinned({
+        id: String(pinnedCity.id),
+        userId: pinnedCity.userId,
+      });
+
+      expect(ctx.logger.info).toHaveBeenCalledWith(
+        'togglePinned: pinned state updated',
+        {
+          id: pinnedCity.id,
+          previous: true,
+          current: false,
+        },
+      );
+
+      expect(result.isPinned).toBe(false);
+    });
+
+    it('should throw NotFoundException when city does not exist', async () => {
+      ctx.repo.findOne.mockResolvedValue(null);
+
+      await expect(
+        service.togglePinned({
+          id: '999',
+          userId: 'u1',
+        }),
+      ).rejects.toThrow(NotFoundException);
+
+      expect(ctx.repo.save).not.toHaveBeenCalled();
     });
   });
 });

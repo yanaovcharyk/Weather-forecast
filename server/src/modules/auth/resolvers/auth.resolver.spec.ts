@@ -15,6 +15,12 @@ describe('AuthResolver', () => {
     resolver = ctx.resolver;
   });
 
+  // describe('constructor', () => {
+  //   it('should initialize child logger with resolver name', () => {
+  //     expect(ctx.loggerService.child).toHaveBeenCalledWith('AuthResolver');
+  //   });
+  // });
+
   describe('login', () => {
     it('should call authService.login', async () => {
       ctx.authService.login.mockResolvedValue({
@@ -32,6 +38,14 @@ describe('AuthResolver', () => {
         req: ctx.req,
         res: ctx.res,
       });
+    });
+
+    it('should propagate login error', async () => {
+      ctx.authService.login.mockRejectedValue(new Error('login failed'));
+
+      await expect(
+        resolver.login(LoginInputFixture, ctx.gqlContext),
+      ).rejects.toThrow('login failed');
     });
   });
 
@@ -55,6 +69,14 @@ describe('AuthResolver', () => {
         req: ctx.req,
         res: ctx.res,
       });
+    });
+
+    it('should propagate register error', async () => {
+      ctx.authService.register.mockRejectedValue(new Error('register failed'));
+
+      await expect(
+        resolver.register(RegisterInputFixture, ctx.gqlContext),
+      ).rejects.toThrow('register failed');
     });
   });
 
@@ -80,6 +102,12 @@ describe('AuthResolver', () => {
         res: ctx.res,
       });
     });
+
+    it('should throw if user id is missing', async () => {
+      await expect(
+        resolver.logout({ id: undefined } as any, ctx.gqlContext),
+      ).rejects.toThrow();
+    });
   });
 
   describe('refreshTokens', () => {
@@ -99,6 +127,28 @@ describe('AuthResolver', () => {
         res: ctx.res,
       });
     });
+
+    it('should handle missing jwtToken', async () => {
+      const brokenCtx = {
+        ...ctx.gqlContext,
+        jwtToken: undefined,
+      };
+
+      ctx.authService.rotateRefreshToken.mockResolvedValue({
+        success: true,
+      });
+
+      const result = await resolver.refreshTokens(brokenCtx as any);
+
+      expect(ctx.authService.rotateRefreshToken).toHaveBeenCalledWith({
+        oldToken: undefined,
+        res: ctx.res,
+      });
+
+      expect(result).toEqual({
+        success: true,
+      });
+    });
   });
 
   describe('me', () => {
@@ -109,6 +159,14 @@ describe('AuthResolver', () => {
 
       expect(result).toEqual({
         userId: MockUser.id,
+      });
+    });
+
+    it('should handle missing user id', async () => {
+      const result = await resolver.me({ id: undefined } as any);
+
+      expect(result).toEqual({
+        userId: undefined,
       });
     });
   });

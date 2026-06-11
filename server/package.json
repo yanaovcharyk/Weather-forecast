@@ -7,7 +7,8 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main",
-    "test": "jest --config src/shared/config/jest.config.ts"
+    "test": "jest --config src/shared/config/jest.config.ts",
+    "test:cov": "jest --config src/shared/config/jest.config.ts --coverage"
   },
   "dependencies": {
     "@apollo/server": "^5.4.0",

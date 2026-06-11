@@ -1,5 +1,5 @@
 import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
+import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import { LoginInput, RegisterInput, AuthOutput, MeOutput } from '@auth/dto';
 import { AuthService } from '@auth/services';
 import { AccessJwtGuard, RefreshJwtGuard } from '@auth/guards';
@@ -46,11 +46,15 @@ export class AuthResolver {
   @UseGuards(RefreshJwtGuard)
   @LogResolver()
   async logout(@CurrentUser() user: ICurrentUser, @Context() ctx: IGQLContext) {
-    return this.authService.logout({
-      userId: user.id,
-      res: ctx.res,
-    });
+  if (!user?.id) {
+    throw new UnauthorizedException('Missing user id');
   }
+
+  return this.authService.logout({
+    userId: user.id,
+    res: ctx.res,
+  });
+}
 
   @Mutation(() => AuthOutput)
   @UseGuards(RefreshJwtGuard)

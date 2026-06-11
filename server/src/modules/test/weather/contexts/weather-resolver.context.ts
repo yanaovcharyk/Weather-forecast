@@ -19,11 +19,13 @@ export type WeatherResolverTestContext = {
   resolver: WeatherResolver;
   weatherService: ReturnType<typeof createWeatherServiceMock>;
   logger: ReturnType<typeof createLoggerMock>;
+  accessJwtGuard: { canActivate: jest.Mock };
 };
 
 export async function createWeatherResolverContext(): Promise<WeatherResolverTestContext> {
   const weatherService = createWeatherServiceMock();
   const logger = createLoggerMock();
+  const guardMock = { canActivate: jest.fn().mockResolvedValue(true) };
 
   const module: TestingModule = await Test.createTestingModule({
     providers: [
@@ -46,5 +48,6 @@ export async function createWeatherResolverContext(): Promise<WeatherResolverTes
     resolver: module.get(WeatherResolver),
     weatherService,
     logger,
+    accessJwtGuard: guardMock,
   };
 }

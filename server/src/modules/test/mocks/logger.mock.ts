@@ -1,15 +1,12 @@
 export function createLoggerMock() {
-  const mock = {
+  const logger: any = {
     info: jest.fn(),
     warn: jest.fn(),
     error: jest.fn(),
     debug: jest.fn(),
   };
-  return {
-    ...mock,
-    child: jest.fn().mockReturnValue(mock),
-  };
+  logger.child = jest.fn().mockImplementation(() => logger);
+  return logger;
 }
-
 
 export type LoggerMock = ReturnType<typeof createLoggerMock>;
