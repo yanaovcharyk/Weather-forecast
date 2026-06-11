@@ -1,14 +1,57 @@
 export interface IOpenWeatherCurrent {
-  name: string;
-  main: { temp: number };
-  weather: { description: string }[];
-}
+  main: {
+    temp: number;
+    feels_like: number;
+    humidity: number;
+    pressure: number;
+  };
 
+  wind: {
+    speed: number;
+  };
+
+  weather: {
+    description: string;
+    icon: string;
+  }[];
+
+  sys: {
+    sunrise: number;
+    sunset: number;
+  };
+}
 export interface IOpenWeatherForecastItem {
-  main: { temp: number };
-  weather: { description: string }[];
+  dt: number;
+
+  dt_txt: string;
+
+  main: {
+    temp: number;
+    feels_like: number;
+    humidity: number;
+    pressure: number;
+  };
+
+  weather: {
+    description: string;
+    icon: string;
+  }[];
+
+  clouds: {
+    all: number;
+  };
+
+  wind: {
+    speed: number;
+  };
+
+  pop?: number;
 }
 
 export interface IOpenWeatherForecast {
+  city?: {
+    timezone?: number;
+  };
+
   list: IOpenWeatherForecastItem[];
 }
