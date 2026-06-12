@@ -1,9 +1,8 @@
 import { Field, Float, ObjectType } from '@nestjs/graphql';
-import { IWeatherOutput } from '../interfaces';
+import { IWeatherPreviewOutput } from '../interfaces';
 
 @ObjectType()
-export class WeatherOutput implements IWeatherOutput {
-
+export class WeatherOutput implements IWeatherPreviewOutput {
   @Field(() => Float)
   temperature!: number;
 

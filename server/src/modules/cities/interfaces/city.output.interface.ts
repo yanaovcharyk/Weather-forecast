@@ -1,4 +1,4 @@
-import { IWeatherOutput } from "@weather/interfaces";
+import { IWeatherPreviewOutput } from '@weather/interfaces';
 
 export interface ICityOutput {
   id: string;
@@ -6,5 +6,5 @@ export interface ICityOutput {
   lat: number;
   lon: number;
   isPinned: boolean;
-  weather?: IWeatherOutput | null;
+  weather?: IWeatherPreviewOutput | null;
 }

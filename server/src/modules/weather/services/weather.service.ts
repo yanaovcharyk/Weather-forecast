@@ -10,7 +10,7 @@ import {
   IOpenWeatherForecast,
   IOpenWeatherForecastItem,
   IWeatherDetails,
-  IWeatherPreview,
+  IWeatherPreviewOutput,
 } from '@weather/interfaces';
 import { LogMethod } from '@logger/decorators';
 
@@ -170,7 +170,7 @@ export class WeatherService {
   async getWeatherPreview({
     lat,
     lon,
-  }: CoordinatesParams): Promise<IWeatherPreview> {
+  }: CoordinatesParams): Promise<IWeatherPreviewOutput> {
     const full = await this.getWeatherDetails({ lat, lon });
 
     return {
