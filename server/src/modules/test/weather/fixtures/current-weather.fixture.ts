@@ -47,7 +47,6 @@ export const currentWeatherAlternativeFixture = {
 };
 
 export const currentWeatherTimezoneZeroFixture = {
-  data: {
     main: {
       temp: 20,
       feels_like: 18,
@@ -67,5 +66,4 @@ export const currentWeatherTimezoneZeroFixture = {
       sunrise: 1000,
       sunset: 2000,
     },
-  },
 };

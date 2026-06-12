@@ -1,11 +1,20 @@
 import { ConfigService } from '@nestjs/config';
 import { IAppConfig } from '../types/app.config';
 
-export const weatherConfig = (config: ConfigService<IAppConfig>) => ({
-  apiKey: config.get('weatherApi.key', { infer: true }),
-  weatherBaseUrl: config.get('weatherApi.baseUrl', { infer: true }),
+export interface IWeatherConfig {
+  apiKey: string;
+  baseUrl: string;
+};
+
+export interface IGeoConfig {
+  baseUrl: string;
+};
+
+export const weatherConfig = (config: ConfigService<IAppConfig>): IWeatherConfig => ({
+  apiKey: config.get('weatherApi.key', { infer: true })!,
+  baseUrl: config.get('weatherApi.baseUrl', { infer: true })!,
 });
 
-export const geoConfig = (config: ConfigService<IAppConfig>) => ({
-  baseUrl: config.get('geoApi.baseUrl', { infer: true }),
+export const geoConfig = (config: ConfigService<IAppConfig>): IGeoConfig => ({
+  baseUrl: config.get('geoApi.baseUrl', { infer: true })!,
 });

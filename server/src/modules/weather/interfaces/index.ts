@@ -1,4 +1,3 @@
-export { IWeatherConfig } from './weather-config.interface';
 export { IWeatherPreviewOutput } from './weather-preview.output.interface';
 export { IGetWeatherInput } from './get-weather.input.interface';
 export {

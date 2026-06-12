@@ -1,44 +1,38 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { HttpService } from '@nestjs/axios';
 import { WeatherService } from '@weather/services/weather.service';
-import { AppLoggerService } from '@logger/services';
+import { OpenWeatherApiService } from '@weather/services/open-weather-api.service';
 import { createLoggerMock } from '@test/mocks/logger.mock';
+import { AppLoggerService } from '@logger/services';
 
-export function createHttpServiceMock() {
+export function createWeatherApiMock() {
   return {
-    get: jest.fn(),
+    searchCities: jest.fn(),
+    getCurrentWeather: jest.fn(),
+    getForecast: jest.fn(),
   };
 }
 
 export type WeatherServiceTestContext = {
   service: WeatherService;
-  httpService: ReturnType<typeof createHttpServiceMock>;
+  weatherApi: ReturnType<typeof createWeatherApiMock>;
   logger: ReturnType<typeof createLoggerMock>;
 };
 
 export async function createWeatherServiceContext(): Promise<WeatherServiceTestContext> {
-  const httpService = createHttpServiceMock();
+  const weatherApi = createWeatherApiMock();
   const logger = createLoggerMock();
 
   const module: TestingModule = await Test.createTestingModule({
     providers: [
       WeatherService,
-      { provide: HttpService, useValue: httpService },
-      {
-        provide: 'WEATHER_CONFIG',
-        useValue: { apiKey: 'test-key', weatherBaseUrl: 'http://weather' },
-      },
-      {
-        provide: 'GEO_CONFIG',
-        useValue: { baseUrl: 'http://geo' },
-      },
+      { provide: OpenWeatherApiService, useValue: weatherApi },
       { provide: AppLoggerService, useValue: { child: jest.fn().mockReturnValue(logger) } },
     ],
   }).compile();
 
   return {
     service: module.get(WeatherService),
-    httpService,
+    weatherApi,
     logger,
   };
 }
