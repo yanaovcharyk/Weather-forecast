@@ -11,6 +11,12 @@ export class WeatherCurrent implements IWeatherCurrent {
   temp!: number;
 
   @Field(() => Float)
+  min!: number;
+
+  @Field(() => Float)
+  max!: number;
+
+  @Field(() => Float)
   feelsLike!: number;
 
   @Field(() => Float)

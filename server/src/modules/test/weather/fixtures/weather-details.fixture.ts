@@ -8,6 +8,8 @@ export const weatherDetailsFixture: IWeatherDetails = {
 
   current: {
     temp: 20,
+    min: 15,
+    max: 25,
     feelsLike: 19,
     humidity: 60,
     windSpeed: 3,

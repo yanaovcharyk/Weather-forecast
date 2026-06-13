@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>21/21</span>
+                <span class='fraction'>20/20</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>6/6</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>19/19</span>
+                <span class='fraction'>18/18</span>
             </div>
         
             
@@ -117,7 +117,21 @@
 <a name='L52'></a><a href='#L52'>52</a>
 <a name='L53'></a><a href='#L53'>53</a>
 <a name='L54'></a><a href='#L54'>54</a>
-<a name='L55'></a><a href='#L55'>55</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a>
+<a name='L61'></a><a href='#L61'>61</a>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -127,6 +141,12 @@
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
@@ -139,13 +159,24 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -161,14 +192,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Injectable } from '@nestjs/common';
@@ -180,7 +208,13 @@ import {
 } from '@weather/interfaces';
 import { LogMethod } from '@logger/decorators';
 import { OpenWeatherApiService } from './open-weather-api.service';
-import { mapCurrentWeather, mapDailyForecast, mapHourlyForecast } from '../utils/weather-mappers';
+import {
+  mapCurrentWeather,
+  mapDailyForecast,
+  mapHourlyForecast,
+  mapTodayTemperatureRange,
+  mapWeatherPreview,
+} from '../utils/weather-mappers';
 &nbsp;
 @Injectable()
 export class WeatherService {
@@ -192,14 +226,25 @@ export class WeatherService {
   }
 &nbsp;
   @LogMethod()
-  async getWeatherDetails(coordinates: IGetWeatherInput): Promise&lt;IWeatherDetails&gt; {
+  async getWeatherDetails(
+    coordinates: IGetWeatherInput,
+  ): Promise&lt;IWeatherDetails&gt; {
     const [current, forecast] = await Promise.all([
       this.weatherApi.getCurrentWeather(coordinates),
       this.weatherApi.getForecast(coordinates),
     ]);
 &nbsp;
-    const currentWeather = mapCurrentWeather(current, forecast.city?.timezone ?? 0);
-    const hourlyForecast = mapHourlyForecast(forecast.list, forecast.city?.timezone ?? 0);
+    const range = mapTodayTemperatureRange(forecast.list);
+&nbsp;
+    const currentWeather = mapCurrentWeather(
+      current,
+      forecast.list,
+      forecast.city?.timezone ?? 0,
+    );
+    const hourlyForecast = mapHourlyForecast(
+      forecast.list,
+      forecast.city?.timezone ?? 0,
+    );
     const dailySummaries = mapDailyForecast(forecast.list);
 &nbsp;
     return {
@@ -214,15 +259,12 @@ export class WeatherService {
   }
 &nbsp;
   @LogMethod()
-  async getWeatherPreview(coordinates: IGetWeatherInput): Promise&lt;IWeatherPreviewOutput&gt; {
-    const weatherDetails = await this.getWeatherDetails(coordinates);
+  async getWeatherPreview(
+    coordinates: IGetWeatherInput,
+  ): Promise&lt;IWeatherPreviewOutput&gt; {
+    const forecast = await this.weatherApi.getForecast(coordinates);
 &nbsp;
-    return {
-      temperature: weatherDetails.current.temp,
-      description: weatherDetails.current.description,
-      next3DaysTemperature: weatherDetails.daily.map((d) =&gt; d.max),
-      next3DaysDescription: weatherDetails.daily.map((d) =&gt; d.description),
-    };
+    return mapWeatherPreview(forecast.list);
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -232,7 +274,7 @@ export class WeatherService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-06-12T16:39:48.427Z
+                at 2026-06-13T10:46:05.937Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

@@ -3,6 +3,8 @@ import { IOpenWeatherCurrent } from "../../../weather/interfaces";
 export const currentWeatherFixture: IOpenWeatherCurrent = {
     main: {
       temp: 20,
+      temp_min: 10,
+      temp_max: 25,
       feels_like: 19,
       humidity: 60,
       pressure: 1012,
@@ -49,6 +51,8 @@ export const currentWeatherAlternativeFixture = {
 export const currentWeatherTimezoneZeroFixture = {
     main: {
       temp: 20,
+      temp_min: 10,
+      temp_max: 25,
       feels_like: 18,
       humidity: 50,
       pressure: 1000,

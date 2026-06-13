@@ -2,6 +2,8 @@ export interface IOpenWeatherCurrent {
   main: {
     temp: number;
     feels_like: number;
+    temp_min: number,
+    temp_max: number,
     humidity: number;
     pressure: number;
   };
@@ -27,6 +29,8 @@ export interface IOpenWeatherForecastItem {
 
   main: {
     temp: number;
+    temp_min: number,
+    temp_max: number,
     feels_like: number;
     humidity: number;
     pressure: number;

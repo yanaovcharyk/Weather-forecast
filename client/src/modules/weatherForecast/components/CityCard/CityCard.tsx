@@ -90,12 +90,23 @@ export const CityCard = React.memo(function CityCard({
       {weather ? (
         <Flex vertical gap={4}>
           <Flex vertical gap={8}>
-            <Flex vertical align="center" gap={2}>
-              <AppText strong size="lg">
-                {weather.temperature}°C
-              </AppText>
+            <Flex align="center">
+              <Flex flex={1}>
+                <div />
+              </Flex>
 
-              <AppText>{weather.description}</AppText>
+              <Flex flex={1} vertical align="center" gap={2}>
+                <AppText strong size="lg">
+                  {weather.temperature}°C
+                </AppText>
+
+                <AppText>{weather.description}</AppText>
+              </Flex>
+
+              <Flex flex={1} vertical align="end" gap={6}>
+                <AppText size="sm">Max: {weather.max}°C</AppText>
+                <AppText size="sm">Min: {weather.min}°C</AppText>
+              </Flex>
             </Flex>
 
             <Flex justify="flex-start">

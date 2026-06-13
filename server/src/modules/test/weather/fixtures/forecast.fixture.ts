@@ -4,7 +4,7 @@ export const forecastFixture = {
     {
       dt: 1000,
       dt_txt: '2026-06-10 12:00:00',
-      main: { temp: 20, feels_like: 19, humidity: 60, pressure: 1012 },
+      main: { temp: 20, temp_min: 10, temp_max: 25, feels_like: 19, humidity: 60, pressure: 1012 },
       weather: [{ description: 'Sunny', icon: '01d' }],
       clouds: { all: 10 },
       wind: { speed: 5 },
@@ -13,7 +13,7 @@ export const forecastFixture = {
     {
       dt: 2000,
       dt_txt: '2026-06-10 15:00:00',
-      main: { temp: 22, feels_like: 21, humidity: 55, pressure: 1010 },
+      main: { temp: 22, temp_min: 10, temp_max: 25, feels_like: 21, humidity: 55, pressure: 1010 },
       weather: [{ description: 'Cloudy', icon: '02d' }],
       clouds: { all: 30 },
       wind: { speed: 3 },
@@ -22,7 +22,7 @@ export const forecastFixture = {
     {
       dt: 3000,
       dt_txt: '2026-06-11 09:00:00',
-      main: { temp: 18, feels_like: 17, humidity: 70, pressure: 1015 },
+      main: { temp: 18, temp_min: 10, temp_max: 25, feels_like: 17, humidity: 70, pressure: 1015 },
       weather: [{ description: 'Rain', icon: '10d' }],
       clouds: { all: 80 },
       wind: { speed: 6 },
@@ -31,7 +31,7 @@ export const forecastFixture = {
     {
       dt: 4000,
       dt_txt: '2026-06-11 12:00:00',
-      main: { temp: 19, feels_like: 18, humidity: 65, pressure: 1013 },
+      main: { temp: 19, temp_min: 10, temp_max: 25, feels_like: 18, humidity: 65, pressure: 1013 },
       weather: [{ description: 'Rain', icon: '10d' }],
       clouds: { all: 70 },
       wind: { speed: 5 },
@@ -40,7 +40,7 @@ export const forecastFixture = {
     {
       dt: 5000,
       dt_txt: '2026-06-12 09:00:00',
-      main: { temp: 25, feels_like: 24, humidity: 50, pressure: 1020 },
+      main: { temp: 25, temp_min: 10, temp_max: 25, feels_like: 24, humidity: 50, pressure: 1020 },
       weather: [{ description: 'Clear', icon: '01d' }],
       clouds: { all: 20 },
       wind: { speed: 4 },
@@ -49,7 +49,7 @@ export const forecastFixture = {
     {
       dt: 6000,
       dt_txt: '2026-06-12 12:00:00',
-      main: { temp: 27, feels_like: 26, humidity: 45, pressure: 1022 },
+      main: { temp: 27, temp_min: 10, temp_max: 25, feels_like: 26, humidity: 45, pressure: 1022 },
       weather: [{ description: 'Clear', icon: '01d' }],
       clouds: { all: 10 },
       wind: { speed: 3 },
@@ -58,7 +58,7 @@ export const forecastFixture = {
     {
       dt: 7000,
       dt_txt: '2026-06-13 09:00:00',
-      main: { temp: 30, feels_like: 29, humidity: 40, pressure: 1025 },
+      main: { temp: 30, temp_min: 10, temp_max: 25, feels_like: 29, humidity: 40, pressure: 1025 },
       weather: [{ description: 'Hot', icon: '01d' }],
       clouds: { all: 5 },
       wind: { speed: 2 },
@@ -67,7 +67,7 @@ export const forecastFixture = {
     {
       dt: 8000,
       dt_txt: '2026-06-13 12:00:00',
-      main: { temp: 32, feels_like: 31, humidity: 35, pressure: 1027 },
+      main: { temp: 32, temp_min: 10, temp_max: 25, feels_like: 31, humidity: 35, pressure: 1027 },
       weather: [{ description: 'Hot', icon: '01d' }],
       clouds: { all: 0 },
       wind: { speed: 2 },
@@ -76,7 +76,7 @@ export const forecastFixture = {
     {
       dt: 9000,
       dt_txt: '2026-06-14 12:00:00',
-      main: { temp: 28, feels_like: 27, humidity: 45, pressure: 1023 },
+      main: { temp: 28, temp_min: 10, temp_max: 25, feels_like: 27, humidity: 45, pressure: 1023 },
       weather: [{ description: 'Cloudy', icon: '02d' }],
       clouds: { all: 40 },
       wind: { speed: 3 },
@@ -134,6 +134,8 @@ export const forecastTimezoneZeroFixture = {
         dt_txt: '2026-06-10 12:00:00',
         main: {
           temp: 20,
+          temp_min: 10,
+          temp_max: 25,
           feels_like: 19,
           humidity: 60,
           pressure: 1012,
@@ -163,6 +165,8 @@ export const aggregationForecastFixture = {
         dt_txt: '2026-06-10 12:00:00',
         main: {
           temp: 20,
+          temp_min: 10,
+          temp_max: 25,
           feels_like: 19,
           humidity: 60,
           pressure: 1000,
@@ -176,6 +180,8 @@ export const aggregationForecastFixture = {
         dt_txt: '2026-06-11 12:00:00',
         main: {
           temp: 10,
+          temp_min: 10,
+          temp_max: 25,
           feels_like: 8,
           humidity: 80,
           pressure: 1005,
@@ -189,6 +195,8 @@ export const aggregationForecastFixture = {
         dt_txt: '2026-06-11 15:00:00',
         main: {
           temp: 14,
+          temp_min: 10,
+          temp_max: 25,
           feels_like: 12,
           humidity: 60,
           pressure: 1015,
@@ -202,6 +210,8 @@ export const aggregationForecastFixture = {
         dt_txt: '2026-06-12 12:00:00',
         main: {
           temp: 22,
+          temp_min: 10,
+          temp_max: 25,
           feels_like: 21,
           humidity: 50,
           pressure: 1020,
@@ -216,6 +226,8 @@ export const aggregationForecastFixture = {
         dt_txt: '2026-06-13 12:00:00',
         main: {
           temp: 30,
+          temp_min: 10,
+          temp_max: 25,
           feels_like: 29,
           humidity: 40,
           pressure: 1025,

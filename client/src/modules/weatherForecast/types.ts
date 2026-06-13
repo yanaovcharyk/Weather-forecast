@@ -18,6 +18,8 @@ export interface WeatherPreviewDay {
 
 export type Weather = {
   temperature: number;
+  min: number;
+  max: number;
   description: string;
   next3Days: WeatherPreviewDay[];
 };

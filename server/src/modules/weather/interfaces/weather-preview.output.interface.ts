@@ -5,6 +5,8 @@ export interface IWeatherPreviewDay {
 }
 export interface IWeatherPreviewOutput {
   temperature: number;
+  min: number;
+  max: number;
   description: string;
   next3Days: IWeatherPreviewDay[];
 }

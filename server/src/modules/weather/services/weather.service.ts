@@ -11,6 +11,8 @@ import {
   mapCurrentWeather,
   mapDailyForecast,
   mapHourlyForecast,
+  mapTodayTemperatureRange,
+  mapWeatherPreview,
 } from '../utils/weather-mappers';
 
 @Injectable()
@@ -31,8 +33,11 @@ export class WeatherService {
       this.weatherApi.getForecast(coordinates),
     ]);
 
+    const range = mapTodayTemperatureRange(forecast.list);
+
     const currentWeather = mapCurrentWeather(
       current,
+      forecast.list,
       forecast.city?.timezone ?? 0,
     );
     const hourlyForecast = mapHourlyForecast(
@@ -58,17 +63,6 @@ export class WeatherService {
   ): Promise<IWeatherPreviewOutput> {
     const forecast = await this.weatherApi.getForecast(coordinates);
 
-    const currentLike = forecast.list[0];
-    const daily = mapDailyForecast(forecast.list);
-
-    return {
-      temperature: Math.round(currentLike.main.temp),
-      description: currentLike.weather[0].description,
-      next3Days: daily.map((day) => ({
-        min: day.min,
-        max: day.max,
-        description: day.description,
-      })),
-    };
+    return mapWeatherPreview(forecast.list);
   }
 }

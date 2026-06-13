@@ -5,6 +5,8 @@ export const GET_WEATHER_DETAILS = gql`
     getWeatherDetails(input: $input) {
       current {
         temp
+        min
+        max
         feelsLike
         humidity
         windSpeed

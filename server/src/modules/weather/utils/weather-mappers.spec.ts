@@ -10,12 +10,30 @@ import {
   mapCurrentWeather,
   mapDailyForecast,
   mapHourlyForecast,
+  mapTodayTemperatureRange,
+  mapWeatherPreview,
 } from './weather-mappers';
 
 describe('Weather Mappers', () => {
   it('mapCurrentWeather should map fields correctly', () => {
-    const result = mapCurrentWeather(currentWeatherFixture, 7200);
+    const result = mapCurrentWeather(
+      currentWeatherFixture,
+      forecastFixture.list,
+      7200,
+    );
     expect(result.temp).toBe(Math.round(currentWeatherFixture.main.temp));
+    expect(result.sunrise).toBeDefined();
+    expect(result.sunset).toBeDefined();
+    expect(result.min).toEqual(expect.any(Number));
+    expect(result.max).toEqual(expect.any(Number));
+  });
+
+  it('mapCurrentWeather should handle timezone 0', () => {
+    const result = mapCurrentWeather(
+      currentWeatherTimezoneZeroFixture,
+      forecastTimezoneZeroFixture.list,
+      0,
+    );
     expect(result.sunrise).toBeDefined();
     expect(result.sunset).toBeDefined();
   });
@@ -25,6 +43,8 @@ describe('Weather Mappers', () => {
     expect(result).toHaveLength(9);
     expect(result[0]).toHaveProperty('time');
     expect(result[0]).toHaveProperty('temp');
+    expect(result[0]).toHaveProperty('feelsLike');
+    expect(result[0]).toHaveProperty('icon');
   });
 
   it('mapDailyForecast should aggregate by date', () => {
@@ -33,17 +53,13 @@ describe('Weather Mappers', () => {
     expect(result[0]).toHaveProperty('date');
     expect(result[0]).toHaveProperty('min');
     expect(result[0]).toHaveProperty('max');
+    expect(result[0]).toHaveProperty('description');
+    expect(result[0]).toHaveProperty('icon');
   });
 
   it('mapDailyForecast should handle timezone 0 and empty list', () => {
     const result = mapDailyForecast(forecastTimezoneZeroFixture.list);
     expect(Array.isArray(result)).toBe(true);
-  });
-
-  it('mapCurrentWeather should handle timezone 0', () => {
-    const result = mapCurrentWeather(currentWeatherTimezoneZeroFixture, 0);
-    expect(result.sunrise).toBeDefined();
-    expect(result.sunset).toBeDefined();
   });
 
   it('mapDailyForecast should handle missing pop values (fallback to 0)', () => {
@@ -54,4 +70,36 @@ describe('Weather Mappers', () => {
     expect(result[0].pop).toBeDefined();
     expect(typeof result[0].pop).toBe('number');
   });
+
+  it('mapTodayTemperatureRange should return numeric min and max', () => {
+    const result = mapTodayTemperatureRange(forecastFixture.list);
+
+    expect(result.min).toEqual(expect.any(Number));
+    expect(result.max).toEqual(expect.any(Number));
+    expect(result.min).toBeLessThanOrEqual(result.max);
+  });
+
+  it('mapWeatherPreview should return preview with next3Days', () => {
+    const result = mapWeatherPreview(forecastFixture.list);
+
+    expect(result.temperature).toEqual(expect.any(Number));
+    expect(result.min).toEqual(expect.any(Number));
+    expect(result.max).toEqual(expect.any(Number));
+    expect(result.description).toEqual(expect.any(String));
+    expect(result.next3Days).toHaveLength(3);
+    expect(result.next3Days[0]).toHaveProperty('min');
+    expect(result.next3Days[0]).toHaveProperty('max');
+    expect(result.next3Days[0]).toHaveProperty('description');
+  });
+
+  it('mapWeatherPreview should fallback to empty description when missing', () => {
+    const listWithoutWeather = forecastFixture.list.map((item, idx) =>
+      idx === 0 ? { ...item, weather: [] } : item,
+    );
+
+    const result = mapWeatherPreview(listWithoutWeather);
+
+    expect(result.description).toBe('');
+  });
 });
+

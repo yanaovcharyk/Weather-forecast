@@ -73,6 +73,7 @@ export const CurrentWeatherCard = ({ city, weather }: Props) => {
               { label: 'Feels like', value: `${current.feelsLike}°C` },
               { label: 'Humidity', value: `${current.humidity}%` },
               { label: 'Wind', value: `${current.windSpeed} m/s` },
+              { label: 'Min', value: `${current.min}°C` },
             ]}
           />
         </Col>
@@ -84,6 +85,7 @@ export const CurrentWeatherCard = ({ city, weather }: Props) => {
               { label: 'Pressure', value: `${current.pressure} hPa` },
               { label: 'Sunrise', value: current.sunrise },
               { label: 'Sunset', value: current.sunset },
+              { label: 'Max', value: `${current.max}°C` },
             ]}
           />
         </Col>

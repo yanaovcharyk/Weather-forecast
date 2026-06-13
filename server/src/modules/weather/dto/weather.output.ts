@@ -19,6 +19,12 @@ export class WeatherOutput implements IWeatherPreviewOutput {
   @Field(() => Float)
   temperature!: number;
 
+  @Field(() => Float)
+  min!: number;
+
+  @Field(() => Float)
+  max!: number;
+
   @Field()
   description!: string;
 

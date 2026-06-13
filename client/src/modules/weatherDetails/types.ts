@@ -1,5 +1,7 @@
 export type CurrentWeather = {
   temp: number;
+  min: number;
+  max: number;
   feelsLike: number;
   humidity: number;
   windSpeed: number;

@@ -12,6 +12,8 @@ export const CITIES_PAGINATED = gql`
           isPinned
           weather {
             temperature
+            min
+            max
             description
             next3Days {
               min
@@ -51,6 +53,8 @@ export const GET_EXISTS_CITY_BY_NAME = gql`
       isPinned
       weather {
         temperature
+        min
+        max
         description
         next3Days {
           min
