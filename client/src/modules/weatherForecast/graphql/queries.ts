@@ -13,8 +13,11 @@ export const CITIES_PAGINATED = gql`
           weather {
             temperature
             description
-            next3DaysTemperature
-            next3DaysDescription
+            next3Days {
+              min
+              max
+              description
+            }
           }
         }
         cursor
@@ -49,8 +52,11 @@ export const GET_EXISTS_CITY_BY_NAME = gql`
       weather {
         temperature
         description
-        next3DaysTemperature
-        next3DaysDescription
+        next3Days {
+          min
+          max
+          description
+        }
       }
     }
   }
@@ -61,8 +67,11 @@ export const GET_WEATHER = gql`
     getWeather(input: $input) {
       temperature
       description
-      next3DaysTemperature
-      next3DaysDescription
+      next3Days {
+        min
+        max
+        description
+      }
     }
   }
 `;

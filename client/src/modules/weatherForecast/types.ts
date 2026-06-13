@@ -9,11 +9,17 @@ export interface IRemoveCityMutation {
   };
 }
 
+export interface WeatherPreviewDay {
+  min: number;
+  max: number;
+  description: string;
+  icon: string;
+}
+
 export type Weather = {
   temperature: number;
   description: string;
-  next3DaysTemperature: number[];
-  next3DaysDescription: string[];
+  next3Days: WeatherPreviewDay[];
 };
 
 export type City = {

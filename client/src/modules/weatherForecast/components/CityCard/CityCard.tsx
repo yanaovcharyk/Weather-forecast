@@ -104,7 +104,7 @@ export const CityCard = React.memo(function CityCard({
           </Flex>
 
           <Flex gap={4} style={{ width: '100%' }}>
-            {weather.next3DaysTemperature?.map((t, i) => (
+            {weather.next3Days?.map((day, i) => (
               <Flex
                 key={i}
                 vertical
@@ -117,9 +117,11 @@ export const CityCard = React.memo(function CityCard({
                   {days[i]?.label}
                 </AppText>
 
-                <AppText strong>{t}°C</AppText>
+                <AppText strong>
+                  {day.min}° / {day.max}°C
+                </AppText>
 
-                <AppText size="sm">{weather.next3DaysDescription?.[i]}</AppText>
+                <AppText size="sm">{day.description}</AppText>
               </Flex>
             ))}
           </Flex>

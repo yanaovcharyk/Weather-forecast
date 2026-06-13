@@ -64,10 +64,10 @@ export class WeatherService {
     return {
       temperature: Math.round(currentLike.main.temp),
       description: currentLike.weather[0].description,
-      next3Days: daily.map((d) => ({
-        min: d.min,
-        max: d.max,
-        description: d.description,
+      next3Days: daily.map((day) => ({
+        min: day.min,
+        max: day.max,
+        description: day.description,
       })),
     };
   }
