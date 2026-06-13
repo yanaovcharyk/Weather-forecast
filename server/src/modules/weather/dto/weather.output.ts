@@ -1,5 +1,18 @@
 import { Field, Float, ObjectType } from '@nestjs/graphql';
 import { IWeatherPreviewOutput } from '../interfaces';
+import { IWeatherPreviewDay } from '../interfaces/weather-preview.output.interface';
+
+@ObjectType()
+export class WeatherPreviewDayOutput implements IWeatherPreviewDay {
+  @Field(() => Float)
+  min!: number;
+
+  @Field(() => Float)
+  max!: number;
+
+  @Field()
+  description!: string;
+}
 
 @ObjectType()
 export class WeatherOutput implements IWeatherPreviewOutput {
@@ -9,9 +22,6 @@ export class WeatherOutput implements IWeatherPreviewOutput {
   @Field()
   description!: string;
 
-  @Field(() => [Float])
-  next3DaysTemperature!: number[];
-
-  @Field(() => [String])
-  next3DaysDescription!: string[];
+  @Field(() => [WeatherPreviewDayOutput])
+  next3Days!: WeatherPreviewDayOutput[];
 }

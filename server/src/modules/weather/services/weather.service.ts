@@ -7,7 +7,11 @@ import {
 } from '@weather/interfaces';
 import { LogMethod } from '@logger/decorators';
 import { OpenWeatherApiService } from './open-weather-api.service';
-import { mapCurrentWeather, mapDailyForecast, mapHourlyForecast } from '../utils/weather-mappers';
+import {
+  mapCurrentWeather,
+  mapDailyForecast,
+  mapHourlyForecast,
+} from '../utils/weather-mappers';
 
 @Injectable()
 export class WeatherService {
@@ -19,14 +23,22 @@ export class WeatherService {
   }
 
   @LogMethod()
-  async getWeatherDetails(coordinates: IGetWeatherInput): Promise<IWeatherDetails> {
+  async getWeatherDetails(
+    coordinates: IGetWeatherInput,
+  ): Promise<IWeatherDetails> {
     const [current, forecast] = await Promise.all([
       this.weatherApi.getCurrentWeather(coordinates),
       this.weatherApi.getForecast(coordinates),
     ]);
 
-    const currentWeather = mapCurrentWeather(current, forecast.city?.timezone ?? 0);
-    const hourlyForecast = mapHourlyForecast(forecast.list, forecast.city?.timezone ?? 0);
+    const currentWeather = mapCurrentWeather(
+      current,
+      forecast.city?.timezone ?? 0,
+    );
+    const hourlyForecast = mapHourlyForecast(
+      forecast.list,
+      forecast.city?.timezone ?? 0,
+    );
     const dailySummaries = mapDailyForecast(forecast.list);
 
     return {
@@ -41,14 +53,22 @@ export class WeatherService {
   }
 
   @LogMethod()
-  async getWeatherPreview(coordinates: IGetWeatherInput): Promise<IWeatherPreviewOutput> {
-    const weatherDetails = await this.getWeatherDetails(coordinates);
+  async getWeatherPreview(
+    coordinates: IGetWeatherInput,
+  ): Promise<IWeatherPreviewOutput> {
+    const forecast = await this.weatherApi.getForecast(coordinates);
+
+    const currentLike = forecast.list[0];
+    const daily = mapDailyForecast(forecast.list);
 
     return {
-      temperature: weatherDetails.current.temp,
-      description: weatherDetails.current.description,
-      next3DaysTemperature: weatherDetails.daily.map((d) => d.max),
-      next3DaysDescription: weatherDetails.daily.map((d) => d.description),
+      temperature: Math.round(currentLike.main.temp),
+      description: currentLike.weather[0].description,
+      next3Days: daily.map((d) => ({
+        min: d.min,
+        max: d.max,
+        description: d.description,
+      })),
     };
   }
 }

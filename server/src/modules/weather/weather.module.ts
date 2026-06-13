@@ -5,12 +5,14 @@ import { WeatherService } from './services';
 import { ConfigService } from '@nestjs/config';
 import { geoConfig, weatherConfig } from '@shared/config/weather.config';
 import { AuthModule } from '../auth';
+import { OpenWeatherApiService } from './services/open-weather-api.service';
 
 @Module({
   imports: [HttpModule, AuthModule],
   providers: [
     WeatherResolver, 
     WeatherService,
+    OpenWeatherApiService,
 
     {
       provide: 'WEATHER_CONFIG',

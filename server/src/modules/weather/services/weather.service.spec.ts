@@ -67,12 +67,28 @@ describe('WeatherService', () => {
   });
 
   it('getWeatherPreview should return simplified data', async () => {
-    jest
-      .spyOn(ctx.service, 'getWeatherDetails')
-      .mockResolvedValue(weatherDetailsFixture);
+  ctx.weatherApi.getForecast.mockResolvedValue(forecastFixture);
 
-    const result = await ctx.service.getWeatherPreview(kyivCoordinatesFixture);
+  const result = await ctx.service.getWeatherPreview(kyivCoordinatesFixture);
 
-    expect(result).toEqual(weatherPreviewFixture);
-  });
+  const currentLike = forecastFixture.list[0];
+
+  expect(ctx.weatherApi.getForecast).toHaveBeenCalledWith(
+    kyivCoordinatesFixture,
+  );
+
+  expect(result.temperature).toBe(Math.round(currentLike.main.temp));
+  expect(result.description).toBe(currentLike.weather[0].description);
+
+  expect(result.next3Days).toBeDefined();
+  expect(result.next3Days.length).toBeGreaterThan(0);
+
+  expect(result.next3Days[0]).toEqual(
+    expect.objectContaining({
+      min: expect.any(Number),
+      max: expect.any(Number),
+      description: expect.any(String),
+    }),
+  );
+});
 });
