@@ -59,19 +59,49 @@ export function mapDailyForecast(
 
   return Object.entries(groupedForecastByDay)
     .slice(1, 4)
-    .map(([date, items]) => ({
-      date,
-      min: Math.round(Math.min(...items.map((i) => i.main.temp))),
-      max: Math.round(Math.max(...items.map((i) => i.main.temp))),
-      description: items[0].weather[0].description,
-      icon: items[0].weather[0].icon,
-      humidity: calculateAverage(items.map((i) => i.main.humidity)),
-      pressure: calculateAverage(items.map((i) => i.main.pressure)),
-      clouds: calculateAverage(items.map((i) => i.clouds.all)),
-      windSpeed: calculateAverage(items.map((i) => i.wind.speed)),
-      pop: Math.round(calculateAverage(items.map((i) => i.pop ?? 0)) * 100),
-      feelsLike: calculateAverage(items.map((i) => i.main.feels_like)),
-    }));
+    .map(([date, items]) => {
+      const stats = items.reduce(
+        (acc, item) => {
+          acc.min = Math.min(acc.min, item.main.temp);
+          acc.max = Math.max(acc.max, item.main.temp);
+
+          acc.humidity += item.main.humidity;
+          acc.pressure += item.main.pressure;
+          acc.clouds += item.clouds.all;
+          acc.windSpeed += item.wind.speed;
+          acc.pop += item.pop ?? 0;
+          acc.feelsLike += item.main.feels_like;
+
+          return acc;
+        },
+        {
+          min: Infinity,
+          max: -Infinity,
+          humidity: 0,
+          pressure: 0,
+          clouds: 0,
+          windSpeed: 0,
+          pop: 0,
+          feelsLike: 0,
+        },
+      );
+
+      const count = items.length;
+
+      return {
+        date,
+        min: Math.round(stats.min),
+        max: Math.round(stats.max),
+        description: items[0].weather[0].description,
+        icon: items[0].weather[0].icon,
+        humidity: stats.humidity / count,
+        pressure: stats.pressure / count,
+        clouds: stats.clouds / count,
+        windSpeed: stats.windSpeed / count,
+        pop: Math.round((stats.pop / count) * 100),
+        feelsLike: stats.feelsLike / count,
+      };
+    });
 }
 
 export function mapTodayTemperatureRange(
@@ -79,26 +109,38 @@ export function mapTodayTemperatureRange(
 ): ITodayTemperatureRange {
   const today = new Date().toISOString().split('T')[0];
 
-  const todayForecasts = forecast.filter((item) =>
-    item.dt_txt.startsWith(today),
-  );
+  let min = Infinity;
+  let max = -Infinity;
+  let foundToday = false;
 
-  if (!todayForecasts.length) {
-    const allTemps = forecast.map((item) => item.main.temp);
+  for (const item of forecast) {
+    const isToday = item.dt_txt.startsWith(today);
 
+    if (isToday) {
+      foundToday = true;
+      min = Math.min(min, item.main.temp_min);
+      max = Math.max(max, item.main.temp_max);
+    }
+  }
+
+  if (foundToday) {
     return {
-      min: Math.round(Math.min(...allTemps)),
-      max: Math.round(Math.max(...allTemps)),
+      min: Math.round(min),
+      max: Math.round(max),
     };
   }
 
+  min = Infinity;
+  max = -Infinity;
+
+  for (const item of forecast) {
+    min = Math.min(min, item.main.temp);
+    max = Math.max(max, item.main.temp);
+  }
+
   return {
-    min: Math.round(
-      Math.min(...todayForecasts.map((item) => item.main.temp_min)),
-    ),
-    max: Math.round(
-      Math.max(...todayForecasts.map((item) => item.main.temp_max)),
-    ),
+    min: Math.round(min),
+    max: Math.round(max),
   };
 }
 
