@@ -13,6 +13,7 @@ import {
   mapTodayTemperatureRange,
   mapWeatherPreview,
 } from './weather-mappers';
+import { IOpenWeatherForecastItem } from '../interfaces';
 
 describe('Weather Mappers', () => {
   it('mapCurrentWeather should map fields correctly', () => {
@@ -101,5 +102,34 @@ describe('Weather Mappers', () => {
 
     expect(result.description).toBe('');
   });
-});
 
+  it('mapTodayTemperatureRange should use todayForecasts when data for today exists', () => {
+    const today = new Date().toISOString().split('T')[0];
+
+    const forecastWithToday: IOpenWeatherForecastItem[] = [
+      {
+        ...forecastFixture.list[0],
+        dt_txt: `${today} 12:00:00`,
+        main: {
+          ...forecastFixture.list[0].main,
+          temp_min: 10,
+          temp_max: 20,
+        },
+      },
+      {
+        ...forecastFixture.list[1],
+        dt_txt: `${today} 15:00:00`,
+        main: {
+          ...forecastFixture.list[1].main,
+          temp_min: 5,
+          temp_max: 25,
+        },
+      },
+    ];
+
+    const result = mapTodayTemperatureRange(forecastWithToday);
+
+    expect(result.min).toBe(5);
+    expect(result.max).toBe(25);
+  });
+});

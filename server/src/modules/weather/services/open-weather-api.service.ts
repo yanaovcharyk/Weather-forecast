@@ -16,7 +16,7 @@ import {
   CITY_SEARCH_URL_ENDPOINT,
   FORECAST_URL_ENDPOINT,
   WEATHER_URL_ENDPOINT,
-} from '../constants/open-weather.constants';
+} from '@weather/constants/open-weather.constants';
 
 @Injectable()
 export class OpenWeatherApiService {

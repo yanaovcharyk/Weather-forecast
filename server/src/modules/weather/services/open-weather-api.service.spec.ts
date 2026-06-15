@@ -7,7 +7,13 @@ import { mockAxiosResponse } from '@test/weather/mocks/axios-response.mock';
 import {
   createOpenWeatherApiContext,
   OpenWeatherApiTestContext,
-} from '../../test/weather/contexts/open-weather-api.context';
+} from '@test/weather/contexts';
+
+import {
+  CITY_SEARCH_URL_ENDPOINT,
+  WEATHER_URL_ENDPOINT,
+  FORECAST_URL_ENDPOINT,
+} from '@weather/constants/open-weather.constants';
 
 describe('OpenWeatherApiService', () => {
   let ctx: OpenWeatherApiTestContext;
@@ -22,11 +28,14 @@ describe('OpenWeatherApiService', () => {
     const result = await ctx.service.searchCities('Kyiv');
 
     expect(ctx.httpService.get).toHaveBeenCalledWith(
-      'http://geo/direct',
+      `${ctx.geoConfig.baseUrl}${CITY_SEARCH_URL_ENDPOINT}`,
       expect.objectContaining({
-        params: expect.objectContaining({ q: 'Kyiv' }),
+        params: expect.objectContaining({
+          q: 'Kyiv',
+        }),
       }),
     );
+
     expect(result).toEqual(searchCitiesResponseFixture.data);
   });
 
@@ -35,24 +44,32 @@ describe('OpenWeatherApiService', () => {
       of(mockAxiosResponse(currentWeatherFixture)),
     );
 
-    const result = await ctx.service.getCurrentWeather(kyivCoordinatesFixture);
+    const result = await ctx.service.getCurrentWeather(
+      kyivCoordinatesFixture,
+    );
 
     expect(ctx.httpService.get).toHaveBeenCalledWith(
-      'http://weather/weather',
+      `${ctx.weatherConfig.baseUrl}${WEATHER_URL_ENDPOINT}`,
       expect.any(Object),
     );
+
     expect(result).toEqual(currentWeatherFixture);
   });
 
   it('getForecast should call forecast API with coordinates', async () => {
-    ctx.httpService.get.mockReturnValue(of(mockAxiosResponse(forecastFixture)));
+    ctx.httpService.get.mockReturnValue(
+      of(mockAxiosResponse(forecastFixture)),
+    );
 
-    const result = await ctx.service.getForecast(kyivCoordinatesFixture);
+    const result = await ctx.service.getForecast(
+      kyivCoordinatesFixture,
+    );
 
     expect(ctx.httpService.get).toHaveBeenCalledWith(
-      'http://weather/forecast',
+      `${ctx.weatherConfig.baseUrl}${FORECAST_URL_ENDPOINT}`,
       expect.any(Object),
     );
+
     expect(result).toEqual(forecastFixture);
   });
 });

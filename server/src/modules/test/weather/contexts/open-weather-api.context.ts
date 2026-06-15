@@ -5,13 +5,26 @@ import { AppLoggerService } from '@logger/services';
 import { createLoggerMock } from '@test/mocks/logger.mock';
 
 export function createHttpServiceMock() {
-  return { get: jest.fn() };
+  return {
+    get: jest.fn(),
+  };
 }
+
+export const weatherConfigMock = {
+  apiKey: 'test-key',
+  baseUrl: 'http://weather',
+};
+
+export const geoConfigMock = {
+  baseUrl: 'http://geo',
+};
 
 export type OpenWeatherApiTestContext = {
   service: OpenWeatherApiService;
   httpService: ReturnType<typeof createHttpServiceMock>;
   logger: ReturnType<typeof createLoggerMock>;
+  weatherConfig: typeof weatherConfigMock;
+  geoConfig: typeof geoConfigMock;
 };
 
 export async function createOpenWeatherApiContext(): Promise<OpenWeatherApiTestContext> {
@@ -21,16 +34,24 @@ export async function createOpenWeatherApiContext(): Promise<OpenWeatherApiTestC
   const module: TestingModule = await Test.createTestingModule({
     providers: [
       OpenWeatherApiService,
-      { provide: HttpService, useValue: httpService },
+      {
+        provide: HttpService,
+        useValue: httpService,
+      },
       {
         provide: 'WEATHER_CONFIG',
-        useValue: { apiKey: 'test-key', baseUrl: 'http://weather' },
+        useValue: weatherConfigMock,
       },
       {
         provide: 'GEO_CONFIG',
-        useValue: { baseUrl: 'http://geo' },
+        useValue: geoConfigMock,
       },
-      { provide: AppLoggerService, useValue: { child: jest.fn().mockReturnValue(logger) } },
+      {
+        provide: AppLoggerService,
+        useValue: {
+          child: jest.fn().mockReturnValue(logger),
+        },
+      },
     ],
   }).compile();
 
@@ -38,5 +59,7 @@ export async function createOpenWeatherApiContext(): Promise<OpenWeatherApiTestC
     service: module.get(OpenWeatherApiService),
     httpService,
     logger,
+    weatherConfig: weatherConfigMock,
+    geoConfig: geoConfigMock,
   };
 }

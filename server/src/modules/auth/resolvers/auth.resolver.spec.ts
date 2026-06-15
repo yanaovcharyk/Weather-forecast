@@ -15,11 +15,6 @@ describe('AuthResolver', () => {
     resolver = ctx.resolver;
   });
 
-  // describe('constructor', () => {
-  //   it('should initialize child logger with resolver name', () => {
-  //     expect(ctx.loggerService.child).toHaveBeenCalledWith('AuthResolver');
-  //   });
-  // });
 
   describe('login', () => {
     it('should call authService.login', async () => {
@@ -171,3 +166,4 @@ describe('AuthResolver', () => {
     });
   });
 });
+

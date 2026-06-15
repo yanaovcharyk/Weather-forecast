@@ -8,6 +8,7 @@ const config: Config = {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
   testEnvironment: 'node',
+  coverageProvider: 'v8',
   moduleNameMapper: {
     '^@weather/(.*)$': '<rootDir>/modules/weather/$1',
     '^@auth/(.*)$': '<rootDir>/modules/auth/$1',
@@ -31,7 +32,6 @@ const config: Config = {
   '/shared/config/',
   '\\.config\\.ts$',
   '/migrations/',
-  '/resolvers/',
   '/decorators/',
   '/index\\.ts$',
 ],

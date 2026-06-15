@@ -1,5 +1,17 @@
-import { IDailyWeather, IHourlyWeather, IOpenWeatherCurrent, IOpenWeatherForecast, IWeatherCurrent, IOpenWeatherForecastItem, IWeatherPreviewOutput } from '@weather/interfaces';
-import { calculateAverage, formatUnixTime, groupForecastByDate } from '../utils';
+import {
+  IDailyWeather,
+  IHourlyWeather,
+  IOpenWeatherCurrent,
+  IOpenWeatherForecast,
+  IWeatherCurrent,
+  IOpenWeatherForecastItem,
+  IWeatherPreviewOutput,
+} from '@weather/interfaces';
+import {
+  calculateAverage,
+  formatUnixTime,
+  groupForecastByDate,
+} from '../utils';
 
 export interface ITodayTemperatureRange {
   min: number;
@@ -25,10 +37,13 @@ export function mapCurrentWeather(
     icon: current.weather[0].icon,
     sunrise: formatUnixTime(current.sys.sunrise, timezone),
     sunset: formatUnixTime(current.sys.sunset, timezone),
-  }
-};
+  };
+}
 
-export function mapHourlyForecast(forecastList: IOpenWeatherForecast['list'], timezone: number): IHourlyWeather[] {
+export function mapHourlyForecast(
+  forecastList: IOpenWeatherForecast['list'],
+  timezone: number,
+): IHourlyWeather[] {
   return forecastList.slice(0, 9).map((item) => ({
     time: formatUnixTime(item.dt, timezone),
     temp: Math.round(item.main.temp),
@@ -37,10 +52,12 @@ export function mapHourlyForecast(forecastList: IOpenWeatherForecast['list'], ti
   }));
 }
 
-export function mapDailyForecast(forecastList: IOpenWeatherForecast['list']): IDailyWeather[] {
-  const grouped = groupForecastByDate(forecastList);
+export function mapDailyForecast(
+  forecastList: IOpenWeatherForecast['list'],
+): IDailyWeather[] {
+  const groupedForecastByDay = groupForecastByDate(forecastList);
 
-  return Object.entries(grouped)
+  return Object.entries(groupedForecastByDay)
     .slice(1, 4)
     .map(([date, items]) => ({
       date,
@@ -66,6 +83,15 @@ export function mapTodayTemperatureRange(
     item.dt_txt.startsWith(today),
   );
 
+  if (!todayForecasts.length) {
+    const allTemps = forecast.map((item) => item.main.temp);
+
+    return {
+      min: Math.round(Math.min(...allTemps)),
+      max: Math.round(Math.max(...allTemps)),
+    };
+  }
+
   return {
     min: Math.round(
       Math.min(...todayForecasts.map((item) => item.main.temp_min)),
@@ -76,7 +102,9 @@ export function mapTodayTemperatureRange(
   };
 }
 
-export function mapWeatherPreview(list: IOpenWeatherForecastItem[]): IWeatherPreviewOutput {
+export function mapWeatherPreview(
+  list: IOpenWeatherForecastItem[],
+): IWeatherPreviewOutput {
   const currentLike = list[0];
 
   const daily = mapDailyForecast(list);

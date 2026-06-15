@@ -5,7 +5,7 @@
 ---------------------------------|---------|----------|---------|---------|-------------------
 File                             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
 ---------------------------------|---------|----------|---------|---------|-------------------
-All files                        |     100 |      100 |     100 |     100 |                   
+All files                        |     100 |      100 |   95.51 |     100 |                   
  modules/auth                    |     100 |      100 |     100 |     100 |                   
   constants.ts                   |     100 |      100 |     100 |     100 |                   
   types.ts                       |     100 |      100 |     100 |     100 |                   
@@ -13,17 +13,23 @@ All files                        |     100 |      100 |     100 |     100 |
   access-jwt.guard.ts            |     100 |      100 |     100 |     100 |                   
   base-jwt.guard.ts              |     100 |      100 |     100 |     100 |                   
   refresh-jwt.guard.ts           |     100 |      100 |     100 |     100 |                   
+ modules/auth/resolvers          |     100 |      100 |     100 |     100 |                   
+  auth.resolver.ts               |     100 |      100 |     100 |     100 |                   
  modules/auth/services           |     100 |      100 |     100 |     100 |                   
   auth-cookie.service.ts         |     100 |      100 |     100 |     100 |                   
   auth-token.service.ts          |     100 |      100 |     100 |     100 |                   
   auth.service.ts                |     100 |      100 |     100 |     100 |                   
   password-hasher.service.ts     |     100 |      100 |     100 |     100 |                   
+ modules/cities/resolvers        |     100 |      100 |    64.7 |     100 |                   
+  cities.resolver.ts             |     100 |      100 |    64.7 |     100 |                   
  modules/cities/services         |     100 |      100 |     100 |     100 |                   
   cities-query.service.ts        |     100 |      100 |     100 |     100 |                   
   cities.service.ts              |     100 |      100 |     100 |     100 |                   
  modules/logger                  |     100 |      100 |     100 |     100 |                   
   constants.ts                   |     100 |      100 |     100 |     100 |                   
   types.ts                       |     100 |      100 |     100 |     100 |                   
+ modules/logger/resolvers        |     100 |      100 |      75 |     100 |                   
+  client-logs.resolver.ts        |     100 |      100 |      75 |     100 |                   
  modules/logger/sanitize         |     100 |      100 |     100 |     100 |                   
   is-non-serializable-object.ts  |     100 |      100 |     100 |     100 |                   
   sanitize-for-logging.ts        |     100 |      100 |     100 |     100 |                   
@@ -35,6 +41,8 @@ All files                        |     100 |      100 |     100 |     100 |
   user.service.ts                |     100 |      100 |     100 |     100 |                   
  modules/weather/constants       |     100 |      100 |     100 |     100 |                   
   open-weather.constants.ts      |     100 |      100 |     100 |     100 |                   
+ modules/weather/resolvers       |     100 |      100 |     100 |     100 |                   
+  weather.resolver.ts            |     100 |      100 |     100 |     100 |                   
  modules/weather/services        |     100 |      100 |     100 |     100 |                   
   open-weather-api.service.ts    |     100 |      100 |     100 |     100 |                   
   weather.service.ts             |     100 |      100 |     100 |     100 |                   

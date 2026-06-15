@@ -11,9 +11,8 @@ import {
   mapCurrentWeather,
   mapDailyForecast,
   mapHourlyForecast,
-  mapTodayTemperatureRange,
   mapWeatherPreview,
-} from '../utils/weather-mappers';
+} from '@weather/utils/weather-mappers';
 
 @Injectable()
 export class WeatherService {
@@ -32,8 +31,6 @@ export class WeatherService {
       this.weatherApi.getCurrentWeather(coordinates),
       this.weatherApi.getForecast(coordinates),
     ]);
-
-    const range = mapTodayTemperatureRange(forecast.list);
 
     const currentWeather = mapCurrentWeather(
       current,

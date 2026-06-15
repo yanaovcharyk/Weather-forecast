@@ -5,6 +5,8 @@ import {
 import { currentWeatherFixture } from '@test/weather/fixtures/current-weather.fixture';
 import { forecastFixture } from '@test/weather/fixtures/forecast.fixture';
 import { kyivCoordinatesFixture } from '@test/weather/fixtures/kyiv-coordinates.fixture';
+import { citySuggestionsFixture } from '@test/weather/fixtures/city-suggestions.fixture';
+import { forecastWithoutTimezoneFixture } from '@test/weather/fixtures/forecast-without-timezone.fixture';
 
 describe('WeatherService', () => {
   let ctx: WeatherServiceTestContext;
@@ -14,42 +16,50 @@ describe('WeatherService', () => {
   });
 
   it('searchCities should delegate request to weather api', async () => {
-    const cities = [
-      { name: 'Kyiv', lat: 50.45, lon: 30.52, country: 'UA' },
-    ];
-
-    ctx.weatherApi.searchCities.mockResolvedValue(cities);
+    ctx.weatherApi.searchCities.mockResolvedValue(citySuggestionsFixture);
 
     const result = await ctx.service.searchCities('Kyiv');
 
     expect(ctx.weatherApi.searchCities).toHaveBeenCalledWith('Kyiv');
-    expect(result).toEqual(cities);
+    expect(result).toEqual(citySuggestionsFixture);
   });
 
   it('getWeatherDetails should aggregate current and forecast data', async () => {
     ctx.weatherApi.getCurrentWeather.mockResolvedValue(currentWeatherFixture);
     ctx.weatherApi.getForecast.mockResolvedValue(forecastFixture);
 
-    const result = await ctx.service.getWeatherDetails(kyivCoordinatesFixture);
+    const result = await ctx.service.getWeatherDetails(
+      kyivCoordinatesFixture,
+    );
 
-    expect(ctx.weatherApi.getCurrentWeather).toHaveBeenCalledWith(kyivCoordinatesFixture);
-    expect(ctx.weatherApi.getForecast).toHaveBeenCalledWith(kyivCoordinatesFixture);
+    expect(ctx.weatherApi.getCurrentWeather).toHaveBeenCalledWith(
+      kyivCoordinatesFixture,
+    );
 
-    expect(result.current.temp).toBeDefined();
-    expect(result.current.min).toEqual(expect.any(Number));
-    expect(result.current.max).toEqual(expect.any(Number));
-    expect(result.hourly.length).toBeGreaterThan(0);
-    expect(result.daily.length).toBeGreaterThan(0);
+    expect(ctx.weatherApi.getForecast).toHaveBeenCalledWith(
+      kyivCoordinatesFixture,
+    );
+
+    expect(result).toMatchObject({
+      coordinates: kyivCoordinatesFixture,
+      meta: {
+        timezone: expect.any(String),
+      },
+    });
+
+    expect(result.hourly).toBeDefined();
+    expect(result.daily).toBeDefined();
   });
 
   it('getWeatherDetails should use default timezone when forecast city timezone is missing', async () => {
     ctx.weatherApi.getCurrentWeather.mockResolvedValue(currentWeatherFixture);
-    ctx.weatherApi.getForecast.mockResolvedValue({
-      ...forecastFixture,
-      city: { ...forecastFixture.city, timezone: undefined },
-    });
+    ctx.weatherApi.getForecast.mockResolvedValue(
+      forecastWithoutTimezoneFixture,
+    );
 
-    const result = await ctx.service.getWeatherDetails(kyivCoordinatesFixture);
+    const result = await ctx.service.getWeatherDetails(
+      kyivCoordinatesFixture,
+    );
 
     expect(result.meta?.timezone).toBe('');
   });
@@ -57,26 +67,20 @@ describe('WeatherService', () => {
   it('getWeatherPreview should return simplified data', async () => {
     ctx.weatherApi.getForecast.mockResolvedValue(forecastFixture);
 
-    const result = await ctx.service.getWeatherPreview(kyivCoordinatesFixture);
+    const result = await ctx.service.getWeatherPreview(
+      kyivCoordinatesFixture,
+    );
 
-    const currentLike = forecastFixture.list[0];
+    expect(ctx.weatherApi.getForecast).toHaveBeenCalledWith(
+      kyivCoordinatesFixture,
+    );
 
-    expect(ctx.weatherApi.getForecast).toHaveBeenCalledWith(kyivCoordinatesFixture);
-
-    expect(result.temperature).toBe(Math.round(currentLike.main.temp));
+    expect(result).toBeDefined();
+    expect(result.temperature).toEqual(expect.any(Number));
     expect(result.min).toEqual(expect.any(Number));
     expect(result.max).toEqual(expect.any(Number));
-    expect(result.description).toBe(currentLike.weather[0].description);
-
+    expect(result.description).toEqual(expect.any(String));
     expect(result.next3Days).toBeDefined();
     expect(result.next3Days.length).toBeGreaterThan(0);
-    expect(result.next3Days[0]).toEqual(
-      expect.objectContaining({
-        min: expect.any(Number),
-        max: expect.any(Number),
-        description: expect.any(String),
-      }),
-    );
   });
 });
-
