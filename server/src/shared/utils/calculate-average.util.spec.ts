@@ -1,4 +1,4 @@
-import { calculateAverage } from './calculate-average.util';
+import { calculateAverage } from '@shared/utils/calculate-average.util';
 
 describe('calculateAverage', () => {
   it('should return average value', () => {

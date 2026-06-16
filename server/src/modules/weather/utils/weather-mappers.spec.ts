@@ -108,7 +108,7 @@ describe('Weather Mappers', () => {
 
     const forecastWithToday: IOpenWeatherForecastItem[] = [
       {
-        ...forecastFixture.list[0],
+        ...forecastFixture.list [0],
         dt_txt: `${today} 12:00:00`,
         main: {
           ...forecastFixture.list[0].main,

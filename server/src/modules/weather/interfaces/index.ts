@@ -12,3 +12,4 @@ export { IWeatherCurrent } from './weather-current.interface';
 export { IWeatherDetails } from './weather-details.interface';
 export { IWeatherMeta } from './weather-meta.interface';
 export { ICitySearchInput } from './city-search.input.interface';
+export { ITodayTemperatureRange } from './today-temperature-range.interface';

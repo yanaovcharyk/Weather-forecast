@@ -5,7 +5,7 @@
 ---------------------------------|---------|----------|---------|---------|-------------------
 File                             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
 ---------------------------------|---------|----------|---------|---------|-------------------
-All files                        |     100 |      100 |   95.51 |     100 |                   
+All files                        |     100 |      100 |   95.65 |     100 |                   
  modules/auth                    |     100 |      100 |     100 |     100 |                   
   constants.ts                   |     100 |      100 |     100 |     100 |                   
   types.ts                       |     100 |      100 |     100 |     100 |                   
@@ -47,17 +47,21 @@ All files                        |     100 |      100 |   95.51 |     100 |
   open-weather-api.service.ts    |     100 |      100 |     100 |     100 |                   
   weather.service.ts             |     100 |      100 |     100 |     100 |                   
  modules/weather/utils           |     100 |      100 |     100 |     100 |                   
-  calculate-average.util.ts      |     100 |      100 |     100 |     100 |                   
+  calculate-average-by.util.ts   |     100 |      100 |     100 |     100 |                   
   format-unix-time.util.ts       |     100 |      100 |     100 |     100 |                   
+  get-rounded-min-max.util.ts    |     100 |      100 |     100 |     100 |                   
+  get-temperature-range.util.ts  |     100 |      100 |     100 |     100 |                   
   group-forecast-by-date.util.ts |     100 |      100 |     100 |     100 |                   
   weather-mappers.ts             |     100 |      100 |     100 |     100 |                   
  shared                          |     100 |      100 |     100 |     100 |                   
   constants.ts                   |     100 |      100 |     100 |     100 |                   
  shared/utils                    |     100 |      100 |     100 |     100 |                   
   build-connection.ts            |     100 |      100 |     100 |     100 |                   
+  calculate-average.util.ts      |     100 |      100 |     100 |     100 |                   
   create-validation-pipe.util.ts |     100 |      100 |     100 |     100 |                   
   decode-cursor.ts               |     100 |      100 |     100 |     100 |                   
   encode-cursor.ts               |     100 |      100 |     100 |     100 |                   
+  get-min-max.ts                 |     100 |      100 |     100 |     100 |                   
   is-primitive-value.ts          |     100 |      100 |     100 |     100 |                   
   parse-ms.ts                    |     100 |      100 |     100 |     100 |                   
 ---------------------------------|---------|----------|---------|---------|-------------------
