@@ -1,0 +1,879 @@
+{
+  "total": {
+    "lines": { "total": 817, "covered": 118, "skipped": 0, "pct": 14.44 },
+    "statements": { "total": 843, "covered": 120, "skipped": 0, "pct": 14.23 },
+    "functions": { "total": 262, "covered": 32, "skipped": 0, "pct": 12.21 },
+    "branches": { "total": 325, "covered": 21, "skipped": 0, "pct": 6.46 },
+    "branchesTrue": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/App.tsx": {
+    "lines": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/main.tsx": {
+    "lines": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/module.ts": {
+    "lines": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/types.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/components/LoginForm.tsx": {
+    "lines": { "total": 6, "covered": 6, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 6, "covered": 6, "skipped": 0, "pct": 100 },
+    "branches": { "total": 4, "covered": 2, "skipped": 0, "pct": 50 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/contexts/AuthContext.tsx": {
+    "lines": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/graphql/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/graphql/mutations.ts": {
+    "lines": { "total": 3, "covered": 3, "skipped": 0, "pct": 100 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 3, "covered": 3, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/graphql/queries.ts": {
+    "lines": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/hooks/useAuth.ts": {
+    "lines": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/hooks/useLogin.ts": {
+    "lines": { "total": 16, "covered": 16, "skipped": 0, "pct": 100 },
+    "functions": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "statements": { "total": 16, "covered": 16, "skipped": 0, "pct": 100 },
+    "branches": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/hooks/useLogout.ts": {
+    "lines": { "total": 5, "covered": 5, "skipped": 0, "pct": 100 },
+    "functions": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "statements": { "total": 5, "covered": 5, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/pages/LoginPage.tsx": {
+    "lines": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/pages/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/providers/AuthProvider.tsx": {
+    "lines": { "total": 14, "covered": 14, "skipped": 0, "pct": 100 },
+    "functions": { "total": 5, "covered": 5, "skipped": 0, "pct": 100 },
+    "statements": { "total": 14, "covered": 14, "skipped": 0, "pct": 100 },
+    "branches": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/providers/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/services/AccessTokenRefreshCoordinator.ts": {
+    "lines": { "total": 15, "covered": 15, "skipped": 0, "pct": 100 },
+    "functions": { "total": 8, "covered": 8, "skipped": 0, "pct": 100 },
+    "statements": { "total": 16, "covered": 16, "skipped": 0, "pct": 100 },
+    "branches": { "total": 4, "covered": 4, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/utils/fetchNewAccessToken.ts": {
+    "lines": { "total": 4, "covered": 4, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 4, "covered": 4, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/validation/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/auth/validation/loginFormSchema.ts": {
+    "lines": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/api/apollo/createApolloClient.ts": {
+    "lines": { "total": 18, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 18, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/api/apollo/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/api/apollo/types.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/api/apollo/links/apolloLoggerLink.ts": {
+    "lines": { "total": 19, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 20, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/api/apollo/links/tokenRefreshErrorLink.ts": {
+    "lines": { "total": 28, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 10, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 29, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/api/apollo/providers/AppApolloProvider.tsx": {
+    "lines": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/BlurLoaderOverlay/BlurLoaderOverlay.tsx": {
+    "lines": { "total": 2, "covered": 1, "skipped": 0, "pct": 50 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 2, "covered": 1, "skipped": 0, "pct": 50 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Button/ScrollToTopButton.tsx": {
+    "lines": { "total": 10, "covered": 1, "skipped": 0, "pct": 10 },
+    "functions": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 12, "covered": 1, "skipped": 0, "pct": 8.33 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Button/EllipsisButton/EllipsisButton.tsx": {
+    "lines": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Button/PrimaryButton/PrimaryButton.tsx": {
+    "lines": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "branches": { "total": 4, "covered": 1, "skipped": 0, "pct": 25 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Card/BackgroundCard/BackgroundCard.tsx": {
+    "lines": { "total": 2, "covered": 1, "skipped": 0, "pct": 50 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 2, "covered": 1, "skipped": 0, "pct": 50 },
+    "branches": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Card/BackgroundCard/BackgroundCardSkeleton.tsx": {
+    "lines": { "total": 2, "covered": 1, "skipped": 0, "pct": 50 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 2, "covered": 1, "skipped": 0, "pct": 50 },
+    "branches": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Card/FormCard/AppCard.tsx": {
+    "lines": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/ConfirmModal/ConfirmModal.tsx": {
+    "lines": { "total": 3, "covered": 2, "skipped": 0, "pct": 66.66 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 3, "covered": 2, "skipped": 0, "pct": 66.66 },
+    "branches": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/EmptyState/EmptyState.tsx": {
+    "lines": { "total": 2, "covered": 1, "skipped": 0, "pct": 50 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 2, "covered": 1, "skipped": 0, "pct": 50 },
+    "branches": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/EmptyState/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/ErrorPage/ErrorPage.tsx": {
+    "lines": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Header/Header.tsx": {
+    "lines": { "total": 13, "covered": 2, "skipped": 0, "pct": 15.38 },
+    "functions": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 13, "covered": 2, "skipped": 0, "pct": 15.38 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Layouts/CenteredLayout/CenteredLayout.tsx": {
+    "lines": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Layouts/PageLayout/PageLayout.tsx": {
+    "lines": { "total": 3, "covered": 2, "skipped": 0, "pct": 66.66 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 3, "covered": 2, "skipped": 0, "pct": 66.66 },
+    "branches": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Routers/AppRouter.tsx": {
+    "lines": { "total": 6, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Routers/PrivateRoute.tsx": {
+    "lines": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Routers/guards.tsx": {
+    "lines": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Routers/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Routers/registry.ts": {
+    "lines": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Shadow/Shadow.tsx": {
+    "lines": { "total": 3, "covered": 2, "skipped": 0, "pct": 66.66 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 4, "covered": 2, "skipped": 0, "pct": 50 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Typography/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Typography/Text/AppText.tsx": {
+    "lines": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/components/Typography/Title/AppTitle.tsx": {
+    "lines": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/config/config.ts": {
+    "lines": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/config/createValidatedConfig.ts": {
+    "lines": { "total": 5, "covered": 5, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 5, "covered": 5, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/config/getRequiredEnvVar.ts": {
+    "lines": { "total": 4, "covered": 3, "skipped": 0, "pct": 75 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 4, "covered": 3, "skipped": 0, "pct": 75 },
+    "branches": { "total": 4, "covered": 3, "skipped": 0, "pct": 75 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/config/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/config/types.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/contexts/ToastContext.tsx": {
+    "lines": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/hooks/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/hooks/useIsMobile.ts": {
+    "lines": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/hooks/useSmartBackground.ts": {
+    "lines": { "total": 12, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 12, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/hooks/useToast.ts": {
+    "lines": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/providers/AppProvider.tsx": {
+    "lines": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/providers/ThemeProvider.tsx": {
+    "lines": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/providers/ToastProvider.tsx": {
+    "lines": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/providers/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/types/AppRoute.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/types/IRoutableModule.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/types/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/utils/cleanComponentStack.ts": {
+    "lines": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 6, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/utils/createSafeContext.ts": {
+    "lines": { "total": 5, "covered": 1, "skipped": 0, "pct": 20 },
+    "functions": { "total": 2, "covered": 1, "skipped": 0, "pct": 50 },
+    "statements": { "total": 5, "covered": 1, "skipped": 0, "pct": 20 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/utils/extractErrorCode.ts": {
+    "lines": { "total": 9, "covered": 7, "skipped": 0, "pct": 77.77 },
+    "functions": { "total": 3, "covered": 1, "skipped": 0, "pct": 33.33 },
+    "statements": { "total": 10, "covered": 7, "skipped": 0, "pct": 70 },
+    "branches": { "total": 8, "covered": 6, "skipped": 0, "pct": 75 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/utils/handleResult.ts": {
+    "lines": { "total": 7, "covered": 1, "skipped": 0, "pct": 14.28 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 7, "covered": 1, "skipped": 0, "pct": 14.28 },
+    "branches": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/utils/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/utils/mapErrorCodeToMessage.ts": {
+    "lines": { "total": 8, "covered": 3, "skipped": 0, "pct": 37.5 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 8, "covered": 3, "skipped": 0, "pct": 37.5 },
+    "branches": { "total": 6, "covered": 1, "skipped": 0, "pct": 16.66 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/common/utils/normalizeReactError.ts": {
+    "lines": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/constants.ts": {
+    "lines": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/types.ts": {
+    "lines": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/components/ErrorBoundary/ErrorBoundary.tsx": {
+    "lines": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/context/LoggerContextStore.ts": {
+    "lines": { "total": 5, "covered": 4, "skipped": 0, "pct": 80 },
+    "functions": { "total": 3, "covered": 2, "skipped": 0, "pct": 66.66 },
+    "statements": { "total": 5, "covered": 4, "skipped": 0, "pct": 80 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/graphql/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/graphql/mutations.ts": {
+    "lines": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/hooks/useRouteTracking.ts": {
+    "lines": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/providers/LoggerContextProvider.tsx": {
+    "lines": { "total": 10, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 11, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/providers/RouteLoggerProvider.tsx": {
+    "lines": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/services/GraphQLLoggerTransport.ts": {
+    "lines": { "total": 12, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 13, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 6, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/services/LoggerOperation.ts": {
+    "lines": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/services/LoggerQueueService.ts": {
+    "lines": { "total": 31, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 12, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 31, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/services/LoggerRateLimiter.ts": {
+    "lines": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/services/LoggerRetryService.ts": {
+    "lines": { "total": 11, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 11, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/services/LoggerService.ts": {
+    "lines": { "total": 27, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 9, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 27, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 9, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/utils/createLogger.ts": {
+    "lines": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/utils/isDangerObject.ts": {
+    "lines": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 14, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/utils/isObject.ts": {
+    "lines": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/utils/normalizeError.ts": {
+    "lines": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/utils/sanitizeForLogging.ts": {
+    "lines": { "total": 46, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 46, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 44, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/logger/utils/shouldLog.ts": {
+    "lines": { "total": 6, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/test/factories/user.factory.ts": {
+    "lines": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/test/mocks/auth.mock.ts": {
+    "lines": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "functions": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "statements": { "total": 2, "covered": 2, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/test/msw/handlers.ts": {
+    "lines": { "total": 3, "covered": 1, "skipped": 0, "pct": 33.33 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 3, "covered": 1, "skipped": 0, "pct": 33.33 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/test/msw/server.ts": {
+    "lines": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 1, "covered": 1, "skipped": 0, "pct": 100 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/test/providers/TestProviders.tsx": {
+    "lines": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/test/render/renderWithProviders.ts": {
+    "lines": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherDetails/module.ts": {
+    "lines": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherDetails/types.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherDetails/components/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherDetails/components/CurrentWeatherCard/CurrentWeatherCard.tsx": {
+    "lines": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherDetails/components/DailyForecast/DailyForecast.tsx": {
+    "lines": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherDetails/components/HourlyForecast/HourlyForecast.tsx": {
+    "lines": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherDetails/components/InfoGrid/InfoGrid.tsx": {
+    "lines": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 9, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherDetails/components/InfoGrid/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherDetails/graphql/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherDetails/graphql/queries.ts": {
+    "lines": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherDetails/hooks/useCityWeather.ts": {
+    "lines": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 10, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherDetails/pages/CityDetailsPage.tsx": {
+    "lines": { "total": 9, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 9, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/module.ts": {
+    "lines": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/types.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/components/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/components/AddCityForm/AddCityForm.tsx": {
+    "lines": { "total": 6, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 6, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/components/AddCityForm/types.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/components/CitiesControlBar/CitiesControls.tsx": {
+    "lines": { "total": 16, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 9, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 18, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 6, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/components/CitiesList/CitiesList.tsx": {
+    "lines": { "total": 21, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 22, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 14, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/components/CitiesList/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/components/CityCard/CityCard.tsx": {
+    "lines": { "total": 17, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 17, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 14, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/components/CityCard/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/components/ExistingCityLayout/ExistingCityLayout.tsx": {
+    "lines": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/graphql/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/graphql/mutations.ts": {
+    "lines": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/graphql/queries.ts": {
+    "lines": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 },
+    "statements": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 100 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/hooks/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/hooks/useAddCity.ts": {
+    "lines": { "total": 10, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 10, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/hooks/useAddCityForm.ts": {
+    "lines": { "total": 10, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 10, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/hooks/useCitiesPaginated.ts": {
+    "lines": { "total": 9, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 9, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 6, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/hooks/useCityActions.ts": {
+    "lines": { "total": 47, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 6, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 47, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 12, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/hooks/useCityByName.ts": {
+    "lines": { "total": 6, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 6, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/hooks/useCitySearch.ts": {
+    "lines": { "total": 20, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 21, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 6, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/hooks/useRemoveAllCities.ts": {
+    "lines": { "total": 12, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 12, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/hooks/useRemoveCity.ts": {
+    "lines": { "total": 10, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 10, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/hooks/useSortingParams.ts": {
+    "lines": { "total": 13, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 13, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/hooks/useTogglePinned.ts": {
+    "lines": { "total": 10, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 10, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/pages/CitiesPage.tsx": {
+    "lines": { "total": 19, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 10, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 24, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 12, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/pages/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/services/CityService.ts": {
+    "lines": { "total": 10, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 5, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 10, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/utils/getNextDays.ts": {
+    "lines": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 2, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 7, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 1, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/utils/getWeatherBackground.ts": {
+    "lines": { "total": 8, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 3, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 9, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 4, "covered": 0, "skipped": 0, "pct": 0 }
+  },
+  "/Users/Yana/Documents/weather_forecast/client/src/modules/weatherForecast/utils/index.ts": {
+    "lines": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "functions": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "statements": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 },
+    "branches": { "total": 0, "covered": 0, "skipped": 0, "pct": 0 }
+  }
+}

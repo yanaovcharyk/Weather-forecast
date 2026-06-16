@@ -1,12 +1,12 @@
-import { defineConfig } from 'vite';
+import { defineConfig } from 'vitest/config';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 
 export default defineConfig({
   plugins: [react()],
+
   server: {
     proxy: {
-      // всі запити на /graphql будуть перекинуті на бекенд на порт 3000
       '/graphql': {
         target: 'http://localhost:3000',
         changeOrigin: true,
@@ -15,9 +15,23 @@ export default defineConfig({
       },
     },
   },
+
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src/modules'),
+    },
+  },
+
+  test: {
+    environment: 'jsdom',
+    setupFiles: './src/modules/test/setup.ts',
+    globals: true,
+
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'html', 'lcov', 'text-summary', 'json-summary'],
+      include: ['src/**/*.ts', 'src/**/*.tsx'],
+      reportsDirectory: './coverage',
     },
   },
 });

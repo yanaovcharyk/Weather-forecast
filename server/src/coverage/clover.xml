@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1781608016066" clover="3.2.0">
-  <project timestamp="1781608016067" name="All files">
+<coverage generated="1781615497557" clover="3.2.0">
+  <project timestamp="1781615497557" name="All files">
     <metrics statements="2079" coveredstatements="2079" conditionals="279" coveredconditionals="279" methods="161" coveredmethods="154" elements="2519" coveredelements="2512" complexity="0" loc="2079" ncloc="2079" packages="17" files="41" classes="41"/>
     <package name="modules.auth">
       <metrics statements="94" coveredstatements="94" conditionals="3" coveredconditionals="3" methods="0" coveredmethods="0"/>
@@ -2195,7 +2195,7 @@
         <line num="6" count="3" type="stmt"/>
         <line num="7" count="3" type="stmt"/>
       </file>
-      <file name="get-min-max.ts" path="/Users/Yana/Documents/weather_forecast/server/src/shared/utils/get-min-max.ts">
+      <file name="get-min-max.util.ts" path="/Users/Yana/Documents/weather_forecast/server/src/shared/utils/get-min-max.util.ts">
         <metrics statements="33" coveredstatements="33" conditionals="7" coveredconditionals="7" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>

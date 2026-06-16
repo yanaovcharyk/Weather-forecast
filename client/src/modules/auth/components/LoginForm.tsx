@@ -29,7 +29,7 @@ export const LoginForm = () => {
         validateStatus={email.fieldState.error ? 'error' : undefined}
         help={email.fieldState.error?.message}
       >
-        <Input {...email.field} />
+        <Input {...email.field} aria-label="Email" />
       </Form.Item>
 
       <Form.Item
@@ -37,7 +37,7 @@ export const LoginForm = () => {
         validateStatus={password.fieldState.error ? 'error' : undefined}
         help={password.fieldState.error?.message}
       >
-        <Input.Password {...password.field} />
+        <Input.Password {...password.field} aria-label="Password" />
       </Form.Item>
 
       <PrimaryButton htmlType="submit" block loading={loading}>
