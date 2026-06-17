@@ -1,19 +1,27 @@
 import { renderHook, act } from '@testing-library/react';
-import { useLogout } from './useLogout';
 import { useMutation } from '@apollo/client/react';
-import { vi } from 'vitest';
 
-vi.mock('@apollo/client/react', () => ({
-  useMutation: vi.fn(),
-}));
+import { useLogout } from './useLogout';
+import { createMutationMock } from '../../test/mocks/mutation.mock';
+
+vi.mock('@apollo/client/react');
 
 describe('useLogout', () => {
-  it('calls logout mutation', async () => {
-    const mockLogoutMutation = vi.fn().mockResolvedValue({});
+  const mutation = createMutationMock();
 
-    (useMutation as unknown as ReturnType<typeof vi.fn>).mockReturnValue([
-      mockLogoutMutation,
+  beforeEach(() => {
+    vi.mocked(useMutation).mockReturnValue([
+      mutation.mutate,
+      mutation.result as useMutation.Result<unknown>,
     ]);
+  });
+
+  afterEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it('calls logout mutation', async () => {
+    mutation.mutate.mockResolvedValue({});
 
     const { result } = renderHook(() => useLogout());
 
@@ -21,6 +29,6 @@ describe('useLogout', () => {
       await result.current();
     });
 
-    expect(mockLogoutMutation).toHaveBeenCalledTimes(1);
+    expect(mutation.mutate).toHaveBeenCalledTimes(1);
   });
 });

@@ -11,7 +11,8 @@
     "test": "vitest",
     "test:coverage": "vitest run --coverage",
     "test:ui": "vitest --ui",
-    "test:run": "vitest run"
+    "test:run": "vitest run",
+    "coverage:txt": "vitest run --coverage --coverage.reporter=text | sed -n '/Coverage report/,$p' > coverage.txt"
   },
   "dependencies": {
     "@apollo/client": "^4.1.6",
