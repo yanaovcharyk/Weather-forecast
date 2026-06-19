@@ -1,92 +1,68 @@
-import { render, screen } from '@testing-library/react';
-import { AuthProvider } from './AuthProvider';
-import { AuthContext } from '../contexts/AuthContext';
-import { loggerContext } from '@/logger/context/LoggerContextStore';
-import { useQuery } from '@apollo/client/react';
-import type { IMeQuery } from '../types';
-import type { Mock } from 'vitest';
+import {
+  createAuthProviderContext,
+  type AuthProviderContext,
+} from '../../test/auth/contexts/auth-provider.context';
 
-vi.mock('@apollo/client/react', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@apollo/client/react')>();
+import { setupAuthProviderRuntime } from '../../test/auth/runtimes/auth-provider.runtime';
+import { loggerContext } from '../../logger';
+import { setupAuthProvider } from '../../test/auth/setups/auth-provider.setup';
+
+vi.mock('@apollo/client/react', async () => {
+  const actual = await vi.importActual<typeof import('@apollo/client/react')>(
+    '@apollo/client/react',
+  );
+
   return {
     ...actual,
     useQuery: vi.fn(),
   };
 });
 
-interface AuthProviderTestContext {
-  refetch: Mock;
-  render: (
-    consumer: (
-      value: React.ContextType<typeof AuthContext>,
-    ) => React.ReactElement,
-  ) => void;
-}
-
-const createAuthProviderTestContext = (): AuthProviderTestContext => {
-  const refetch = vi.fn();
-
-  (useQuery as unknown as Mock).mockReturnValue({
-    data: {},
-    loading: false,
-    refetch,
-  });
-
-  const renderWithProvider = (
-    consumer: (
-      value: React.ContextType<typeof AuthContext>,
-    ) => React.ReactElement,
-  ) => {
-    return render(
-      <AuthProvider>
-        <AuthContext.Consumer>{consumer}</AuthContext.Consumer>
-      </AuthProvider>,
-    );
-  };
-
-  return { refetch, render: renderWithProvider };
-};
-
 describe('AuthProvider', () => {
-  let ctx: AuthProviderTestContext;
+  let ctx: AuthProviderContext;
 
   beforeEach(() => {
-    vi.clearAllMocks();
-    ctx = createAuthProviderTestContext();
+    ctx = createAuthProviderContext();
+
+    setupAuthProviderRuntime(ctx);
   });
 
-  it('provides isAuthenticated=true when userId exists', () => {
-    (useQuery as unknown as Mock).mockReturnValue({
-      data: { me: { userId: '123' } } as IMeQuery,
-      loading: false,
-      refetch: ctx.refetch,
-    });
+  it('provides authenticated state', () => {
+    ctx.setAuthenticated();
 
-    ctx.render((value) => (
-      <span data-testid="auth">{String(value.isAuthenticated)}</span>
-    ));
-    expect(screen.getByTestId('auth')).toHaveTextContent('true');
+    const { authState } = setupAuthProvider();
+
+    expect(authState()).toHaveTextContent('true');
   });
 
-  it('login calls refetch', async () => {
-    ctx.render((value) => <button onClick={value.login}>login</button>);
-    await screen.getByText('login').click();
+  it('calls refetch on login', async () => {
+    ctx.refetch.mockResolvedValue({});
+
+    const { user, loginButton } = setupAuthProvider();
+
+    await user.click(loginButton());
+
     expect(ctx.refetch).toHaveBeenCalled();
   });
 
-  it('logout clears loggerContext and redirects', () => {
+  it('handles logout', async () => {
     const setSpy = vi.spyOn(loggerContext, 'set');
+
     Object.defineProperty(window, 'location', {
       value: { href: '' },
       writable: true,
     });
 
-    ctx.render((value) => <button onClick={value.logout}>logout</button>);
-    screen.getByText('logout').click();
+    const { user, logoutButton } = setupAuthProvider();
+
+    await user.click(logoutButton());
 
     expect(setSpy).toHaveBeenCalledWith(
-      expect.objectContaining({ userId: undefined }),
+      expect.objectContaining({
+        userId: undefined,
+      }),
     );
+
     expect(window.location.href).toBe('/login');
   });
 });

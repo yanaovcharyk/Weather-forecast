@@ -1,10 +1,11 @@
 import { vi } from 'vitest';
 import { useMutationMock } from './useMutationMock';
+import type { ErrorLike } from '@apollo/client';
 
 export const createMutationMock = (
   overrides?: Partial<{
     data: unknown;
-    error: unknown;
+    error: ErrorLike | undefined;
     loading: boolean;
     called: boolean;
   }>,

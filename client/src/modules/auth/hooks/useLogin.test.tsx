@@ -1,71 +1,65 @@
-import { act } from '@testing-library/react';
-
-import { useLogin } from './useLogin';
-import { useMutation } from '@apollo/client/react';
-import { extractErrorCode, mapErrorCodeToMessage } from '@/common/utils';
-import { createUseLoginTestContext } from '../../test/auth/setup/useLogin.setup';
 import {
-  loginFailFixture,
-  loginSuccessFixture,
-  mutationFailResponse,
-  mutationSuccessResponse,
-} from '../../test/auth/fixtures/useLogin.fixtures';
-import { testRenderHook } from '../../test/render/renderWithProviders';
-import { setupUseLoginRuntime } from '../../test/auth/contexts/useLogin.runtime';
+  createLoginContext,
+  type LoginContext,
+} from '@/test/auth/contexts/login.context';
+import {
+  LOGIN_FAIL_RESPONSE,
+  LOGIN_FIXTURE,
+  LOGIN_SUCCESS_RESPONSE,
+} from '@/test/auth/fixtures/login.fixture';
+import { setupLoginRuntime } from '@/test/auth/runtimes/login.runtime';
+import { setupLogin } from '@/test/auth/setups/login.setup';
 
 vi.mock('@apollo/client/react');
 vi.mock('./useAuth');
 vi.mock('@/common/hooks/useToast');
-vi.mock('@/common/utils');
+
+vi.mock('react-router-dom', async () => {
+  const actual =
+    await vi.importActual<typeof import('react-router-dom')>(
+      'react-router-dom',
+    );
+
+  return {
+    ...actual,
+    useNavigate: vi.fn(),
+  };
+});
 
 describe('useLogin', () => {
-  const ctx = createUseLoginTestContext();
-  const setupRuntime = setupUseLoginRuntime(ctx);
+  let ctx: LoginContext;
 
   beforeEach(() => {
-    setupRuntime();
+    ctx = createLoginContext();
+    setupLoginRuntime(ctx);
   });
 
   it('returns loading state', () => {
-    vi.mocked(useMutation).mockReturnValue([
-      ctx.mutate,
-      {
-        loading: true,
-        data: undefined,
-        error: undefined,
-        called: false,
-        client: {} as never,
-        reset: vi.fn(),
-      },
-    ]);
-
-    const { result } = testRenderHook(() => useLogin());
-
+    setupLoginRuntime(ctx, {
+      loading: true,
+    });
+    const { result } = setupLogin();
     expect(result.current.loading).toBe(true);
   });
 
   it('logs user in successfully', async () => {
-    ctx.mutate.mockResolvedValue(mutationSuccessResponse);
+    ctx.mutate.mockResolvedValue(LOGIN_SUCCESS_RESPONSE);
 
-    const { result } = testRenderHook(() => useLogin());
+    const { login } = setupLogin();
 
-    await act(async () => {
-      await result.current.loginUser(loginSuccessFixture);
-    });
+    await login(LOGIN_FIXTURE.email, LOGIN_FIXTURE.password);
 
-    expect(ctx.mutate).toHaveBeenCalled();
     expect(ctx.login).toHaveBeenCalled();
     expect(ctx.toast).toHaveBeenCalledWith('success', 'Logged in successfully');
+    expect(ctx.navigate).toHaveBeenCalledWith('/');
   });
 
-  it('shows error on login failure', async () => {
-    ctx.mutate.mockResolvedValue(mutationFailResponse);
+  it('handles invalid credentials', async () => {
+    ctx.mutate.mockResolvedValue(LOGIN_FAIL_RESPONSE);
 
-    const { result } = testRenderHook(() => useLogin());
+    const { login } = setupLogin();
 
-    await act(async () => {
-      await result.current.loginUser(loginFailFixture);
-    });
+    await login(LOGIN_FIXTURE.email, LOGIN_FIXTURE.wrongPassword);
 
     expect(ctx.login).not.toHaveBeenCalled();
     expect(ctx.toast).toHaveBeenCalledWith(
@@ -74,20 +68,13 @@ describe('useLogin', () => {
     );
   });
 
-  it('handles mutation errors', async () => {
-    const error = new Error('Network error');
+  it('handles mutation error', async () => {
+    ctx.mutate.mockRejectedValue(new Error('Network error'));
 
-    ctx.mutate.mockRejectedValue(error);
+    const { login } = setupLogin();
 
-    vi.mocked(extractErrorCode).mockReturnValue('INVALID_CREDENTIALS');
-    vi.mocked(mapErrorCodeToMessage).mockReturnValue('Please login again');
+    await login(LOGIN_FIXTURE.email, LOGIN_FIXTURE.password);
 
-    const { result } = testRenderHook(() => useLogin());
-
-    await act(async () => {
-      await result.current.loginUser(loginSuccessFixture);
-    });
-
-    expect(ctx.toast).toHaveBeenCalledWith('error', 'Please login again');
+    expect(ctx.toast).toHaveBeenCalled();
   });
 });

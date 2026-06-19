@@ -52,7 +52,7 @@ export class CitiesResolver {
   @LogResolver()
   async citiesPaginated(
     @CurrentUser() user: ICurrentUser,
-    @Args('query', { type: () => CitiesQueryInput }) query: CitiesQueryInput,
+    @Args('query') query: CitiesQueryInput,
   ): Promise<CitiesConnection> {
     return this.citiesQueryService.getCitiesPaginated({
       userId: user.id,
@@ -65,7 +65,7 @@ export class CitiesResolver {
   @LogResolver()
   async city(
     @CurrentUser() user: ICurrentUser,
-    @Args('id', { type: () => ID }) id: string,
+    @Args('id') id: string,
   ): Promise<CityOutput> {
     return this.citiesService.getCityById({
       userId: user.id,
@@ -104,7 +104,7 @@ export class CitiesResolver {
   @LogResolver()
   async removeCity(
     @CurrentUser() user: ICurrentUser,
-    @Args('id', { type: () => ID }) id: string,
+    @Args('id') id: string,
   ): Promise<CityOutput> {
     return this.citiesService.removeCity({
       userId: user.id,
@@ -128,7 +128,7 @@ export class CitiesResolver {
   @LogResolver()
   async togglePinnedCity(
     @CurrentUser() user: ICurrentUser,
-    @Args('id', { type: () => ID }) id: string,
+    @Args('id') id: string,
   ): Promise<CityOutput> {
     return this.citiesService.togglePinned({
       userId: user.id,

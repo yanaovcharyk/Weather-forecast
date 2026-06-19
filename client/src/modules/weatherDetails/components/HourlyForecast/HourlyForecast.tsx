@@ -27,7 +27,7 @@ export const HourlyForecast = ({ hourly }: Props) => {
 
               <img
                 src={`https://openweathermap.org/img/wn/${h.icon}.png`}
-                alt=""
+                alt={`Weather at ${h.time}`}
                 className={styles.icon}
               />
 
