@@ -5,7 +5,7 @@ import styles from './ConfirmModal.module.scss';
 
 const { Text, Title } = Typography;
 
-interface ConfirmModalProps {
+export interface ConfirmModalProps {
   visible: boolean;
   title: string;
   content: string;

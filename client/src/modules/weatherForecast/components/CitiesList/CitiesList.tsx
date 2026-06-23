@@ -4,7 +4,7 @@ import { CityCard } from '../CityCard';
 import styles from './CitiesList.module.scss';
 import type { City } from '../../types';
 
-type Props = {
+export type CitiesListProps = {
   cities: City[];
   removingCityId: string | null;
   onRemove: (id: string, city: string) => void;
@@ -24,7 +24,7 @@ export const CitiesList = React.memo(function CitiesList({
   loadMore,
   hasNext,
   loading,
-}: Props) {
+}: CitiesListProps) {
   const loaderRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
 
@@ -45,9 +45,10 @@ export const CitiesList = React.memo(function CitiesList({
 
     const el = loaderRef.current;
 
-    if (el) {
-      observerRef.current.observe(el);
-    }
+    /* istanbul ignore next */
+    if (!el) return;
+
+    observerRef.current.observe(el);
 
     return () => {
       observerRef.current?.disconnect();

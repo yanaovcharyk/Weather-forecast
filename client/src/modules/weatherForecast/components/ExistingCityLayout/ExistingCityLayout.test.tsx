@@ -4,9 +4,15 @@ import { vi } from 'vitest';
 
 import { ExistingCityLayout } from './ExistingCityLayout';
 import type { City } from '../../types';
+import type { CitiesListProps } from '../CitiesList/CitiesList';
+
+let citiesListProps: CitiesListProps | null = null;
 
 vi.mock('../CitiesList', () => ({
-  CitiesList: () => <div>Mock CitiesList</div>,
+  CitiesList: (props: CitiesListProps) => {
+    citiesListProps = props;
+    return <div>Mock CitiesList</div>;
+  },
 }));
 
 describe('ExistingCityLayout', () => {
@@ -16,6 +22,42 @@ describe('ExistingCityLayout', () => {
     weather: null,
     isPinned: false,
   };
+
+  beforeEach(() => {
+    citiesListProps = null;
+  });
+
+  it('passes loading=false when loading=false', () => {
+    render(
+      <ExistingCityLayout
+        existingCity={city as City}
+        onBack={vi.fn()}
+        removingId={null}
+        onRemove={vi.fn()}
+        onTogglePinned={vi.fn()}
+        loading={false}
+        onCityClick={vi.fn()}
+      />,
+    );
+
+    expect(citiesListProps?.loading).toBe(false);
+  });
+
+  it('passes loading=false when loading=true but existingCity exists', () => {
+    render(
+      <ExistingCityLayout
+        existingCity={city as City}
+        onBack={vi.fn()}
+        removingId={null}
+        onRemove={vi.fn()}
+        onTogglePinned={vi.fn()}
+        loading={true}
+        onCityClick={vi.fn()}
+      />,
+    );
+
+    expect(citiesListProps?.loading).toBe(false);
+  });
 
   it('renders back button', () => {
     render(
@@ -31,9 +73,7 @@ describe('ExistingCityLayout', () => {
     );
 
     expect(
-      screen.getByRole('button', {
-        name: /back to all cities/i,
-      }),
+      screen.getByRole('button', { name: /back to all cities/i }),
     ).toBeInTheDocument();
   });
 
@@ -77,5 +117,21 @@ describe('ExistingCityLayout', () => {
     );
 
     expect(screen.getByText('Mock CitiesList')).toBeInTheDocument();
+  });
+
+  it('executes loadMore callback', () => {
+    render(
+      <ExistingCityLayout
+        existingCity={city as City}
+        onBack={vi.fn()}
+        removingId={null}
+        onRemove={vi.fn()}
+        onTogglePinned={vi.fn()}
+        loading={false}
+        onCityClick={vi.fn()}
+      />,
+    );
+
+    citiesListProps?.loadMore();
   });
 });

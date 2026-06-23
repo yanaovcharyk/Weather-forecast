@@ -5,7 +5,7 @@ import type { DisabledStates, SortingState } from '../../types';
 import { ConfirmModal } from '@/common/components';
 import styles from './CitiesControls.module.scss';
 
-type Props = {
+export type CitiesControlsProps = {
   sorting: SortingState;
   setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
   onDeleteAll: () => Promise<void>;
@@ -14,7 +14,7 @@ type Props = {
   disabledStates: DisabledStates;
 };
 
-export const CitiesControls: React.FC<Props> = ({
+export const CitiesControls: React.FC<CitiesControlsProps> = ({
   sorting,
   setSorting,
   onDeleteAll,

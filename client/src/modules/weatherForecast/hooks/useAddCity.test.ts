@@ -1,23 +1,50 @@
 import { renderHook, act } from '@testing-library/react';
-import { vi } from 'vitest';
+import { vi, beforeEach, describe, it, expect } from 'vitest';
 import { useMutation } from '@apollo/client/react';
-
 import { useAddCity } from './useAddCity';
 
 vi.mock('@apollo/client/react');
 
+type City = {
+  id: string;
+  city: string;
+};
+
+type AddCityMutation = {
+  addCity: City;
+};
+
+type MutationOptions = Parameters<typeof useMutation<AddCityMutation>>[1];
+
+type UpdateFn = NonNullable<NonNullable<MutationOptions>['update']>;
+
 describe('useAddCity', () => {
   const mutate = vi.fn();
+
+  let updateFn!: UpdateFn;
+
+  const cacheEvict = vi.fn();
+  const cacheGc = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
 
-    vi.mocked(useMutation).mockReturnValue([
-      mutate,
-      {
+    vi.mocked(useMutation).mockImplementation((_doc, options) => {
+      if (options?.update) {
+        updateFn = options.update;
+      }
+
+      const result: useMutation.Result<AddCityMutation> = {
         loading: false,
-      },
-    ] as never);
+        data: undefined,
+        error: undefined,
+        called: false,
+        client: {} as never,
+        reset: vi.fn(),
+      };
+
+      return [mutate, result] as unknown as ReturnType<typeof useMutation>;
+    });
   });
 
   it('returns loading state', () => {
@@ -26,8 +53,8 @@ describe('useAddCity', () => {
     expect(result.current.loading).toBe(false);
   });
 
-  it('adds city', async () => {
-    const city = {
+  it('adds city and triggers cache update (SUCCESS path)', async () => {
+    const city: City = {
       id: '1',
       city: 'Kyiv',
     };
@@ -40,7 +67,7 @@ describe('useAddCity', () => {
 
     const { result } = renderHook(() => useAddCity());
 
-    let response;
+    let response: City | null = null;
 
     await act(async () => {
       response = await result.current.addCity(50.45, 30.52, 'Kyiv');
@@ -57,21 +84,52 @@ describe('useAddCity', () => {
     });
 
     expect(response).toEqual(city);
+
+    updateFn(
+      {
+        evict: cacheEvict,
+        gc: cacheGc,
+      } as never,
+      {
+        data: {
+          addCity: city,
+        },
+      } as never,
+      {} as never,
+    );
+
+    expect(cacheEvict).toHaveBeenCalledWith({
+      fieldName: 'citiesPaginated',
+    });
+
+    expect(cacheGc).toHaveBeenCalled();
   });
 
-  it('returns null when no city returned', async () => {
+  it('does NOT update cache when no city returned', async () => {
     mutate.mockResolvedValue({
       data: undefined,
     });
 
     const { result } = renderHook(() => useAddCity());
 
-    let response;
-
     await act(async () => {
-      response = await result.current.addCity(1, 2, 'Kyiv');
+      await result.current.addCity(1, 2, 'Kyiv');
     });
 
-    expect(response).toBeNull();
+    const cache = {
+      evict: vi.fn(),
+      gc: vi.fn(),
+    };
+
+    updateFn(
+      cache as never,
+      {
+        data: undefined,
+      } as never,
+      {} as never,
+    );
+
+    expect(cache.evict).not.toHaveBeenCalled();
+    expect(cache.gc).not.toHaveBeenCalled();
   });
 });

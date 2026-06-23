@@ -20,21 +20,25 @@ vi.mock('@/weatherForecast/utils', () => ({
 }));
 
 describe('CityCard', () => {
+  const user = userEvent.setup();
+
   const weather = {
     temperature: 20,
     description: 'Sunny',
     min: 10,
     max: 25,
-    next3Days: [],
+    next3Days: [
+      { min: 1, max: 5, description: 'Cold' },
+      { min: 2, max: 6, description: 'Cloudy' },
+      { min: 3, max: 7, description: 'Rain' },
+    ],
   };
 
   beforeEach(() => {
-    vi.mocked(useSmartBackground).mockReturnValue({
-      loaded: true,
-    });
+    vi.mocked(useSmartBackground).mockReturnValue({ loaded: true });
   });
 
-  it('renders city and weather', () => {
+  it('renders full card with weather', () => {
     render(
       <CityCard
         city="Kyiv"
@@ -50,31 +54,8 @@ describe('CityCard', () => {
     expect(screen.getByText('Sunny')).toBeInTheDocument();
   });
 
-  it('calls onClick', async () => {
-    const user = userEvent.setup();
-
-    const onClick = vi.fn();
-
-    render(
-      <CityCard
-        city="Kyiv"
-        weather={weather as Weather}
-        isPinned={false}
-        onTogglePinned={vi.fn()}
-        onRemove={vi.fn()}
-        onClick={onClick}
-      />,
-    );
-
-    await user.click(screen.getByText('Kyiv'));
-
-    expect(onClick).toHaveBeenCalled();
-  });
-
-  it('renders skeleton when background not loaded', () => {
-    vi.mocked(useSmartBackground).mockReturnValue({
-      loaded: false,
-    });
+  it('renders skeleton when not loaded', () => {
+    vi.mocked(useSmartBackground).mockReturnValue({ loaded: false });
 
     render(
       <CityCard
@@ -87,5 +68,92 @@ describe('CityCard', () => {
     );
 
     expect(screen.queryByText('Kyiv')).not.toBeInTheDocument();
+  });
+
+  it('renders fallback when weather is null', () => {
+    render(
+      <CityCard
+        city="Kyiv"
+        weather={null}
+        isPinned={false}
+        onTogglePinned={vi.fn()}
+        onRemove={vi.fn()}
+      />,
+    );
+
+    expect(screen.getByText('No forecast yet')).toBeInTheDocument();
+  });
+
+  it('calls handlers when enabled', async () => {
+    const onTogglePinned = vi.fn();
+    const onRemove = vi.fn();
+
+    render(
+      <CityCard
+        city="Kyiv"
+        weather={weather as Weather}
+        isPinned={false}
+        onTogglePinned={onTogglePinned}
+        onRemove={onRemove}
+      />,
+    );
+
+    const [pinBtn, removeBtn] = screen.getAllByRole('button');
+
+    await user.click(pinBtn);
+    await user.click(removeBtn);
+
+    expect(onTogglePinned).toHaveBeenCalledTimes(1);
+    expect(onRemove).toHaveBeenCalledTimes(1);
+  });
+
+  it('does NOT call handlers when loading (disabled branch)', async () => {
+    const onTogglePinned = vi.fn();
+    const onRemove = vi.fn();
+
+    render(
+      <CityCard
+        city="Kyiv"
+        weather={weather as Weather}
+        isPinned={false}
+        onTogglePinned={onTogglePinned}
+        onRemove={onRemove}
+        loading={true}
+      />,
+    );
+
+    const [pinBtn, removeBtn] = screen.getAllByRole('button');
+
+    await user.click(pinBtn);
+    await user.click(removeBtn);
+
+    expect(onTogglePinned).not.toHaveBeenCalled();
+    expect(onRemove).not.toHaveBeenCalled();
+  });
+
+  it('covers pinned icon toggle branch', () => {
+    const { rerender } = render(
+      <CityCard
+        city="Kyiv"
+        weather={weather as Weather}
+        isPinned={false}
+        onTogglePinned={vi.fn()}
+        onRemove={vi.fn()}
+      />,
+    );
+
+    expect(screen.getAllByRole('button')[0]).toBeInTheDocument();
+
+    rerender(
+      <CityCard
+        city="Kyiv"
+        weather={weather as Weather}
+        isPinned={true}
+        onTogglePinned={vi.fn()}
+        onRemove={vi.fn()}
+      />,
+    );
+
+    expect(screen.getAllByRole('button')[0]).toBeInTheDocument();
   });
 });

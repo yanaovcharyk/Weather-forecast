@@ -1,8 +1,7 @@
 import { useMutation } from '@apollo/client/react';
-
 import { TOGGLE_CITY_PIN } from '../graphql';
 
-type ToggleCityPinMutation = {
+export type ToggleCityPinMutation = {
   togglePinnedCity: {
     __typename: 'CityOutput';
     id: string;
@@ -10,7 +9,7 @@ type ToggleCityPinMutation = {
   };
 };
 
-type ToggleCityPinVariables = {
+export type ToggleCityPinVariables = {
   id: string;
 };
 

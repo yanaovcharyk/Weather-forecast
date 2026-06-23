@@ -3,7 +3,7 @@ import { AppCard } from '@/common/components';
 import { CitiesList } from '../CitiesList';
 import type { City } from '../../types';
 
-interface Props {
+export interface ExistingCityLaypoutProps {
   existingCity: City;
   onBack: () => void;
   removingId: string | null;
@@ -21,7 +21,7 @@ export const ExistingCityLayout = ({
   onTogglePinned,
   loading,
   onCityClick,
-}: Props) => {
+}: ExistingCityLaypoutProps) => {
   return (
     <>
       <AppCard>

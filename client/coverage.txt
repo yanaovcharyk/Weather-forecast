@@ -2,7 +2,7 @@
 -------------------|---------|----------|---------|---------|-------------------
 File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
 -------------------|---------|----------|---------|---------|-------------------
-All files          |   21.33 |      7.4 |   18.08 |   21.51 |                   
+All files          |     100 |     99.7 |     100 |     100 |                   
  auth/components   |     100 |      100 |     100 |     100 |                   
   LoginForm.tsx    |     100 |      100 |     100 |     100 |                   
  auth/contexts     |     100 |      100 |     100 |     100 |                   
@@ -24,174 +24,140 @@ All files          |   21.33 |      7.4 |   18.08 |   21.51 |
   ...ccessToken.ts |     100 |      100 |     100 |     100 |                   
  auth/validation   |     100 |      100 |     100 |     100 |                   
   ...FormSchema.ts |     100 |      100 |     100 |     100 |                   
- common/api/apollo |       0 |        0 |       0 |       0 |                   
-  ...olloClient.ts |       0 |        0 |       0 |       0 | 18-73             
- ...i/apollo/links |       0 |        0 |       0 |       0 |                   
-  ...LoggerLink.ts |       0 |        0 |       0 |       0 | 7-64              
-  ...hErrorLink.ts |       0 |        0 |       0 |       0 | 16-68             
- ...ollo/providers |       0 |      100 |       0 |       0 |                   
-  ...oProvider.tsx |       0 |      100 |       0 |       0 | 11-24             
- ...rLoaderOverlay |      50 |        0 |       0 |      50 |                   
-  ...erOverlay.tsx |      50 |        0 |       0 |      50 | 13                
- ...ponents/Button |    8.33 |        0 |       0 |      10 |                   
-  ...TopButton.tsx |    8.33 |        0 |       0 |      10 | 5-27              
- ...EllipsisButton |       0 |      100 |       0 |       0 |                   
-  ...sisButton.tsx |       0 |      100 |       0 |       0 | 5-6               
- .../PrimaryButton |     100 |       25 |     100 |     100 |                   
-  ...aryButton.tsx |     100 |       25 |     100 |     100 | 15                
- ...BackgroundCard |      50 |        0 |       0 |      50 |                   
-  ...roundCard.tsx |      50 |        0 |       0 |      50 | 21                
-  ...dSkeleton.tsx |      50 |        0 |       0 |      50 | 16                
+ common/api/apollo |     100 |      100 |     100 |     100 |                   
+  ...olloClient.ts |     100 |      100 |     100 |     100 |                   
+ ...i/apollo/links |     100 |      100 |     100 |     100 |                   
+  ...LoggerLink.ts |     100 |      100 |     100 |     100 |                   
+  ...hErrorLink.ts |     100 |      100 |     100 |     100 |                   
+ ...ollo/providers |     100 |      100 |     100 |     100 |                   
+  ...oProvider.tsx |     100 |      100 |     100 |     100 |                   
+ ...rLoaderOverlay |     100 |      100 |     100 |     100 |                   
+  ...erOverlay.tsx |     100 |      100 |     100 |     100 |                   
+ ...ponents/Button |     100 |      100 |     100 |     100 |                   
+  ...TopButton.tsx |     100 |      100 |     100 |     100 |                   
+ ...EllipsisButton |     100 |      100 |     100 |     100 |                   
+  ...sisButton.tsx |     100 |      100 |     100 |     100 |                   
+ .../PrimaryButton |     100 |      100 |     100 |     100 |                   
+  ...aryButton.tsx |     100 |      100 |     100 |     100 |                   
+ ...BackgroundCard |     100 |      100 |     100 |     100 |                   
+  ...roundCard.tsx |     100 |      100 |     100 |     100 |                   
+  ...dSkeleton.tsx |     100 |      100 |     100 |     100 |                   
  .../Card/FormCard |     100 |      100 |     100 |     100 |                   
   AppCard.tsx      |     100 |      100 |     100 |     100 |                   
- ...s/ConfirmModal |   66.66 |        0 |       0 |   66.66 |                   
-  ConfirmModal.tsx |   66.66 |        0 |       0 |   66.66 | 31                
- ...nts/EmptyState |      50 |        0 |       0 |      50 |                   
-  EmptyState.tsx   |      50 |        0 |       0 |      50 | 9                 
- ...ents/ErrorPage |       0 |      100 |       0 |       0 |                   
-  ErrorPage.tsx    |       0 |      100 |       0 |       0 | 5-6               
- ...ponents/Header |   15.38 |      100 |       0 |   15.38 |                   
-  Header.tsx       |   15.38 |      100 |       0 |   15.38 | 14-51             
+ ...s/ConfirmModal |     100 |      100 |     100 |     100 |                   
+  ConfirmModal.tsx |     100 |      100 |     100 |     100 |                   
+ ...nts/EmptyState |     100 |      100 |     100 |     100 |                   
+  EmptyState.tsx   |     100 |      100 |     100 |     100 |                   
+ ...ents/ErrorPage |     100 |      100 |     100 |     100 |                   
+  ErrorPage.tsx    |     100 |      100 |     100 |     100 |                   
+ ...ponents/Header |     100 |      100 |     100 |     100 |                   
+  Header.tsx       |     100 |      100 |     100 |     100 |                   
  ...CenteredLayout |     100 |      100 |     100 |     100 |                   
   ...redLayout.tsx |     100 |      100 |     100 |     100 |                   
- ...uts/PageLayout |   66.66 |        0 |       0 |   66.66 |                   
-  PageLayout.tsx   |   66.66 |        0 |       0 |   66.66 | 15                
- ...onents/Routers |       0 |        0 |       0 |       0 |                   
-  AppRouter.tsx    |       0 |      100 |       0 |       0 | 6-15              
-  PrivateRoute.tsx |       0 |        0 |       0 |       0 | 6-17              
-  guards.tsx       |       0 |        0 |       0 |       0 | 4-11              
-  registry.ts      |       0 |      100 |       0 |       0 | 8-10              
- ...ponents/Shadow |      50 |        0 |       0 |   66.66 |                   
-  Shadow.tsx       |      50 |        0 |       0 |   66.66 | 20                
- ...ypography/Text |       0 |        0 |       0 |       0 |                   
-  AppText.tsx      |       0 |        0 |       0 |       0 | 6-22              
- ...pography/Title |       0 |      100 |       0 |       0 |                   
-  AppTitle.tsx     |       0 |      100 |       0 |       0 | 6-13              
- common/config     |      90 |       75 |     100 |      90 |                   
+ ...uts/PageLayout |     100 |      100 |     100 |     100 |                   
+  PageLayout.tsx   |     100 |      100 |     100 |     100 |                   
+ ...onents/Routers |     100 |      100 |     100 |     100 |                   
+  AppRouter.tsx    |     100 |      100 |     100 |     100 |                   
+  PrivateRoute.tsx |     100 |      100 |     100 |     100 |                   
+  guards.tsx       |     100 |      100 |     100 |     100 |                   
+  registry.ts      |     100 |      100 |     100 |     100 |                   
+ ...ponents/Shadow |     100 |      100 |     100 |     100 |                   
+  Shadow.tsx       |     100 |      100 |     100 |     100 |                   
+ ...ypography/Text |     100 |      100 |     100 |     100 |                   
+  AppText.tsx      |     100 |      100 |     100 |     100 |                   
+ ...pography/Title |     100 |      100 |     100 |     100 |                   
+  AppTitle.tsx     |     100 |      100 |     100 |     100 |                   
+ common/config     |     100 |      100 |     100 |     100 |                   
   config.ts        |     100 |      100 |     100 |     100 |                   
   ...atedConfig.ts |     100 |      100 |     100 |     100 |                   
-  ...iredEnvVar.ts |      75 |       75 |     100 |      75 | 5                 
+  ...iredEnvVar.ts |     100 |      100 |     100 |     100 |                   
  common/contexts   |     100 |      100 |     100 |     100 |                   
   ToastContext.tsx |     100 |      100 |     100 |     100 |                   
- common/hooks      |    6.25 |        0 |       0 |    6.25 |                   
-  useIsMobile.ts   |       0 |      100 |       0 |       0 | 3-5               
-  ...Background.ts |       0 |        0 |       0 |       0 | 3-24              
+ common/hooks      |     100 |      100 |     100 |     100 |                   
+  useIsMobile.ts   |     100 |      100 |     100 |     100 |                   
+  ...Background.ts |     100 |      100 |     100 |     100 |                   
   useToast.ts      |     100 |      100 |     100 |     100 |                   
- common/providers  |      40 |      100 |      25 |      40 |                   
-  AppProvider.tsx  |       0 |      100 |       0 |       0 | 7-8               
-  ...eProvider.tsx |       0 |      100 |       0 |       0 | 3-10              
-  ...tProvider.tsx |      80 |      100 |      50 |      80 | 8                 
- common/types      |       0 |        0 |       0 |       0 |                   
-  AppRoute.ts      |       0 |        0 |       0 |       0 |                   
-  ...ableModule.ts |       0 |        0 |       0 |       0 |                   
- common/utils      |   32.43 |       25 |   27.27 |   33.33 |                   
-  ...onentStack.ts |       0 |        0 |       0 |       0 | 2-11              
-  ...afeContext.ts |      20 |        0 |      50 |      20 | 8-14              
-  ...tErrorCode.ts |      70 |       75 |   33.33 |   77.77 | 24,27             
-  handleResult.ts  |   14.28 |        0 |       0 |   14.28 | 11-20             
-  ...eToMessage.ts |    37.5 |    16.66 |     100 |    37.5 | 4-12              
-  ...ReactError.ts |       0 |        0 |       0 |       0 | 4-6               
+ common/providers  |     100 |      100 |     100 |     100 |                   
+  AppProvider.tsx  |     100 |      100 |     100 |     100 |                   
+  ...eProvider.tsx |     100 |      100 |     100 |     100 |                   
+  ...tProvider.tsx |     100 |      100 |     100 |     100 |                   
+ common/utils      |     100 |      100 |     100 |     100 |                   
+  ...onentStack.ts |     100 |      100 |     100 |     100 |                   
+  ...afeContext.ts |     100 |      100 |     100 |     100 |                   
+  ...tErrorCode.ts |     100 |      100 |     100 |     100 |                   
+  handleResult.ts  |     100 |      100 |     100 |     100 |                   
+  ...eToMessage.ts |     100 |      100 |     100 |     100 |                   
+  ...ReactError.ts |     100 |      100 |     100 |     100 |                   
  logger            |     100 |      100 |     100 |     100 |                   
   constants.ts     |     100 |      100 |     100 |     100 |                   
- .../ErrorBoundary |       0 |        0 |       0 |       0 |                   
-  ...rBoundary.tsx |       0 |        0 |       0 |       0 | 14-40             
- logger/context    |      80 |      100 |   66.66 |      80 |                   
-  ...ntextStore.ts |      80 |      100 |   66.66 |      80 | 20                
+ .../ErrorBoundary |     100 |      100 |     100 |     100 |                   
+  ...rBoundary.tsx |     100 |      100 |     100 |     100 |                   
+ logger/context    |     100 |      100 |     100 |     100 |                   
+  ...ntextStore.ts |     100 |      100 |     100 |     100 |                   
  logger/graphql    |     100 |      100 |     100 |     100 |                   
   mutations.ts     |     100 |      100 |     100 |     100 |                   
- logger/hooks      |       0 |      100 |       0 |       0 |                   
-  ...teTracking.ts |       0 |      100 |       0 |       0 | 7-25              
- logger/providers  |       0 |      100 |       0 |       0 |                   
-  ...tProvider.tsx |       0 |      100 |       0 |       0 | 5-25              
-  ...rProvider.tsx |       0 |      100 |       0 |       0 | 8-9               
- logger/services   |    15.3 |      3.7 |   11.42 |   15.46 |                   
-  ...rTransport.ts |       0 |        0 |       0 |       0 | 14-61             
-  ...rOperation.ts |       0 |      100 |       0 |       0 | 6-38              
-  ...eueService.ts |   29.03 |        0 |      25 |   29.03 | ...46,53-61,67-78 
-  ...ateLimiter.ts |      25 |        0 |       0 |      25 | 10-19             
-  ...tryService.ts |   18.18 |        0 |       0 |   18.18 | 14-34             
-  LoggerService.ts |     7.4 |    11.11 |   11.11 |     7.4 | 24-104            
- logger/utils      |    12.3 |        0 |       0 |    12.5 |                   
-  createLogger.ts  |       0 |      100 |       0 |       0 | 4                 
-  ...ngerObject.ts |       0 |        0 |       0 |       0 | 4-18              
-  isObject.ts      |       0 |        0 |       0 |       0 | 2                 
-  ...alizeError.ts |       0 |        0 |       0 |       0 | 2-14              
-  ...ForLogging.ts |   13.04 |        0 |       0 |   13.04 | 18-116            
-  shouldLog.ts     |   28.57 |        0 |       0 |   33.33 | 8-14              
- .../auth/contexts |   47.36 |      100 |      50 |    37.5 |                   
-  ...er.context.ts |      75 |      100 |   66.66 |      75 | 19                
-  ...rm.context.ts |     100 |      100 |     100 |     100 |                   
-  login.context.ts |     100 |      100 |     100 |     100 |                   
-  ...ut.context.ts |     100 |      100 |     100 |     100 |                   
-  ...n.context.tsx |       0 |      100 |       0 |       0 | 4-6               
-  ...in.runtime.ts |       0 |      100 |       0 |       0 | 6-23              
- .../auth/fixtures |      40 |      100 |     100 |      40 |                   
-  ...er.fixture.ts |       0 |      100 |     100 |       0 | 3-9               
-  login.fixture.ts |     100 |      100 |     100 |     100 |                   
-  ...n.fixtures.ts |       0 |      100 |     100 |       0 | 1-15              
- test/auth/mocks   |       0 |      100 |       0 |       0 |                   
-  ...vider.mock.ts |       0 |      100 |       0 |       0 | 4-5               
-  login.mock.ts    |       0 |      100 |       0 |       0 | 3                 
-  ...ogin.mocks.ts |       0 |      100 |       0 |       0 | 1-7               
- .../auth/runtimes |   76.92 |      100 |      75 |   76.92 |                   
-  ...er.runtime.ts |     100 |      100 |     100 |     100 |                   
-  login.runtime.ts |     100 |      100 |     100 |     100 |                   
-  ...ogin.setup.ts |       0 |      100 |       0 |       0 | 3-6               
- test/mocks        |    40.9 |      100 |      25 |    42.1 |                   
-  apollo.mock.ts   |       0 |      100 |       0 |       0 | 3-6               
-  auth.mock.ts     |     100 |      100 |     100 |     100 |                   
-  mutation.mock.ts |     100 |      100 |     100 |     100 |                   
-  router.mock.ts   |       0 |      100 |       0 |       0 | 1-4               
-  toast.mock.ts    |       0 |      100 |       0 |       0 | 1-4               
-  ...tationMock.ts |   66.66 |      100 |       0 |     100 |                   
-  utils.mock.ts    |       0 |      100 |       0 |       0 | 1-2               
- test/providers    |     100 |      100 |     100 |     100 |                   
-  TestProvider.tsx |     100 |      100 |     100 |     100 |                   
- test/render       |   83.33 |      100 |      50 |     100 |                   
-  ...hProviders.ts |   83.33 |      100 |      50 |     100 |                   
- ...entWeatherCard |       0 |      100 |       0 |       0 |                   
-  ...atherCard.tsx |       0 |      100 |       0 |       0 | 14-19             
- .../DailyForecast |       0 |      100 |       0 |       0 |                   
-  ...yForecast.tsx |       0 |      100 |       0 |       0 | 9-30              
- ...HourlyForecast |       0 |      100 |       0 |       0 |                   
-  ...yForecast.tsx |       0 |      100 |       0 |       0 | 10-15             
- ...nents/InfoGrid |       0 |        0 |       0 |       0 |                   
-  InfoGrid.tsx     |       0 |        0 |       0 |       0 | 15-32             
- ...etails/graphql |       0 |      100 |     100 |       0 |                   
-  queries.ts       |       0 |      100 |     100 |       0 | 3-48              
- ...rDetails/hooks |       0 |        0 |       0 |       0 |                   
-  ...ityWeather.ts |       0 |        0 |       0 |       0 | 6-33              
- ...rDetails/pages |       0 |        0 |       0 |       0 |                   
-  ...tailsPage.tsx |       0 |        0 |       0 |       0 | 16-37             
- ...ts/AddCityForm |       0 |        0 |       0 |       0 |                   
-  AddCityForm.tsx  |       0 |        0 |       0 |       0 | 9-39              
- ...tiesControlBar |       0 |        0 |       0 |       0 |                   
-  ...sControls.tsx |       0 |        0 |       0 |       0 | 17-119            
- ...nts/CitiesList |       0 |        0 |       0 |       0 |                   
-  CitiesList.tsx   |       0 |        0 |       0 |       0 | 18-69             
- ...nents/CityCard |       0 |        0 |       0 |       0 |                   
-  CityCard.tsx     |       0 |        0 |       0 |       0 | 21-119            
- ...tingCityLayout |       0 |        0 |       0 |       0 |                   
-  ...ityLayout.tsx |       0 |        0 |       0 |       0 | 16-25             
- ...recast/graphql |       0 |      100 |     100 |       0 |                   
-  mutations.ts     |       0 |      100 |     100 |       0 | 3-32              
-  queries.ts       |       0 |      100 |     100 |       0 | 3-69              
- ...Forecast/hooks |       0 |        0 |       0 |       0 |                   
-  useAddCity.ts    |       0 |        0 |       0 |       0 | 9-41              
-  ...ddCityForm.ts |       0 |        0 |       0 |       0 | 5-25              
-  ...sPaginated.ts |       0 |        0 |       0 |       0 | 7-55              
-  ...ityActions.ts |       0 |        0 |       0 |       0 | 19-142            
-  useCityByName.ts |       0 |        0 |       0 |       0 | 9-24              
-  useCitySearch.ts |       0 |        0 |       0 |       0 | 11-66             
-  ...eAllCities.ts |       0 |        0 |       0 |       0 | 9-52              
-  useRemoveCity.ts |       0 |        0 |       0 |       0 | 6-45              
-  ...tingParams.ts |       0 |        0 |       0 |       0 | 5-28              
-  ...gglePinned.ts |       0 |        0 |       0 |       0 | 17-56             
- ...Forecast/pages |       0 |        0 |       0 |       0 |                   
-  CitiesPage.tsx   |       0 |        0 |       0 |       0 | 20-70             
- ...ecast/services |       0 |        0 |       0 |       0 |                   
-  CityService.ts   |       0 |        0 |       0 |       0 | 3-35              
- ...Forecast/utils |       0 |        0 |       0 |       0 |                   
-  getNextDays.ts   |       0 |        0 |       0 |       0 | 1-10              
-  ...Background.ts |       0 |        0 |       0 |       0 | 6-46              
+ logger/hooks      |     100 |      100 |     100 |     100 |                   
+  ...teTracking.ts |     100 |      100 |     100 |     100 |                   
+ logger/providers  |     100 |      100 |     100 |     100 |                   
+  ...tProvider.tsx |     100 |      100 |     100 |     100 |                   
+  ...rProvider.tsx |     100 |      100 |     100 |     100 |                   
+ logger/services   |     100 |      100 |     100 |     100 |                   
+  ...rTransport.ts |     100 |      100 |     100 |     100 |                   
+  ...rOperation.ts |     100 |      100 |     100 |     100 |                   
+  ...eueService.ts |     100 |      100 |     100 |     100 |                   
+  ...ateLimiter.ts |     100 |      100 |     100 |     100 |                   
+  ...tryService.ts |     100 |      100 |     100 |     100 |                   
+  LoggerService.ts |     100 |      100 |     100 |     100 |                   
+ logger/utils      |     100 |      100 |     100 |     100 |                   
+  createLogger.ts  |     100 |      100 |     100 |     100 |                   
+  ...ngerObject.ts |     100 |      100 |     100 |     100 |                   
+  isObject.ts      |     100 |      100 |     100 |     100 |                   
+  ...alizeError.ts |     100 |      100 |     100 |     100 |                   
+  ...ForLogging.ts |     100 |      100 |     100 |     100 |                   
+  shouldLog.ts     |     100 |      100 |     100 |     100 |                   
+ ...entWeatherCard |     100 |      100 |     100 |     100 |                   
+  ...atherCard.tsx |     100 |      100 |     100 |     100 |                   
+ .../DailyForecast |     100 |      100 |     100 |     100 |                   
+  ...yForecast.tsx |     100 |      100 |     100 |     100 |                   
+ ...HourlyForecast |     100 |      100 |     100 |     100 |                   
+  ...yForecast.tsx |     100 |      100 |     100 |     100 |                   
+ ...nents/InfoGrid |     100 |      100 |     100 |     100 |                   
+  InfoGrid.tsx     |     100 |      100 |     100 |     100 |                   
+ ...etails/graphql |     100 |      100 |     100 |     100 |                   
+  queries.ts       |     100 |      100 |     100 |     100 |                   
+ ...rDetails/hooks |     100 |      100 |     100 |     100 |                   
+  ...ityWeather.ts |     100 |      100 |     100 |     100 |                   
+ ...rDetails/pages |     100 |      100 |     100 |     100 |                   
+  ...tailsPage.tsx |     100 |      100 |     100 |     100 |                   
+ ...ts/AddCityForm |     100 |      100 |     100 |     100 |                   
+  AddCityForm.tsx  |     100 |      100 |     100 |     100 |                   
+ ...tiesControlBar |     100 |    83.33 |     100 |     100 |                   
+  ...sControls.tsx |     100 |    83.33 |     100 |     100 | 74                
+ ...nts/CitiesList |     100 |      100 |     100 |     100 |                   
+  CitiesList.tsx   |     100 |      100 |     100 |     100 |                   
+ ...nents/CityCard |     100 |      100 |     100 |     100 |                   
+  CityCard.tsx     |     100 |      100 |     100 |     100 |                   
+ ...tingCityLayout |     100 |      100 |     100 |     100 |                   
+  ...ityLayout.tsx |     100 |      100 |     100 |     100 |                   
+ ...recast/graphql |     100 |      100 |     100 |     100 |                   
+  mutations.ts     |     100 |      100 |     100 |     100 |                   
+  queries.ts       |     100 |      100 |     100 |     100 |                   
+ ...Forecast/hooks |     100 |      100 |     100 |     100 |                   
+  useAddCity.ts    |     100 |      100 |     100 |     100 |                   
+  ...ddCityForm.ts |     100 |      100 |     100 |     100 |                   
+  ...sPaginated.ts |     100 |      100 |     100 |     100 |                   
+  ...ityActions.ts |     100 |      100 |     100 |     100 |                   
+  useCityByName.ts |     100 |      100 |     100 |     100 |                   
+  useCitySearch.ts |     100 |      100 |     100 |     100 |                   
+  ...eAllCities.ts |     100 |      100 |     100 |     100 |                   
+  useRemoveCity.ts |     100 |      100 |     100 |     100 |                   
+  ...tingParams.ts |     100 |      100 |     100 |     100 |                   
+  ...gglePinned.ts |     100 |      100 |     100 |     100 |                   
+ ...Forecast/pages |     100 |      100 |     100 |     100 |                   
+  CitiesPage.tsx   |     100 |      100 |     100 |     100 |                   
+ ...ecast/services |     100 |      100 |     100 |     100 |                   
+  CityService.ts   |     100 |      100 |     100 |     100 |                   
+ ...Forecast/utils |     100 |      100 |     100 |     100 |                   
+  getNextDays.ts   |     100 |      100 |     100 |     100 |                   
+  ...Background.ts |     100 |      100 |     100 |     100 |                   
 -------------------|---------|----------|---------|---------|-------------------

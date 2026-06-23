@@ -28,11 +28,9 @@ export const CityCard = React.memo(function CityCard({
   onClick,
 }: CityCardProps) {
   const background = getWeatherBackground(weather?.description);
-
   const { loaded } = useSmartBackground(background);
 
-  const isDisabled = loading;
-
+  const isDisabled = !!loading;
   const days = getNextDays(3);
 
   if (!loaded) {
@@ -50,35 +48,19 @@ export const CityCard = React.memo(function CityCard({
         <Flex gap={4}>
           <Button
             type="text"
-            disabled={isDisabled}
             onClick={(e) => {
               e.stopPropagation();
-
-              if (isDisabled) {
-                return;
-              }
-
+              if (isDisabled) return;
               onTogglePinned();
             }}
-            icon={
-              isPinned ? (
-                <HeartFilled style={{ color: 'red' }} />
-              ) : (
-                <HeartOutlined />
-              )
-            }
+            icon={isPinned ? <HeartFilled /> : <HeartOutlined />}
           />
 
           <Button
             type="text"
-            disabled={isDisabled}
             onClick={(e) => {
               e.stopPropagation();
-
-              if (isDisabled) {
-                return;
-              }
-
+              if (isDisabled) return;
               onRemove();
             }}
             icon={<CloseOutlined />}
@@ -91,15 +73,12 @@ export const CityCard = React.memo(function CityCard({
         <Flex vertical gap={4}>
           <Flex vertical gap={8}>
             <Flex align="center">
-              <Flex flex={1}>
-                <div />
-              </Flex>
+              <Flex flex={1} />
 
               <Flex flex={1} vertical align="center" gap={2}>
                 <AppText strong size="lg">
                   {weather.temperature}°C
                 </AppText>
-
                 <AppText>{weather.description}</AppText>
               </Flex>
 

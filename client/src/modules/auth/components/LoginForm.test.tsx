@@ -1,6 +1,7 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { LoginForm } from './LoginForm';
 import { useLogin } from '@/auth/hooks/useLogin';
 import { LOGIN_FIXTURE } from '@/test/auth/fixtures/login.fixture';
@@ -15,12 +16,10 @@ describe('LoginForm', () => {
   let ctx: LoginFormContext;
 
   const setup = () => {
-    const user = userEvent.setup();
-
     render(<LoginForm />);
 
     return {
-      user,
+      user: userEvent.setup(),
       emailInput: screen.getByLabelText(/email/i),
       passwordInput: screen.getByLabelText(/password/i),
       submitButton: screen.getByRole('button', {
@@ -30,6 +29,8 @@ describe('LoginForm', () => {
   };
 
   beforeEach(() => {
+    vi.clearAllMocks();
+
     ctx = createLoginFormContext();
 
     vi.mocked(useLogin).mockReturnValue({
@@ -49,11 +50,15 @@ describe('LoginForm', () => {
     const { user, emailInput, passwordInput, submitButton } = setup();
 
     await user.type(emailInput, LOGIN_FIXTURE.email);
+
     await user.type(passwordInput, LOGIN_FIXTURE.password);
 
     await user.click(submitButton);
 
-    expect(ctx.loginUser).toHaveBeenCalled();
+    await waitFor(() => {
+      expect(ctx.loginUser).toHaveBeenCalled();
+    });
+
     expect(ctx.loginUser.mock.calls[0][0]).toEqual({
       email: LOGIN_FIXTURE.email,
       password: LOGIN_FIXTURE.password,

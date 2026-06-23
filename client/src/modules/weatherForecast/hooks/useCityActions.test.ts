@@ -1,134 +1,259 @@
-import { handleResult } from '@/common/utils';
-import {
-  createCityActionsContext,
-  type CityActionsContext,
-} from '../test/contexts/cityActions.context';
-import { setupCityActionsRuntime } from '../test/setups/cityActions.runtime';
-import { setupCityActions } from '../test/setups/cityActions.setup';
-import {
-  CITY_FIXTURE,
-  EXISTING_CITY_FIXTURE,
-} from '../test/fixtures/city.fixture';
-import { act } from 'react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { renderHook, act } from '@testing-library/react';
 
-vi.mock('./useAddCity');
-vi.mock('./useRemoveCity');
-vi.mock('./useRemoveAllCities');
-vi.mock('./useTogglePinned');
-vi.mock('./useCityByName');
-vi.mock('@/common/utils');
+import { useCityActions } from './useCityActions';
+import type { City } from '../types';
 
-vi.mock('react-router-dom', async () => {
-  const actual =
-    await vi.importActual<typeof import('react-router-dom')>(
-      'react-router-dom',
-    );
+const mockAddCity = vi.fn();
+const mockRemoveCity = vi.fn();
+const mockRemoveAllCities = vi.fn();
+const mockTogglePinned = vi.fn();
+const mockGetCityByName = vi.fn();
 
-  return {
-    ...actual,
-    useSearchParams: vi.fn(),
-  };
-});
+const mockHandleResult = vi.fn();
+
+const mockSetSearchParams = vi.fn();
+
+let searchParams = new URLSearchParams();
+
+vi.mock('@/common/utils', () => ({
+  handleResult: (...args: unknown[]) => mockHandleResult(...args),
+}));
+
+vi.mock('react-router-dom', () => ({
+  useSearchParams: () => [searchParams, mockSetSearchParams],
+}));
+
+vi.mock('./useAddCity', () => ({
+  useAddCity: () => ({
+    addCity: mockAddCity,
+  }),
+}));
+
+vi.mock('./useRemoveCity', () => ({
+  useRemoveCity: () => ({
+    removeCity: mockRemoveCity,
+  }),
+}));
+
+vi.mock('./useRemoveAllCities', () => ({
+  useRemoveAllCities: () => ({
+    removeAllCities: mockRemoveAllCities,
+  }),
+}));
+
+vi.mock('./useTogglePinned', () => ({
+  useTogglePinned: () => ({
+    togglePinned: mockTogglePinned,
+  }),
+}));
+
+vi.mock('./useCityByName', () => ({
+  useCityByName: () => ({
+    getCityByName: mockGetCityByName,
+  }),
+}));
 
 describe('useCityActions', () => {
-  let ctx: CityActionsContext;
+  const showSuccessNotification = vi.fn();
+  const showErrorNotification = vi.fn();
+  const showInfoNotification = vi.fn();
 
   beforeEach(() => {
-    ctx = createCityActionsContext();
+    vi.clearAllMocks();
 
-    setupCityActionsRuntime(ctx);
+    searchParams = new URLSearchParams();
   });
 
-  it('shows existing city notification', async () => {
-    ctx.getCityByName.mockResolvedValue(EXISTING_CITY_FIXTURE);
-
-    const { handleAddCity } = setupCityActions(ctx);
-
-    await handleAddCity(CITY_FIXTURE.lat, CITY_FIXTURE.lon, CITY_FIXTURE.city);
-
-    expect(ctx.addCity).not.toHaveBeenCalled();
-
-    expect(ctx.showInfoNotification).toHaveBeenCalledWith(
-      `City ${CITY_FIXTURE.city} already exists`,
+  const renderUseCityActions = () =>
+    renderHook(() =>
+      useCityActions({
+        showSuccessNotification,
+        showErrorNotification,
+        showInfoNotification,
+      }),
     );
 
-    expect(ctx.setSearchParams).toHaveBeenCalled();
-  });
+  it('should add city successfully', async () => {
+    mockGetCityByName.mockResolvedValue(null);
 
-  it('handles add city error', async () => {
-    ctx.getCityByName.mockRejectedValue(new Error());
+    const { result } = renderUseCityActions();
 
-    const { handleAddCity } = setupCityActions(ctx);
-
-    await handleAddCity(CITY_FIXTURE.lat, CITY_FIXTURE.lon, CITY_FIXTURE.city);
-
-    expect(ctx.showErrorNotification).toHaveBeenCalledWith(
-      'Failed to add city',
-    );
-  });
-
-  it('removes city successfully', async () => {
-    const { handleRemoveCity } = setupCityActions(ctx);
-
-    await handleRemoveCity(CITY_FIXTURE.id, CITY_FIXTURE.city);
-
-    expect(ctx.removeCity).toHaveBeenCalledWith(CITY_FIXTURE.id);
-
-    expect(handleResult).toHaveBeenCalled();
-  });
-
-  it('clears selected city when removed city is selected', async () => {
-    setupCityActionsRuntime(ctx, {
-      existingId: CITY_FIXTURE.id,
+    await act(async () => {
+      await result.current.handleAddCity(10, 20, 'Kyiv');
     });
 
-    const { handleRemoveCity } = setupCityActions(ctx);
+    expect(mockAddCity).toHaveBeenCalledWith(10, 20, 'Kyiv');
 
-    await handleRemoveCity(CITY_FIXTURE.id, CITY_FIXTURE.city);
-
-    expect(ctx.setSearchParams).toHaveBeenCalled();
-
-    // expect(ctx.searchParams.delete).toHaveBeenCalledWith('existingId');
+    expect(showSuccessNotification).toHaveBeenCalledWith(
+      'City Kyiv added successfully',
+    );
   });
 
-  it('toggles pinned city', async () => {
-    const { handleTogglePinned } = setupCityActions(ctx);
+  it('should handle existing city', async () => {
+    mockGetCityByName.mockResolvedValue({
+      id: '123',
+      city: 'Kyiv',
+    });
 
-    await handleTogglePinned(CITY_FIXTURE.id, false);
+    const { result } = renderUseCityActions();
 
-    expect(ctx.togglePinned).toHaveBeenCalledWith(CITY_FIXTURE.id, false);
+    await act(async () => {
+      await result.current.handleAddCity(10, 20, 'Kyiv');
+    });
+
+    expect(mockSetSearchParams).toHaveBeenCalled();
+
+    expect(showInfoNotification).toHaveBeenCalledWith(
+      'City Kyiv already exists',
+    );
+
+    expect(mockAddCity).not.toHaveBeenCalled();
   });
 
-  it('removes all cities', async () => {
-    ctx.removeAllCities.mockResolvedValue({
+  it('should handle add city error', async () => {
+    mockGetCityByName.mockRejectedValue(new Error());
+
+    const { result } = renderUseCityActions();
+
+    await act(async () => {
+      await result.current.handleAddCity(10, 20, 'Kyiv');
+    });
+
+    expect(showErrorNotification).toHaveBeenCalledWith('Failed to add city');
+  });
+
+  it('should remove city', async () => {
+    const { result } = renderUseCityActions();
+
+    await act(async () => {
+      await result.current.handleRemoveCity('123', 'Kyiv');
+    });
+
+    expect(mockRemoveCity).toHaveBeenCalledWith('123');
+
+    expect(mockHandleResult).toHaveBeenCalled();
+  });
+
+  it('should remove selected city', async () => {
+    searchParams = new URLSearchParams('existingId=123');
+
+    const { result } = renderUseCityActions();
+
+    await act(async () => {
+      await result.current.handleRemoveCity('123', 'Kyiv');
+    });
+
+    expect(mockSetSearchParams).toHaveBeenCalled();
+  });
+
+  it('should toggle pinned', async () => {
+    const { result } = renderUseCityActions();
+
+    await act(async () => {
+      await result.current.handleTogglePinned('123', false);
+    });
+
+    expect(mockTogglePinned).toHaveBeenCalledWith('123', false);
+  });
+
+  it('should remove all cities success', async () => {
+    mockRemoveAllCities.mockResolvedValue({
       ok: true,
       code: undefined,
     });
 
-    const { handleDeleteAllCities } = setupCityActions(ctx);
-
-    await handleDeleteAllCities();
-
-    expect(ctx.removeAllCities).toHaveBeenCalled();
-
-    expect(handleResult).toHaveBeenCalled();
-  });
-
-  it('adds city successfully', async () => {
-    ctx.addCity.mockResolvedValue(CITY_FIXTURE);
-
-    const { handleAddCity } = setupCityActions(ctx);
+    const { result } = renderUseCityActions();
 
     await act(async () => {
-      await handleAddCity(
-        CITY_FIXTURE.lat,
-        CITY_FIXTURE.lon,
-        CITY_FIXTURE.city,
-      );
+      await result.current.handleDeleteAllCities();
     });
 
-    expect(ctx.showSuccessNotification).toHaveBeenCalledWith(
-      `City ${CITY_FIXTURE.city} added successfully`,
+    expect(mockHandleResult).toHaveBeenCalledWith(
+      {
+        ok: true,
+        code: undefined,
+      },
+      expect.any(Object),
     );
+  });
+
+  it('should remove all cities failed', async () => {
+    mockRemoveAllCities.mockResolvedValue({
+      ok: false,
+      code: undefined,
+    });
+
+    const { result } = renderUseCityActions();
+
+    await act(async () => {
+      await result.current.handleDeleteAllCities();
+    });
+
+    expect(mockHandleResult).toHaveBeenCalledWith(
+      {
+        ok: false,
+        code: undefined,
+      },
+      expect.any(Object),
+    );
+  });
+
+  it('should return initial state', () => {
+    const { result } = renderUseCityActions();
+
+    expect(result.current.isAddingCity).toBe(false);
+
+    expect(result.current.currentlyRemovingCityId).toBe(null);
+
+    expect(result.current.currentlySelectedCity).toBe(null);
+  });
+
+  it('should return early when city is already being added', async () => {
+    let resolvePromise!: () => void;
+
+    const pendingPromise = new Promise<void>((resolve) => {
+      resolvePromise = resolve;
+    });
+
+    mockGetCityByName.mockReturnValue(pendingPromise);
+
+    const { result, rerender } = renderUseCityActions();
+
+    act(() => {
+      result.current.handleAddCity(10, 20, 'Kyiv');
+    });
+
+    rerender();
+
+    await act(async () => {
+      await result.current.handleAddCity(10, 20, 'Kyiv');
+
+      resolvePromise();
+    });
+
+    expect(mockGetCityByName).toHaveBeenCalledTimes(1);
+  });
+
+  it('should update selected city pinned state', async () => {
+    const { result } = renderUseCityActions();
+
+    act(() => {
+      result.current.setCurrentlySelectedCity({
+        id: '123',
+        city: 'Kyiv',
+        isPinned: false,
+      } as React.SetStateAction<City | null>);
+    });
+
+    await act(async () => {
+      await result.current.handleTogglePinned('123', false);
+    });
+
+    expect(result.current.currentlySelectedCity).toEqual({
+      id: '123',
+      city: 'Kyiv',
+      isPinned: true,
+    });
   });
 });

@@ -31,7 +31,7 @@ export const BackgroundCard = ({
           <>
             <img
               src={backgroundImage}
-              alt=""
+              alt="backgroundImage"
               fetchPriority="high"
               className={styles.backgroundImage}
             />

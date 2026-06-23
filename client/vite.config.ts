@@ -31,7 +31,12 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['html', 'text'],
       include: ['src/**/*.ts', 'src/**/*.tsx'],
+
       exclude: [
+        '**/test/**',
+        '**/types/**',
+        '**/__tests__/**',
+
         '**/index.ts',
         '**/index.tsx',
         '**/module.ts',
@@ -39,6 +44,7 @@ export default defineConfig({
         '**/main.tsx',
         '**/App.tsx',
       ],
+
       reportsDirectory: './coverage',
     },
   },

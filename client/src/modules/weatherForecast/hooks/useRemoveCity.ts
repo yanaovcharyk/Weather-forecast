@@ -13,15 +13,14 @@ export const useRemoveCity = () => {
 
       cache.modify({
         fields: {
-          citiesPaginated(existingConnection = {}, { readField }) {
+          citiesPaginated(existingConnection = { edges: [] }, { readField }) {
             return {
               ...existingConnection,
 
-              edges: existingConnection.edges.filter((edgeRef: Reference) => {
-                return (
-                  readField('id', readField('node', edgeRef)) !== deletedId
-                );
-              }),
+              edges: existingConnection.edges.filter(
+                (edgeRef: Reference) =>
+                  readField('id', readField('node', edgeRef)) !== deletedId,
+              ),
             };
           },
         },
