@@ -2,7 +2,7 @@
 -------------------|---------|----------|---------|---------|-------------------
 File               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
 -------------------|---------|----------|---------|---------|-------------------
-All files          |     100 |     99.7 |     100 |     100 |                   
+All files          |     100 |      100 |     100 |     100 |                   
  auth/components   |     100 |      100 |     100 |     100 |                   
   LoginForm.tsx    |     100 |      100 |     100 |     100 |                   
  auth/contexts     |     100 |      100 |     100 |     100 |                   
@@ -131,8 +131,8 @@ All files          |     100 |     99.7 |     100 |     100 |
   ...tailsPage.tsx |     100 |      100 |     100 |     100 |                   
  ...ts/AddCityForm |     100 |      100 |     100 |     100 |                   
   AddCityForm.tsx  |     100 |      100 |     100 |     100 |                   
- ...tiesControlBar |     100 |    83.33 |     100 |     100 |                   
-  ...sControls.tsx |     100 |    83.33 |     100 |     100 | 74                
+ ...tiesControlBar |     100 |      100 |     100 |     100 |                   
+  ...sControls.tsx |     100 |      100 |     100 |     100 |                   
  ...nts/CitiesList |     100 |      100 |     100 |     100 |                   
   CitiesList.tsx   |     100 |      100 |     100 |     100 |                   
  ...nents/CityCard |     100 |      100 |     100 |     100 |                   

@@ -232,4 +232,26 @@ describe('CitiesControls', () => {
       sortOrder: 'ASC',
     });
   });
+
+  it('renders down icon when sortOrder is DESC', () => {
+    renderComponent({
+      sorting: {
+        sortBy: 'city',
+        sortOrder: 'DESC',
+      },
+    });
+
+    expect(screen.getByLabelText('arrow-down')).toBeInTheDocument();
+  });
+
+  it('renders up icon when sortOrder is ASC', () => {
+    renderComponent({
+      sorting: {
+        sortBy: 'city',
+        sortOrder: 'ASC',
+      },
+    });
+
+    expect(screen.getByLabelText('arrow-up')).toBeInTheDocument();
+  });
 });

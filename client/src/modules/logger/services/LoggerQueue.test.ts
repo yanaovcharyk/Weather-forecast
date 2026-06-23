@@ -248,11 +248,7 @@ describe('LoggerQueue', () => {
 
     expect(setIntervalSpy).toHaveBeenCalledTimes(1);
 
-    (
-      q as LoggerQueue & {
-        startAutoSendScheduler(): void;
-      }
-    ).startAutoSendScheduler();
+    (q as unknown as Record<string, () => void>)['startAutoSendScheduler']();
 
     expect(setIntervalSpy).toHaveBeenCalledTimes(1);
 
