@@ -1,17 +1,27 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import React from 'react';
 
 import { AddCityForm } from './AddCityForm';
+
 import { useAddCityForm } from '@/weatherForecast/hooks/useAddCityForm';
 import { useIsMobile } from '@/common/hooks/useIsMobile';
-import type { FormInstance } from 'antd';
+import {
+  createUseAddCityFormResult,
+  handleSubmitMock,
+} from '@/weatherForecast/test/fixtures';
+import { createFormMock } from '@/weatherForecast/test/fixtures';
 
 vi.mock('@/weatherForecast/hooks/useAddCityForm');
 vi.mock('@/common/hooks/useIsMobile');
 
-const selectMock = vi.fn();
+type SelectProps = {
+  placement?: string;
+  getPopupContainer?: () => HTMLElement;
+};
+
+const selectMock = vi.fn<(props: SelectProps) => void>();
 
 vi.mock('antd', async (importOriginal) => {
   const actual = await importOriginal<typeof import('antd')>();
@@ -40,10 +50,8 @@ vi.mock('antd', async (importOriginal) => {
 
   return {
     ...actual,
-
     Form: FormMock,
-
-    Select: (props: unknown) => {
+    Select: (props: SelectProps) => {
       selectMock(props);
       return <div data-testid="select" />;
     },
@@ -67,91 +75,96 @@ vi.mock('antd', async (importOriginal) => {
 describe('AddCityForm', () => {
   const onSubmit = vi.fn();
 
-  const handleSubmit = vi.fn();
-  const handleSearch = vi.fn();
+  const setup = (
+    props: {
+      onSubmit: typeof onSubmit;
+      disabled: boolean;
+    } = {
+      onSubmit,
+      disabled: false,
+    },
+  ) => {
+    const user = userEvent.setup();
+
+    render(<AddCityForm {...props} />);
+
+    return { user };
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
 
     vi.mocked(useIsMobile).mockReturnValue(false);
 
-    vi.mocked(useAddCityForm).mockReturnValue({
-      form: {
-        getFieldError: vi.fn().mockReturnValue([]),
-      } as never,
-      loading: false,
-      handleSearch,
-      cityOptions: [
-        {
-          label: 'Kyiv',
-          value: 'kyiv',
-        },
-      ],
-      handleSubmit,
-    });
+    vi.mocked(useAddCityForm).mockReturnValue(createUseAddCityFormResult());
   });
 
   it('renders select and submit button', () => {
-    render(<AddCityForm onSubmit={onSubmit} disabled={false} />);
+    setup();
 
     expect(screen.getByTestId('select')).toBeInTheDocument();
 
-    expect(screen.getByRole('button', { name: /add/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', {
+        name: /add/i,
+      }),
+    ).toBeInTheDocument();
   });
 
   it('calls submit handler', async () => {
-    const user = userEvent.setup();
+    const { user } = setup();
 
-    render(<AddCityForm onSubmit={onSubmit} disabled={false} />);
+    await user.click(
+      screen.getByRole('button', {
+        name: /add/i,
+      }),
+    );
 
-    await user.click(screen.getByRole('button', { name: /add/i }));
-
-    expect(handleSubmit).toHaveBeenCalledTimes(1);
+    expect(handleSubmitMock).toHaveBeenCalledTimes(1);
   });
 
   it('disables button when disabled', () => {
-    render(<AddCityForm onSubmit={onSubmit} disabled />);
+    setup({
+      onSubmit,
+      disabled: true,
+    });
 
-    expect(screen.getByRole('button', { name: /add/i })).toBeDisabled();
+    expect(
+      screen.getByRole('button', {
+        name: /add/i,
+      }),
+    ).toBeDisabled();
   });
 
   it('passes getPopupContainer returning document.body', () => {
-    render(<AddCityForm onSubmit={onSubmit} disabled={false} />);
+    setup();
 
     expect(selectMock).toHaveBeenCalled();
 
-    const props = selectMock.mock.calls[0][0] as {
-      getPopupContainer?: () => HTMLElement;
-    };
+    const props = selectMock.mock.calls[0][0];
 
-    expect(typeof props.getPopupContainer).toBe('function');
+    expect(props.getPopupContainer).toBeDefined();
     expect(props.getPopupContainer?.()).toBe(document.body);
   });
 
-  it('covers mobile + placement topLeft', () => {
+  it('uses topLeft placement on mobile', () => {
     vi.mocked(useIsMobile).mockReturnValue(true);
 
-    render(<AddCityForm onSubmit={onSubmit} disabled={false} />);
+    setup();
 
-    const props = selectMock.mock.calls[0][0] as {
-      placement?: string;
-    };
+    const props = selectMock.mock.calls[0][0];
 
     expect(props.placement).toBe('topLeft');
   });
 
-  it('covers error state (validateStatus = error)', () => {
-    vi.mocked(useAddCityForm).mockReturnValue({
-      form: {
-        getFieldError: vi.fn().mockReturnValue(['error']),
-      } as unknown as FormInstance,
-      loading: false,
-      handleSearch,
-      cityOptions: [{ label: 'Kyiv', value: 'kyiv' }],
-      handleSubmit,
-    });
+  it('renders with form error', () => {
+    vi.mocked(useAddCityForm).mockReturnValue(
+      createUseAddCityFormResult({
+        form: createFormMock(['error']),
+      }),
+    );
 
-    render(<AddCityForm onSubmit={onSubmit} disabled={false} />);
+    setup();
 
     expect(screen.getByTestId('select')).toBeInTheDocument();
   });

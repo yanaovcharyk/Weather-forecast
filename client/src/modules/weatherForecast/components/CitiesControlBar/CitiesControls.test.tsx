@@ -1,143 +1,88 @@
-import { render, screen, within } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen, within } from '@testing-library/react';
 import { vi } from 'vitest';
 
-import { CitiesControls } from './CitiesControls';
-
-import type { ConfirmModalProps } from '@/common/components/ConfirmModal/ConfirmModal';
-import type { SelectProps } from 'antd';
-import type { ReactNode } from 'react';
-
-type ConfirmModalMockProps = Pick<
-  ConfirmModalProps,
-  'visible' | 'onOk' | 'onCancel'
->;
-
-vi.mock('@/common/components', () => ({
-  ConfirmModal: ({ visible, onOk, onCancel }: ConfirmModalMockProps) =>
-    visible ? (
-      <div role="dialog">
-        <button data-testid="confirm-delete" onClick={onOk}>
-          Delete all
-        </button>
-        <button onClick={onCancel}>Cancel</button>
-      </div>
-    ) : null,
-}));
-
-type SelectMockProps = Pick<
-  SelectProps<string>,
-  'value' | 'onChange' | 'disabled'
->;
-
-type ButtonMockProps = {
-  children?: ReactNode;
-  onClick?: () => void;
-  disabled?: boolean;
-  icon?: ReactNode;
-};
-
-type CheckboxMockProps = {
-  checked?: boolean;
-  children?: ReactNode;
-  onChange?: (e: { target: { checked: boolean } }) => void;
-};
-
-vi.mock('antd', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('antd')>();
+vi.mock('@/common/components', async () => {
+  const { ConfirmModalMock } =
+    await import('@/weatherForecast/test/mocks/CitiesControls.mocks');
 
   return {
-    ...actual,
-
-    Select: ({ value, onChange, disabled }: SelectMockProps) => (
-      <select
-        data-testid="select"
-        value={value ?? undefined}
-        onChange={(e) => onChange?.(e.target.value as string)}
-        disabled={disabled}
-      >
-        <option value="city">City name</option>
-        <option value="createdAt">Date added</option>
-      </select>
-    ),
-
-    Button: ({ children, onClick, disabled, icon }: ButtonMockProps) => (
-      <button onClick={onClick} disabled={disabled}>
-        {icon}
-        {children}
-      </button>
-    ),
-
-    Checkbox: ({ checked, onChange, children }: CheckboxMockProps) => (
-      <label>
-        <input
-          type="checkbox"
-          checked={checked}
-          onChange={(e) =>
-            onChange?.({ target: { checked: e.target.checked } })
-          }
-        />
-        {children}
-      </label>
-    ),
+    ConfirmModal: ConfirmModalMock,
   };
 });
 
-type Props = React.ComponentProps<typeof CitiesControls>;
+vi.mock('antd', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('antd')>();
+  const { ButtonMock, CheckboxMock, SelectMock } =
+    await import('@/weatherForecast/test/mocks/CitiesControls.mocks');
 
-const defaultProps: Props = {
-  sorting: {
-    sortBy: 'city',
-    sortOrder: 'ASC',
-  },
-  setSorting: vi.fn() as Props['setSorting'],
-  onDeleteAll: vi.fn().mockResolvedValue(undefined),
-  showPinnedOnly: false,
-  setShowPinnedOnly: vi.fn() as Props['setShowPinnedOnly'],
-  disabledStates: {
-    sorting: false,
-    deleteAll: false,
-    pinnedFilter: false,
-  },
-};
+  return {
+    ...actual,
+    Button: ButtonMock,
+    Checkbox: CheckboxMock,
+    Select: SelectMock,
+  };
+});
 
-const renderComponent = (props: Partial<typeof defaultProps> = {}) =>
-  render(<CitiesControls {...defaultProps} {...props} />);
+import {
+  getSortingUpdater,
+  setupCitiesControls as setup,
+} from '@/weatherForecast/test/setups/citiesControls.setup';
 
 describe('CitiesControls', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it('renders controls', () => {
-    renderComponent();
+    setup();
+
     expect(screen.getByText(/sort by/i)).toBeInTheDocument();
-    expect(screen.getByRole('checkbox')).toBeInTheDocument();
+    expect(
+      screen.getByRole('checkbox', { name: /favourites only/i }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /delete all/i }),
+    ).toBeInTheDocument();
   });
 
-  it('changes sortBy via select', async () => {
-    const user = userEvent.setup();
-
-    renderComponent();
-
-    await user.selectOptions(screen.getByTestId('select'), 'createdAt');
-
-    expect(defaultProps.setSorting).toHaveBeenCalledWith(expect.any(Function));
-  });
-
-  it('toggles sort order both ways', async () => {
+  it('updates sortBy via select', async () => {
     const setSorting = vi.fn();
-    const user = userEvent.setup();
+    const { user, getSortSelect } = setup({ setSorting });
 
-    renderComponent({ setSorting });
+    await user.selectOptions(getSortSelect(), 'createdAt');
 
-    const btn = screen.getAllByRole('button')[0];
-    await user.click(btn);
+    const updater = getSortingUpdater(setSorting);
 
-    const updater = setSorting.mock.calls[0][0] as (
-      prev: typeof defaultProps.sorting,
-    ) => typeof defaultProps.sorting;
+    expect(updater({ sortBy: 'city', sortOrder: 'ASC' })).toEqual({
+      sortBy: 'createdAt',
+      sortOrder: 'ASC',
+    });
+  });
+
+  it('toggles sort order from ASC to DESC', async () => {
+    const setSorting = vi.fn();
+    const { user, getSortOrderButton } = setup({ setSorting });
+
+    await user.click(getSortOrderButton());
+
+    const updater = getSortingUpdater(setSorting);
 
     expect(updater({ sortBy: 'city', sortOrder: 'ASC' })).toEqual({
       sortBy: 'city',
       sortOrder: 'DESC',
     });
+  });
+
+  it('toggles sort order from DESC to ASC', async () => {
+    const setSorting = vi.fn();
+    const { user, getSortOrderButton } = setup({
+      sorting: { sortBy: 'city', sortOrder: 'DESC' },
+      setSorting,
+    });
+
+    await user.click(getSortOrderButton());
+
+    const updater = getSortingUpdater(setSorting);
 
     expect(updater({ sortBy: 'city', sortOrder: 'DESC' })).toEqual({
       sortBy: 'city',
@@ -146,47 +91,40 @@ describe('CitiesControls', () => {
   });
 
   it('toggles pinned filter', async () => {
-    const user = userEvent.setup();
+    const setShowPinnedOnly = vi.fn();
+    const { user, getPinnedCheckbox } = setup({ setShowPinnedOnly });
 
-    renderComponent();
+    await user.click(getPinnedCheckbox());
 
-    await user.click(screen.getByRole('checkbox'));
-
-    expect(defaultProps.setShowPinnedOnly).toHaveBeenCalledWith(true);
+    expect(setShowPinnedOnly).toHaveBeenCalledWith(true);
   });
 
   it('opens and closes confirmation modal', async () => {
-    const user = userEvent.setup();
+    const { user, getDeleteAllButton } = setup();
 
-    renderComponent();
+    await user.click(getDeleteAllButton());
 
-    await user.click(screen.getByRole('button', { name: /delete all/i }));
+    const dialog = screen.getByRole('dialog');
 
-    expect(screen.getByRole('dialog')).toBeInTheDocument();
+    expect(dialog).toBeInTheDocument();
 
-    await user.click(
-      within(screen.getByRole('dialog')).getByRole('button', {
-        name: /cancel/i,
-      }),
-    );
+    await user.click(within(dialog).getByRole('button', { name: /cancel/i }));
 
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('confirms delete all', async () => {
-    const user = userEvent.setup();
+    const onDeleteAll = vi.fn().mockResolvedValue(undefined);
+    const { user, getDeleteAllButton } = setup({ onDeleteAll });
 
-    renderComponent();
-
-    await user.click(screen.getByRole('button', { name: /delete all/i }));
-
+    await user.click(getDeleteAllButton());
     await user.click(screen.getByTestId('confirm-delete'));
 
-    expect(defaultProps.onDeleteAll).toHaveBeenCalledTimes(1);
+    expect(onDeleteAll).toHaveBeenCalledTimes(1);
   });
 
-  it('disables sorting controls when disabledStates.sorting is true', () => {
-    renderComponent({
+  it('disables sorting controls when sorting is disabled', () => {
+    const { getSortSelect, getSortOrderButton } = setup({
       disabledStates: {
         sorting: true,
         deleteAll: false,
@@ -194,12 +132,12 @@ describe('CitiesControls', () => {
       },
     });
 
-    expect(screen.getByTestId('select')).toBeDisabled();
-    expect(screen.getAllByRole('button')[0]).toBeDisabled();
+    expect(getSortSelect()).toBeDisabled();
+    expect(getSortOrderButton()).toBeDisabled();
   });
 
-  it('disables delete all button when disabledStates.deleteAll is true', () => {
-    renderComponent({
+  it('disables delete all button when deleteAll is disabled', () => {
+    const { getDeleteAllButton } = setup({
       disabledStates: {
         sorting: false,
         deleteAll: true,
@@ -207,34 +145,11 @@ describe('CitiesControls', () => {
       },
     });
 
-    expect(screen.getByRole('button', { name: /delete all/i })).toBeDisabled();
-  });
-
-  it('updates sortBy value correctly', async () => {
-    const user = userEvent.setup();
-    const setSorting = vi.fn();
-
-    renderComponent({ setSorting });
-
-    await user.selectOptions(screen.getByTestId('select'), 'createdAt');
-
-    const updater = setSorting.mock.calls[0][0] as (
-      prev: typeof defaultProps.sorting,
-    ) => typeof defaultProps.sorting;
-
-    expect(
-      updater({
-        sortBy: 'city',
-        sortOrder: 'ASC',
-      }),
-    ).toEqual({
-      sortBy: 'createdAt',
-      sortOrder: 'ASC',
-    });
+    expect(getDeleteAllButton()).toBeDisabled();
   });
 
   it('renders down icon when sortOrder is DESC', () => {
-    renderComponent({
+    setup({
       sorting: {
         sortBy: 'city',
         sortOrder: 'DESC',
@@ -245,7 +160,7 @@ describe('CitiesControls', () => {
   });
 
   it('renders up icon when sortOrder is ASC', () => {
-    renderComponent({
+    setup({
       sorting: {
         sortBy: 'city',
         sortOrder: 'ASC',

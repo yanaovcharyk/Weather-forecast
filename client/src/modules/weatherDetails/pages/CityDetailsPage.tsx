@@ -1,6 +1,6 @@
 import { Space, Alert, Button } from 'antd';
 import { useNavigate, useSearchParams } from 'react-router';
-import { useCityWeather } from '../hooks/useCityWeather';
+import { useCityWeather } from '@/weatherDetails/hooks';
 import {
   PageLayout,
   Header,
@@ -11,7 +11,7 @@ import {
   CurrentWeatherCard,
   HourlyForecast,
   DailyForecast,
-} from '../components';
+} from '@/weatherDetails/components';
 
 export const CityDetailsPage = () => {
   const { city, weather, loading, error } = useCityWeather();

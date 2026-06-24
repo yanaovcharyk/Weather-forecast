@@ -4,11 +4,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LoginForm } from './LoginForm';
 import { useLogin } from '@/auth/hooks/useLogin';
-import { LOGIN_FIXTURE } from '@/test/auth/fixtures/login.fixture';
 import {
   createLoginFormContext,
   type LoginFormContext,
-} from '@/test/auth/contexts/login-form.context';
+} from '@/auth/test/contexts';
+import { LOGIN_FIXTURE } from '@/auth/test/fixtures';
 
 vi.mock('@/auth/hooks/useLogin');
 

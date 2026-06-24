@@ -1,22 +1,15 @@
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
 import {
   createAuthProviderContext,
   type AuthProviderContext,
-} from '../../test/auth/contexts/auth-provider.context';
+} from '@/auth/test/contexts';
 
-import { setupAuthProviderRuntime } from '../../test/auth/runtimes/auth-provider.runtime';
-import { loggerContext } from '../../logger';
-import { setupAuthProvider } from '../../test/auth/setups/auth-provider.setup';
+import { setupAuthProviderRuntime } from '@/auth/test/runtimes';
+import { setupAuthProvider } from '@/auth/test/setups';
+import '@/test/mocks/apollo.mock';
 
-vi.mock('@apollo/client/react', async () => {
-  const actual = await vi.importActual<typeof import('@apollo/client/react')>(
-    '@apollo/client/react',
-  );
-
-  return {
-    ...actual,
-    useQuery: vi.fn(),
-  };
-});
+import { loggerContext } from '@/logger';
 
 describe('AuthProvider', () => {
   let ctx: AuthProviderContext;

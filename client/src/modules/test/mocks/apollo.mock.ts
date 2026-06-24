@@ -1,9 +1,14 @@
 import { vi } from 'vitest';
 
-export const createApolloMutationMock = () => {
-  const mutate = vi.fn();
+export const useQueryMock = vi.fn();
+
+vi.mock('@apollo/client/react', async () => {
+  const actual = await vi.importActual<typeof import('@apollo/client/react')>(
+    '@apollo/client/react',
+  );
 
   return {
-    mutate,
+    ...actual,
+    useQuery: useQueryMock,
   };
-};
+});

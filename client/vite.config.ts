@@ -26,6 +26,7 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: './src/modules/test/setup.ts',
     globals: true,
+    clearMocks: true,
 
     coverage: {
       provider: 'v8',
@@ -46,6 +47,9 @@ export default defineConfig({
       ],
 
       reportsDirectory: './coverage',
+      thresholds: {
+        100: true,
+      },
     },
   },
 });

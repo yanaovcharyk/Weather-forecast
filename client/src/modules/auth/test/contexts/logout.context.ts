@@ -1,4 +1,4 @@
-import { createMutationMock } from '../../mocks/mutation.mock';
+import { createMutationMock } from '@/test/mocks/mutation.mock';
 
 export const createLogoutContext = () => ({
   mutation: createMutationMock(),

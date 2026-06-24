@@ -1,10 +1,10 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach, type Mock } from 'vitest';
-import { CityDetailsPage } from './CityDetailsPage';
-
-import { useCityWeather } from '../hooks/useCityWeather';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useNavigate, useSearchParams } from 'react-router';
 import type { ReactNode } from 'react';
+import { CityDetailsPage } from './CityDetailsPage';
+import { useCityWeather } from '@/weatherDetails/hooks';
+import { createCityWeatherState } from '@/weatherDetails/test/fixtures';
 
 vi.mock('../hooks/useCityWeather');
 
@@ -27,46 +27,50 @@ vi.mock('@/common/components', () => ({
 }));
 
 vi.mock('../components', () => ({
-  CurrentWeatherCard: ({ city }: { city: { name: string } }) => (
-    <div>Current: {city.name}</div>
+  CurrentWeatherCard: ({ city }: { city: string }) => (
+    <div>Current: {city}</div>
   ),
   HourlyForecast: () => <div>Hourly</div>,
   DailyForecast: () => <div>Daily</div>,
 }));
 
-describe('CityDetailsPage', () => {
-  const navigateMock = vi.fn();
-  const searchParamsMock = new URLSearchParams('test=1');
+const navigateMock = vi.fn();
+const searchParamsMock = new URLSearchParams('test=1');
 
+const setup = (state = createCityWeatherState()) => {
+  vi.mocked(useCityWeather).mockReturnValue(state);
+
+  return render(<CityDetailsPage />);
+};
+
+describe('CityDetailsPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    (useNavigate as Mock).mockReturnValue(navigateMock);
-    (useSearchParams as Mock).mockReturnValue([searchParamsMock]);
+    vi.mocked(useNavigate).mockReturnValue(navigateMock);
+    vi.mocked(useSearchParams).mockReturnValue([searchParamsMock, vi.fn()]);
   });
 
   it('shows loading state', () => {
-    (useCityWeather as Mock).mockReturnValue({
-      city: null,
-      weather: null,
-      loading: true,
-      error: null,
-    });
-
-    render(<CityDetailsPage />);
+    setup(
+      createCityWeatherState({
+        city: undefined,
+        weather: undefined,
+        loading: true,
+      }),
+    );
 
     expect(screen.getByText('Loading...')).toBeInTheDocument();
   });
 
   it('shows error state', () => {
-    (useCityWeather as Mock).mockReturnValue({
-      city: null,
-      weather: null,
-      loading: false,
-      error: { message: 'Network error' },
-    });
-
-    render(<CityDetailsPage />);
+    setup(
+      createCityWeatherState({
+        city: undefined,
+        weather: undefined,
+        error: new Error('Network error'),
+      }),
+    );
 
     expect(screen.getByText('Failed to load weather data')).toBeInTheDocument();
 
@@ -74,32 +78,15 @@ describe('CityDetailsPage', () => {
   });
 
   it('renders weather data', () => {
-    (useCityWeather as Mock).mockReturnValue({
-      city: { name: 'Kyiv' },
-      weather: {
-        hourly: [],
-        daily: [],
-      },
-      loading: false,
-      error: null,
+    setup();
+
+    ['Current: Kyiv', 'Hourly', 'Daily'].forEach((text) => {
+      expect(screen.getByText(text)).toBeInTheDocument();
     });
-
-    render(<CityDetailsPage />);
-
-    expect(screen.getByText('Current: Kyiv')).toBeInTheDocument();
-    expect(screen.getByText('Hourly')).toBeInTheDocument();
-    expect(screen.getByText('Daily')).toBeInTheDocument();
   });
 
   it('navigates back on click', () => {
-    (useCityWeather as Mock).mockReturnValue({
-      city: { name: 'Kyiv' },
-      weather: { hourly: [], daily: [] },
-      loading: false,
-      error: null,
-    });
-
-    render(<CityDetailsPage />);
+    setup();
 
     fireEvent.click(screen.getByText('← Back to all cities'));
 

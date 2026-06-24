@@ -1,14 +1,11 @@
-import {
-  createLoginContext,
-  type LoginContext,
-} from '@/test/auth/contexts/login.context';
+import { createLoginContext, type LoginContext } from '@/auth/test/contexts';
 import {
   LOGIN_FAIL_RESPONSE,
   LOGIN_FIXTURE,
   LOGIN_SUCCESS_RESPONSE,
-} from '@/test/auth/fixtures/login.fixture';
-import { setupLoginRuntime } from '@/test/auth/runtimes/login.runtime';
-import { setupLogin } from '@/test/auth/setups/login.setup';
+} from '@/auth/test/fixtures';
+import { setupLoginRuntime } from '@/auth/test/runtimes/login.runtime';
+import { setupLogin } from '@/auth/test/setups/login.setup';
 
 vi.mock('@apollo/client/react');
 vi.mock('./useAuth');

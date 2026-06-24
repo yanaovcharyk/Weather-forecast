@@ -3,3 +3,8 @@ export { useRemoveCity } from './useRemoveCity';
 export { useSortingParams } from './useSortingParams';
 export { useCityActions } from './useCityActions';
 export { useCitiesPaginated } from './useCitiesPaginated';
+export {
+  type AddCityFormApi,
+  type AddCityFormResult,
+  useAddCityForm,
+} from './useAddCityForm';

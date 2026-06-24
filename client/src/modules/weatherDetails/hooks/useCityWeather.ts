@@ -1,18 +1,26 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client/react';
+
 import type { GetCityByIdResponse, GetWeatherDetailsResponse } from '../types';
+
 import { GET_CITY_BY_ID, GET_WEATHER_DETAILS } from '../graphql';
 
-export const useCityWeather = () => {
+export type CityWeatherResult = {
+  city: GetCityByIdResponse['city']['city'] | undefined;
+  weather: GetWeatherDetailsResponse['getWeatherDetails'] | undefined;
+  loading: boolean;
+  error: Error | undefined;
+};
+
+export const useCityWeather = (): CityWeatherResult => {
   const { id } = useParams();
-  const cityId = id;
 
   const {
     data: cityData,
     loading: cityLoading,
     error: cityError,
   } = useQuery<GetCityByIdResponse>(GET_CITY_BY_ID, {
-    variables: { id: cityId },
+    variables: { id },
     skip: !id,
     fetchPolicy: 'cache-and-network',
   });

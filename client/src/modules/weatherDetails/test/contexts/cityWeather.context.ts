@@ -2,7 +2,7 @@ import type { ErrorLike } from '@apollo/client';
 import type {
   GetCityByIdResponse,
   GetWeatherDetailsResponse,
-} from '../../types';
+} from '@/weatherDetails/types';
 
 export type CityWeatherContext = {
   id: string;
@@ -17,12 +17,19 @@ export type CityWeatherContext = {
   weatherError: ErrorLike | undefined;
 };
 
-export const createCityWeatherContext = (): CityWeatherContext => ({
+export const createCityWeatherContext = (
+  overrides: Partial<CityWeatherContext> = {},
+): CityWeatherContext => ({
   id: '1',
+
+  cityData: undefined,
+  weatherData: undefined,
 
   cityLoading: false,
   weatherLoading: false,
 
   cityError: undefined,
   weatherError: undefined,
+
+  ...overrides,
 });

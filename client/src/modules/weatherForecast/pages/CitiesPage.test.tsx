@@ -5,8 +5,15 @@ import userEvent from '@testing-library/user-event';
 import { CitiesPage } from './CitiesPage';
 import type { CitiesListProps } from '../components/CitiesList/CitiesList';
 import type { ExistingCityLaypoutProps } from '../components/ExistingCityLayout/ExistingCityLayout';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, PropsWithChildren } from 'react';
 import type { EmptyState, PageLayout } from '../../common/components';
+import {
+  CITY_FIXTURE,
+  EXISTING_CITY_FIXTURE,
+  createCitiesPaginatedResult,
+  createCityActionsResult,
+  createSortingParamsResult,
+} from '../test/fixtures';
 
 const mockNavigate = vi.fn();
 const mockToast = vi.fn();
@@ -14,6 +21,12 @@ const mockToast = vi.fn();
 const mockUseCitiesPaginated = vi.fn();
 const mockUseSortingParams = vi.fn();
 const mockUseCityActions = vi.fn();
+
+vi.mock('antd', () => ({
+  Row: ({ children }: PropsWithChildren) => <div>{children}</div>,
+  Col: ({ children }: PropsWithChildren) => <div>{children}</div>,
+  Flex: ({ children }: PropsWithChildren) => <div>{children}</div>,
+}));
 
 vi.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
@@ -36,15 +49,21 @@ vi.mock('../hooks', () => ({
 vi.mock('../components', () => ({
   AddCityForm: () => <div>AddCityForm</div>,
 
-  CitiesList: ({ onCityClick, cities, hasNext, loading }: CitiesListProps) => (
-    <div>
-      <button onClick={() => onCityClick?.('123')}>CitiesList</button>
+  CitiesList: ({ onCityClick, cities, hasNext, loading }: CitiesListProps) => {
+    const firstCity = cities[0];
 
-      <div>count:{cities.length}</div>
-      <div>hasNext:{String(hasNext)}</div>
-      <div>loading:{String(loading)}</div>
-    </div>
-  ),
+    return (
+      <div>
+        <button onClick={() => firstCity && onCityClick?.(firstCity.id)}>
+          CitiesList
+        </button>
+
+        <div>count:{cities.length}</div>
+        <div>hasNext:{String(hasNext)}</div>
+        <div>loading:{String(loading)}</div>
+      </div>
+    );
+  },
 
   CitiesControls: () => <div>CitiesControls</div>,
 
@@ -75,47 +94,29 @@ vi.mock('@/common/components', () => ({
   ScrollToTopButton: () => <div>ScrollToTop</div>,
 }));
 
+const setup = () => {
+  const user = userEvent.setup();
+
+  render(<CitiesPage />);
+
+  return { user };
+};
+
 describe('CitiesPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    mockUseSortingParams.mockReturnValue({
-      sorting: {
-        sortBy: 'name',
-        sortOrder: 'asc',
-      },
-      setSorting: vi.fn(),
-      showPinnedOnly: false,
-      setShowPinnedOnly: vi.fn(),
-    });
-
-    mockUseCityActions.mockReturnValue({
-      handleAddCity: vi.fn(),
-      handleRemoveCity: vi.fn(),
-      handleTogglePinned: vi.fn(),
-      handleDeleteAllCities: vi.fn(),
-      isAddingCity: false,
-      currentlyRemovingCityId: null,
-      currentlySelectedCity: null,
-      setCurrentlySelectedCity: vi.fn(),
-    });
+    mockUseSortingParams.mockReturnValue(createSortingParamsResult());
+    mockUseCityActions.mockReturnValue(createCityActionsResult());
+    mockUseCitiesPaginated.mockReturnValue(
+      createCitiesPaginatedResult({
+        cities: [CITY_FIXTURE],
+      }),
+    );
   });
 
   it('should render main layout with cities list', () => {
-    mockUseCitiesPaginated.mockReturnValue({
-      cities: [
-        {
-          id: '123',
-          city: 'Kyiv',
-          isPinned: false,
-        },
-      ],
-      loading: false,
-      loadMore: vi.fn(),
-      hasNext: false,
-    });
-
-    render(<CitiesPage />);
+    setup();
 
     expect(screen.getByText('Header')).toBeInTheDocument();
     expect(screen.getByText('AddCityForm')).toBeInTheDocument();
@@ -131,35 +132,15 @@ describe('CitiesPage', () => {
   });
 
   it('should show empty state when no cities', () => {
-    mockUseCitiesPaginated.mockReturnValue({
-      cities: [],
-      loading: false,
-      loadMore: vi.fn(),
-      hasNext: false,
-    });
+    mockUseCitiesPaginated.mockReturnValue(createCitiesPaginatedResult());
 
-    render(<CitiesPage />);
+    setup();
 
     expect(screen.getByText('No cities')).toBeInTheDocument();
   });
 
   it('should navigate to city details page', async () => {
-    const user = userEvent.setup();
-
-    mockUseCitiesPaginated.mockReturnValue({
-      cities: [
-        {
-          id: '123',
-          city: 'Kyiv',
-          isPinned: false,
-        },
-      ],
-      loading: false,
-      loadMore: vi.fn(),
-      hasNext: false,
-    });
-
-    render(<CitiesPage />);
+    const { user } = setup();
 
     await user.click(
       screen.getByRole('button', {
@@ -167,66 +148,34 @@ describe('CitiesPage', () => {
       }),
     );
 
-    expect(mockNavigate).toHaveBeenCalledWith('/cities/123');
+    expect(mockNavigate).toHaveBeenCalledWith(`/cities/${CITY_FIXTURE.id}`);
   });
 
   it('should filter pinned cities when showPinnedOnly=true', () => {
-    mockUseSortingParams.mockReturnValue({
-      sorting: {
-        sortBy: 'name',
-        sortOrder: 'asc',
-      },
-      setSorting: vi.fn(),
-      showPinnedOnly: true,
-      setShowPinnedOnly: vi.fn(),
-    });
+    mockUseSortingParams.mockReturnValue(
+      createSortingParamsResult({
+        showPinnedOnly: true,
+      }),
+    );
+    mockUseCitiesPaginated.mockReturnValue(
+      createCitiesPaginatedResult({
+        cities: [EXISTING_CITY_FIXTURE, CITY_FIXTURE],
+      }),
+    );
 
-    mockUseCitiesPaginated.mockReturnValue({
-      cities: [
-        {
-          id: '1',
-          city: 'Kyiv',
-          isPinned: true,
-        },
-        {
-          id: '2',
-          city: 'Lviv',
-          isPinned: false,
-        },
-      ],
-      loading: false,
-      loadMore: vi.fn(),
-      hasNext: false,
-    });
-
-    render(<CitiesPage />);
+    setup();
 
     expect(screen.getByText('count:1')).toBeInTheDocument();
   });
 
   it('should render existing city layout when city selected', () => {
-    mockUseCityActions.mockReturnValue({
-      handleAddCity: vi.fn(),
-      handleRemoveCity: vi.fn(),
-      handleTogglePinned: vi.fn(),
-      handleDeleteAllCities: vi.fn(),
-      isAddingCity: false,
-      currentlyRemovingCityId: null,
-      currentlySelectedCity: {
-        id: '123',
-        city: 'Kyiv',
-      },
-      setCurrentlySelectedCity: vi.fn(),
-    });
+    mockUseCityActions.mockReturnValue(
+      createCityActionsResult({
+        currentlySelectedCity: CITY_FIXTURE,
+      }),
+    );
 
-    mockUseCitiesPaginated.mockReturnValue({
-      cities: [],
-      loading: false,
-      loadMore: vi.fn(),
-      hasNext: false,
-    });
-
-    render(<CitiesPage />);
+    setup();
 
     expect(screen.getByText('ExistingCityLayout')).toBeInTheDocument();
 
@@ -234,32 +183,16 @@ describe('CitiesPage', () => {
   });
 
   it('should call back handler', async () => {
-    const user = userEvent.setup();
-
     const setCurrentlySelectedCity = vi.fn();
 
-    mockUseCityActions.mockReturnValue({
-      handleAddCity: vi.fn(),
-      handleRemoveCity: vi.fn(),
-      handleTogglePinned: vi.fn(),
-      handleDeleteAllCities: vi.fn(),
-      isAddingCity: false,
-      currentlyRemovingCityId: null,
-      currentlySelectedCity: {
-        id: '123',
-        city: 'Kyiv',
-      },
-      setCurrentlySelectedCity,
-    });
+    mockUseCityActions.mockReturnValue(
+      createCityActionsResult({
+        currentlySelectedCity: CITY_FIXTURE,
+        setCurrentlySelectedCity,
+      }),
+    );
 
-    mockUseCitiesPaginated.mockReturnValue({
-      cities: [],
-      loading: false,
-      loadMore: vi.fn(),
-      hasNext: false,
-    });
-
-    render(<CitiesPage />);
+    const { user } = setup();
 
     await user.click(
       screen.getByRole('button', {
@@ -271,24 +204,19 @@ describe('CitiesPage', () => {
   });
 
   it('should pass hasNext=false and loading=true', () => {
-    mockUseSortingParams.mockReturnValue({
-      sorting: {
-        sortBy: 'name',
-        sortOrder: 'asc',
-      },
-      setSorting: vi.fn(),
-      showPinnedOnly: true,
-      setShowPinnedOnly: vi.fn(),
-    });
+    mockUseSortingParams.mockReturnValue(
+      createSortingParamsResult({
+        showPinnedOnly: true,
+      }),
+    );
+    mockUseCitiesPaginated.mockReturnValue(
+      createCitiesPaginatedResult({
+        loading: true,
+        hasNext: true,
+      }),
+    );
 
-    mockUseCitiesPaginated.mockReturnValue({
-      cities: [],
-      loading: true,
-      loadMore: vi.fn(),
-      hasNext: true,
-    });
-
-    render(<CitiesPage />);
+    setup();
 
     expect(screen.getByText('hasNext:false')).toBeInTheDocument();
 
@@ -300,26 +228,10 @@ describe('CitiesPage', () => {
       params.showErrorNotification('error message');
       params.showInfoNotification('info message');
 
-      return {
-        handleAddCity: vi.fn(),
-        handleRemoveCity: vi.fn(),
-        handleTogglePinned: vi.fn(),
-        handleDeleteAllCities: vi.fn(),
-        isAddingCity: false,
-        currentlyRemovingCityId: null,
-        currentlySelectedCity: null,
-        setCurrentlySelectedCity: vi.fn(),
-      };
+      return createCityActionsResult();
     });
 
-    mockUseCitiesPaginated.mockReturnValue({
-      cities: [],
-      loading: false,
-      loadMore: vi.fn(),
-      hasNext: false,
-    });
-
-    render(<CitiesPage />);
+    setup();
 
     expect(mockToast).toHaveBeenCalledWith('success', 'success message');
 
