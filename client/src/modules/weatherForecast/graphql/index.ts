@@ -1,6 +1,5 @@
 export {
   SEARCH_CITIES,
-  GET_WEATHER,
   CITIES_PAGINATED,
   GET_EXISTS_CITY_BY_NAME,
 } from './queries';

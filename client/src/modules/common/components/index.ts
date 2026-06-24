@@ -1,7 +1,6 @@
 export { PageLayout as AppLayout } from './Layouts/PageLayout/PageLayout';
 export { CenteredLayout } from './Layouts/CenteredLayout/CenteredLayout';
 export { PageLayout } from './Layouts/PageLayout/PageLayout';
-export { EllipsisButton } from './Button/EllipsisButton/EllipsisButton';
 export { PrimaryButton } from './Button/PrimaryButton/PrimaryButton';
 export { ScrollToTopButton } from './Button/ScrollToTopButton';
 export { AppCard } from './Card/FormCard/AppCard';

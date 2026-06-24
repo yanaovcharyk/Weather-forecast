@@ -4,11 +4,6 @@ export const LOGIN_FIXTURE = {
   wrongPassword: '',
 };
 
-export const INVALID_EMAIL_FIXTURE = {
-  email: 'invalid-email',
-  password: '123456',
-};
-
 export const LOGIN_SUCCESS_RESPONSE = {
   data: {
     login: {

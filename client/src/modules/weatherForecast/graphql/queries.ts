@@ -65,17 +65,3 @@ export const GET_EXISTS_CITY_BY_NAME = gql`
     }
   }
 `;
-
-export const GET_WEATHER = gql`
-  query GetWeather($input: GetWeatherInput!) {
-    getWeather(input: $input) {
-      temperature
-      description
-      next3Days {
-        min
-        max
-        description
-      }
-    }
-  }
-`;
