@@ -1,16 +1,10 @@
 import { render, renderHook } from '@testing-library/react';
 import { createTestProviders } from '@/test/providers/TestProvider';
 import type { AuthContextType } from '@/test/mocks/auth.mock';
-import { renderWithUser } from './renderWithUser';
 
 const wrapper = createTestProviders();
 
 export const testRender = (ui: React.ReactElement) => render(ui, { wrapper });
-
-export const testRenderWithUser = (ui: React.ReactElement) =>
-  renderWithUser(ui, {
-    wrapper,
-  });
 
 export const testRenderHook = <TProps, TResult>(
   hook: (props: TProps) => TResult,
