@@ -1,6 +1,6 @@
 import { useApolloClient } from '@apollo/client/react';
-import { GET_EXISTS_CITY_BY_NAME } from '../graphql';
-import type { City } from '../types';
+import { GET_EXISTS_CITY_BY_NAME } from '@/weatherForecast/graphql';
+import type { City } from '@/weatherForecast/types';
 
 type GetCityByNameQuery = {
   cityByName: City | null;

@@ -1,8 +1,11 @@
 import { useCallback } from 'react';
 import { useQuery } from '@apollo/client/react';
 
-import { CITIES_PAGINATED } from '../graphql';
-import type { CitiesPaginatedResponse, SortingState } from '../types';
+import { CITIES_PAGINATED } from '@/weatherForecast/graphql';
+import type {
+  CitiesPaginatedResponse,
+  SortingState,
+} from '@/weatherForecast/types';
 
 export const useCitiesPaginated = (
   sorting: SortingState,

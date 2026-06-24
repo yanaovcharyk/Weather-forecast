@@ -1,9 +1,9 @@
 import { Form, Input } from 'antd';
 import { useForm, useController } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useLogin } from '../hooks/useLogin';
+import { useLogin } from '@/auth/hooks/useLogin';
 import { PrimaryButton } from '@/common/components';
-import { loginFormSchema, type LoginFormInput } from '../validation';
+import { loginFormSchema, type LoginFormInput } from '@/auth/validation';
 
 export const LoginForm = () => {
   const { loginUser, loading } = useLogin();

@@ -1,7 +1,7 @@
 import { Card, Flex } from 'antd';
-import type { HourlyWeather } from '../../types';
+import type { HourlyWeather } from '@/weatherDetails/types';
 import styles from './HourlyForecast.module.scss';
-import { AppText } from '../../../common/components/Typography';
+import { AppText } from '@/common/components/Typography';
 
 type Props = {
   hourly: HourlyWeather[];

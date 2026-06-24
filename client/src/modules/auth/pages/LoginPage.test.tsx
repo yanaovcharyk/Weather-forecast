@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { LoginPage } from './LoginPage';
 
-vi.mock('../components/LoginForm', () => ({
+vi.mock('@/auth/components/LoginForm', () => ({
   LoginForm: () => <div data-testid="login-form" />,
 }));
 

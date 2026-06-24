@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 
-import { useCityActions } from '../../hooks/useCityActions';
-import type { CityActionsContext } from '../contexts/cityActions.context';
+import { useCityActions } from '@/weatherForecast/hooks/useCityActions';
+import type { CityActionsContext } from '@/weatherForecast/test/contexts/cityActions.context';
 
 export const setupCityActions = (ctx: CityActionsContext) => {
   const { result } = renderHook(() =>

@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client/react';
 
-import { REMOVE_ALL_CITIES } from '../graphql';
+import { REMOVE_ALL_CITIES } from '@/weatherForecast/graphql';
 
 type RemoveAllCitiesMutation = {
   removeAllCities: boolean;

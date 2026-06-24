@@ -5,7 +5,7 @@ import { useAddCity } from './useAddCity';
 import { useRemoveCity } from './useRemoveCity';
 import { useRemoveAllCities } from './useRemoveAllCities';
 import { useTogglePinned } from './useTogglePinned';
-import type { City } from '../types';
+import type { City } from '@/weatherForecast/types';
 import { useCityByName } from './useCityByName';
 
 type NotificationFunction = (message: string) => void;

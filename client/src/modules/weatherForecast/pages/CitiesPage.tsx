@@ -4,7 +4,7 @@ import {
   CitiesList,
   CitiesControls,
   ExistingCityLayout,
-} from '../components';
+} from '@/weatherForecast/components';
 import {
   EmptyState,
   AppCard,
@@ -12,7 +12,11 @@ import {
   Header,
   ScrollToTopButton,
 } from '@/common/components';
-import { useSortingParams, useCityActions, useCitiesPaginated } from '../hooks';
+import {
+  useSortingParams,
+  useCityActions,
+  useCitiesPaginated,
+} from '@/weatherForecast/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import { useToast } from '@/common/hooks/useToast';

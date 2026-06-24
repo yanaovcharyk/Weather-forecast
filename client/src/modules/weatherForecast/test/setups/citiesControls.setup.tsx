@@ -5,7 +5,7 @@ import { vi, type Mock } from 'vitest';
 import {
   CitiesControls,
   type CitiesControlsProps,
-} from '../../components/CitiesControlBar/CitiesControls';
+} from '@/weatherForecast/components/CitiesControlBar/CitiesControls';
 
 type Sorting = CitiesControlsProps['sorting'];
 type SortingUpdater = (previous: Sorting) => Sorting;

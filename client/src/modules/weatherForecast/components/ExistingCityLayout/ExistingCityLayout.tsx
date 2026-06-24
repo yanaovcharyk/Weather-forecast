@@ -1,7 +1,7 @@
 import { Button } from 'antd';
 import { AppCard } from '@/common/components';
-import { CitiesList } from '../CitiesList';
-import type { City } from '../../types';
+import { CitiesList } from '@/weatherForecast/components/CitiesList';
+import type { City } from '@/weatherForecast/types';
 
 export interface ExistingCityLaypoutProps {
   existingCity: City;

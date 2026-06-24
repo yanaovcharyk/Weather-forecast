@@ -1,7 +1,7 @@
 import { vi } from 'vitest';
 
-import type { AuthProviderContext } from '../contexts';
-import { useQueryMock } from '../../../test/mocks/apollo.mock';
+import type { AuthProviderContext } from '@/auth/test/contexts';
+import { useQueryMock } from '@/test/mocks/apollo.mock';
 
 export const setupAuthProviderRuntime = (ctx: AuthProviderContext) => {
   vi.clearAllMocks();

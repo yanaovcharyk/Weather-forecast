@@ -3,17 +3,17 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { CitiesPage } from './CitiesPage';
-import type { CitiesListProps } from '../components/CitiesList/CitiesList';
-import type { ExistingCityLaypoutProps } from '../components/ExistingCityLayout/ExistingCityLayout';
+import type { CitiesListProps } from '@/weatherForecast/components/CitiesList/CitiesList';
+import type { ExistingCityLaypoutProps } from '@/weatherForecast/components/ExistingCityLayout/ExistingCityLayout';
 import type { ComponentProps, PropsWithChildren } from 'react';
-import type { EmptyState, PageLayout } from '../../common/components';
+import type { EmptyState, PageLayout } from '@/common/components';
 import {
   CITY_FIXTURE,
   EXISTING_CITY_FIXTURE,
   createCitiesPaginatedResult,
   createCityActionsResult,
   createSortingParamsResult,
-} from '../test/fixtures';
+} from '@/weatherForecast/test/fixtures';
 
 const mockNavigate = vi.fn();
 const mockToast = vi.fn();
@@ -38,7 +38,7 @@ vi.mock('@/common/hooks/useToast', () => ({
   }),
 }));
 
-vi.mock('../hooks', () => ({
+vi.mock('@/weatherForecast/hooks', () => ({
   useSortingParams: () => mockUseSortingParams(),
 
   useCityActions: (...args: unknown[]) => mockUseCityActions(...args),
@@ -46,7 +46,7 @@ vi.mock('../hooks', () => ({
   useCitiesPaginated: (...args: unknown[]) => mockUseCitiesPaginated(...args),
 }));
 
-vi.mock('../components', () => ({
+vi.mock('@/weatherForecast/components', () => ({
   AddCityForm: () => <div>AddCityForm</div>,
 
   CitiesList: ({ onCityClick, cities, hasNext, loading }: CitiesListProps) => {

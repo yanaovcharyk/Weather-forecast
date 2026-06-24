@@ -1,7 +1,7 @@
 import {
   LOGGER_MAX_LOGS_PER_MINUTE,
   LOGGER_RATE_LIMIT_WINDOW_IN_MS,
-} from '../constants';
+} from '@/logger/constants';
 
 export class LoggerRateLimiter {
   private logTimestamps: number[] = [];

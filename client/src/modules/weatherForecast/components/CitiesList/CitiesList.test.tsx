@@ -2,15 +2,15 @@ import { render, screen } from '@testing-library/react';
 import { vi, beforeEach } from 'vitest';
 import React from 'react';
 import { CitiesList } from './CitiesList';
-import type { City } from '../../types';
-import type { CityCardProps } from '../CityCard/CityCard';
+import type { City } from '@/weatherForecast/types';
+import type { CityCardProps } from '@/weatherForecast/components/CityCard/CityCard';
 
 type CityCardMockProps = CityCardProps;
 
 let cityCardProps: CityCardMockProps[] = [];
 let intersectionCallback: IntersectionObserverCallback;
 
-vi.mock('../CityCard', () => ({
+vi.mock('@/weatherForecast/components/CityCard', () => ({
   CityCard: (props: CityCardMockProps) => {
     cityCardProps.push(props);
     return <div>{props.city}</div>;

@@ -4,7 +4,7 @@ import type {
   useCitiesPaginated,
   useCityActions,
   useSortingParams,
-} from '../../hooks';
+} from '@/weatherForecast/hooks';
 
 type SortingParamsResult = ReturnType<typeof useSortingParams>;
 type CityActionsResult = ReturnType<typeof useCityActions>;

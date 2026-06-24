@@ -1,6 +1,6 @@
 import { Space, Alert } from 'antd';
-import { PageLayout } from '../Layouts/PageLayout/PageLayout';
-import { Header } from '../Header/Header';
+import { PageLayout } from '@/common/components/Layouts/PageLayout/PageLayout';
+import { Header } from '@/common/components/Header/Header';
 
 export const ErrorPage = () => {
   return (

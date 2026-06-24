@@ -1,13 +1,13 @@
 import {
   CITY_RESPONSE,
   WEATHER_RESPONSE,
-} from '../../weatherForecast/test/fixtures/city.fixture';
+} from '@/weatherForecast/test/fixtures/city.fixture';
 import {
   createCityWeatherContext,
   type CityWeatherContext,
-} from '../test/contexts/cityWeather.context';
-import { setupCityWeatherRuntime } from '../test/setups/cityWeather.runtime';
-import { setupCityWeather } from '../test/setups/cityWeather.setup';
+} from '@/weatherDetails/test/contexts/cityWeather.context';
+import { setupCityWeatherRuntime } from '@/weatherDetails/test/setups/cityWeather.runtime';
+import { setupCityWeather } from '@/weatherDetails/test/setups/cityWeather.setup';
 
 vi.mock('@apollo/client/react');
 

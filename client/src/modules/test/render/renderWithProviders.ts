@@ -1,6 +1,6 @@
 import { render, renderHook } from '@testing-library/react';
-import { createTestProviders } from '../providers/TestProvider';
-import type { AuthContextType } from '../mocks/auth.mock';
+import { createTestProviders } from '@/test/providers/TestProvider';
+import type { AuthContextType } from '@/test/mocks/auth.mock';
 
 const wrapper = createTestProviders();
 

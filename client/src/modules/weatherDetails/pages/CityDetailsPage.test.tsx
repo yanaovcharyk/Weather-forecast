@@ -6,7 +6,7 @@ import { CityDetailsPage } from './CityDetailsPage';
 import { useCityWeather } from '@/weatherDetails/hooks';
 import { createCityWeatherState } from '@/weatherDetails/test/fixtures';
 
-vi.mock('../hooks/useCityWeather');
+vi.mock('@/weatherDetails/hooks/useCityWeather');
 
 vi.mock('react-router', () => ({
   useNavigate: vi.fn(),
@@ -26,7 +26,7 @@ vi.mock('@/common/components', () => ({
   }) => (loading ? <div>Loading...</div> : <div>{children}</div>),
 }));
 
-vi.mock('../components', () => ({
+vi.mock('@/weatherDetails/components', () => ({
   CurrentWeatherCard: ({ city }: { city: string }) => (
     <div>Current: {city}</div>
   ),

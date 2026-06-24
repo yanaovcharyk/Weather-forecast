@@ -1,5 +1,5 @@
 import { App } from 'antd';
-import { ToastContext, type ToastType } from '../contexts/ToastContext';
+import { ToastContext, type ToastType } from '@/common/contexts/ToastContext';
 
 export const ToastProvider = ({ children }: { children: React.ReactNode }) => {
   const { message } = App.useApp();

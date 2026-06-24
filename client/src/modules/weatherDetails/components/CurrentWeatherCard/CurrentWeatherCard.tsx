@@ -1,6 +1,6 @@
 import { Col, Flex, Row, theme } from 'antd';
-import type { WeatherDetails } from '../../types';
-import { InfoGrid } from '../InfoGrid/';
+import type { WeatherDetails } from '@/weatherDetails/types';
+import { InfoGrid } from '@/weatherDetails/components/InfoGrid';
 import { BackgroundCard } from '@/common/components';
 import { getWeatherBackground } from '@/weatherForecast/utils';
 import { AppTitle, AppText } from '@/common/components/Typography';

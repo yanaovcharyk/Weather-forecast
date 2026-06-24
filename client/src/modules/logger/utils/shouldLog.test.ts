@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { shouldLog } from './shouldLog';
 import { config } from '@/common/config';
-import { LOG_LEVEL_PRIORITY } from '../constants';
-import type { LogLevel } from '../types';
+import { LOG_LEVEL_PRIORITY } from '@/logger/constants';
+import type { LogLevel } from '@/logger/types';
 
 describe('shouldLog', () => {
   it('returns false when logger disabled', () => {

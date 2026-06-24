@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import { Row, Col, Select, Button, Checkbox } from 'antd';
 import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
-import type { DisabledStates, SortingState } from '../../types';
+import type { DisabledStates, SortingState } from '@/weatherForecast/types';
 import { ConfirmModal } from '@/common/components';
 import styles from './CitiesControls.module.scss';
 

@@ -3,7 +3,7 @@ import { useLazyQuery } from '@apollo/client/react';
 import { vi } from 'vitest';
 
 import { useCitySearch } from './useCitySearch';
-import { CityService } from '../services/CityService';
+import { CityService } from '@/weatherForecast/services/CityService';
 
 vi.mock('@apollo/client/react');
 

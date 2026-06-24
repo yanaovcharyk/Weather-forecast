@@ -5,7 +5,7 @@ import { MockedProvider } from '@apollo/client/testing/react';
 import { AuthContext } from '@/auth/contexts/AuthContext';
 import { ToastProvider } from '@/common/providers/ToastProvider';
 
-import { createAuthMock, type AuthContextType } from '../mocks/auth.mock';
+import { createAuthMock, type AuthContextType } from '@/test/mocks/auth.mock';
 
 export const createTestProviders = (options?: {
   auth?: Partial<AuthContextType>;

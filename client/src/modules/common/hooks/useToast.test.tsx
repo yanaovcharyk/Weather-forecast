@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-vi.mock('../contexts/ToastContext', async () => {
+vi.mock('@/common/contexts/ToastContext', async () => {
   const React = await import('react');
 
   type ToastContextType = {
@@ -13,7 +13,7 @@ vi.mock('../contexts/ToastContext', async () => {
   };
 });
 
-import { ToastContext } from '../contexts/ToastContext';
+import { ToastContext } from '@/common/contexts/ToastContext';
 import { useToast } from './useToast';
 
 describe('useToast', () => {

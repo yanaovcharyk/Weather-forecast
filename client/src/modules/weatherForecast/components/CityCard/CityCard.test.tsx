@@ -4,7 +4,7 @@ import { vi } from 'vitest';
 
 import { CityCard } from './CityCard';
 import { useSmartBackground } from '@/common/hooks';
-import type { Weather } from '../../types';
+import type { Weather } from '@/weatherForecast/types';
 
 vi.mock('@/common/hooks', () => ({
   useSmartBackground: vi.fn(),

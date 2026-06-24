@@ -15,13 +15,13 @@ vi.mock('react-router-dom', () => ({
   }),
 }));
 
-vi.mock('../utils/createLogger', () => ({
+vi.mock('@/logger/utils/createLogger', () => ({
   createLogger: () => ({
     info: mocks.info,
   }),
 }));
 
-vi.mock('../context/LoggerContextStore', () => ({
+vi.mock('@/logger/context/LoggerContextStore', () => ({
   loggerContext: {
     set: mocks.set,
     get: mocks.get,

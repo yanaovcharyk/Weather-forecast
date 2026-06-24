@@ -1,11 +1,11 @@
 import { useSearchParams } from 'react-router-dom';
 
-import type { CityActionsContext } from '../contexts/cityActions.context';
+import type { CityActionsContext } from '@/weatherForecast/test/contexts/cityActions.context';
 
-import { useAddCity, useRemoveCity } from '../../hooks';
-import { useRemoveAllCities } from '../../hooks/useRemoveAllCities';
-import { useTogglePinned } from '../../hooks/useTogglePinned';
-import { useCityByName } from '../../hooks/useCityByName';
+import { useAddCity, useRemoveCity } from '@/weatherForecast/hooks';
+import { useRemoveAllCities } from '@/weatherForecast/hooks/useRemoveAllCities';
+import { useTogglePinned } from '@/weatherForecast/hooks/useTogglePinned';
+import { useCityByName } from '@/weatherForecast/hooks/useCityByName';
 
 export const setupCityActionsRuntime = (
   ctx: CityActionsContext,

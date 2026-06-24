@@ -1,4 +1,4 @@
-import type { AuthContext } from '../../auth/contexts/AuthContext';
+import type { AuthContext } from '@/auth/contexts/AuthContext';
 
 export type AuthContextType = React.ContextType<typeof AuthContext>;
 

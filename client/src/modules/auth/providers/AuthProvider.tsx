@@ -1,9 +1,9 @@
 import { useMemo, useCallback, useEffect } from 'react';
 import { useQuery } from '@apollo/client/react';
-import { ME_QUERY } from '../graphql';
-import { AuthContext } from '../contexts/AuthContext';
+import { ME_QUERY } from '@/auth/graphql';
+import { AuthContext } from '@/auth/contexts/AuthContext';
 import { loggerContext } from '@/logger/context/LoggerContextStore';
-import type { IMeQuery } from '../types';
+import type { IMeQuery } from '@/auth/types';
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { data, loading, refetch } = useQuery<IMeQuery>(ME_QUERY, {

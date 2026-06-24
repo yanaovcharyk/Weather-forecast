@@ -1,12 +1,12 @@
 import { useLazyQuery } from '@apollo/client/react';
 import { useMemo, useRef } from 'react';
 
-import { SEARCH_CITIES } from '../graphql';
+import { SEARCH_CITIES } from '@/weatherForecast/graphql';
 import type {
   SearchCitiesData,
   SearchCitiesVars,
-} from '../components/AddCityForm/types';
-import { CityService } from '../services/CityService';
+} from '@/weatherForecast/components/AddCityForm/types';
+import { CityService } from '@/weatherForecast/services/CityService';
 
 const DEBOUNCE_DELAY_MS = 300;
 const MIN_SEARCH_LENGTH = 2;

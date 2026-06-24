@@ -1,17 +1,17 @@
-import { loggerContext } from '../context/LoggerContextStore';
+import { loggerContext } from '@/logger/context/LoggerContextStore';
 import {
   DEFAULT_FIELDS_TO_MASK,
   type IClientLogRecord,
   type LogLevel,
   type LogMetadata,
-} from '../types';
+} from '@/logger/types';
 
 import { loggerQueue } from './LoggerQueueService';
 import { loggerRateLimiter } from './LoggerRateLimiter';
-import { sanitizeForLogging } from '../utils/sanitizeForLogging';
+import { sanitizeForLogging } from '@/logger/utils/sanitizeForLogging';
 import { LoggerOperation } from './LoggerOperation';
 import { config } from '@/common/config';
-import { shouldLog } from '../utils/shouldLog';
+import { shouldLog } from '@/logger/utils/shouldLog';
 
 export class Logger {
   private readonly defaultMetadata: LogMetadata;

@@ -11,7 +11,7 @@ vi.mock('@apollo/client/react', () => ({
   useMutation: (...args: unknown[]) => mockUseMutation(...args),
 }));
 
-vi.mock('../graphql', () => ({
+vi.mock('@/weatherForecast/graphql', () => ({
   REMOVE_CITY_MUTATION: 'REMOVE_CITY_MUTATION',
 }));
 

@@ -3,7 +3,7 @@ import type {
   DailyWeather,
   HourlyWeather,
   WeatherDetails,
-} from '../../types';
+} from '@/weatherDetails/types';
 
 export const createCurrentWeather = (
   overrides: Partial<CurrentWeather> = {},

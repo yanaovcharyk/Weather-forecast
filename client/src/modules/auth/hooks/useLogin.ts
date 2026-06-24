@@ -1,11 +1,11 @@
 import { useMutation } from '@apollo/client/react';
 import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/common/hooks/useToast';
-import { LOGIN_MUTATION } from '../graphql';
-import type { ILoginMutationResponse } from '../types';
+import { LOGIN_MUTATION } from '@/auth/graphql';
+import type { ILoginMutationResponse } from '@/auth/types';
 import { useAuth } from './useAuth';
 import { extractErrorCode, mapErrorCodeToMessage } from '@/common/utils';
-import type { LoginFormInput } from '../validation';
+import type { LoginFormInput } from '@/auth/validation';
 
 export const useLogin = () => {
   const { login } = useAuth();

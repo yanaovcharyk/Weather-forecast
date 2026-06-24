@@ -2,9 +2,9 @@ import { render } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LoggerContextProvider } from './LoggerContextProvider';
-import { loggerContext } from '../context/LoggerContextStore';
+import { loggerContext } from '@/logger/context/LoggerContextStore';
 
-vi.mock('../context/LoggerContextStore', () => ({
+vi.mock('@/logger/context/LoggerContextStore', () => ({
   loggerContext: {
     get: vi.fn(),
     set: vi.fn(),

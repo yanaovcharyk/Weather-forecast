@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client/react';
-import { TOGGLE_CITY_PIN } from '../graphql';
+import { TOGGLE_CITY_PIN } from '@/weatherForecast/graphql';
 
 export type ToggleCityPinMutation = {
   togglePinnedCity: {

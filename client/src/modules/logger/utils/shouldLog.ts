@@ -1,5 +1,5 @@
-import type { LogLevel } from '../types';
-import { LOG_LEVEL_PRIORITY } from '../constants';
+import type { LogLevel } from '@/logger/types';
+import { LOG_LEVEL_PRIORITY } from '@/logger/constants';
 import { config } from '@/common/config';
 
 const isLoggerEnabled = () => config.loggerEnabled === 'true';

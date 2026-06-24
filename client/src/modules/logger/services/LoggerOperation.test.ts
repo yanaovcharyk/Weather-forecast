@@ -1,9 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LoggerOperation } from './LoggerOperation';
-import { normalizeError } from '../utils/normalizeError';
+import { normalizeError } from '@/logger/utils/normalizeError';
 
-vi.mock('../utils/normalizeError', () => ({
+vi.mock('@/logger/utils/normalizeError', () => ({
   normalizeError: vi.fn(),
 }));
 

@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 
 import { useCityActions } from './useCityActions';
-import type { City } from '../types';
+import type { City } from '@/weatherForecast/types';
 
 const mockAddCity = vi.fn();
 const mockRemoveCity = vi.fn();

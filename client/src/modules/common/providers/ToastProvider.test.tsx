@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { ToastProvider } from './ToastProvider';
 import { useContext } from 'react';
-import { ToastContext } from '../contexts/ToastContext';
+import { ToastContext } from '@/common/contexts/ToastContext';
 
 const successMock = vi.fn();
 const errorMock = vi.fn();

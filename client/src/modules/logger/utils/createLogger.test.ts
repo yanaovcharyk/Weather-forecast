@@ -1,8 +1,8 @@
 import { describe, it, expect, vi, type Mock } from 'vitest';
 import { createLogger } from './createLogger';
-import { logger } from '../services/LoggerService';
+import { logger } from '@/logger/services/LoggerService';
 
-vi.mock('../services/LoggerService', () => ({
+vi.mock('@/logger/services/LoggerService', () => ({
   logger: {
     child: vi.fn(),
   },

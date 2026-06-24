@@ -1,4 +1,4 @@
-import type { City } from '../../types';
+import type { City } from '@/weatherForecast/types';
 
 export const CITY_FIXTURE: City = {
   id: '1',

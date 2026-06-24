@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { LoggerRetryQueue } from './LoggerRetryService';
-import type { IClientLogRecord } from '../types';
+import type { IClientLogRecord } from '@/logger/types';
 
 const createLogRecord = (
   overrides: Partial<IClientLogRecord> = {},

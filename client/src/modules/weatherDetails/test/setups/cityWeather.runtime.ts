@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client/react';
 import { useParams } from 'react-router-dom';
 import type { Mock } from 'vitest';
 
-import type { CityWeatherContext } from '../contexts/cityWeather.context';
+import type { CityWeatherContext } from '@/weatherDetails/test/contexts/cityWeather.context';
 
 export const setupCityWeatherRuntime = (
   ctx: CityWeatherContext,

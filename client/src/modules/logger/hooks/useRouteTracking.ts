@@ -1,8 +1,8 @@
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import { loggerContext } from '../context/LoggerContextStore';
-import { createLogger } from '../utils/createLogger';
+import { loggerContext } from '@/logger/context/LoggerContextStore';
+import { createLogger } from '@/logger/utils/createLogger';
 
 export const routerLogger = createLogger('Router');
 

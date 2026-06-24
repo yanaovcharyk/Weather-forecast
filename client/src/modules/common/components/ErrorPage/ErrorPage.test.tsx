@@ -1,4 +1,4 @@
-vi.mock('../Header/Header', () => ({
+vi.mock('@/common/components/Header/Header', () => ({
   Header: () => <div>Mock Header</div>,
 }));
 

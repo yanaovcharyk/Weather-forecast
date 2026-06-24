@@ -2,14 +2,14 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Header } from './Header';
-import type { ConfirmModalProps } from '../ConfirmModal/ConfirmModal';
+import type { ConfirmModalProps } from '@/common/components/ConfirmModal/ConfirmModal';
 
 const navigateMock = vi.fn();
 const logoutMock = vi.fn();
 const clearStoreMock = vi.fn();
 const confirmModalProps = vi.fn();
 
-vi.mock('../ConfirmModal/ConfirmModal', () => ({
+vi.mock('@/common/components/ConfirmModal/ConfirmModal', () => ({
   ConfirmModal: (props: ConfirmModalProps) => {
     confirmModalProps(props);
 
@@ -35,7 +35,7 @@ vi.mock('react-router-dom', () => ({
   useNavigate: () => navigateMock,
 }));
 
-vi.mock('../../../auth/hooks/useLogout', () => ({
+vi.mock('@/auth/hooks/useLogout', () => ({
   useLogout: () => logoutMock,
 }));
 

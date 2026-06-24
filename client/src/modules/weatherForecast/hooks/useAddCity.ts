@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client/react';
-import { ADD_CITY_MUTATION } from '../graphql';
-import type { City } from '../types';
+import { ADD_CITY_MUTATION } from '@/weatherForecast/graphql';
+import type { City } from '@/weatherForecast/types';
 
 type AddCityMutation = {
   addCity: City;

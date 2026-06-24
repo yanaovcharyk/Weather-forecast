@@ -1,5 +1,5 @@
-import { normalizeError } from '../utils/normalizeError';
-import { type LogMetadata } from '../types';
+import { normalizeError } from '@/logger/utils/normalizeError';
+import { type LogMetadata } from '@/logger/types';
 import type { Logger } from './LoggerService';
 
 export class LoggerOperation {

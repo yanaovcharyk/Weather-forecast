@@ -2,8 +2,8 @@ import { useMutation } from '@apollo/client/react';
 import { useAuth } from '@/auth/hooks/useAuth';
 import { useToast } from '@/common/hooks/useToast';
 import { useNavigate } from 'react-router-dom';
-import type { LoginContext } from '../contexts/login.context';
-import { createMutationState } from '../mocks/mutationState.mock';
+import type { LoginContext } from '@/auth/test/contexts/login.context';
+import { createMutationState } from '@/auth/test/mocks/mutationState.mock';
 
 export const setupLoginRuntime = (
   ctx: LoginContext,

@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import { useContext } from 'react';
-import { AuthContext } from '../contexts/AuthContext';
+import { AuthContext } from '@/auth/contexts/AuthContext';
 
 describe('AuthContext default value', () => {
   it('calls login and logout functions', () => {

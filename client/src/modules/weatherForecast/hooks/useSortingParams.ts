@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import type { SortingState } from '../types';
+import type { SortingState } from '@/weatherForecast/types';
 
 export const useSortingParams = () => {
   const [params, setParams] = useSearchParams();

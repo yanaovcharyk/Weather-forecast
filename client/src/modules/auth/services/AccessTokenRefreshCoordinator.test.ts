@@ -1,4 +1,4 @@
-import * as utils from '../utils/fetchNewAccessToken';
+import * as utils from '@/auth/utils/fetchNewAccessToken';
 import { AccessTokenRefreshCoordinator } from './AccessTokenRefreshCoordinator';
 
 describe('AccessTokenRefreshCoordinator', () => {

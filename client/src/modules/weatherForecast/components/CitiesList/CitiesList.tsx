@@ -1,8 +1,8 @@
 import { Col, Row, Spin } from 'antd';
 import React, { useEffect, useRef } from 'react';
-import { CityCard } from '../CityCard';
+import { CityCard } from '@/weatherForecast/components/CityCard';
 import styles from './CitiesList.module.scss';
-import type { City } from '../../types';
+import type { City } from '@/weatherForecast/types';
 
 export type CitiesListProps = {
   cities: City[];

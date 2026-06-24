@@ -1,9 +1,12 @@
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client/react';
 
-import type { GetCityByIdResponse, GetWeatherDetailsResponse } from '../types';
+import type {
+  GetCityByIdResponse,
+  GetWeatherDetailsResponse,
+} from '@/weatherDetails/types';
 
-import { GET_CITY_BY_ID, GET_WEATHER_DETAILS } from '../graphql';
+import { GET_CITY_BY_ID, GET_WEATHER_DETAILS } from '@/weatherDetails/graphql';
 
 export type CityWeatherResult = {
   city: GetCityByIdResponse['city']['city'] | undefined;

@@ -6,7 +6,7 @@ import { BackgroundCard, BackgroundCardSkeleton } from '@/common/components';
 import { AppText, AppTitle } from '@/common/components/Typography';
 import { useSmartBackground } from '@/common/hooks';
 import styles from './CityCard.module.scss';
-import type { City } from '../../types';
+import type { City } from '@/weatherForecast/types';
 
 export interface CityCardProps {
   city: string;

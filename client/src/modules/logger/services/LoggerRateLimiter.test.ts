@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { LoggerRateLimiter } from './LoggerRateLimiter';
-import { LOGGER_MAX_LOGS_PER_MINUTE } from '../constants';
+import { LOGGER_MAX_LOGS_PER_MINUTE } from '@/logger/constants';
 
 describe('LoggerRateLimiter', () => {
   let limiter: LoggerRateLimiter;

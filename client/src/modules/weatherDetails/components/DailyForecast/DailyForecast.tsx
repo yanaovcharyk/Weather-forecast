@@ -1,5 +1,5 @@
 import { Card, Flex, theme } from 'antd';
-import type { DailyWeather } from '../../types';
+import type { DailyWeather } from '@/weatherDetails/types';
 import { AppText } from '@/common/components/Typography';
 import styles from './DailyForecast.module.scss';
 type Props = {

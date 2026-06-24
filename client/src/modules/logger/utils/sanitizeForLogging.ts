@@ -1,4 +1,4 @@
-import type { JsonValue } from '../types';
+import type { JsonValue } from '@/logger/types';
 import { isDangerObject } from './isDangerObject';
 import { isObject } from './isObject';
 

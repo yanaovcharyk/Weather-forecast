@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client/react';
-import { LOGOUT_MUTATION } from '../graphql';
+import { LOGOUT_MUTATION } from '@/auth/graphql';
 
 export const useLogout = () => {
   const [logoutMutation] = useMutation(LOGOUT_MUTATION);

@@ -1,5 +1,5 @@
 import { type PropsWithChildren, useEffect, useState } from 'react';
-import { loggerContext } from '../context/LoggerContextStore';
+import { loggerContext } from '@/logger/context/LoggerContextStore';
 
 export function LoggerContextProvider({ children }: PropsWithChildren) {
   const [sessionId] = useState(() => crypto.randomUUID());

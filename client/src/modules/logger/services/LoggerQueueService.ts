@@ -1,5 +1,8 @@
-import { LOGGER_BATCH_SIZE, LOGGER_FLUSH_INTERVAL_IN_MS } from '../constants';
-import type { IClientLogRecord } from '../types';
+import {
+  LOGGER_BATCH_SIZE,
+  LOGGER_FLUSH_INTERVAL_IN_MS,
+} from '@/logger/constants';
+import type { IClientLogRecord } from '@/logger/types';
 import { GraphQLLoggerTransport } from './GraphQLLoggerTransport';
 import { loggerRetryQueue } from './LoggerRetryService';
 

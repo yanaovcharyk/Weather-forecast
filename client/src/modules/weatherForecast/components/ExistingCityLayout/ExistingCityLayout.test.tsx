@@ -3,12 +3,12 @@ import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 
 import { ExistingCityLayout } from './ExistingCityLayout';
-import type { City } from '../../types';
-import type { CitiesListProps } from '../CitiesList/CitiesList';
+import type { City } from '@/weatherForecast/types';
+import type { CitiesListProps } from '@/weatherForecast/components/CitiesList/CitiesList';
 
 let citiesListProps: CitiesListProps | null = null;
 
-vi.mock('../CitiesList', () => ({
+vi.mock('@/weatherForecast/components/CitiesList', () => ({
   CitiesList: (props: CitiesListProps) => {
     citiesListProps = props;
     return <div>Mock CitiesList</div>;

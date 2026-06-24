@@ -20,7 +20,7 @@ vi.mock('./guards', () => ({
   applyGuards: vi.fn((_, element) => element),
 }));
 
-vi.mock('../../../logger/components/ErrorBoundary/ErrorBoundary', () => ({
+vi.mock('@/logger/components/ErrorBoundary/ErrorBoundary', () => ({
   ErrorBoundary: ({ children }: React.PropsWithChildren) => children,
 }));
 

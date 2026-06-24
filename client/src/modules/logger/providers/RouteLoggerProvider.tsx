@@ -1,4 +1,4 @@
-import { useRouteTracking } from '../hooks/useRouteTracking';
+import { useRouteTracking } from '@/logger/hooks/useRouteTracking';
 
 export function RouteLoggerProvider({
   children,

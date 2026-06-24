@@ -1,5 +1,5 @@
 import { CenteredLayout, AppCard } from '@/common/components';
-import { LoginForm } from '../components/LoginForm';
+import { LoginForm } from '@/auth/components/LoginForm';
 import Title from 'antd/es/typography/Title';
 import styles from './LoginPage.module.scss';
 

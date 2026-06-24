@@ -1,6 +1,9 @@
 import { useMutation } from '@apollo/client/react';
-import { REMOVE_CITY_MUTATION } from '../graphql';
-import type { IRemoveCityMutation, IRemoveCityVariables } from '../types';
+import { REMOVE_CITY_MUTATION } from '@/weatherForecast/graphql';
+import type {
+  IRemoveCityMutation,
+  IRemoveCityVariables,
+} from '@/weatherForecast/types';
 import type { Reference } from '@apollo/client';
 
 export const useRemoveCity = () => {

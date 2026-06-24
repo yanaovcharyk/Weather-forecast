@@ -2,13 +2,13 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { Logger } from './LoggerService';
 import { loggerQueue } from './LoggerQueueService';
-import { loggerContext } from '../context/LoggerContextStore';
+import { loggerContext } from '@/logger/context/LoggerContextStore';
 import { loggerRateLimiter } from './LoggerRateLimiter';
-import { sanitizeForLogging } from '../utils/sanitizeForLogging';
-import { shouldLog } from '../utils/shouldLog';
+import { sanitizeForLogging } from '@/logger/utils/sanitizeForLogging';
+import { shouldLog } from '@/logger/utils/shouldLog';
 import { LoggerOperation } from './LoggerOperation';
 import { config } from '@/common/config';
-import type { JsonValue } from '../types';
+import type { JsonValue } from '@/logger/types';
 
 vi.mock('./LoggerQueueService', () => ({
   loggerQueue: {
@@ -22,17 +22,17 @@ vi.mock('./LoggerRateLimiter', () => ({
   },
 }));
 
-vi.mock('../context/LoggerContextStore', () => ({
+vi.mock('@/logger/context/LoggerContextStore', () => ({
   loggerContext: {
     get: vi.fn(),
   },
 }));
 
-vi.mock('../utils/sanitizeForLogging', () => ({
+vi.mock('@/logger/utils/sanitizeForLogging', () => ({
   sanitizeForLogging: vi.fn(),
 }));
 
-vi.mock('../utils/shouldLog', () => ({
+vi.mock('@/logger/utils/shouldLog', () => ({
   shouldLog: vi.fn(),
 }));
 

@@ -3,8 +3,8 @@ import type {
   ISerializedClientLogRecord,
   ISendLogsGraphQLRequestBody,
   ILoggerTransport,
-} from '../types';
-import { SEND_CLIENT_LOGS_MUTATION_STRING } from '../graphql';
+} from '@/logger/types';
+import { SEND_CLIENT_LOGS_MUTATION_STRING } from '@/logger/graphql';
 import { config } from '@/common/config';
 
 export class GraphQLLoggerTransport implements ILoggerTransport {

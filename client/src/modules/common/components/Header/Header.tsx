@@ -3,9 +3,9 @@ import { Button, Flex, Typography } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
 import { Link, useNavigate } from 'react-router-dom';
 import { useApolloClient } from '@apollo/client/react';
-import { Shadow } from '../Shadow/Shadow';
-import { ConfirmModal } from '../ConfirmModal/ConfirmModal';
-import { useLogout } from '../../../auth/hooks/useLogout';
+import { Shadow } from '@/common/components/Shadow/Shadow';
+import { ConfirmModal } from '@/common/components/ConfirmModal/ConfirmModal';
+import { useLogout } from '@/auth/hooks/useLogout';
 import styles from './Header.module.scss';
 
 const { Title } = Typography;

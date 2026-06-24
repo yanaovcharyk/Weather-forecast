@@ -1,6 +1,6 @@
 import type { SetURLSearchParams } from 'react-router-dom';
 import type { Mock } from 'vitest';
-import type { City } from '../../types';
+import type { City } from '@/weatherForecast/types';
 import type { ErrorLike } from '@apollo/client';
 
 type AddCityFn = (

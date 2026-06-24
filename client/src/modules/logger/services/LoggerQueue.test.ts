@@ -8,9 +8,12 @@ import {
   type MockInstance,
 } from 'vitest';
 import { LoggerQueue } from './LoggerQueueService';
-import { LOGGER_BATCH_SIZE, LOGGER_FLUSH_INTERVAL_IN_MS } from '../constants';
+import {
+  LOGGER_BATCH_SIZE,
+  LOGGER_FLUSH_INTERVAL_IN_MS,
+} from '@/logger/constants';
 import { loggerRetryQueue } from './LoggerRetryService';
-import type { IClientLogRecord } from '../types';
+import type { IClientLogRecord } from '@/logger/types';
 
 const createLogRecord = (
   overrides: Partial<IClientLogRecord> = {},

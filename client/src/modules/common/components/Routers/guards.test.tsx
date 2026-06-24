@@ -7,7 +7,7 @@ vi.mock('./PrivateRoute', () => ({
 }));
 import { render } from '@testing-library/react';
 import { applyGuards } from './guards';
-import type { AppRoute } from '../../types';
+import type { AppRoute } from '@/common/types';
 
 describe('applyGuards', () => {
   const element = <div>Protected</div>;
