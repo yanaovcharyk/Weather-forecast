@@ -1,6 +1,5 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AddCityForm } from './AddCityForm';
@@ -12,6 +11,7 @@ import {
   handleSubmitMock,
 } from '@/weatherForecast/test/fixtures';
 import { createFormMock } from '@/weatherForecast/test/fixtures';
+import { renderWithUser } from '@/test/render/renderWithUser';
 
 vi.mock('@/weatherForecast/hooks/useAddCityForm');
 vi.mock('@/common/hooks/useIsMobile');
@@ -84,11 +84,7 @@ describe('AddCityForm', () => {
       disabled: false,
     },
   ) => {
-    const user = userEvent.setup();
-
-    render(<AddCityForm {...props} />);
-
-    return { user };
+    return renderWithUser(<AddCityForm {...props} />);
   };
 
   beforeEach(() => {

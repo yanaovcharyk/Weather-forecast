@@ -3,6 +3,7 @@ import { useQuery } from '@apollo/client/react';
 import { vi } from 'vitest';
 
 import { useCitiesPaginated } from './useCitiesPaginated';
+import { createQueryResult } from '@/test/factories';
 
 vi.mock('@apollo/client/react');
 
@@ -14,31 +15,32 @@ describe('useCitiesPaginated', () => {
   });
 
   it('returns mapped cities', () => {
-    vi.mocked(useQuery).mockReturnValue({
-      loading: false,
-      fetchMore,
-      data: {
-        citiesPaginated: {
-          edges: [
-            {
-              node: {
-                id: '1',
-                city: 'Kyiv',
+    vi.mocked(useQuery).mockReturnValue(
+      createQueryResult({
+        fetchMore,
+        data: {
+          citiesPaginated: {
+            edges: [
+              {
+                node: {
+                  id: '1',
+                  city: 'Kyiv',
+                },
               },
-            },
-            {
-              node: {
-                id: '2',
-                city: 'Lviv',
+              {
+                node: {
+                  id: '2',
+                  city: 'Lviv',
+                },
               },
+            ],
+            pageInfo: {
+              hasNextPage: false,
             },
-          ],
-          pageInfo: {
-            hasNextPage: false,
           },
         },
-      },
-    } as never);
+      }) as never,
+    );
 
     const { result } = renderHook(() =>
       useCitiesPaginated(
@@ -55,11 +57,11 @@ describe('useCitiesPaginated', () => {
   });
 
   it('returns empty cities array', () => {
-    vi.mocked(useQuery).mockReturnValue({
-      loading: false,
-      fetchMore,
-      data: undefined,
-    } as never);
+    vi.mocked(useQuery).mockReturnValue(
+      createQueryResult({
+        fetchMore,
+      }) as never,
+    );
 
     const { result } = renderHook(() =>
       useCitiesPaginated(
@@ -75,19 +77,20 @@ describe('useCitiesPaginated', () => {
   });
 
   it('loads next page', async () => {
-    vi.mocked(useQuery).mockReturnValue({
-      loading: false,
-      fetchMore,
-      data: {
-        citiesPaginated: {
-          edges: [],
-          pageInfo: {
-            hasNextPage: true,
-            endCursor: 'cursor-1',
+    vi.mocked(useQuery).mockReturnValue(
+      createQueryResult({
+        fetchMore,
+        data: {
+          citiesPaginated: {
+            edges: [],
+            pageInfo: {
+              hasNextPage: true,
+              endCursor: 'cursor-1',
+            },
           },
         },
-      },
-    } as never);
+      }) as never,
+    );
 
     const { result } = renderHook(() =>
       useCitiesPaginated(
@@ -121,18 +124,19 @@ describe('useCitiesPaginated', () => {
   });
 
   it('does not load more when no next page', async () => {
-    vi.mocked(useQuery).mockReturnValue({
-      loading: false,
-      fetchMore,
-      data: {
-        citiesPaginated: {
-          edges: [],
-          pageInfo: {
-            hasNextPage: false,
+    vi.mocked(useQuery).mockReturnValue(
+      createQueryResult({
+        fetchMore,
+        data: {
+          citiesPaginated: {
+            edges: [],
+            pageInfo: {
+              hasNextPage: false,
+            },
           },
         },
-      },
-    } as never);
+      }) as never,
+    );
 
     const { result } = renderHook(() =>
       useCitiesPaginated(

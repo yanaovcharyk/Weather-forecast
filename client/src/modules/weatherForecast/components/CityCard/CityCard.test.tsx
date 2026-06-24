@@ -1,10 +1,10 @@
 import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 
 import { CityCard } from './CityCard';
 import { useSmartBackground } from '@/common/hooks';
 import type { Weather } from '@/weatherForecast/types';
+import { renderWithUser } from '@/test/render/renderWithUser';
 
 vi.mock('@/common/hooks', () => ({
   useSmartBackground: vi.fn(),
@@ -20,8 +20,6 @@ vi.mock('@/weatherForecast/utils', () => ({
 }));
 
 describe('CityCard', () => {
-  const user = userEvent.setup();
-
   const weather = {
     temperature: 20,
     description: 'Sunny',
@@ -88,7 +86,7 @@ describe('CityCard', () => {
     const onTogglePinned = vi.fn();
     const onRemove = vi.fn();
 
-    render(
+    const { user } = renderWithUser(
       <CityCard
         city="Kyiv"
         weather={weather as Weather}
@@ -111,7 +109,7 @@ describe('CityCard', () => {
     const onTogglePinned = vi.fn();
     const onRemove = vi.fn();
 
-    render(
+    const { user } = renderWithUser(
       <CityCard
         city="Kyiv"
         weather={weather as Weather}

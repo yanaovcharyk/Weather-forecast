@@ -2,6 +2,7 @@ import { renderHook, act } from '@testing-library/react';
 import { vi, beforeEach, describe, it, expect } from 'vitest';
 import { useMutation } from '@apollo/client/react';
 import { useAddCity } from './useAddCity';
+import { createMutationResult } from '@/test/factories';
 
 vi.mock('@apollo/client/react');
 
@@ -34,16 +35,10 @@ describe('useAddCity', () => {
         updateFn = options.update;
       }
 
-      const result: useMutation.Result<AddCityMutation> = {
-        loading: false,
-        data: undefined,
-        error: undefined,
-        called: false,
-        client: {} as never,
-        reset: vi.fn(),
-      };
-
-      return [mutate, result] as unknown as ReturnType<typeof useMutation>;
+      return [
+        mutate,
+        createMutationResult<AddCityMutation>(),
+      ] as unknown as ReturnType<typeof useMutation>;
     });
   });
 

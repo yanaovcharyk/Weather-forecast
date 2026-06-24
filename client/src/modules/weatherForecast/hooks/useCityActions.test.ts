@@ -3,6 +3,10 @@ import { renderHook, act } from '@testing-library/react';
 
 import { useCityActions } from './useCityActions';
 import type { City } from '@/weatherForecast/types';
+import {
+  createControlledPromise,
+  createNotificationMocks,
+} from '@/test/factories';
 
 const mockAddCity = vi.fn();
 const mockRemoveCity = vi.fn();
@@ -55,9 +59,7 @@ vi.mock('./useCityByName', () => ({
 }));
 
 describe('useCityActions', () => {
-  const showSuccessNotification = vi.fn();
-  const showErrorNotification = vi.fn();
-  const showInfoNotification = vi.fn();
+  const notifications = createNotificationMocks();
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -68,9 +70,9 @@ describe('useCityActions', () => {
   const renderUseCityActions = () =>
     renderHook(() =>
       useCityActions({
-        showSuccessNotification,
-        showErrorNotification,
-        showInfoNotification,
+        showSuccessNotification: notifications.showSuccessNotification,
+        showErrorNotification: notifications.showErrorNotification,
+        showInfoNotification: notifications.showInfoNotification,
       }),
     );
 
@@ -85,7 +87,7 @@ describe('useCityActions', () => {
 
     expect(mockAddCity).toHaveBeenCalledWith(10, 20, 'Kyiv');
 
-    expect(showSuccessNotification).toHaveBeenCalledWith(
+    expect(notifications.showSuccessNotification).toHaveBeenCalledWith(
       'City Kyiv added successfully',
     );
   });
@@ -104,7 +106,7 @@ describe('useCityActions', () => {
 
     expect(mockSetSearchParams).toHaveBeenCalled();
 
-    expect(showInfoNotification).toHaveBeenCalledWith(
+    expect(notifications.showInfoNotification).toHaveBeenCalledWith(
       'City Kyiv already exists',
     );
 
@@ -120,7 +122,9 @@ describe('useCityActions', () => {
       await result.current.handleAddCity(10, 20, 'Kyiv');
     });
 
-    expect(showErrorNotification).toHaveBeenCalledWith('Failed to add city');
+    expect(notifications.showErrorNotification).toHaveBeenCalledWith(
+      'Failed to add city',
+    );
   });
 
   it('should remove city', async () => {
@@ -210,13 +214,9 @@ describe('useCityActions', () => {
   });
 
   it('should return early when city is already being added', async () => {
-    let resolvePromise!: () => void;
+    const deferred = createControlledPromise<void>();
 
-    const pendingPromise = new Promise<void>((resolve) => {
-      resolvePromise = resolve;
-    });
-
-    mockGetCityByName.mockReturnValue(pendingPromise);
+    mockGetCityByName.mockReturnValue(deferred.promise);
 
     const { result, rerender } = renderUseCityActions();
 
@@ -229,7 +229,7 @@ describe('useCityActions', () => {
     await act(async () => {
       await result.current.handleAddCity(10, 20, 'Kyiv');
 
-      resolvePromise();
+      deferred.resolve();
     });
 
     expect(mockGetCityByName).toHaveBeenCalledTimes(1);

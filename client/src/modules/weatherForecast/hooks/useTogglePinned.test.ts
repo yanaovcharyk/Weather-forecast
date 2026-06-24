@@ -2,6 +2,7 @@ import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useMutation } from '@apollo/client/react';
 import { useTogglePinned } from './useTogglePinned';
+import { createMutationResult } from '@/test/factories';
 
 vi.mock('@apollo/client/react');
 
@@ -41,7 +42,7 @@ describe('useTogglePinned', () => {
 
     vi.mocked(useMutation).mockReturnValue([
       mutate,
-      { loading: false },
+      createMutationResult(),
     ] as unknown as ReturnType<typeof useMutation>);
   });
 
@@ -131,7 +132,9 @@ describe('useTogglePinned', () => {
   it('returns loading state', () => {
     vi.mocked(useMutation).mockReturnValue([
       mutate,
-      { loading: true },
+      createMutationResult({
+        loading: true,
+      }),
     ] as unknown as ReturnType<typeof useMutation>);
 
     const { result } = renderHook(() => useTogglePinned());

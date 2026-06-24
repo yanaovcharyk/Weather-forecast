@@ -1,11 +1,6 @@
-import { vi } from 'vitest';
+import type { useMutation } from '@apollo/client/react';
+import { createMutationResult } from '@/test/factories';
 
-export const createMutationState = (overrides = {}) => ({
-  loading: false,
-  data: undefined,
-  error: undefined,
-  called: false,
-  client: {} as never,
-  reset: vi.fn(),
-  ...overrides,
-});
+export const createMutationState = (
+  overrides: Partial<useMutation.Result> = {},
+) => createMutationResult(overrides);

@@ -4,6 +4,7 @@ import { vi } from 'vitest';
 
 import { useCitySearch } from './useCitySearch';
 import { CityService } from '@/weatherForecast/services/CityService';
+import { createQueryResult } from '@/test/factories';
 
 vi.mock('@apollo/client/react');
 
@@ -16,10 +17,7 @@ describe('useCitySearch', () => {
 
     vi.mocked(useLazyQuery).mockReturnValue([
       executeSearch,
-      {
-        loading: false,
-        data: undefined,
-      },
+      createQueryResult(),
     ] as never);
 
     vi.spyOn(CityService, 'normalizeCityName').mockImplementation((v) =>
@@ -40,8 +38,7 @@ describe('useCitySearch', () => {
   it('maps city options', () => {
     vi.mocked(useLazyQuery).mockReturnValue([
       executeSearch,
-      {
-        loading: false,
+      createQueryResult({
         data: {
           searchCities: [
             {
@@ -52,7 +49,7 @@ describe('useCitySearch', () => {
             },
           ],
         },
-      },
+      }),
     ] as never);
 
     const { result } = renderHook(() => useCitySearch());

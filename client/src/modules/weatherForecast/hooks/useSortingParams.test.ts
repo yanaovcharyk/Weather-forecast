@@ -3,18 +3,19 @@ import { vi } from 'vitest';
 import { useSearchParams } from 'react-router-dom';
 
 import { useSortingParams } from './useSortingParams';
+import { createRouterMocks } from '@/test/mocks/router.mock';
 
 vi.mock('react-router-dom');
 
 describe('useSortingParams', () => {
-  const setParams = vi.fn();
+  const router = createRouterMocks();
 
   beforeEach(() => {
     vi.clearAllMocks();
 
     vi.mocked(useSearchParams).mockReturnValue([
       new URLSearchParams(),
-      setParams,
+      router.setSearchParams,
     ] as never);
   });
 
@@ -58,6 +59,6 @@ describe('useSortingParams', () => {
   it('syncs params', () => {
     renderHook(() => useSortingParams());
 
-    expect(setParams).toHaveBeenCalled();
+    expect(router.setSearchParams).toHaveBeenCalled();
   });
 });

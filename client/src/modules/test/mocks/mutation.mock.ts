@@ -1,6 +1,7 @@
 import { vi } from 'vitest';
 import { useMutationMock } from './useMutationMock';
 import type { ErrorLike } from '@apollo/client';
+import { createMutationResult } from '@/test/factories';
 
 export const createMutationMock = (
   overrides?: Partial<{
@@ -12,15 +13,7 @@ export const createMutationMock = (
 ) => {
   const mutate = vi.fn();
 
-  const result = {
-    data: undefined,
-    error: undefined,
-    loading: false,
-    called: false,
-    client: null!,
-    reset: vi.fn(),
-    ...overrides,
-  };
+  const result = createMutationResult(overrides);
 
   useMutationMock.mockReturnValue([mutate, result]);
 

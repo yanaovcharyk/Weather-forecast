@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { screen } from '@testing-library/react';
 
 import { CitiesPage } from './CitiesPage';
 import type { CitiesListProps } from '@/weatherForecast/components/CitiesList/CitiesList';
@@ -14,6 +13,7 @@ import {
   createCityActionsResult,
   createSortingParamsResult,
 } from '@/weatherForecast/test/fixtures';
+import { renderWithUser } from '@/test/render/renderWithUser';
 
 const mockNavigate = vi.fn();
 const mockToast = vi.fn();
@@ -94,13 +94,7 @@ vi.mock('@/common/components', () => ({
   ScrollToTopButton: () => <div>ScrollToTop</div>,
 }));
 
-const setup = () => {
-  const user = userEvent.setup();
-
-  render(<CitiesPage />);
-
-  return { user };
-};
+const setup = () => renderWithUser(<CitiesPage />);
 
 describe('CitiesPage', () => {
   beforeEach(() => {

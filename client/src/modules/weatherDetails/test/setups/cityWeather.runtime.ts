@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import type { Mock } from 'vitest';
 
 import type { CityWeatherContext } from '@/weatherDetails/test/contexts/cityWeather.context';
+import { createQueryResult } from '@/test/factories';
 
 export const setupCityWeatherRuntime = (
   ctx: CityWeatherContext,
@@ -25,17 +26,17 @@ export const setupCityWeatherRuntime = (
     callCount++;
 
     if (callCount === 1) {
-      return {
+      return createQueryResult({
         data: state.cityData,
         loading: state.cityLoading,
         error: state.cityError,
-      };
+      });
     }
 
-    return {
+    return createQueryResult({
       data: state.weatherData,
       loading: state.weatherLoading,
       error: state.weatherError,
-    };
+    });
   });
 };

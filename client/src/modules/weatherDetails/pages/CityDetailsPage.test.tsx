@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 import { CityDetailsPage } from './CityDetailsPage';
 import { useCityWeather } from '@/weatherDetails/hooks';
 import { createCityWeatherState } from '@/weatherDetails/test/fixtures';
+import { createRouterMocks } from '@/test/mocks/router.mock';
 
 vi.mock('@/weatherDetails/hooks/useCityWeather');
 
@@ -34,8 +35,7 @@ vi.mock('@/weatherDetails/components', () => ({
   DailyForecast: () => <div>Daily</div>,
 }));
 
-const navigateMock = vi.fn();
-const searchParamsMock = new URLSearchParams('test=1');
+const router = createRouterMocks('test=1');
 
 const setup = (state = createCityWeatherState()) => {
   vi.mocked(useCityWeather).mockReturnValue(state);
@@ -47,8 +47,11 @@ describe('CityDetailsPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    vi.mocked(useNavigate).mockReturnValue(navigateMock);
-    vi.mocked(useSearchParams).mockReturnValue([searchParamsMock, vi.fn()]);
+    vi.mocked(useNavigate).mockReturnValue(router.navigate);
+    vi.mocked(useSearchParams).mockReturnValue([
+      router.searchParams,
+      router.setSearchParams,
+    ]);
   });
 
   it('shows loading state', () => {
@@ -90,6 +93,6 @@ describe('CityDetailsPage', () => {
 
     fireEvent.click(screen.getByText('← Back to all cities'));
 
-    expect(navigateMock).toHaveBeenCalledWith('/?test=1');
+    expect(router.navigate).toHaveBeenCalledWith('/?test=1');
   });
 });

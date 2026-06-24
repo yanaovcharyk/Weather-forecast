@@ -1,16 +1,17 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ScrollToTopButton } from './ScrollToTopButton';
+import {
+  mockWindowScrollTo,
+  mockWindowScrollY,
+} from '@/test/mocks/browser.mock';
 
 describe('ScrollToTopButton', () => {
   beforeEach(() => {
-    vi.stubGlobal('scrollTo', vi.fn());
+    mockWindowScrollTo();
   });
 
   it('should not render when page is near top', () => {
-    Object.defineProperty(window, 'scrollY', {
-      value: 100,
-      writable: true,
-    });
+    mockWindowScrollY(100);
 
     render(<ScrollToTopButton />);
 
@@ -20,10 +21,7 @@ describe('ScrollToTopButton', () => {
   });
 
   it('should render when page is scrolled more than 200px', () => {
-    Object.defineProperty(window, 'scrollY', {
-      value: 300,
-      writable: true,
-    });
+    mockWindowScrollY(300);
 
     render(<ScrollToTopButton />);
 
@@ -33,10 +31,7 @@ describe('ScrollToTopButton', () => {
   });
 
   it('should scroll to top after click', () => {
-    Object.defineProperty(window, 'scrollY', {
-      value: 300,
-      writable: true,
-    });
+    mockWindowScrollY(300);
 
     render(<ScrollToTopButton />);
 

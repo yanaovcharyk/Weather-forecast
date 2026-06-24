@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 
 import { useRemoveCity } from './useRemoveCity';
+import { createMutationResult } from '@/test/factories';
 
 const mockMutate = vi.fn();
 
@@ -19,20 +20,14 @@ describe('useRemoveCity', () => {
   beforeEach(() => {
     vi.clearAllMocks();
 
-    mockUseMutation.mockReturnValue([
-      mockMutate,
-      {
-        loading: false,
-        error: null,
-      },
-    ]);
+    mockUseMutation.mockReturnValue([mockMutate, createMutationResult()]);
   });
 
   it('should return loading and error values', () => {
     const { result } = renderHook(() => useRemoveCity());
 
     expect(result.current.loading).toBe(false);
-    expect(result.current.error).toBe(null);
+    expect(result.current.error).toBeUndefined();
     expect(result.current.removeCity).toBeDefined();
   });
 
