@@ -42,14 +42,23 @@ describe('CurrentWeatherCard', () => {
     it('renders weather details', () => {
       setup();
 
-      ['Feels like', 'Humidity', 'Pressure', 'Sunrise'].forEach((label) => {
+      [
+        'Feels like',
+        'Humidity',
+        'Pressure',
+        'Sunrise',
+        'Wind',
+        'Min',
+        'Sunset',
+        'Max',
+      ].forEach((label) => {
         expect(screen.getByText(new RegExp(label, 'i'))).toBeInTheDocument();
       });
     });
   });
 
   describe('icon', () => {
-    it('renders weather icon', () => {
+    it('renders weather backgtound img', () => {
       setup();
       expect(screen.getByAltText('Clear sky')).toBeInTheDocument();
     });

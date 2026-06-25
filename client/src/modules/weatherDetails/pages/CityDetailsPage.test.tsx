@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router';
 import type { ReactNode } from 'react';
 import { CityDetailsPage } from './CityDetailsPage';
 import { useCityWeather } from '@/weatherDetails/hooks';
-import { createCityWeatherState } from '@/weatherDetails/test/fixtures';
+import { createCityWeatherState } from '@/weatherDetails/test/mocks';
 import { createRouterMocks } from '@/common/test/mocks/router.mock';
 
 vi.mock('@/weatherDetails/hooks/useCityWeather');

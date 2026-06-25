@@ -3,8 +3,8 @@ import { vi } from 'vitest';
 
 import { CityCard } from './CityCard';
 import { useSmartBackground } from '@/common/hooks';
-import type { Weather } from '@/weatherForecast/types';
 import { renderWithUser } from '@/common/test/render/renderWithUser';
+import { WEATHER_FIXTURE } from '@/weatherForecast/test/fixtures';
 
 vi.mock('@/common/hooks', () => ({
   useSmartBackground: vi.fn(),
@@ -20,18 +20,6 @@ vi.mock('@/weatherForecast/utils', () => ({
 }));
 
 describe('CityCard', () => {
-  const weather = {
-    temperature: 20,
-    description: 'Sunny',
-    min: 10,
-    max: 25,
-    next3Days: [
-      { min: 1, max: 5, description: 'Cold' },
-      { min: 2, max: 6, description: 'Cloudy' },
-      { min: 3, max: 7, description: 'Rain' },
-    ],
-  };
-
   beforeEach(() => {
     vi.mocked(useSmartBackground).mockReturnValue({ loaded: true });
   });
@@ -40,7 +28,7 @@ describe('CityCard', () => {
     render(
       <CityCard
         city="Kyiv"
-        weather={weather as Weather}
+        weather={WEATHER_FIXTURE}
         isPinned={false}
         onTogglePinned={vi.fn()}
         onRemove={vi.fn()}
@@ -58,7 +46,7 @@ describe('CityCard', () => {
     render(
       <CityCard
         city="Kyiv"
-        weather={weather as Weather}
+        weather={WEATHER_FIXTURE}
         isPinned={false}
         onTogglePinned={vi.fn()}
         onRemove={vi.fn()}
@@ -89,7 +77,7 @@ describe('CityCard', () => {
     const { user } = renderWithUser(
       <CityCard
         city="Kyiv"
-        weather={weather as Weather}
+        weather={WEATHER_FIXTURE}
         isPinned={false}
         onTogglePinned={onTogglePinned}
         onRemove={onRemove}
@@ -112,7 +100,7 @@ describe('CityCard', () => {
     const { user } = renderWithUser(
       <CityCard
         city="Kyiv"
-        weather={weather as Weather}
+        weather={WEATHER_FIXTURE}
         isPinned={false}
         onTogglePinned={onTogglePinned}
         onRemove={onRemove}
@@ -133,7 +121,7 @@ describe('CityCard', () => {
     const { rerender } = render(
       <CityCard
         city="Kyiv"
-        weather={weather as Weather}
+        weather={WEATHER_FIXTURE}
         isPinned={false}
         onTogglePinned={vi.fn()}
         onRemove={vi.fn()}
@@ -145,7 +133,7 @@ describe('CityCard', () => {
     rerender(
       <CityCard
         city="Kyiv"
-        weather={weather as Weather}
+        weather={WEATHER_FIXTURE}
         isPinned={true}
         onTogglePinned={vi.fn()}
         onRemove={vi.fn()}

@@ -6,12 +6,15 @@ import { getWeatherBackground } from '@/weatherForecast/utils';
 import { AppTitle, AppText } from '@/common/components/Typography';
 import styles from './CurrentWeatherCard.module.scss';
 
-type Props = {
+type CurrentWeatherCardProps = {
   city: string;
   weather: WeatherDetails;
 };
 
-export const CurrentWeatherCard = ({ city, weather }: Props) => {
+export const CurrentWeatherCard = ({
+  city,
+  weather,
+}: CurrentWeatherCardProps) => {
   const { token } = theme.useToken();
   const { current } = weather;
   const background = getWeatherBackground(weather?.current?.description);

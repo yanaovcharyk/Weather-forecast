@@ -1,15 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { LoggerRetryQueue } from './LoggerRetryService';
-import type { IClientLogRecord } from '@/logger/types';
-
-const createLogRecord = (
-  overrides: Partial<IClientLogRecord> = {},
-): IClientLogRecord => ({
-  message: 'x',
-  level: 'info',
-  timestamp: new Date().toISOString(),
-  ...overrides,
-});
+import { createLogRecord } from '@/logger/test/fixtures';
 
 const mocks = vi.hoisted(() => ({
   sendMock: vi.fn(),
@@ -37,7 +28,7 @@ describe('LoggerRetryQueue', () => {
       .mockResolvedValueOnce(undefined);
 
     const promise = queue.retryFailedBatch({
-      logRecords: [createLogRecord()],
+      logRecords: [createLogRecord({ message: 'x' })],
       currentRetryAttempt: 0,
     });
 
@@ -51,7 +42,7 @@ describe('LoggerRetryQueue', () => {
     const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
 
     await queue.retryFailedBatch({
-      logRecords: [createLogRecord()],
+      logRecords: [createLogRecord({ message: 'x' })],
       currentRetryAttempt: 999,
     });
 

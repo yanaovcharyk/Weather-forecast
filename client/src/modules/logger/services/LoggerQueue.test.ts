@@ -13,16 +13,7 @@ import {
   LOGGER_FLUSH_INTERVAL_IN_MS,
 } from '@/logger/constants';
 import { loggerRetryQueue } from './LoggerRetryService';
-import type { IClientLogRecord } from '@/logger/types';
-
-const createLogRecord = (
-  overrides: Partial<IClientLogRecord> = {},
-): IClientLogRecord => ({
-  timestamp: new Date().toISOString(),
-  level: 'info',
-  message: 'test',
-  ...overrides,
-});
+import { createLogRecord } from '@/logger/test/fixtures';
 
 const mocks = vi.hoisted(() => ({
   sendMock: vi.fn(),

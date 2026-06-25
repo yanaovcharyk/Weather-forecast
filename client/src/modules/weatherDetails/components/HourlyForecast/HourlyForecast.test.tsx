@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { HourlyForecast } from './HourlyForecast';
 import { createHourlyWeather } from '@/weatherDetails/test/fixtures';
 
-const hourly = [
+const hourlyForecast = [
   createHourlyWeather(),
 
   createHourlyWeather({
@@ -16,7 +16,7 @@ const hourly = [
 
 describe('HourlyForecast', () => {
   beforeEach(() => {
-    render(<HourlyForecast hourly={hourly} />);
+    render(<HourlyForecast hourly={hourlyForecast} />);
   });
 
   it('renders title', () => {

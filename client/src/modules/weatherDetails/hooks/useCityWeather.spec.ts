@@ -28,7 +28,6 @@ describe('useCityWeather', () => {
 
   beforeEach(() => {
     ctx = createCityWeatherContext();
-
     setupCityWeatherRuntime(ctx);
   });
 

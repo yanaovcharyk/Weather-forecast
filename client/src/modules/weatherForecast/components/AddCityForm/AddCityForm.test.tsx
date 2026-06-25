@@ -8,9 +8,9 @@ import { useAddCityForm } from '@/weatherForecast/hooks/useAddCityForm';
 import { useIsMobile } from '@/common/hooks/useIsMobile';
 import {
   createUseAddCityFormResult,
+  createFormMock,
   handleSubmitMock,
-} from '@/weatherForecast/test/fixtures';
-import { createFormMock } from '@/weatherForecast/test/fixtures';
+} from '@/weatherForecast/test/mocks';
 import { renderWithUser } from '@/common/test/render/renderWithUser';
 
 vi.mock('@/weatherForecast/hooks/useAddCityForm');

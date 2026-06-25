@@ -1,6 +1,6 @@
 import { vi } from 'vitest';
 import type { AddCityFormResult } from '@/weatherForecast/hooks/useAddCityForm';
-import { createFormMock } from './form.fixture';
+import { createFormMock } from './form.mock';
 
 export const handleSubmitMock = vi.fn<AddCityFormResult['handleSubmit']>();
 export const handleSearchMock = vi.fn<AddCityFormResult['handleSearch']>();

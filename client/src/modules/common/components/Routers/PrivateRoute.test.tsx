@@ -4,7 +4,7 @@ import { vi, describe, it, expect } from 'vitest';
 
 import { useAuth } from '@/auth/hooks/useAuth';
 import { PrivateRoute } from './PrivateRoute';
-import type { IAuthContextValue } from '@/auth/types';
+import { createAuthMock } from '@/common/test/mocks/auth.mock';
 
 vi.mock('@/auth/hooks/useAuth', () => ({
   useAuth: vi.fn(),
@@ -12,20 +12,10 @@ vi.mock('@/auth/hooks/useAuth', () => ({
 
 const mockedUseAuth = vi.mocked(useAuth);
 
-const createAuthContextValue = (
-  overrides: Partial<IAuthContextValue> = {},
-): IAuthContextValue => ({
-  loading: false,
-  isAuthenticated: false,
-  login: vi.fn(),
-  logout: vi.fn(),
-  ...overrides,
-});
-
 describe('PrivateRoute', () => {
   it('should render spinner when authentication is loading', () => {
     mockedUseAuth.mockReturnValue(
-      createAuthContextValue({
+      createAuthMock({
         loading: true,
       }),
     );
@@ -41,7 +31,7 @@ describe('PrivateRoute', () => {
 
   it('should redirect when user is not authenticated', () => {
     mockedUseAuth.mockReturnValue(
-      createAuthContextValue({
+      createAuthMock({
         isAuthenticated: false,
       }),
     );
@@ -59,7 +49,7 @@ describe('PrivateRoute', () => {
 
   it('should render children when user is authenticated', () => {
     mockedUseAuth.mockReturnValue(
-      createAuthContextValue({
+      createAuthMock({
         isAuthenticated: true,
       }),
     );

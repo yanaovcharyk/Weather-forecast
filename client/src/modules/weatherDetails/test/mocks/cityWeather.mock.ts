@@ -1,5 +1,5 @@
 import type { CityWeatherResult } from '@/weatherDetails/hooks/useCityWeather';
-import { createWeather } from './weather.fixture';
+import { createWeather } from '@/weatherDetails/test/fixtures';
 
 export const createCityWeatherState = (
   overrides: Partial<CityWeatherResult> = {},

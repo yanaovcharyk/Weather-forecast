@@ -4,11 +4,12 @@ import React from 'react';
 import { CitiesList } from './CitiesList';
 import type { City } from '@/weatherForecast/types';
 import type { CityCardProps } from '@/weatherForecast/components/CityCard/CityCard';
+import { mockIntersectionObserver } from '@/common/test/mocks/browser.mock';
 
 type CityCardMockProps = CityCardProps;
 
 let cityCardProps: CityCardMockProps[] = [];
-let intersectionCallback: IntersectionObserverCallback;
+let intersectionObserver: ReturnType<typeof mockIntersectionObserver>;
 
 vi.mock('@/weatherForecast/components/CityCard', () => ({
   CityCard: (props: CityCardMockProps) => {
@@ -17,28 +18,10 @@ vi.mock('@/weatherForecast/components/CityCard', () => ({
   },
 }));
 
-class IntersectionObserverMock implements Partial<IntersectionObserver> {
-  root: Element | Document | null = null;
-  rootMargin = '';
-  thresholds: ReadonlyArray<number> = [];
-  scrollMargin = '';
-
-  constructor(cb: IntersectionObserverCallback) {
-    intersectionCallback = cb;
-  }
-
-  observe = vi.fn();
-  disconnect = vi.fn();
-  unobserve = vi.fn();
-  takeRecords = vi.fn();
-
-  readonly [Symbol.toStringTag] = 'IntersectionObserver';
-}
-
 beforeEach(() => {
   cityCardProps = [];
 
-  vi.stubGlobal('IntersectionObserver', IntersectionObserverMock);
+  intersectionObserver = mockIntersectionObserver();
 });
 
 const cities: City[] = [
@@ -105,12 +88,7 @@ describe('CitiesList', () => {
       loadMore,
     });
 
-    intersectionCallback(
-      [
-        { isIntersecting: true } as IntersectionObserverEntry,
-      ] as IntersectionObserverEntry[],
-      {} as IntersectionObserver,
-    );
+    intersectionObserver.trigger([{ isIntersecting: true }]);
 
     expect(loadMore).toHaveBeenCalledTimes(1);
   });
@@ -123,12 +101,7 @@ describe('CitiesList', () => {
       loadMore,
     });
 
-    intersectionCallback(
-      [
-        { isIntersecting: false } as IntersectionObserverEntry,
-      ] as IntersectionObserverEntry[],
-      {} as IntersectionObserver,
-    );
+    intersectionObserver.trigger([{ isIntersecting: false }]);
 
     expect(loadMore).not.toHaveBeenCalled();
   });
@@ -191,30 +164,10 @@ describe('CitiesList', () => {
   });
 
   it('observes loader element when hasNext=true', () => {
-    const observeMockLocal = vi.fn();
-
-    class IO implements Partial<IntersectionObserver> {
-      root = null;
-      rootMargin = '';
-      thresholds: ReadonlyArray<number> = [];
-      scrollMargin = '';
-
-      constructor() {}
-
-      observe = observeMockLocal;
-      disconnect = vi.fn();
-      unobserve = vi.fn();
-      takeRecords = vi.fn();
-
-      readonly [Symbol.toStringTag] = 'IntersectionObserver';
-    }
-
-    vi.stubGlobal('IntersectionObserver', IO);
-
     renderComponent({
       hasNext: true,
     });
 
-    expect(observeMockLocal).toHaveBeenCalledTimes(1);
+    expect(intersectionObserver.observe).toHaveBeenCalledTimes(1);
   });
 });

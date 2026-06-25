@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { DailyForecast } from './DailyForecast';
 import { createDailyWeather } from '@/weatherDetails/test/fixtures';
 
-const daily = [
+const dailyForecast = [
   createDailyWeather({
     date: '2025-01-01',
     icon: '01d',
@@ -50,7 +50,7 @@ const daily = [
 
 describe('DailyForecast', () => {
   beforeEach(() => {
-    render(<DailyForecast daily={daily} />);
+    render(<DailyForecast daily={dailyForecast} />);
   });
 
   it('renders forecast title', () => {
