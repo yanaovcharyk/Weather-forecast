@@ -13,7 +13,7 @@ import {
   createCityActionsResult,
   createSortingParamsResult,
 } from '@/weatherForecast/test/fixtures';
-import { renderWithUser } from '@/test/render/renderWithUser';
+import { renderWithUser } from '@/common/test/render/renderWithUser';
 
 const mockNavigate = vi.fn();
 const mockToast = vi.fn();

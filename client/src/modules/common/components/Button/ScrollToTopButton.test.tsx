@@ -3,7 +3,7 @@ import { ScrollToTopButton } from './ScrollToTopButton';
 import {
   mockWindowScrollTo,
   mockWindowScrollY,
-} from '@/test/mocks/browser.mock';
+} from '@/common/test/mocks/browser.mock';
 
 describe('ScrollToTopButton', () => {
   beforeEach(() => {

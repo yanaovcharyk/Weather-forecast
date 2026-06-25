@@ -11,7 +11,7 @@ import {
   handleSubmitMock,
 } from '@/weatherForecast/test/fixtures';
 import { createFormMock } from '@/weatherForecast/test/fixtures';
-import { renderWithUser } from '@/test/render/renderWithUser';
+import { renderWithUser } from '@/common/test/render/renderWithUser';
 
 vi.mock('@/weatherForecast/hooks/useAddCityForm');
 vi.mock('@/common/hooks/useIsMobile');

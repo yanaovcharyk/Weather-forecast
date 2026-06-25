@@ -24,7 +24,8 @@ export default defineConfig({
 
   test: {
     environment: 'jsdom',
-    setupFiles: './src/modules/test/setup.ts',
+    setupFiles: './src/modules/common/test/setup.ts',
+    css: false,
     globals: true,
     clearMocks: true,
 

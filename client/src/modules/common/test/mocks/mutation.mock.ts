@@ -1,7 +1,7 @@
 import { vi } from 'vitest';
 import { useMutationMock } from './useMutationMock';
 import type { ErrorLike } from '@apollo/client';
-import { createMutationResult } from '@/test/factories';
+import { createMutationResult } from '@/common/test/factories';
 
 export const createMutationMock = (
   overrides?: Partial<{

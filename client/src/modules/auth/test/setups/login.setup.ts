@@ -1,6 +1,6 @@
 import { act } from 'react';
 import { useLogin } from '@/auth/hooks/useLogin';
-import { testRenderHook } from '@/test/render/renderWithProviders';
+import { testRenderHook } from '@/common/test/render/renderWithProviders';
 
 export const setupLogin = () => {
   const hook = testRenderHook(() => useLogin());

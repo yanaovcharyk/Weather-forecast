@@ -4,7 +4,7 @@ import { vi } from 'vitest';
 
 import { useCitySearch } from './useCitySearch';
 import { CityService } from '@/weatherForecast/services/CityService';
-import { createQueryResult } from '@/test/factories';
+import { createQueryResult } from '@/common/test/factories';
 
 vi.mock('@apollo/client/react');
 

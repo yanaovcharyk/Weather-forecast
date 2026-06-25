@@ -6,7 +6,7 @@ import type { City } from '@/weatherForecast/types';
 import {
   createControlledPromise,
   createNotificationMocks,
-} from '@/test/factories';
+} from '@/common/test/factories';
 
 const mockAddCity = vi.fn();
 const mockRemoveCity = vi.fn();

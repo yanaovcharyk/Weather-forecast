@@ -7,7 +7,7 @@ import {
 
 import { setupAuthProviderRuntime } from '@/auth/test/runtimes';
 import { setupAuthProvider } from '@/auth/test/setups';
-import '@/test/mocks/apollo.mock';
+import '@/common/test/mocks/apollo.mock';
 
 import { loggerContext } from '@/logger';
 

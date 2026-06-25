@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import type { Mock } from 'vitest';
 
 import type { CityWeatherContext } from '@/weatherDetails/test/contexts/cityWeather.context';
-import { createQueryResult } from '@/test/factories';
+import { createQueryResult } from '@/common/test/factories';
 
 export const setupCityWeatherRuntime = (
   ctx: CityWeatherContext,

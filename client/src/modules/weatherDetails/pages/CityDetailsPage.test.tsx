@@ -5,7 +5,7 @@ import type { ReactNode } from 'react';
 import { CityDetailsPage } from './CityDetailsPage';
 import { useCityWeather } from '@/weatherDetails/hooks';
 import { createCityWeatherState } from '@/weatherDetails/test/fixtures';
-import { createRouterMocks } from '@/test/mocks/router.mock';
+import { createRouterMocks } from '@/common/test/mocks/router.mock';
 
 vi.mock('@/weatherDetails/hooks/useCityWeather');
 
