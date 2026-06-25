@@ -1,5 +1,5 @@
 import { AuthTokenService } from './auth-token.service';
-import { createAuthTokenContext } from '@test/auth';
+import { createAuthTokenContext } from '@auth/test';
 import {
   ACCESS_SECRET_FIXTURE,
   ACCESS_TOKEN_FIXTURE,
@@ -8,7 +8,7 @@ import {
   REFRESH_TOKEN_FIXTURE,
   accessJwtPayloadFixture,
   refreshJwtPayloadFixture,
-} from '@test/auth/fixtures';
+} from '@auth/test/fixtures';
 
 describe('AuthTokenService', () => {
   let service: AuthTokenService;

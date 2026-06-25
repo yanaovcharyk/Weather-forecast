@@ -1,7 +1,7 @@
 import { Field, InputType, registerEnumType } from '@nestjs/graphql';
 import { IsOptional } from 'class-validator';
-import { CitySortField } from '../city-query.config';
-import { BaseSortingInput } from '../../../shared/graphql/dto/base-sorting.input';
+import { CitySortField } from '@cities/city-query.config';
+import { BaseSortingInput } from '@shared/graphql/dto';
 
 registerEnumType(CitySortField, {
   name: 'CitySortField',

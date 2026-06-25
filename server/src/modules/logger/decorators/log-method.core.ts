@@ -1,6 +1,9 @@
-import { LoggerContext, LogMethodOptions } from '../types';
-import { DEFAULT_FIELDS_TO_MASK, DEFAULT_FIELDS_TO_REMOVE } from '../constants';
-import { safeSerialize } from '../sanitize';
+import { LoggerContext, LogMethodOptions } from '@logger/types';
+import {
+  DEFAULT_FIELDS_TO_MASK,
+  DEFAULT_FIELDS_TO_REMOVE,
+} from '@logger/constants';
+import { safeSerialize } from '@logger/sanitize';
 
 export function createLogMethodWrapper(options: LogMethodOptions) {
   const {

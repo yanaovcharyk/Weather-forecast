@@ -1,4 +1,7 @@
-import { createUserServiceContext, UserServiceTestContext } from "../../test/users/user-service.context";
+import {
+  createUserServiceContext,
+  UserServiceTestContext,
+} from '@users/test/contexts/user-service.context';
 
 describe('UserService', () => {
   let ctx: UserServiceTestContext;
@@ -65,4 +68,3 @@ describe('UserService', () => {
     expect(ctx.repo.update).toHaveBeenCalledWith('1', { refreshTokenVersion: 2 });
   });
 });
-

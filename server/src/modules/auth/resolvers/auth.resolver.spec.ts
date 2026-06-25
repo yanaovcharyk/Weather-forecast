@@ -2,9 +2,9 @@ import { AuthResolver } from './auth.resolver';
 import {
   LoginInputFixture,
   RegisterInputFixture,
-} from '@test/auth/fixtures/auth-input.fixture';
-import { MockUser } from '@test/auth/fixtures';
-import { createAuthResolverContext } from '../../test/auth/contexts/resolvers/auth-resolver.context';
+} from '@auth/test/fixtures/auth-input.fixture';
+import { MockUser } from '@auth/test/fixtures';
+import { createAuthResolverContext } from '@auth/test/contexts/resolvers/auth-resolver.context';
 
 describe('AuthResolver', () => {
   let resolver: AuthResolver;
@@ -14,7 +14,6 @@ describe('AuthResolver', () => {
     ctx = await createAuthResolverContext();
     resolver = ctx.resolver;
   });
-
 
   describe('login', () => {
     it('should call authService.login', async () => {
@@ -166,4 +165,3 @@ describe('AuthResolver', () => {
     });
   });
 });
-

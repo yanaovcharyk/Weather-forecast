@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1781615497557" clover="3.2.0">
-  <project timestamp="1781615497557" name="All files">
-    <metrics statements="2079" coveredstatements="2079" conditionals="279" coveredconditionals="279" methods="161" coveredmethods="154" elements="2519" coveredelements="2512" complexity="0" loc="2079" ncloc="2079" packages="17" files="41" classes="41"/>
+<coverage generated="1782372476789" clover="3.2.0">
+  <project timestamp="1782372476789" name="All files">
+    <metrics statements="2046" coveredstatements="1403" conditionals="161" coveredconditionals="158" methods="97" coveredmethods="79" elements="2304" coveredelements="1640" complexity="0" loc="2046" ncloc="2046" packages="22" files="47" classes="47"/>
     <package name="modules.auth">
       <metrics statements="94" coveredstatements="94" conditionals="3" coveredconditionals="3" methods="0" coveredmethods="0"/>
       <file name="constants.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/auth/constants.ts">
@@ -13,10 +13,10 @@
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
         <line num="7" count="1" type="stmt"/>
-        <line num="8" count="10" type="cond" truecount="1" falsecount="0"/>
-        <line num="9" count="10" type="stmt"/>
-        <line num="10" count="10" type="stmt"/>
-        <line num="11" count="10" type="stmt"/>
+        <line num="8" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="9" count="2" type="stmt"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
@@ -29,15 +29,15 @@
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
-        <line num="4" count="11" type="cond" truecount="1" falsecount="0"/>
-        <line num="5" count="11" type="stmt"/>
-        <line num="6" count="11" type="stmt"/>
-        <line num="7" count="11" type="stmt"/>
+        <line num="4" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="7" count="2" type="stmt"/>
         <line num="8" count="1" type="stmt"/>
-        <line num="9" count="11" type="cond" truecount="1" falsecount="0"/>
-        <line num="10" count="11" type="stmt"/>
-        <line num="11" count="11" type="stmt"/>
-        <line num="12" count="11" type="stmt"/>
+        <line num="9" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="10" count="2" type="stmt"/>
+        <line num="11" count="2" type="stmt"/>
+        <line num="12" count="2" type="stmt"/>
         <line num="13" count="1" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
         <line num="15" count="1" type="stmt"/>
@@ -106,9 +106,9 @@
       </file>
     </package>
     <package name="modules.auth.guards">
-      <metrics statements="99" coveredstatements="99" conditionals="14" coveredconditionals="14" methods="9" coveredmethods="9"/>
+      <metrics statements="99" coveredstatements="41" conditionals="1" coveredconditionals="0" methods="7" coveredmethods="0"/>
       <file name="access-jwt.guard.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/auth/guards/access-jwt.guard.ts">
-        <metrics statements="24" coveredstatements="24" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3"/>
+        <metrics statements="24" coveredstatements="15" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -118,24 +118,24 @@
         <line num="7" count="1" type="stmt"/>
         <line num="8" count="1" type="stmt"/>
         <line num="9" count="1" type="stmt"/>
-        <line num="10" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="11" count="4" type="stmt"/>
-        <line num="12" count="4" type="stmt"/>
-        <line num="13" count="4" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
         <line num="14" count="1" type="stmt"/>
-        <line num="15" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="16" count="3" type="stmt"/>
-        <line num="17" count="3" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
         <line num="18" count="1" type="stmt"/>
-        <line num="19" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="20" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="21" count="1" type="stmt"/>
-        <line num="22" count="1" type="stmt"/>
-        <line num="23" count="2" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
         <line num="24" count="1" type="stmt"/>
       </file>
       <file name="base-jwt.guard.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/auth/guards/base-jwt.guard.ts">
-        <metrics statements="53" coveredstatements="53" conditionals="6" coveredconditionals="6" methods="3" coveredmethods="3"/>
+        <metrics statements="53" coveredstatements="12" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -147,51 +147,51 @@
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
-        <line num="12" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="13" count="48" type="cond" truecount="1" falsecount="0"/>
-        <line num="14" count="48" type="stmt"/>
-        <line num="15" count="48" type="stmt"/>
-        <line num="16" count="48" type="stmt"/>
-        <line num="17" count="48" type="stmt"/>
-        <line num="18" count="48" type="stmt"/>
-        <line num="19" count="48" type="stmt"/>
-        <line num="20" count="48" type="stmt"/>
-        <line num="21" count="48" type="stmt"/>
-        <line num="22" count="48" type="stmt"/>
-        <line num="23" count="48" type="cond" truecount="1" falsecount="0"/>
-        <line num="24" count="8" type="stmt"/>
-        <line num="25" count="8" type="stmt"/>
-        <line num="26" count="8" type="stmt"/>
-        <line num="27" count="8" type="stmt"/>
-        <line num="28" count="8" type="cond" truecount="1" falsecount="0"/>
-        <line num="29" count="2" type="stmt"/>
-        <line num="30" count="2" type="stmt"/>
-        <line num="31" count="6" type="cond" truecount="1" falsecount="0"/>
-        <line num="32" count="6" type="stmt"/>
-        <line num="33" count="6" type="stmt"/>
-        <line num="34" count="6" type="stmt"/>
-        <line num="35" count="6" type="stmt"/>
-        <line num="36" count="6" type="stmt"/>
-        <line num="37" count="6" type="stmt"/>
-        <line num="38" count="6" type="stmt"/>
-        <line num="39" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="40" count="4" type="stmt"/>
-        <line num="41" count="4" type="stmt"/>
-        <line num="42" count="4" type="stmt"/>
-        <line num="43" count="4" type="stmt"/>
-        <line num="44" count="4" type="stmt"/>
-        <line num="45" count="4" type="stmt"/>
-        <line num="46" count="4" type="stmt"/>
-        <line num="47" count="4" type="stmt"/>
-        <line num="48" count="4" type="stmt"/>
-        <line num="49" count="4" type="stmt"/>
-        <line num="50" count="4" type="stmt"/>
-        <line num="51" count="4" type="stmt"/>
-        <line num="52" count="8" type="stmt"/>
-        <line num="53" count="48" type="stmt"/>
+        <line num="12" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
       </file>
       <file name="refresh-jwt.guard.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/auth/guards/refresh-jwt.guard.ts">
-        <metrics statements="22" coveredstatements="22" conditionals="4" coveredconditionals="4" methods="3" coveredmethods="3"/>
+        <metrics statements="22" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -200,109 +200,26 @@
         <line num="6" count="1" type="stmt"/>
         <line num="7" count="1" type="stmt"/>
         <line num="8" count="1" type="stmt"/>
-        <line num="9" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="10" count="4" type="stmt"/>
-        <line num="11" count="4" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
-        <line num="13" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="14" count="3" type="stmt"/>
-        <line num="15" count="3" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
-        <line num="17" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="18" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="19" count="1" type="stmt"/>
-        <line num="20" count="1" type="stmt"/>
-        <line num="21" count="2" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
         <line num="22" count="1" type="stmt"/>
       </file>
     </package>
-    <package name="modules.auth.resolvers">
-      <metrics statements="77" coveredstatements="77" conditionals="8" coveredconditionals="8" methods="7" coveredmethods="7"/>
-      <file name="auth.resolver.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/auth/resolvers/auth.resolver.ts">
-        <metrics statements="77" coveredstatements="77" conditionals="8" coveredconditionals="8" methods="7" coveredmethods="7"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="2" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="5" count="1" type="stmt"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="7" count="1" type="stmt"/>
-        <line num="8" count="1" type="stmt"/>
-        <line num="9" count="1" type="stmt"/>
-        <line num="10" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="12" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="13" count="10" type="stmt"/>
-        <line num="14" count="10" type="stmt"/>
-        <line num="15" count="10" type="cond" truecount="1" falsecount="0"/>
-        <line num="16" count="10" type="stmt"/>
-        <line num="17" count="10" type="stmt"/>
-        <line num="18" count="10" type="stmt"/>
-        <line num="19" count="10" type="stmt"/>
-        <line num="20" count="10" type="stmt"/>
-        <line num="21" count="10" type="stmt"/>
-        <line num="22" count="10" type="stmt"/>
-        <line num="23" count="10" type="stmt"/>
-        <line num="24" count="10" type="cond" truecount="1" falsecount="0"/>
-        <line num="25" count="2" type="stmt"/>
-        <line num="26" count="2" type="stmt"/>
-        <line num="27" count="2" type="stmt"/>
-        <line num="28" count="2" type="stmt"/>
-        <line num="29" count="2" type="stmt"/>
-        <line num="30" count="2" type="stmt"/>
-        <line num="31" count="10" type="stmt"/>
-        <line num="32" count="10" type="stmt"/>
-        <line num="33" count="10" type="stmt"/>
-        <line num="34" count="10" type="cond" truecount="1" falsecount="0"/>
-        <line num="35" count="2" type="stmt"/>
-        <line num="36" count="2" type="stmt"/>
-        <line num="37" count="2" type="stmt"/>
-        <line num="38" count="2" type="stmt"/>
-        <line num="39" count="2" type="stmt"/>
-        <line num="40" count="2" type="stmt"/>
-        <line num="41" count="2" type="stmt"/>
-        <line num="42" count="2" type="stmt"/>
-        <line num="43" count="2" type="stmt"/>
-        <line num="44" count="10" type="stmt"/>
-        <line num="45" count="10" type="stmt"/>
-        <line num="46" count="10" type="stmt"/>
-        <line num="47" count="10" type="stmt"/>
-        <line num="48" count="10" type="cond" truecount="1" falsecount="0"/>
-        <line num="49" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="50" count="1" type="stmt"/>
-        <line num="51" count="1" type="stmt"/>
-        <line num="52" count="1" type="stmt"/>
-        <line num="53" count="1" type="stmt"/>
-        <line num="54" count="1" type="stmt"/>
-        <line num="55" count="1" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="57" count="1" type="stmt"/>
-        <line num="58" count="10" type="stmt"/>
-        <line num="59" count="10" type="stmt"/>
-        <line num="60" count="10" type="stmt"/>
-        <line num="61" count="10" type="stmt"/>
-        <line num="62" count="10" type="cond" truecount="1" falsecount="0"/>
-        <line num="63" count="2" type="stmt"/>
-        <line num="64" count="2" type="stmt"/>
-        <line num="65" count="2" type="stmt"/>
-        <line num="66" count="2" type="stmt"/>
-        <line num="67" count="2" type="stmt"/>
-        <line num="68" count="10" type="stmt"/>
-        <line num="69" count="10" type="stmt"/>
-        <line num="70" count="10" type="stmt"/>
-        <line num="71" count="10" type="stmt"/>
-        <line num="72" count="10" type="cond" truecount="1" falsecount="0"/>
-        <line num="73" count="2" type="stmt"/>
-        <line num="74" count="2" type="stmt"/>
-        <line num="75" count="2" type="stmt"/>
-        <line num="76" count="2" type="stmt"/>
-        <line num="77" count="10" type="stmt"/>
-      </file>
-    </package>
     <package name="modules.auth.services">
-      <metrics statements="428" coveredstatements="428" conditionals="45" coveredconditionals="45" methods="35" coveredmethods="35"/>
+      <metrics statements="428" coveredstatements="66" conditionals="0" coveredconditionals="0" methods="4" coveredmethods="0"/>
       <file name="auth-cookie.service.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/auth/services/auth-cookie.service.ts">
-        <metrics statements="99" coveredstatements="99" conditionals="14" coveredconditionals="14" methods="13" coveredmethods="13"/>
+        <metrics statements="99" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -314,97 +231,97 @@
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
-        <line num="12" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="13" count="9" type="stmt"/>
-        <line num="14" count="9" type="stmt"/>
-        <line num="15" count="9" type="stmt"/>
-        <line num="16" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="17" count="9" type="stmt"/>
-        <line num="18" count="9" type="stmt"/>
-        <line num="19" count="9" type="stmt"/>
-        <line num="20" count="9" type="stmt"/>
-        <line num="21" count="9" type="stmt"/>
-        <line num="22" count="9" type="stmt"/>
-        <line num="23" count="9" type="stmt"/>
-        <line num="24" count="9" type="stmt"/>
-        <line num="25" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="26" count="2" type="stmt"/>
-        <line num="27" count="2" type="stmt"/>
-        <line num="28" count="9" type="stmt"/>
-        <line num="29" count="9" type="stmt"/>
-        <line num="30" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="31" count="2" type="stmt"/>
-        <line num="32" count="2" type="stmt"/>
-        <line num="33" count="9" type="stmt"/>
-        <line num="34" count="9" type="stmt"/>
-        <line num="35" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="36" count="1" type="stmt"/>
-        <line num="37" count="1" type="stmt"/>
-        <line num="38" count="1" type="stmt"/>
-        <line num="39" count="1" type="stmt"/>
-        <line num="40" count="1" type="stmt"/>
-        <line num="41" count="1" type="stmt"/>
-        <line num="42" count="1" type="stmt"/>
-        <line num="43" count="9" type="stmt"/>
-        <line num="44" count="9" type="stmt"/>
-        <line num="45" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="46" count="1" type="stmt"/>
-        <line num="47" count="1" type="stmt"/>
-        <line num="48" count="1" type="stmt"/>
-        <line num="49" count="1" type="stmt"/>
-        <line num="50" count="1" type="stmt"/>
-        <line num="51" count="1" type="stmt"/>
-        <line num="52" count="1" type="stmt"/>
-        <line num="53" count="9" type="stmt"/>
-        <line num="54" count="9" type="stmt"/>
-        <line num="55" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="57" count="1" type="stmt"/>
-        <line num="58" count="9" type="stmt"/>
-        <line num="59" count="9" type="stmt"/>
-        <line num="60" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="61" count="1" type="stmt"/>
-        <line num="62" count="1" type="stmt"/>
-        <line num="63" count="9" type="stmt"/>
-        <line num="64" count="9" type="stmt"/>
-        <line num="65" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="66" count="1" type="stmt"/>
-        <line num="67" count="1" type="stmt"/>
-        <line num="68" count="1" type="stmt"/>
-        <line num="69" count="9" type="stmt"/>
-        <line num="70" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="71" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="72" count="4" type="stmt"/>
-        <line num="73" count="9" type="stmt"/>
-        <line num="74" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="75" count="4" type="stmt"/>
-        <line num="76" count="4" type="stmt"/>
-        <line num="77" count="9" type="stmt"/>
-        <line num="78" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="79" count="2" type="stmt"/>
-        <line num="80" count="2" type="stmt"/>
-        <line num="81" count="2" type="stmt"/>
-        <line num="82" count="2" type="stmt"/>
-        <line num="83" count="2" type="stmt"/>
-        <line num="84" count="2" type="stmt"/>
-        <line num="85" count="2" type="stmt"/>
-        <line num="86" count="2" type="stmt"/>
-        <line num="87" count="9" type="stmt"/>
-        <line num="88" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="89" count="2" type="stmt"/>
-        <line num="90" count="2" type="stmt"/>
-        <line num="91" count="2" type="stmt"/>
-        <line num="92" count="2" type="stmt"/>
-        <line num="93" count="2" type="stmt"/>
-        <line num="94" count="2" type="stmt"/>
-        <line num="95" count="2" type="stmt"/>
-        <line num="96" count="2" type="stmt"/>
-        <line num="97" count="2" type="stmt"/>
-        <line num="98" count="2" type="stmt"/>
-        <line num="99" count="9" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
+        <line num="69" count="0" type="stmt"/>
+        <line num="70" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="73" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="79" count="0" type="stmt"/>
+        <line num="80" count="0" type="stmt"/>
+        <line num="81" count="0" type="stmt"/>
+        <line num="82" count="0" type="stmt"/>
+        <line num="83" count="0" type="stmt"/>
+        <line num="84" count="0" type="stmt"/>
+        <line num="85" count="0" type="stmt"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="87" count="0" type="stmt"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="89" count="0" type="stmt"/>
+        <line num="90" count="0" type="stmt"/>
+        <line num="91" count="0" type="stmt"/>
+        <line num="92" count="0" type="stmt"/>
+        <line num="93" count="0" type="stmt"/>
+        <line num="94" count="0" type="stmt"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="96" count="0" type="stmt"/>
+        <line num="97" count="0" type="stmt"/>
+        <line num="98" count="0" type="stmt"/>
+        <line num="99" count="0" type="stmt"/>
       </file>
       <file name="auth-token.service.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/auth/services/auth-token.service.ts">
-        <metrics statements="78" coveredstatements="78" conditionals="8" coveredconditionals="8" methods="8" coveredmethods="8"/>
+        <metrics statements="78" coveredstatements="12" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -416,336 +333,76 @@
         <line num="9" count="1" type="stmt"/>
         <line num="10" count="1" type="stmt"/>
         <line num="11" count="1" type="stmt"/>
-        <line num="12" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="13" count="4" type="stmt"/>
-        <line num="14" count="4" type="stmt"/>
-        <line num="15" count="4" type="stmt"/>
-        <line num="16" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="17" count="4" type="stmt"/>
-        <line num="18" count="4" type="stmt"/>
-        <line num="19" count="4" type="stmt"/>
-        <line num="20" count="4" type="stmt"/>
-        <line num="21" count="4" type="stmt"/>
-        <line num="22" count="4" type="stmt"/>
-        <line num="23" count="4" type="stmt"/>
-        <line num="24" count="4" type="stmt"/>
-        <line num="25" count="4" type="stmt"/>
-        <line num="26" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="27" count="1" type="stmt"/>
-        <line num="28" count="1" type="stmt"/>
-        <line num="29" count="1" type="stmt"/>
-        <line num="30" count="1" type="stmt"/>
-        <line num="31" count="1" type="stmt"/>
-        <line num="32" count="1" type="stmt"/>
-        <line num="33" count="4" type="stmt"/>
-        <line num="34" count="4" type="stmt"/>
-        <line num="35" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="36" count="1" type="stmt"/>
-        <line num="37" count="1" type="stmt"/>
-        <line num="38" count="1" type="stmt"/>
-        <line num="39" count="1" type="stmt"/>
-        <line num="40" count="1" type="stmt"/>
-        <line num="41" count="1" type="stmt"/>
-        <line num="42" count="4" type="stmt"/>
-        <line num="43" count="4" type="stmt"/>
-        <line num="44" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="45" count="1" type="stmt"/>
-        <line num="46" count="1" type="stmt"/>
-        <line num="47" count="1" type="stmt"/>
-        <line num="48" count="1" type="stmt"/>
-        <line num="49" count="1" type="stmt"/>
-        <line num="50" count="4" type="stmt"/>
-        <line num="51" count="4" type="stmt"/>
-        <line num="52" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="53" count="1" type="stmt"/>
-        <line num="54" count="1" type="stmt"/>
-        <line num="55" count="1" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="57" count="1" type="stmt"/>
-        <line num="58" count="4" type="stmt"/>
-        <line num="59" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="60" count="2" type="stmt"/>
-        <line num="61" count="2" type="stmt"/>
-        <line num="62" count="2" type="stmt"/>
-        <line num="63" count="2" type="stmt"/>
-        <line num="64" count="2" type="stmt"/>
-        <line num="65" count="2" type="stmt"/>
-        <line num="66" count="2" type="stmt"/>
-        <line num="67" count="2" type="stmt"/>
-        <line num="68" count="2" type="stmt"/>
-        <line num="69" count="4" type="stmt"/>
-        <line num="70" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="71" count="2" type="stmt"/>
-        <line num="72" count="2" type="stmt"/>
-        <line num="73" count="2" type="stmt"/>
-        <line num="74" count="2" type="stmt"/>
-        <line num="75" count="2" type="stmt"/>
-        <line num="76" count="2" type="stmt"/>
-        <line num="77" count="2" type="stmt"/>
-        <line num="78" count="4" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="15" count="0" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="17" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
+        <line num="69" count="0" type="stmt"/>
+        <line num="70" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="73" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
       </file>
       <file name="auth.service.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/auth/services/auth.service.ts">
-        <metrics statements="186" coveredstatements="186" conditionals="17" coveredconditionals="17" methods="9" coveredmethods="9"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="2" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="5" count="1" type="stmt"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="7" count="1" type="stmt"/>
-        <line num="8" count="1" type="stmt"/>
-        <line num="9" count="1" type="stmt"/>
-        <line num="10" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="12" count="1" type="stmt"/>
-        <line num="13" count="1" type="stmt"/>
-        <line num="14" count="1" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="16" count="1" type="stmt"/>
-        <line num="17" count="1" type="stmt"/>
-        <line num="18" count="1" type="stmt"/>
-        <line num="19" count="1" type="stmt"/>
-        <line num="20" count="1" type="stmt"/>
-        <line num="21" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="22" count="9" type="stmt"/>
-        <line num="23" count="9" type="stmt"/>
-        <line num="24" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="25" count="9" type="stmt"/>
-        <line num="26" count="9" type="stmt"/>
-        <line num="27" count="9" type="stmt"/>
-        <line num="28" count="9" type="stmt"/>
-        <line num="29" count="9" type="stmt"/>
-        <line num="30" count="9" type="stmt"/>
-        <line num="31" count="9" type="stmt"/>
-        <line num="32" count="9" type="stmt"/>
-        <line num="33" count="9" type="stmt"/>
-        <line num="34" count="9" type="stmt"/>
-        <line num="35" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="36" count="3" type="stmt"/>
-        <line num="37" count="3" type="stmt"/>
-        <line num="38" count="3" type="stmt"/>
-        <line num="39" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="40" count="1" type="stmt"/>
-        <line num="41" count="1" type="stmt"/>
-        <line num="42" count="1" type="stmt"/>
-        <line num="43" count="1" type="stmt"/>
-        <line num="44" count="1" type="stmt"/>
-        <line num="45" count="9" type="stmt"/>
-        <line num="46" count="9" type="stmt"/>
-        <line num="47" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="48" count="1" type="stmt"/>
-        <line num="49" count="1" type="stmt"/>
-        <line num="50" count="1" type="stmt"/>
-        <line num="51" count="1" type="stmt"/>
-        <line num="52" count="1" type="stmt"/>
-        <line num="53" count="1" type="stmt"/>
-        <line num="54" count="1" type="stmt"/>
-        <line num="55" count="1" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="57" count="1" type="stmt"/>
-        <line num="58" count="1" type="stmt"/>
-        <line num="59" count="9" type="stmt"/>
-        <line num="60" count="9" type="stmt"/>
-        <line num="61" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="62" count="2" type="stmt"/>
-        <line num="63" count="2" type="stmt"/>
-        <line num="64" count="2" type="stmt"/>
-        <line num="65" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="66" count="1" type="stmt"/>
-        <line num="67" count="1" type="stmt"/>
-        <line num="68" count="1" type="stmt"/>
-        <line num="69" count="1" type="stmt"/>
-        <line num="70" count="1" type="stmt"/>
-        <line num="71" count="1" type="stmt"/>
-        <line num="72" count="1" type="stmt"/>
-        <line num="73" count="1" type="stmt"/>
-        <line num="74" count="1" type="stmt"/>
-        <line num="75" count="1" type="stmt"/>
-        <line num="76" count="1" type="stmt"/>
-        <line num="77" count="1" type="stmt"/>
-        <line num="78" count="1" type="stmt"/>
-        <line num="79" count="1" type="stmt"/>
-        <line num="80" count="1" type="stmt"/>
-        <line num="81" count="1" type="stmt"/>
-        <line num="82" count="1" type="stmt"/>
-        <line num="83" count="1" type="stmt"/>
-        <line num="84" count="1" type="stmt"/>
-        <line num="85" count="1" type="stmt"/>
-        <line num="86" count="1" type="stmt"/>
-        <line num="87" count="9" type="stmt"/>
-        <line num="88" count="9" type="stmt"/>
-        <line num="89" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="90" count="3" type="stmt"/>
-        <line num="91" count="3" type="stmt"/>
-        <line num="92" count="3" type="stmt"/>
-        <line num="93" count="3" type="stmt"/>
-        <line num="94" count="3" type="stmt"/>
-        <line num="95" count="3" type="stmt"/>
-        <line num="96" count="3" type="stmt"/>
-        <line num="97" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="98" count="1" type="stmt"/>
-        <line num="99" count="1" type="stmt"/>
-        <line num="100" count="1" type="stmt"/>
-        <line num="101" count="1" type="stmt"/>
-        <line num="102" count="1" type="stmt"/>
-        <line num="103" count="1" type="stmt"/>
-        <line num="104" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="105" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="106" count="1" type="stmt"/>
-        <line num="107" count="1" type="stmt"/>
-        <line num="108" count="1" type="stmt"/>
-        <line num="109" count="1" type="stmt"/>
-        <line num="110" count="1" type="stmt"/>
-        <line num="111" count="1" type="stmt"/>
-        <line num="112" count="1" type="stmt"/>
-        <line num="113" count="1" type="stmt"/>
-        <line num="114" count="1" type="stmt"/>
-        <line num="115" count="1" type="stmt"/>
-        <line num="116" count="1" type="stmt"/>
-        <line num="117" count="1" type="stmt"/>
-        <line num="118" count="1" type="stmt"/>
-        <line num="119" count="1" type="stmt"/>
-        <line num="120" count="1" type="stmt"/>
-        <line num="121" count="1" type="stmt"/>
-        <line num="122" count="1" type="stmt"/>
-        <line num="123" count="1" type="stmt"/>
-        <line num="124" count="1" type="stmt"/>
-        <line num="125" count="1" type="stmt"/>
-        <line num="126" count="1" type="stmt"/>
-        <line num="127" count="1" type="stmt"/>
-        <line num="128" count="1" type="stmt"/>
-        <line num="129" count="1" type="stmt"/>
-        <line num="130" count="1" type="stmt"/>
-        <line num="131" count="9" type="stmt"/>
-        <line num="132" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="133" count="3" type="stmt"/>
-        <line num="134" count="3" type="stmt"/>
-        <line num="135" count="3" type="stmt"/>
-        <line num="136" count="3" type="stmt"/>
-        <line num="137" count="3" type="stmt"/>
-        <line num="138" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="139" count="1" type="stmt"/>
-        <line num="140" count="1" type="stmt"/>
-        <line num="141" count="1" type="stmt"/>
-        <line num="142" count="1" type="stmt"/>
-        <line num="143" count="1" type="stmt"/>
-        <line num="144" count="1" type="stmt"/>
-        <line num="145" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="146" count="2" type="stmt"/>
-        <line num="147" count="2" type="stmt"/>
-        <line num="148" count="2" type="stmt"/>
-        <line num="149" count="2" type="stmt"/>
-        <line num="150" count="2" type="stmt"/>
-        <line num="151" count="2" type="stmt"/>
-        <line num="152" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="153" count="1" type="stmt"/>
-        <line num="154" count="1" type="stmt"/>
-        <line num="155" count="1" type="stmt"/>
-        <line num="156" count="1" type="stmt"/>
-        <line num="157" count="1" type="stmt"/>
-        <line num="158" count="1" type="stmt"/>
-        <line num="159" count="1" type="stmt"/>
-        <line num="160" count="1" type="stmt"/>
-        <line num="161" count="1" type="stmt"/>
-        <line num="162" count="1" type="stmt"/>
-        <line num="163" count="9" type="stmt"/>
-        <line num="164" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="165" count="3" type="stmt"/>
-        <line num="166" count="3" type="stmt"/>
-        <line num="167" count="3" type="stmt"/>
-        <line num="168" count="3" type="stmt"/>
-        <line num="169" count="3" type="stmt"/>
-        <line num="170" count="3" type="stmt"/>
-        <line num="171" count="3" type="stmt"/>
-        <line num="172" count="3" type="stmt"/>
-        <line num="173" count="3" type="stmt"/>
-        <line num="174" count="3" type="stmt"/>
-        <line num="175" count="3" type="stmt"/>
-        <line num="176" count="3" type="stmt"/>
-        <line num="177" count="3" type="stmt"/>
-        <line num="178" count="3" type="stmt"/>
-        <line num="179" count="3" type="stmt"/>
-        <line num="180" count="3" type="stmt"/>
-        <line num="181" count="9" type="stmt"/>
-        <line num="182" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="183" count="3" type="stmt"/>
-        <line num="184" count="3" type="stmt"/>
-        <line num="185" count="3" type="stmt"/>
-        <line num="186" count="9" type="stmt"/>
-      </file>
-      <file name="password-hasher.service.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/auth/services/password-hasher.service.ts">
-        <metrics statements="65" coveredstatements="65" conditionals="6" coveredconditionals="6" methods="5" coveredmethods="5"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="2" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="5" count="1" type="stmt"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="7" count="1" type="stmt"/>
-        <line num="8" count="1" type="stmt"/>
-        <line num="9" count="1" type="stmt"/>
-        <line num="10" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="12" count="1" type="stmt"/>
-        <line num="13" count="1" type="stmt"/>
-        <line num="14" count="1" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="16" count="1" type="stmt"/>
-        <line num="17" count="1" type="stmt"/>
-        <line num="18" count="1" type="stmt"/>
-        <line num="19" count="1" type="stmt"/>
-        <line num="20" count="1" type="stmt"/>
-        <line num="21" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="22" count="3" type="stmt"/>
-        <line num="23" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="24" count="3" type="stmt"/>
-        <line num="25" count="3" type="stmt"/>
-        <line num="26" count="3" type="stmt"/>
-        <line num="27" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="28" count="5" type="stmt"/>
-        <line num="29" count="5" type="stmt"/>
-        <line num="30" count="5" type="stmt"/>
-        <line num="31" count="5" type="stmt"/>
-        <line num="32" count="5" type="stmt"/>
-        <line num="33" count="5" type="stmt"/>
-        <line num="34" count="5" type="stmt"/>
-        <line num="35" count="5" type="stmt"/>
-        <line num="36" count="3" type="stmt"/>
-        <line num="37" count="3" type="stmt"/>
-        <line num="38" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="39" count="3" type="stmt"/>
-        <line num="40" count="3" type="stmt"/>
-        <line num="41" count="3" type="stmt"/>
-        <line num="42" count="3" type="stmt"/>
-        <line num="43" count="3" type="stmt"/>
-        <line num="44" count="3" type="stmt"/>
-        <line num="45" count="3" type="stmt"/>
-        <line num="46" count="3" type="stmt"/>
-        <line num="47" count="3" type="stmt"/>
-        <line num="48" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="49" count="2" type="stmt"/>
-        <line num="50" count="2" type="stmt"/>
-        <line num="51" count="2" type="stmt"/>
-        <line num="52" count="2" type="stmt"/>
-        <line num="53" count="2" type="stmt"/>
-        <line num="54" count="2" type="stmt"/>
-        <line num="55" count="2" type="stmt"/>
-        <line num="56" count="2" type="stmt"/>
-        <line num="57" count="2" type="stmt"/>
-        <line num="58" count="2" type="stmt"/>
-        <line num="59" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="60" count="1" type="stmt"/>
-        <line num="61" count="1" type="stmt"/>
-        <line num="62" count="2" type="stmt"/>
-        <line num="63" count="2" type="stmt"/>
-        <line num="64" count="2" type="stmt"/>
-        <line num="65" count="3" type="stmt"/>
-      </file>
-    </package>
-    <package name="modules.cities.resolvers">
-      <metrics statements="147" coveredstatements="147" conditionals="13" coveredconditionals="13" methods="17" coveredmethods="11"/>
-      <file name="cities.resolver.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/cities/resolvers/cities.resolver.ts">
-        <metrics statements="147" coveredstatements="147" conditionals="13" coveredconditionals="13" methods="17" coveredmethods="11"/>
+        <metrics statements="186" coveredstatements="21" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -767,136 +424,243 @@
         <line num="19" count="1" type="stmt"/>
         <line num="20" count="1" type="stmt"/>
         <line num="21" count="1" type="stmt"/>
-        <line num="22" count="1" type="stmt"/>
-        <line num="23" count="1" type="stmt"/>
-        <line num="24" count="1" type="stmt"/>
-        <line num="25" count="1" type="stmt"/>
-        <line num="26" count="1" type="stmt"/>
-        <line num="27" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="28" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="29" count="20" type="stmt"/>
-        <line num="30" count="20" type="stmt"/>
-        <line num="31" count="20" type="cond" truecount="1" falsecount="0"/>
-        <line num="32" count="20" type="stmt"/>
-        <line num="33" count="20" type="stmt"/>
-        <line num="34" count="20" type="stmt"/>
-        <line num="35" count="20" type="stmt"/>
-        <line num="36" count="20" type="stmt"/>
-        <line num="37" count="20" type="stmt"/>
-        <line num="38" count="20" type="stmt"/>
-        <line num="39" count="20" type="stmt"/>
-        <line num="40" count="20" type="stmt"/>
-        <line num="41" count="20" type="stmt"/>
-        <line num="42" count="20" type="stmt"/>
-        <line num="43" count="20" type="cond" truecount="1" falsecount="0"/>
-        <line num="44" count="2" type="stmt"/>
-        <line num="45" count="2" type="stmt"/>
-        <line num="46" count="2" type="stmt"/>
-        <line num="47" count="2" type="stmt"/>
-        <line num="48" count="20" type="stmt"/>
-        <line num="49" count="20" type="stmt"/>
-        <line num="50" count="20" type="stmt"/>
-        <line num="51" count="20" type="stmt"/>
-        <line num="52" count="20" type="stmt"/>
-        <line num="53" count="20" type="cond" truecount="1" falsecount="0"/>
-        <line num="54" count="2" type="stmt"/>
-        <line num="55" count="2" type="stmt"/>
-        <line num="56" count="2" type="stmt"/>
-        <line num="57" count="2" type="stmt"/>
-        <line num="58" count="2" type="stmt"/>
-        <line num="59" count="2" type="stmt"/>
-        <line num="60" count="2" type="stmt"/>
-        <line num="61" count="2" type="stmt"/>
-        <line num="62" count="20" type="stmt"/>
-        <line num="63" count="20" type="stmt"/>
-        <line num="64" count="20" type="stmt"/>
-        <line num="65" count="20" type="stmt"/>
-        <line num="66" count="20" type="cond" truecount="1" falsecount="0"/>
-        <line num="67" count="2" type="stmt"/>
-        <line num="68" count="2" type="stmt"/>
-        <line num="69" count="2" type="stmt"/>
-        <line num="70" count="2" type="stmt"/>
-        <line num="71" count="2" type="stmt"/>
-        <line num="72" count="2" type="stmt"/>
-        <line num="73" count="2" type="stmt"/>
-        <line num="74" count="2" type="stmt"/>
-        <line num="75" count="20" type="stmt"/>
-        <line num="76" count="20" type="stmt"/>
-        <line num="77" count="20" type="stmt"/>
-        <line num="78" count="20" type="stmt"/>
-        <line num="79" count="20" type="cond" truecount="1" falsecount="0"/>
-        <line num="80" count="3" type="stmt"/>
-        <line num="81" count="3" type="stmt"/>
-        <line num="82" count="3" type="stmt"/>
-        <line num="83" count="3" type="stmt"/>
-        <line num="84" count="3" type="stmt"/>
-        <line num="85" count="3" type="stmt"/>
-        <line num="86" count="3" type="stmt"/>
-        <line num="87" count="3" type="stmt"/>
-        <line num="88" count="20" type="stmt"/>
-        <line num="89" count="20" type="stmt"/>
-        <line num="90" count="20" type="stmt"/>
-        <line num="91" count="20" type="stmt"/>
-        <line num="92" count="20" type="cond" truecount="1" falsecount="0"/>
-        <line num="93" count="2" type="stmt"/>
-        <line num="94" count="2" type="stmt"/>
-        <line num="95" count="2" type="stmt"/>
-        <line num="96" count="2" type="stmt"/>
-        <line num="97" count="2" type="stmt"/>
-        <line num="98" count="2" type="stmt"/>
-        <line num="99" count="2" type="stmt"/>
-        <line num="100" count="2" type="stmt"/>
-        <line num="101" count="20" type="stmt"/>
-        <line num="102" count="20" type="stmt"/>
-        <line num="103" count="20" type="stmt"/>
-        <line num="104" count="20" type="stmt"/>
-        <line num="105" count="20" type="cond" truecount="1" falsecount="0"/>
-        <line num="106" count="2" type="stmt"/>
-        <line num="107" count="2" type="stmt"/>
-        <line num="108" count="2" type="stmt"/>
-        <line num="109" count="2" type="stmt"/>
-        <line num="110" count="2" type="stmt"/>
-        <line num="111" count="2" type="stmt"/>
-        <line num="112" count="2" type="stmt"/>
-        <line num="113" count="2" type="stmt"/>
-        <line num="114" count="20" type="stmt"/>
-        <line num="115" count="20" type="stmt"/>
-        <line num="116" count="20" type="stmt"/>
-        <line num="117" count="20" type="stmt"/>
-        <line num="118" count="20" type="cond" truecount="1" falsecount="0"/>
-        <line num="119" count="2" type="stmt"/>
-        <line num="120" count="2" type="stmt"/>
-        <line num="121" count="2" type="stmt"/>
-        <line num="122" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="123" count="1" type="stmt"/>
-        <line num="124" count="1" type="stmt"/>
-        <line num="125" count="20" type="stmt"/>
-        <line num="126" count="20" type="stmt"/>
-        <line num="127" count="20" type="stmt"/>
-        <line num="128" count="20" type="stmt"/>
-        <line num="129" count="20" type="cond" truecount="1" falsecount="0"/>
-        <line num="130" count="2" type="stmt"/>
-        <line num="131" count="2" type="stmt"/>
-        <line num="132" count="2" type="stmt"/>
-        <line num="133" count="2" type="stmt"/>
-        <line num="134" count="2" type="stmt"/>
-        <line num="135" count="2" type="stmt"/>
-        <line num="136" count="2" type="stmt"/>
-        <line num="137" count="2" type="stmt"/>
-        <line num="138" count="20" type="stmt"/>
-        <line num="139" count="20" type="stmt"/>
-        <line num="140" count="20" type="stmt"/>
-        <line num="141" count="20" type="cond" truecount="1" falsecount="0"/>
-        <line num="142" count="3" type="stmt"/>
-        <line num="143" count="3" type="stmt"/>
-        <line num="144" count="3" type="stmt"/>
-        <line num="145" count="3" type="stmt"/>
-        <line num="146" count="3" type="stmt"/>
-        <line num="147" count="20" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
+        <line num="69" count="0" type="stmt"/>
+        <line num="70" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="73" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="79" count="0" type="stmt"/>
+        <line num="80" count="0" type="stmt"/>
+        <line num="81" count="0" type="stmt"/>
+        <line num="82" count="0" type="stmt"/>
+        <line num="83" count="0" type="stmt"/>
+        <line num="84" count="0" type="stmt"/>
+        <line num="85" count="0" type="stmt"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="87" count="0" type="stmt"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="89" count="0" type="stmt"/>
+        <line num="90" count="0" type="stmt"/>
+        <line num="91" count="0" type="stmt"/>
+        <line num="92" count="0" type="stmt"/>
+        <line num="93" count="0" type="stmt"/>
+        <line num="94" count="0" type="stmt"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="96" count="0" type="stmt"/>
+        <line num="97" count="0" type="stmt"/>
+        <line num="98" count="0" type="stmt"/>
+        <line num="99" count="0" type="stmt"/>
+        <line num="100" count="0" type="stmt"/>
+        <line num="101" count="0" type="stmt"/>
+        <line num="102" count="0" type="stmt"/>
+        <line num="103" count="0" type="stmt"/>
+        <line num="104" count="0" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+        <line num="106" count="0" type="stmt"/>
+        <line num="107" count="0" type="stmt"/>
+        <line num="108" count="0" type="stmt"/>
+        <line num="109" count="0" type="stmt"/>
+        <line num="110" count="0" type="stmt"/>
+        <line num="111" count="0" type="stmt"/>
+        <line num="112" count="0" type="stmt"/>
+        <line num="113" count="0" type="stmt"/>
+        <line num="114" count="0" type="stmt"/>
+        <line num="115" count="0" type="stmt"/>
+        <line num="116" count="0" type="stmt"/>
+        <line num="117" count="0" type="stmt"/>
+        <line num="118" count="0" type="stmt"/>
+        <line num="119" count="0" type="stmt"/>
+        <line num="120" count="0" type="stmt"/>
+        <line num="121" count="0" type="stmt"/>
+        <line num="122" count="0" type="stmt"/>
+        <line num="123" count="0" type="stmt"/>
+        <line num="124" count="0" type="stmt"/>
+        <line num="125" count="0" type="stmt"/>
+        <line num="126" count="0" type="stmt"/>
+        <line num="127" count="0" type="stmt"/>
+        <line num="128" count="0" type="stmt"/>
+        <line num="129" count="0" type="stmt"/>
+        <line num="130" count="0" type="stmt"/>
+        <line num="131" count="0" type="stmt"/>
+        <line num="132" count="0" type="stmt"/>
+        <line num="133" count="0" type="stmt"/>
+        <line num="134" count="0" type="stmt"/>
+        <line num="135" count="0" type="stmt"/>
+        <line num="136" count="0" type="stmt"/>
+        <line num="137" count="0" type="stmt"/>
+        <line num="138" count="0" type="stmt"/>
+        <line num="139" count="0" type="stmt"/>
+        <line num="140" count="0" type="stmt"/>
+        <line num="141" count="0" type="stmt"/>
+        <line num="142" count="0" type="stmt"/>
+        <line num="143" count="0" type="stmt"/>
+        <line num="144" count="0" type="stmt"/>
+        <line num="145" count="0" type="stmt"/>
+        <line num="146" count="0" type="stmt"/>
+        <line num="147" count="0" type="stmt"/>
+        <line num="148" count="0" type="stmt"/>
+        <line num="149" count="0" type="stmt"/>
+        <line num="150" count="0" type="stmt"/>
+        <line num="151" count="0" type="stmt"/>
+        <line num="152" count="0" type="stmt"/>
+        <line num="153" count="0" type="stmt"/>
+        <line num="154" count="0" type="stmt"/>
+        <line num="155" count="0" type="stmt"/>
+        <line num="156" count="0" type="stmt"/>
+        <line num="157" count="0" type="stmt"/>
+        <line num="158" count="0" type="stmt"/>
+        <line num="159" count="0" type="stmt"/>
+        <line num="160" count="0" type="stmt"/>
+        <line num="161" count="0" type="stmt"/>
+        <line num="162" count="0" type="stmt"/>
+        <line num="163" count="0" type="stmt"/>
+        <line num="164" count="0" type="stmt"/>
+        <line num="165" count="0" type="stmt"/>
+        <line num="166" count="0" type="stmt"/>
+        <line num="167" count="0" type="stmt"/>
+        <line num="168" count="0" type="stmt"/>
+        <line num="169" count="0" type="stmt"/>
+        <line num="170" count="0" type="stmt"/>
+        <line num="171" count="0" type="stmt"/>
+        <line num="172" count="0" type="stmt"/>
+        <line num="173" count="0" type="stmt"/>
+        <line num="174" count="0" type="stmt"/>
+        <line num="175" count="0" type="stmt"/>
+        <line num="176" count="0" type="stmt"/>
+        <line num="177" count="0" type="stmt"/>
+        <line num="178" count="0" type="stmt"/>
+        <line num="179" count="0" type="stmt"/>
+        <line num="180" count="0" type="stmt"/>
+        <line num="181" count="0" type="stmt"/>
+        <line num="182" count="0" type="stmt"/>
+        <line num="183" count="0" type="stmt"/>
+        <line num="184" count="0" type="stmt"/>
+        <line num="185" count="0" type="stmt"/>
+        <line num="186" count="0" type="stmt"/>
+      </file>
+      <file name="password-hasher.service.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/auth/services/password-hasher.service.ts">
+        <metrics statements="65" coveredstatements="21" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
       </file>
     </package>
     <package name="modules.cities.services">
-      <metrics statements="273" coveredstatements="273" conditionals="33" coveredconditionals="33" methods="17" coveredmethods="17"/>
+      <metrics statements="152" coveredstatements="152" conditionals="17" coveredconditionals="17" methods="8" coveredmethods="8"/>
       <file name="cities-query.service.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/cities/services/cities-query.service.ts">
         <metrics statements="152" coveredstatements="152" conditionals="17" coveredconditionals="17" methods="8" coveredmethods="8"/>
         <line num="1" count="1" type="stmt"/>
@@ -1052,129 +816,30 @@
         <line num="151" count="7" type="stmt"/>
         <line num="152" count="8" type="stmt"/>
       </file>
-      <file name="cities.service.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/cities/services/cities.service.ts">
-        <metrics statements="121" coveredstatements="121" conditionals="16" coveredconditionals="16" methods="9" coveredmethods="9"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="2" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="5" count="1" type="stmt"/>
-        <line num="6" count="1" type="stmt"/>
-        <line num="7" count="1" type="stmt"/>
-        <line num="8" count="1" type="stmt"/>
-        <line num="9" count="1" type="stmt"/>
-        <line num="10" count="1" type="stmt"/>
-        <line num="11" count="1" type="stmt"/>
-        <line num="12" count="1" type="stmt"/>
-        <line num="13" count="1" type="stmt"/>
-        <line num="14" count="1" type="stmt"/>
-        <line num="15" count="1" type="stmt"/>
-        <line num="16" count="1" type="stmt"/>
-        <line num="17" count="1" type="stmt"/>
+    </package>
+    <package name="modules.cities.test.mocks">
+      <metrics statements="19" coveredstatements="14" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+      <file name="city-repository.mock.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/cities/test/mocks/city-repository.mock.ts">
+        <metrics statements="19" coveredstatements="14" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="1" count="8" type="cond" truecount="1" falsecount="0"/>
+        <line num="2" count="8" type="stmt"/>
+        <line num="3" count="8" type="stmt"/>
+        <line num="4" count="8" type="stmt"/>
+        <line num="5" count="8" type="stmt"/>
+        <line num="6" count="8" type="stmt"/>
+        <line num="7" count="8" type="stmt"/>
+        <line num="8" count="8" type="stmt"/>
+        <line num="9" count="8" type="stmt"/>
+        <line num="10" count="0" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="14" count="0" type="stmt"/>
+        <line num="15" count="8" type="stmt"/>
+        <line num="16" count="8" type="stmt"/>
+        <line num="17" count="8" type="stmt"/>
         <line num="18" count="1" type="stmt"/>
-        <line num="19" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="20" count="13" type="stmt"/>
-        <line num="21" count="13" type="stmt"/>
-        <line num="22" count="13" type="cond" truecount="1" falsecount="0"/>
-        <line num="23" count="13" type="stmt"/>
-        <line num="24" count="13" type="stmt"/>
-        <line num="25" count="13" type="stmt"/>
-        <line num="26" count="13" type="stmt"/>
-        <line num="27" count="13" type="stmt"/>
-        <line num="28" count="13" type="stmt"/>
-        <line num="29" count="13" type="stmt"/>
-        <line num="30" count="13" type="stmt"/>
-        <line num="31" count="13" type="cond" truecount="1" falsecount="0"/>
-        <line num="32" count="2" type="stmt"/>
-        <line num="33" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="34" count="1" type="stmt"/>
-        <line num="35" count="13" type="stmt"/>
-        <line num="36" count="13" type="stmt"/>
-        <line num="37" count="13" type="cond" truecount="1" falsecount="0"/>
-        <line num="38" count="2" type="stmt"/>
-        <line num="39" count="2" type="stmt"/>
-        <line num="40" count="2" type="stmt"/>
-        <line num="41" count="2" type="stmt"/>
-        <line num="42" count="2" type="stmt"/>
-        <line num="43" count="2" type="stmt"/>
-        <line num="44" count="2" type="stmt"/>
-        <line num="45" count="2" type="stmt"/>
-        <line num="46" count="2" type="stmt"/>
-        <line num="47" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="48" count="1" type="stmt"/>
-        <line num="49" count="1" type="stmt"/>
-        <line num="50" count="1" type="stmt"/>
-        <line num="51" count="1" type="stmt"/>
-        <line num="52" count="1" type="stmt"/>
-        <line num="53" count="1" type="stmt"/>
-        <line num="54" count="1" type="stmt"/>
-        <line num="55" count="1" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="57" count="1" type="stmt"/>
-        <line num="58" count="1" type="stmt"/>
-        <line num="59" count="1" type="stmt"/>
-        <line num="60" count="13" type="stmt"/>
-        <line num="61" count="13" type="stmt"/>
-        <line num="62" count="13" type="cond" truecount="1" falsecount="0"/>
-        <line num="63" count="2" type="stmt"/>
-        <line num="64" count="2" type="stmt"/>
-        <line num="65" count="2" type="stmt"/>
-        <line num="66" count="2" type="stmt"/>
-        <line num="67" count="2" type="stmt"/>
-        <line num="68" count="2" type="stmt"/>
-        <line num="69" count="2" type="stmt"/>
-        <line num="70" count="13" type="stmt"/>
-        <line num="71" count="13" type="stmt"/>
-        <line num="72" count="13" type="cond" truecount="1" falsecount="0"/>
-        <line num="73" count="2" type="stmt"/>
-        <line num="74" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="75" count="1" type="stmt"/>
-        <line num="76" count="1" type="stmt"/>
-        <line num="77" count="1" type="stmt"/>
-        <line num="78" count="1" type="stmt"/>
-        <line num="79" count="13" type="stmt"/>
-        <line num="80" count="13" type="stmt"/>
-        <line num="81" count="13" type="cond" truecount="1" falsecount="0"/>
-        <line num="82" count="2" type="stmt"/>
-        <line num="83" count="2" type="stmt"/>
-        <line num="84" count="2" type="stmt"/>
-        <line num="85" count="2" type="stmt"/>
-        <line num="86" count="2" type="stmt"/>
-        <line num="87" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="88" count="2" type="stmt"/>
-        <line num="89" count="2" type="stmt"/>
-        <line num="90" count="13" type="stmt"/>
-        <line num="91" count="13" type="stmt"/>
-        <line num="92" count="13" type="cond" truecount="1" falsecount="0"/>
-        <line num="93" count="3" type="stmt"/>
-        <line num="94" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="95" count="2" type="stmt"/>
-        <line num="96" count="2" type="stmt"/>
-        <line num="97" count="2" type="stmt"/>
-        <line num="98" count="2" type="stmt"/>
-        <line num="99" count="2" type="stmt"/>
-        <line num="100" count="2" type="stmt"/>
-        <line num="101" count="2" type="stmt"/>
-        <line num="102" count="2" type="stmt"/>
-        <line num="103" count="2" type="stmt"/>
-        <line num="104" count="2" type="stmt"/>
-        <line num="105" count="2" type="stmt"/>
-        <line num="106" count="2" type="stmt"/>
-        <line num="107" count="2" type="stmt"/>
-        <line num="108" count="13" type="stmt"/>
-        <line num="109" count="13" type="cond" truecount="1" falsecount="0"/>
-        <line num="110" count="7" type="stmt"/>
-        <line num="111" count="7" type="stmt"/>
-        <line num="112" count="7" type="stmt"/>
-        <line num="113" count="7" type="stmt"/>
-        <line num="114" count="7" type="cond" truecount="1" falsecount="0"/>
-        <line num="115" count="3" type="stmt"/>
-        <line num="116" count="3" type="stmt"/>
-        <line num="117" count="3" type="stmt"/>
-        <line num="118" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="119" count="4" type="stmt"/>
-        <line num="120" count="4" type="stmt"/>
-        <line num="121" count="13" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
       </file>
     </package>
     <package name="modules.logger">
@@ -1232,60 +897,67 @@
         <line num="27" count="1" type="stmt"/>
         <line num="28" count="1" type="stmt"/>
         <line num="29" count="1" type="stmt"/>
-        <line num="30" count="15" type="cond" truecount="1" falsecount="0"/>
-        <line num="31" count="15" type="stmt"/>
-        <line num="32" count="15" type="stmt"/>
-        <line num="33" count="15" type="stmt"/>
-        <line num="34" count="15" type="stmt"/>
+        <line num="30" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="31" count="4" type="stmt"/>
+        <line num="32" count="4" type="stmt"/>
+        <line num="33" count="4" type="stmt"/>
+        <line num="34" count="4" type="stmt"/>
       </file>
     </package>
     <package name="modules.logger.resolvers">
-      <metrics statements="21" coveredstatements="21" conditionals="3" coveredconditionals="3" methods="4" coveredmethods="3"/>
+      <metrics statements="28" coveredstatements="28" conditionals="3" coveredconditionals="3" methods="3" coveredmethods="3"/>
       <file name="client-logs.resolver.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/logger/resolvers/client-logs.resolver.ts">
-        <metrics statements="21" coveredstatements="21" conditionals="3" coveredconditionals="3" methods="4" coveredmethods="3"/>
+        <metrics statements="28" coveredstatements="28" conditionals="3" coveredconditionals="3" methods="3" coveredmethods="3"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
         <line num="6" count="1" type="stmt"/>
-        <line num="7" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="8" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="9" count="3" type="stmt"/>
-        <line num="10" count="3" type="stmt"/>
-        <line num="11" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="12" count="3" type="stmt"/>
-        <line num="13" count="3" type="stmt"/>
-        <line num="14" count="3" type="stmt"/>
-        <line num="15" count="3" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="15" count="3" type="cond" truecount="1" falsecount="0"/>
         <line num="16" count="3" type="stmt"/>
         <line num="17" count="3" type="stmt"/>
-        <line num="18" count="3" type="stmt"/>
+        <line num="18" count="3" type="cond" truecount="1" falsecount="0"/>
         <line num="19" count="3" type="stmt"/>
         <line num="20" count="3" type="stmt"/>
         <line num="21" count="3" type="stmt"/>
+        <line num="22" count="3" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="24" count="3" type="stmt"/>
+        <line num="25" count="3" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="27" count="3" type="stmt"/>
+        <line num="28" count="3" type="stmt"/>
       </file>
     </package>
     <package name="modules.logger.sanitize">
       <metrics statements="87" coveredstatements="87" conditionals="33" coveredconditionals="33" methods="8" coveredmethods="8"/>
       <file name="is-non-serializable-object.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/logger/sanitize/is-non-serializable-object.ts">
         <metrics statements="16" coveredstatements="16" conditionals="10" coveredconditionals="10" methods="1" coveredmethods="1"/>
-        <line num="1" count="213" type="cond" truecount="1" falsecount="0"/>
-        <line num="2" count="213" type="cond" truecount="1" falsecount="0"/>
-        <line num="3" count="213" type="stmt"/>
-        <line num="4" count="213" type="cond" truecount="1" falsecount="0"/>
-        <line num="5" count="113" type="stmt"/>
-        <line num="6" count="113" type="stmt"/>
-        <line num="7" count="100" type="cond" truecount="2" falsecount="0"/>
-        <line num="8" count="100" type="stmt"/>
-        <line num="9" count="100" type="cond" truecount="1" falsecount="0"/>
-        <line num="10" count="213" type="cond" truecount="1" falsecount="0"/>
-        <line num="11" count="213" type="cond" truecount="1" falsecount="0"/>
-        <line num="12" count="213" type="cond" truecount="1" falsecount="0"/>
-        <line num="13" count="213" type="cond" truecount="1" falsecount="0"/>
-        <line num="14" count="83" type="stmt"/>
-        <line num="15" count="213" type="stmt"/>
-        <line num="16" count="213" type="stmt"/>
+        <line num="1" count="118" type="cond" truecount="1" falsecount="0"/>
+        <line num="2" count="118" type="cond" truecount="1" falsecount="0"/>
+        <line num="3" count="118" type="stmt"/>
+        <line num="4" count="118" type="cond" truecount="1" falsecount="0"/>
+        <line num="5" count="58" type="stmt"/>
+        <line num="6" count="58" type="stmt"/>
+        <line num="7" count="60" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="60" type="stmt"/>
+        <line num="9" count="60" type="cond" truecount="1" falsecount="0"/>
+        <line num="10" count="118" type="cond" truecount="1" falsecount="0"/>
+        <line num="11" count="118" type="cond" truecount="1" falsecount="0"/>
+        <line num="12" count="118" type="cond" truecount="1" falsecount="0"/>
+        <line num="13" count="118" type="cond" truecount="1" falsecount="0"/>
+        <line num="14" count="51" type="stmt"/>
+        <line num="15" count="118" type="stmt"/>
+        <line num="16" count="118" type="stmt"/>
       </file>
       <file name="sanitize-for-logging.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/logger/sanitize/sanitize-for-logging.ts">
         <metrics statements="71" coveredstatements="71" conditionals="23" coveredconditionals="23" methods="7" coveredmethods="7"/>
@@ -1294,50 +966,50 @@
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
-        <line num="6" count="83" type="cond" truecount="1" falsecount="0"/>
-        <line num="7" count="83" type="stmt"/>
-        <line num="8" count="83" type="stmt"/>
-        <line num="9" count="83" type="stmt"/>
-        <line num="10" count="83" type="stmt"/>
-        <line num="11" count="83" type="stmt"/>
-        <line num="12" count="83" type="stmt"/>
-        <line num="13" count="83" type="stmt"/>
-        <line num="14" count="83" type="stmt"/>
-        <line num="15" count="83" type="cond" truecount="1" falsecount="0"/>
-        <line num="16" count="200" type="stmt"/>
-        <line num="17" count="200" type="cond" truecount="1" falsecount="0"/>
-        <line num="18" count="200" type="cond" truecount="2" falsecount="0"/>
-        <line num="19" count="200" type="stmt"/>
-        <line num="20" count="200" type="cond" truecount="1" falsecount="0"/>
-        <line num="21" count="200" type="stmt"/>
-        <line num="22" count="200" type="cond" truecount="1" falsecount="0"/>
-        <line num="23" count="120" type="stmt"/>
-        <line num="24" count="120" type="stmt"/>
-        <line num="25" count="80" type="cond" truecount="1" falsecount="0"/>
-        <line num="26" count="200" type="cond" truecount="1" falsecount="0"/>
+        <line num="6" count="34" type="cond" truecount="1" falsecount="0"/>
+        <line num="7" count="34" type="stmt"/>
+        <line num="8" count="34" type="stmt"/>
+        <line num="9" count="34" type="stmt"/>
+        <line num="10" count="34" type="stmt"/>
+        <line num="11" count="34" type="stmt"/>
+        <line num="12" count="34" type="stmt"/>
+        <line num="13" count="34" type="stmt"/>
+        <line num="14" count="34" type="stmt"/>
+        <line num="15" count="34" type="cond" truecount="1" falsecount="0"/>
+        <line num="16" count="105" type="stmt"/>
+        <line num="17" count="105" type="cond" truecount="1" falsecount="0"/>
+        <line num="18" count="105" type="cond" truecount="2" falsecount="0"/>
+        <line num="19" count="105" type="stmt"/>
+        <line num="20" count="105" type="cond" truecount="1" falsecount="0"/>
+        <line num="21" count="105" type="stmt"/>
+        <line num="22" count="105" type="cond" truecount="1" falsecount="0"/>
+        <line num="23" count="59" type="stmt"/>
+        <line num="24" count="59" type="stmt"/>
+        <line num="25" count="46" type="cond" truecount="1" falsecount="0"/>
+        <line num="26" count="105" type="cond" truecount="1" falsecount="0"/>
         <line num="27" count="2" type="stmt"/>
         <line num="28" count="2" type="stmt"/>
-        <line num="29" count="78" type="cond" truecount="2" falsecount="0"/>
-        <line num="30" count="200" type="cond" truecount="2" falsecount="0"/>
-        <line num="31" count="3" type="stmt"/>
-        <line num="32" count="3" type="stmt"/>
-        <line num="33" count="75" type="cond" truecount="1" falsecount="0"/>
-        <line num="34" count="75" type="stmt"/>
-        <line num="35" count="75" type="stmt"/>
-        <line num="36" count="75" type="stmt"/>
-        <line num="37" count="75" type="stmt"/>
-        <line num="38" count="75" type="cond" truecount="1" falsecount="0"/>
-        <line num="39" count="75" type="cond" truecount="1" falsecount="0"/>
-        <line num="40" count="122" type="stmt"/>
-        <line num="41" count="122" type="stmt"/>
-        <line num="42" count="122" type="cond" truecount="1" falsecount="0"/>
-        <line num="43" count="122" type="cond" truecount="1" falsecount="0"/>
-        <line num="44" count="75" type="stmt"/>
-        <line num="45" count="75" type="stmt"/>
-        <line num="46" count="75" type="stmt"/>
-        <line num="47" count="83" type="stmt"/>
-        <line num="48" count="83" type="stmt"/>
-        <line num="49" count="83" type="stmt"/>
+        <line num="29" count="44" type="cond" truecount="2" falsecount="0"/>
+        <line num="30" count="105" type="cond" truecount="2" falsecount="0"/>
+        <line num="31" count="1" type="stmt"/>
+        <line num="32" count="1" type="stmt"/>
+        <line num="33" count="43" type="cond" truecount="1" falsecount="0"/>
+        <line num="34" count="43" type="stmt"/>
+        <line num="35" count="43" type="stmt"/>
+        <line num="36" count="43" type="stmt"/>
+        <line num="37" count="43" type="stmt"/>
+        <line num="38" count="43" type="cond" truecount="1" falsecount="0"/>
+        <line num="39" count="43" type="cond" truecount="1" falsecount="0"/>
+        <line num="40" count="72" type="stmt"/>
+        <line num="41" count="72" type="stmt"/>
+        <line num="42" count="72" type="cond" truecount="1" falsecount="0"/>
+        <line num="43" count="72" type="cond" truecount="1" falsecount="0"/>
+        <line num="44" count="43" type="stmt"/>
+        <line num="45" count="43" type="stmt"/>
+        <line num="46" count="43" type="stmt"/>
+        <line num="47" count="34" type="stmt"/>
+        <line num="48" count="34" type="stmt"/>
+        <line num="49" count="34" type="stmt"/>
         <line num="50" count="1" type="stmt"/>
         <line num="51" count="1" type="stmt"/>
         <line num="52" count="1" type="stmt"/>
@@ -1567,6 +1239,168 @@
         <line num="52" count="9" type="stmt"/>
       </file>
     </package>
+    <package name="modules.logger.test.contexts">
+      <metrics statements="115" coveredstatements="115" conditionals="7" coveredconditionals="7" methods="7" coveredmethods="7"/>
+      <file name="app-logger-service.context.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/logger/test/contexts/app-logger-service.context.ts">
+        <metrics statements="52" coveredstatements="52" conditionals="3" coveredconditionals="3" methods="3" coveredmethods="3"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="8" type="cond" truecount="1" falsecount="0"/>
+        <line num="8" count="8" type="stmt"/>
+        <line num="9" count="8" type="stmt"/>
+        <line num="10" count="8" type="stmt"/>
+        <line num="11" count="8" type="stmt"/>
+        <line num="12" count="8" type="stmt"/>
+        <line num="13" count="8" type="stmt"/>
+        <line num="14" count="8" type="stmt"/>
+        <line num="15" count="8" type="stmt"/>
+        <line num="16" count="8" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="8" type="cond" truecount="1" falsecount="0"/>
+        <line num="19" count="8" type="stmt"/>
+        <line num="20" count="8" type="stmt"/>
+        <line num="21" count="8" type="stmt"/>
+        <line num="22" count="8" type="stmt"/>
+        <line num="23" count="8" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="31" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="32" count="8" type="stmt"/>
+        <line num="33" count="8" type="stmt"/>
+        <line num="34" count="8" type="stmt"/>
+        <line num="35" count="8" type="stmt"/>
+        <line num="36" count="8" type="stmt"/>
+        <line num="37" count="8" type="stmt"/>
+        <line num="38" count="8" type="stmt"/>
+        <line num="39" count="8" type="stmt"/>
+        <line num="40" count="8" type="stmt"/>
+        <line num="41" count="8" type="stmt"/>
+        <line num="42" count="8" type="stmt"/>
+        <line num="43" count="8" type="stmt"/>
+        <line num="44" count="8" type="stmt"/>
+        <line num="45" count="8" type="stmt"/>
+        <line num="46" count="8" type="stmt"/>
+        <line num="47" count="8" type="stmt"/>
+        <line num="48" count="8" type="stmt"/>
+        <line num="49" count="8" type="stmt"/>
+        <line num="50" count="8" type="stmt"/>
+        <line num="51" count="8" type="stmt"/>
+        <line num="52" count="8" type="stmt"/>
+      </file>
+      <file name="client-logger-service.context.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/logger/test/contexts/client-logger-service.context.ts">
+        <metrics statements="33" coveredstatements="33" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="10" type="cond" truecount="1" falsecount="0"/>
+        <line num="6" count="10" type="stmt"/>
+        <line num="7" count="10" type="stmt"/>
+        <line num="8" count="10" type="stmt"/>
+        <line num="9" count="10" type="stmt"/>
+        <line num="10" count="10" type="stmt"/>
+        <line num="11" count="10" type="stmt"/>
+        <line num="12" count="10" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="20" count="10" type="stmt"/>
+        <line num="21" count="10" type="stmt"/>
+        <line num="22" count="10" type="stmt"/>
+        <line num="23" count="10" type="stmt"/>
+        <line num="24" count="10" type="stmt"/>
+        <line num="25" count="10" type="stmt"/>
+        <line num="26" count="10" type="stmt"/>
+        <line num="27" count="10" type="stmt"/>
+        <line num="28" count="10" type="stmt"/>
+        <line num="29" count="10" type="stmt"/>
+        <line num="30" count="10" type="stmt"/>
+        <line num="31" count="10" type="stmt"/>
+        <line num="32" count="10" type="stmt"/>
+        <line num="33" count="10" type="stmt"/>
+      </file>
+      <file name="client-logs-resolver.context.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/logger/test/contexts/client-logs-resolver.context.ts">
+        <metrics statements="30" coveredstatements="30" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="7" count="3" type="stmt"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="17" count="3" type="stmt"/>
+        <line num="18" count="3" type="stmt"/>
+        <line num="19" count="3" type="stmt"/>
+        <line num="20" count="3" type="stmt"/>
+        <line num="21" count="3" type="stmt"/>
+        <line num="22" count="3" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="24" count="3" type="stmt"/>
+        <line num="25" count="3" type="stmt"/>
+        <line num="26" count="3" type="stmt"/>
+        <line num="27" count="3" type="stmt"/>
+        <line num="28" count="3" type="stmt"/>
+        <line num="29" count="3" type="stmt"/>
+        <line num="30" count="3" type="stmt"/>
+      </file>
+    </package>
+    <package name="modules.logger.test.fixtures">
+      <metrics statements="29" coveredstatements="29" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="client-log.fixture.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/logger/test/fixtures/client-log.fixture.ts">
+        <metrics statements="29" coveredstatements="29" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+        <line num="13" count="1" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="1" type="stmt"/>
+        <line num="16" count="1" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+      </file>
+    </package>
     <package name="modules.users.services">
       <metrics statements="69" coveredstatements="69" conditionals="7" coveredconditionals="7" methods="7" coveredmethods="7"/>
       <file name="user.service.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/users/services/user.service.ts">
@@ -1642,6 +1476,66 @@
         <line num="69" count="5" type="stmt"/>
       </file>
     </package>
+    <package name="modules.users.test.contexts">
+      <metrics statements="54" coveredstatements="54" conditionals="3" coveredconditionals="3" methods="3" coveredmethods="3"/>
+      <file name="user-service.context.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/users/test/contexts/user-service.context.ts">
+        <metrics statements="54" coveredstatements="54" conditionals="3" coveredconditionals="3" methods="3" coveredmethods="3"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="10" count="5" type="stmt"/>
+        <line num="11" count="5" type="stmt"/>
+        <line num="12" count="5" type="stmt"/>
+        <line num="13" count="5" type="stmt"/>
+        <line num="14" count="5" type="stmt"/>
+        <line num="15" count="5" type="stmt"/>
+        <line num="16" count="5" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="19" count="5" type="stmt"/>
+        <line num="20" count="5" type="stmt"/>
+        <line num="21" count="5" type="stmt"/>
+        <line num="22" count="5" type="stmt"/>
+        <line num="23" count="1" type="stmt"/>
+        <line num="24" count="1" type="stmt"/>
+        <line num="25" count="1" type="stmt"/>
+        <line num="26" count="1" type="stmt"/>
+        <line num="27" count="1" type="stmt"/>
+        <line num="28" count="1" type="stmt"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="30" count="1" type="stmt"/>
+        <line num="31" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="32" count="5" type="stmt"/>
+        <line num="33" count="5" type="stmt"/>
+        <line num="34" count="5" type="stmt"/>
+        <line num="35" count="5" type="stmt"/>
+        <line num="36" count="5" type="stmt"/>
+        <line num="37" count="5" type="stmt"/>
+        <line num="38" count="5" type="stmt"/>
+        <line num="39" count="5" type="stmt"/>
+        <line num="40" count="5" type="stmt"/>
+        <line num="41" count="5" type="stmt"/>
+        <line num="42" count="5" type="stmt"/>
+        <line num="43" count="5" type="stmt"/>
+        <line num="44" count="5" type="stmt"/>
+        <line num="45" count="5" type="stmt"/>
+        <line num="46" count="5" type="stmt"/>
+        <line num="47" count="5" type="stmt"/>
+        <line num="48" count="5" type="stmt"/>
+        <line num="49" count="5" type="stmt"/>
+        <line num="50" count="5" type="stmt"/>
+        <line num="51" count="5" type="stmt"/>
+        <line num="52" count="5" type="stmt"/>
+        <line num="53" count="5" type="stmt"/>
+        <line num="54" count="5" type="stmt"/>
+      </file>
+    </package>
     <package name="modules.weather.constants">
       <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
       <file name="open-weather.constants.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/weather/constants/open-weather.constants.ts">
@@ -1698,9 +1592,9 @@
       </file>
     </package>
     <package name="modules.weather.services">
-      <metrics statements="141" coveredstatements="141" conditionals="17" coveredconditionals="17" methods="13" coveredmethods="13"/>
+      <metrics statements="141" coveredstatements="40" conditionals="2" coveredconditionals="0" methods="2" coveredmethods="0"/>
       <file name="open-weather-api.service.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/weather/services/open-weather-api.service.ts">
-        <metrics statements="76" coveredstatements="76" conditionals="8" coveredconditionals="8" methods="8" coveredmethods="8"/>
+        <metrics statements="76" coveredstatements="22" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -1722,64 +1616,64 @@
         <line num="19" count="1" type="stmt"/>
         <line num="20" count="1" type="stmt"/>
         <line num="21" count="1" type="stmt"/>
-        <line num="22" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="23" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="24" count="3" type="stmt"/>
-        <line num="25" count="3" type="stmt"/>
-        <line num="26" count="3" type="stmt"/>
-        <line num="27" count="3" type="stmt"/>
-        <line num="28" count="3" type="stmt"/>
-        <line num="29" count="3" type="stmt"/>
-        <line num="30" count="3" type="stmt"/>
-        <line num="31" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="32" count="3" type="stmt"/>
-        <line num="33" count="3" type="stmt"/>
-        <line num="34" count="3" type="stmt"/>
-        <line num="35" count="3" type="stmt"/>
-        <line num="36" count="3" type="stmt"/>
-        <line num="37" count="3" type="stmt"/>
-        <line num="38" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="39" count="3" type="stmt"/>
-        <line num="40" count="3" type="stmt"/>
-        <line num="41" count="3" type="stmt"/>
-        <line num="42" count="3" type="stmt"/>
-        <line num="43" count="3" type="stmt"/>
-        <line num="44" count="3" type="stmt"/>
-        <line num="45" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="46" count="2" type="stmt"/>
-        <line num="47" count="2" type="stmt"/>
-        <line num="48" count="2" type="stmt"/>
-        <line num="49" count="2" type="stmt"/>
-        <line num="50" count="2" type="stmt"/>
-        <line num="51" count="3" type="stmt"/>
-        <line num="52" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="53" count="1" type="stmt"/>
-        <line num="54" count="1" type="stmt"/>
-        <line num="55" count="1" type="stmt"/>
-        <line num="56" count="1" type="stmt"/>
-        <line num="57" count="1" type="stmt"/>
-        <line num="58" count="3" type="stmt"/>
-        <line num="59" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="60" count="1" type="stmt"/>
-        <line num="61" count="1" type="stmt"/>
-        <line num="62" count="1" type="stmt"/>
-        <line num="63" count="1" type="stmt"/>
-        <line num="64" count="1" type="stmt"/>
-        <line num="65" count="1" type="stmt"/>
-        <line num="66" count="1" type="stmt"/>
-        <line num="67" count="3" type="stmt"/>
-        <line num="68" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="69" count="1" type="stmt"/>
-        <line num="70" count="1" type="stmt"/>
-        <line num="71" count="1" type="stmt"/>
-        <line num="72" count="1" type="stmt"/>
-        <line num="73" count="1" type="stmt"/>
-        <line num="74" count="1" type="stmt"/>
-        <line num="75" count="1" type="stmt"/>
-        <line num="76" count="3" type="stmt"/>
+        <line num="22" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
+        <line num="69" count="0" type="stmt"/>
+        <line num="70" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="73" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="76" count="0" type="stmt"/>
       </file>
       <file name="weather.service.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/weather/services/weather.service.ts">
-        <metrics statements="65" coveredstatements="65" conditionals="9" coveredconditionals="9" methods="5" coveredmethods="5"/>
+        <metrics statements="65" coveredstatements="18" conditionals="1" coveredconditionals="0" methods="1" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -1797,16 +1691,87 @@
         <line num="15" count="1" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
-        <line num="18" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="19" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="20" count="4" type="stmt"/>
-        <line num="21" count="4" type="stmt"/>
-        <line num="22" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="18" count="1" type="cond" truecount="0" falsecount="1"/>
+        <line num="19" count="0" type="stmt"/>
+        <line num="20" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="44" count="0" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
+        <line num="60" count="0" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="modules.weather.test.contexts">
+      <metrics statements="60" coveredstatements="60" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+      <file name="weather-resolver.context.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/weather/test/contexts/weather-resolver.context.ts">
+        <metrics statements="60" coveredstatements="60" conditionals="2" coveredconditionals="2" methods="2" coveredmethods="2"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="stmt"/>
+        <line num="11" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="12" count="2" type="stmt"/>
+        <line num="13" count="2" type="stmt"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="16" count="2" type="stmt"/>
+        <line num="17" count="1" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="21" count="1" type="stmt"/>
+        <line num="22" count="1" type="stmt"/>
         <line num="23" count="1" type="stmt"/>
         <line num="24" count="1" type="stmt"/>
-        <line num="25" count="4" type="stmt"/>
-        <line num="26" count="4" type="stmt"/>
-        <line num="27" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="25" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="26" count="2" type="stmt"/>
+        <line num="27" count="2" type="stmt"/>
         <line num="28" count="2" type="stmt"/>
         <line num="29" count="2" type="stmt"/>
         <line num="30" count="2" type="stmt"/>
@@ -1817,11 +1782,11 @@
         <line num="35" count="2" type="stmt"/>
         <line num="36" count="2" type="stmt"/>
         <line num="37" count="2" type="stmt"/>
-        <line num="38" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="38" count="2" type="stmt"/>
         <line num="39" count="2" type="stmt"/>
         <line num="40" count="2" type="stmt"/>
         <line num="41" count="2" type="stmt"/>
-        <line num="42" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="42" count="2" type="stmt"/>
         <line num="43" count="2" type="stmt"/>
         <line num="44" count="2" type="stmt"/>
         <line num="45" count="2" type="stmt"/>
@@ -1831,71 +1796,36 @@
         <line num="49" count="2" type="stmt"/>
         <line num="50" count="2" type="stmt"/>
         <line num="51" count="2" type="stmt"/>
-        <line num="52" count="2" type="cond" truecount="2" falsecount="0"/>
+        <line num="52" count="2" type="stmt"/>
         <line num="53" count="2" type="stmt"/>
         <line num="54" count="2" type="stmt"/>
         <line num="55" count="2" type="stmt"/>
-        <line num="56" count="4" type="stmt"/>
-        <line num="57" count="4" type="stmt"/>
-        <line num="58" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="59" count="1" type="stmt"/>
-        <line num="60" count="1" type="stmt"/>
-        <line num="61" count="1" type="stmt"/>
-        <line num="62" count="1" type="stmt"/>
-        <line num="63" count="1" type="stmt"/>
-        <line num="64" count="1" type="stmt"/>
-        <line num="65" count="4" type="stmt"/>
+        <line num="56" count="2" type="stmt"/>
+        <line num="57" count="2" type="stmt"/>
+        <line num="58" count="2" type="stmt"/>
+        <line num="59" count="2" type="stmt"/>
+        <line num="60" count="2" type="stmt"/>
       </file>
     </package>
     <package name="modules.weather.utils">
-      <metrics statements="208" coveredstatements="208" conditionals="31" coveredconditionals="31" methods="11" coveredmethods="11"/>
+      <metrics statements="208" coveredstatements="91" conditionals="7" coveredconditionals="7" methods="10" coveredmethods="5"/>
       <file name="calculate-average-by.util.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/weather/utils/calculate-average-by.util.ts">
         <metrics statements="8" coveredstatements="8" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
-        <line num="3" count="129" type="cond" truecount="1" falsecount="0"/>
-        <line num="4" count="129" type="stmt"/>
-        <line num="5" count="129" type="stmt"/>
-        <line num="6" count="129" type="stmt"/>
-        <line num="7" count="129" type="stmt"/>
-        <line num="8" count="129" type="stmt"/>
+        <line num="3" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="4" count="3" type="stmt"/>
+        <line num="5" count="3" type="stmt"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="7" count="3" type="stmt"/>
+        <line num="8" count="3" type="stmt"/>
       </file>
       <file name="format-unix-time.util.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/weather/utils/format-unix-time.util.ts">
         <metrics statements="11" coveredstatements="11" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="2" count="39" type="stmt"/>
-        <line num="3" count="39" type="stmt"/>
-        <line num="4" count="39" type="stmt"/>
-        <line num="5" count="39" type="stmt"/>
-        <line num="6" count="39" type="stmt"/>
-        <line num="7" count="39" type="stmt"/>
-        <line num="8" count="39" type="stmt"/>
-        <line num="9" count="39" type="stmt"/>
-        <line num="10" count="39" type="stmt"/>
-        <line num="11" count="39" type="stmt"/>
-      </file>
-      <file name="get-rounded-min-max.util.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/weather/utils/get-rounded-min-max.util.ts">
-        <metrics statements="13" coveredstatements="13" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="2" count="1" type="stmt"/>
-        <line num="3" count="40" type="cond" truecount="1" falsecount="0"/>
-        <line num="4" count="40" type="stmt"/>
-        <line num="5" count="40" type="stmt"/>
-        <line num="6" count="40" type="stmt"/>
-        <line num="7" count="40" type="stmt"/>
-        <line num="8" count="40" type="stmt"/>
-        <line num="9" count="40" type="stmt"/>
-        <line num="10" count="40" type="stmt"/>
-        <line num="11" count="40" type="stmt"/>
-        <line num="12" count="40" type="stmt"/>
-        <line num="13" count="40" type="stmt"/>
-      </file>
-      <file name="get-temperature-range.util.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/weather/utils/get-temperature-range.util.ts">
-        <metrics statements="13" coveredstatements="13" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
-        <line num="1" count="1" type="stmt"/>
-        <line num="2" count="1" type="stmt"/>
-        <line num="3" count="1" type="stmt"/>
-        <line num="4" count="4" type="cond" truecount="1" falsecount="0"/>
+        <line num="2" count="4" type="stmt"/>
+        <line num="3" count="4" type="stmt"/>
+        <line num="4" count="4" type="stmt"/>
         <line num="5" count="4" type="stmt"/>
         <line num="6" count="4" type="stmt"/>
         <line num="7" count="4" type="stmt"/>
@@ -1903,36 +1833,66 @@
         <line num="9" count="4" type="stmt"/>
         <line num="10" count="4" type="stmt"/>
         <line num="11" count="4" type="stmt"/>
-        <line num="12" count="4" type="stmt"/>
-        <line num="13" count="4" type="stmt"/>
+      </file>
+      <file name="get-rounded-min-max.util.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/weather/utils/get-rounded-min-max.util.ts">
+        <metrics statements="13" coveredstatements="13" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="9" type="cond" truecount="1" falsecount="0"/>
+        <line num="4" count="9" type="stmt"/>
+        <line num="5" count="9" type="stmt"/>
+        <line num="6" count="9" type="stmt"/>
+        <line num="7" count="9" type="stmt"/>
+        <line num="8" count="9" type="stmt"/>
+        <line num="9" count="9" type="stmt"/>
+        <line num="10" count="9" type="stmt"/>
+        <line num="11" count="9" type="stmt"/>
+        <line num="12" count="9" type="stmt"/>
+        <line num="13" count="9" type="stmt"/>
+      </file>
+      <file name="get-temperature-range.util.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/weather/utils/get-temperature-range.util.ts">
+        <metrics statements="13" coveredstatements="13" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="5" count="3" type="stmt"/>
+        <line num="6" count="3" type="stmt"/>
+        <line num="7" count="3" type="stmt"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="10" count="3" type="stmt"/>
+        <line num="11" count="3" type="stmt"/>
+        <line num="12" count="3" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
       </file>
       <file name="group-forecast-by-date.util.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/weather/utils/group-forecast-by-date.util.ts">
         <metrics statements="22" coveredstatements="22" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="4" count="10" type="stmt"/>
-        <line num="5" count="10" type="stmt"/>
-        <line num="6" count="10" type="stmt"/>
-        <line num="7" count="10" type="cond" truecount="1" falsecount="0"/>
-        <line num="8" count="67" type="stmt"/>
-        <line num="9" count="67" type="stmt"/>
-        <line num="10" count="67" type="stmt"/>
-        <line num="11" count="67" type="stmt"/>
-        <line num="12" count="67" type="stmt"/>
-        <line num="13" count="67" type="cond" truecount="1" falsecount="0"/>
-        <line num="14" count="38" type="stmt"/>
-        <line num="15" count="38" type="stmt"/>
-        <line num="16" count="67" type="stmt"/>
-        <line num="17" count="67" type="stmt"/>
-        <line num="18" count="67" type="stmt"/>
-        <line num="19" count="67" type="stmt"/>
-        <line num="20" count="67" type="stmt"/>
-        <line num="21" count="10" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="6" count="2" type="stmt"/>
+        <line num="7" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="8" count="3" type="stmt"/>
+        <line num="9" count="3" type="stmt"/>
+        <line num="10" count="3" type="stmt"/>
+        <line num="11" count="3" type="stmt"/>
+        <line num="12" count="3" type="stmt"/>
+        <line num="13" count="3" type="cond" truecount="1" falsecount="0"/>
+        <line num="14" count="2" type="stmt"/>
+        <line num="15" count="2" type="stmt"/>
+        <line num="16" count="3" type="stmt"/>
+        <line num="17" count="3" type="stmt"/>
+        <line num="18" count="3" type="stmt"/>
+        <line num="19" count="3" type="stmt"/>
+        <line num="20" count="3" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
         <line num="22" count="1" type="stmt"/>
       </file>
       <file name="weather-mappers.ts" path="/Users/Yana/Documents/weather_forecast/server/src/modules/weather/utils/weather-mappers.ts">
-        <metrics statements="141" coveredstatements="141" conditionals="24" coveredconditionals="24" methods="6" coveredmethods="6"/>
+        <metrics statements="141" coveredstatements="24" conditionals="0" coveredconditionals="0" methods="5" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -1953,142 +1913,182 @@
         <line num="18" count="1" type="stmt"/>
         <line num="19" count="1" type="stmt"/>
         <line num="20" count="1" type="stmt"/>
-        <line num="21" count="4" type="cond" truecount="1" falsecount="0"/>
-        <line num="22" count="4" type="stmt"/>
-        <line num="23" count="4" type="stmt"/>
-        <line num="24" count="4" type="stmt"/>
-        <line num="25" count="4" type="stmt"/>
-        <line num="26" count="4" type="stmt"/>
-        <line num="27" count="4" type="stmt"/>
-        <line num="28" count="4" type="stmt"/>
-        <line num="29" count="4" type="stmt"/>
-        <line num="30" count="4" type="stmt"/>
-        <line num="31" count="4" type="stmt"/>
-        <line num="32" count="4" type="stmt"/>
-        <line num="33" count="4" type="stmt"/>
-        <line num="34" count="4" type="stmt"/>
-        <line num="35" count="4" type="stmt"/>
-        <line num="36" count="4" type="stmt"/>
-        <line num="37" count="4" type="stmt"/>
-        <line num="38" count="4" type="stmt"/>
-        <line num="39" count="4" type="stmt"/>
-        <line num="40" count="4" type="stmt"/>
-        <line num="41" count="4" type="stmt"/>
-        <line num="42" count="4" type="stmt"/>
-        <line num="43" count="4" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="23" count="0" type="stmt"/>
+        <line num="24" count="0" type="stmt"/>
+        <line num="25" count="0" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="28" count="0" type="stmt"/>
+        <line num="29" count="0" type="stmt"/>
+        <line num="30" count="0" type="stmt"/>
+        <line num="31" count="0" type="stmt"/>
+        <line num="32" count="0" type="stmt"/>
+        <line num="33" count="0" type="stmt"/>
+        <line num="34" count="0" type="stmt"/>
+        <line num="35" count="0" type="stmt"/>
+        <line num="36" count="0" type="stmt"/>
+        <line num="37" count="0" type="stmt"/>
+        <line num="38" count="0" type="stmt"/>
+        <line num="39" count="0" type="stmt"/>
+        <line num="40" count="0" type="stmt"/>
+        <line num="41" count="0" type="stmt"/>
+        <line num="42" count="0" type="stmt"/>
+        <line num="43" count="0" type="stmt"/>
         <line num="44" count="1" type="stmt"/>
-        <line num="45" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="46" count="3" type="stmt"/>
-        <line num="47" count="3" type="stmt"/>
-        <line num="48" count="3" type="stmt"/>
-        <line num="49" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="50" count="27" type="stmt"/>
-        <line num="51" count="27" type="stmt"/>
-        <line num="52" count="27" type="stmt"/>
-        <line num="53" count="27" type="stmt"/>
-        <line num="54" count="27" type="stmt"/>
-        <line num="55" count="27" type="stmt"/>
-        <line num="56" count="27" type="stmt"/>
-        <line num="57" count="27" type="stmt"/>
-        <line num="58" count="3" type="stmt"/>
-        <line num="59" count="3" type="stmt"/>
+        <line num="45" count="0" type="stmt"/>
+        <line num="46" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="49" count="0" type="stmt"/>
+        <line num="50" count="0" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="54" count="0" type="stmt"/>
+        <line num="55" count="0" type="stmt"/>
+        <line num="56" count="0" type="stmt"/>
+        <line num="57" count="0" type="stmt"/>
+        <line num="58" count="0" type="stmt"/>
+        <line num="59" count="0" type="stmt"/>
         <line num="60" count="1" type="stmt"/>
-        <line num="61" count="8" type="cond" truecount="1" falsecount="0"/>
-        <line num="62" count="8" type="stmt"/>
-        <line num="63" count="8" type="stmt"/>
-        <line num="64" count="8" type="stmt"/>
-        <line num="65" count="8" type="stmt"/>
-        <line num="66" count="8" type="stmt"/>
-        <line num="67" count="8" type="stmt"/>
-        <line num="68" count="8" type="cond" truecount="1" falsecount="0"/>
-        <line num="69" count="21" type="cond" truecount="1" falsecount="0"/>
-        <line num="70" count="21" type="cond" truecount="1" falsecount="0"/>
-        <line num="71" count="21" type="cond" truecount="1" falsecount="0"/>
-        <line num="72" count="21" type="cond" truecount="1" falsecount="0"/>
-        <line num="73" count="21" type="cond" truecount="1" falsecount="0"/>
-        <line num="74" count="21" type="stmt"/>
-        <line num="75" count="21" type="stmt"/>
-        <line num="76" count="21" type="cond" truecount="1" falsecount="0"/>
-        <line num="77" count="21" type="stmt"/>
-        <line num="78" count="21" type="stmt"/>
-        <line num="79" count="21" type="cond" truecount="2" falsecount="0"/>
-        <line num="80" count="21" type="stmt"/>
-        <line num="81" count="21" type="stmt"/>
-        <line num="82" count="21" type="stmt"/>
-        <line num="83" count="21" type="stmt"/>
-        <line num="84" count="21" type="stmt"/>
-        <line num="85" count="21" type="stmt"/>
-        <line num="86" count="21" type="stmt"/>
-        <line num="87" count="21" type="stmt"/>
-        <line num="88" count="21" type="stmt"/>
-        <line num="89" count="21" type="stmt"/>
-        <line num="90" count="21" type="stmt"/>
-        <line num="91" count="21" type="stmt"/>
-        <line num="92" count="21" type="stmt"/>
-        <line num="93" count="21" type="stmt"/>
-        <line num="94" count="21" type="stmt"/>
-        <line num="95" count="21" type="stmt"/>
-        <line num="96" count="8" type="stmt"/>
-        <line num="97" count="8" type="stmt"/>
+        <line num="61" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="65" count="0" type="stmt"/>
+        <line num="66" count="0" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
+        <line num="69" count="0" type="stmt"/>
+        <line num="70" count="0" type="stmt"/>
+        <line num="71" count="0" type="stmt"/>
+        <line num="72" count="0" type="stmt"/>
+        <line num="73" count="0" type="stmt"/>
+        <line num="74" count="0" type="stmt"/>
+        <line num="75" count="0" type="stmt"/>
+        <line num="76" count="0" type="stmt"/>
+        <line num="77" count="0" type="stmt"/>
+        <line num="78" count="0" type="stmt"/>
+        <line num="79" count="0" type="stmt"/>
+        <line num="80" count="0" type="stmt"/>
+        <line num="81" count="0" type="stmt"/>
+        <line num="82" count="0" type="stmt"/>
+        <line num="83" count="0" type="stmt"/>
+        <line num="84" count="0" type="stmt"/>
+        <line num="85" count="0" type="stmt"/>
+        <line num="86" count="0" type="stmt"/>
+        <line num="87" count="0" type="stmt"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="89" count="0" type="stmt"/>
+        <line num="90" count="0" type="stmt"/>
+        <line num="91" count="0" type="stmt"/>
+        <line num="92" count="0" type="stmt"/>
+        <line num="93" count="0" type="stmt"/>
+        <line num="94" count="0" type="stmt"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="96" count="0" type="stmt"/>
+        <line num="97" count="0" type="stmt"/>
         <line num="98" count="1" type="stmt"/>
-        <line num="99" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="100" count="9" type="stmt"/>
-        <line num="101" count="9" type="stmt"/>
-        <line num="102" count="9" type="stmt"/>
-        <line num="103" count="9" type="stmt"/>
-        <line num="104" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="105" count="9" type="stmt"/>
-        <line num="106" count="9" type="stmt"/>
-        <line num="107" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="108" count="1" type="stmt"/>
-        <line num="109" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="110" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="111" count="9" type="stmt"/>
-        <line num="112" count="9" type="cond" truecount="2" falsecount="0"/>
-        <line num="113" count="9" type="stmt"/>
-        <line num="114" count="9" type="stmt"/>
-        <line num="115" count="9" type="stmt"/>
+        <line num="99" count="0" type="stmt"/>
+        <line num="100" count="0" type="stmt"/>
+        <line num="101" count="0" type="stmt"/>
+        <line num="102" count="0" type="stmt"/>
+        <line num="103" count="0" type="stmt"/>
+        <line num="104" count="0" type="stmt"/>
+        <line num="105" count="0" type="stmt"/>
+        <line num="106" count="0" type="stmt"/>
+        <line num="107" count="0" type="stmt"/>
+        <line num="108" count="0" type="stmt"/>
+        <line num="109" count="0" type="stmt"/>
+        <line num="110" count="0" type="stmt"/>
+        <line num="111" count="0" type="stmt"/>
+        <line num="112" count="0" type="stmt"/>
+        <line num="113" count="0" type="stmt"/>
+        <line num="114" count="0" type="stmt"/>
+        <line num="115" count="0" type="stmt"/>
         <line num="116" count="1" type="stmt"/>
-        <line num="117" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="118" count="3" type="stmt"/>
-        <line num="119" count="3" type="stmt"/>
-        <line num="120" count="3" type="stmt"/>
-        <line num="121" count="3" type="stmt"/>
-        <line num="122" count="3" type="stmt"/>
-        <line num="123" count="3" type="stmt"/>
-        <line num="124" count="3" type="stmt"/>
-        <line num="125" count="3" type="stmt"/>
-        <line num="126" count="3" type="cond" truecount="1" falsecount="0"/>
-        <line num="127" count="9" type="stmt"/>
-        <line num="128" count="9" type="stmt"/>
-        <line num="129" count="9" type="stmt"/>
-        <line num="130" count="3" type="stmt"/>
-        <line num="131" count="3" type="stmt"/>
-        <line num="132" count="3" type="stmt"/>
-        <line num="133" count="3" type="stmt"/>
-        <line num="134" count="3" type="stmt"/>
-        <line num="135" count="3" type="stmt"/>
-        <line num="136" count="3" type="cond" truecount="2" falsecount="0"/>
-        <line num="137" count="3" type="stmt"/>
-        <line num="138" count="3" type="stmt"/>
-        <line num="139" count="3" type="stmt"/>
-        <line num="140" count="3" type="stmt"/>
-        <line num="141" count="3" type="stmt"/>
+        <line num="117" count="0" type="stmt"/>
+        <line num="118" count="0" type="stmt"/>
+        <line num="119" count="0" type="stmt"/>
+        <line num="120" count="0" type="stmt"/>
+        <line num="121" count="0" type="stmt"/>
+        <line num="122" count="0" type="stmt"/>
+        <line num="123" count="0" type="stmt"/>
+        <line num="124" count="0" type="stmt"/>
+        <line num="125" count="0" type="stmt"/>
+        <line num="126" count="0" type="stmt"/>
+        <line num="127" count="0" type="stmt"/>
+        <line num="128" count="0" type="stmt"/>
+        <line num="129" count="0" type="stmt"/>
+        <line num="130" count="0" type="stmt"/>
+        <line num="131" count="0" type="stmt"/>
+        <line num="132" count="0" type="stmt"/>
+        <line num="133" count="0" type="stmt"/>
+        <line num="134" count="0" type="stmt"/>
+        <line num="135" count="0" type="stmt"/>
+        <line num="136" count="0" type="stmt"/>
+        <line num="137" count="0" type="stmt"/>
+        <line num="138" count="0" type="stmt"/>
+        <line num="139" count="0" type="stmt"/>
+        <line num="140" count="0" type="stmt"/>
+        <line num="141" count="0" type="stmt"/>
       </file>
     </package>
     <package name="shared">
       <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="2" methods="0" coveredmethods="0"/>
       <file name="constants.ts" path="/Users/Yana/Documents/weather_forecast/server/src/shared/constants.ts">
         <metrics statements="9" coveredstatements="9" conditionals="2" coveredconditionals="2" methods="0" coveredmethods="0"/>
-        <line num="1" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="2" count="2" type="stmt"/>
-        <line num="3" count="2" type="stmt"/>
-        <line num="4" count="2" type="stmt"/>
+        <line num="1" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
-        <line num="6" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="7" count="2" type="stmt"/>
-        <line num="8" count="2" type="stmt"/>
-        <line num="9" count="2" type="stmt"/>
+        <line num="6" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="shared.test.mocks">
+      <metrics statements="12" coveredstatements="12" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+      <file name="logger.mock.ts" path="/Users/Yana/Documents/weather_forecast/server/src/shared/test/mocks/logger.mock.ts">
+        <metrics statements="12" coveredstatements="12" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="1" count="15" type="cond" truecount="1" falsecount="0"/>
+        <line num="2" count="15" type="stmt"/>
+        <line num="3" count="15" type="stmt"/>
+        <line num="4" count="15" type="stmt"/>
+        <line num="5" count="15" type="stmt"/>
+        <line num="6" count="15" type="stmt"/>
+        <line num="7" count="15" type="stmt"/>
+        <line num="8" count="15" type="cond" truecount="1" falsecount="0"/>
+        <line num="9" count="15" type="stmt"/>
+        <line num="10" count="15" type="stmt"/>
+        <line num="11" count="1" type="stmt"/>
+        <line num="12" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="shared.test.utils">
+      <metrics statements="16" coveredstatements="16" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+      <file name="create-context.ts" path="/Users/Yana/Documents/weather_forecast/server/src/shared/test/utils/create-context.ts">
+        <metrics statements="16" coveredstatements="16" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="5" count="21" type="stmt"/>
+        <line num="6" count="21" type="stmt"/>
+        <line num="7" count="21" type="stmt"/>
+        <line num="8" count="21" type="stmt"/>
+        <line num="9" count="21" type="stmt"/>
+        <line num="10" count="21" type="stmt"/>
+        <line num="11" count="21" type="stmt"/>
+        <line num="12" count="21" type="stmt"/>
+        <line num="13" count="21" type="stmt"/>
+        <line num="14" count="21" type="stmt"/>
+        <line num="15" count="21" type="stmt"/>
+        <line num="16" count="21" type="stmt"/>
       </file>
     </package>
     <package name="shared.utils">
@@ -2139,31 +2139,31 @@
       <file name="calculate-average.util.ts" path="/Users/Yana/Documents/weather_forecast/server/src/shared/utils/calculate-average.util.ts">
         <metrics statements="13" coveredstatements="13" conditionals="4" coveredconditionals="4" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="cond" truecount="1" falsecount="0"/>
-        <line num="2" count="133" type="cond" truecount="1" falsecount="0"/>
+        <line num="2" count="7" type="cond" truecount="1" falsecount="0"/>
         <line num="3" count="2" type="stmt"/>
         <line num="4" count="2" type="stmt"/>
-        <line num="5" count="131" type="cond" truecount="1" falsecount="0"/>
-        <line num="6" count="131" type="stmt"/>
-        <line num="7" count="131" type="cond" truecount="1" falsecount="0"/>
-        <line num="8" count="131" type="stmt"/>
-        <line num="9" count="131" type="stmt"/>
-        <line num="10" count="131" type="stmt"/>
-        <line num="11" count="131" type="stmt"/>
-        <line num="12" count="131" type="stmt"/>
-        <line num="13" count="131" type="stmt"/>
+        <line num="5" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="6" count="5" type="stmt"/>
+        <line num="7" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="8" count="5" type="stmt"/>
+        <line num="9" count="5" type="stmt"/>
+        <line num="10" count="5" type="stmt"/>
+        <line num="11" count="5" type="stmt"/>
+        <line num="12" count="5" type="stmt"/>
+        <line num="13" count="5" type="stmt"/>
       </file>
       <file name="create-validation-pipe.util.ts" path="/Users/Yana/Documents/weather_forecast/server/src/shared/utils/create-validation-pipe.util.ts">
         <metrics statements="20" coveredstatements="20" conditionals="3" coveredconditionals="3" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
-        <line num="4" count="2" type="cond" truecount="1" falsecount="0"/>
-        <line num="5" count="2" type="stmt"/>
-        <line num="6" count="2" type="stmt"/>
-        <line num="7" count="2" type="stmt"/>
-        <line num="8" count="2" type="stmt"/>
-        <line num="9" count="2" type="stmt"/>
-        <line num="10" count="2" type="cond" truecount="1" falsecount="0"/>
+        <line num="4" count="1" type="cond" truecount="1" falsecount="0"/>
+        <line num="5" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="7" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="9" count="1" type="stmt"/>
+        <line num="10" count="1" type="cond" truecount="1" falsecount="0"/>
         <line num="11" count="1" type="stmt"/>
         <line num="12" count="1" type="stmt"/>
         <line num="13" count="1" type="cond" truecount="1" falsecount="0"/>
@@ -2171,9 +2171,9 @@
         <line num="15" count="1" type="stmt"/>
         <line num="16" count="1" type="stmt"/>
         <line num="17" count="1" type="stmt"/>
-        <line num="18" count="2" type="stmt"/>
-        <line num="19" count="2" type="stmt"/>
-        <line num="20" count="2" type="stmt"/>
+        <line num="18" count="1" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="20" count="1" type="stmt"/>
       </file>
       <file name="decode-cursor.ts" path="/Users/Yana/Documents/weather_forecast/server/src/shared/utils/decode-cursor.ts">
         <metrics statements="7" coveredstatements="7" conditionals="1" coveredconditionals="1" methods="1" coveredmethods="1"/>
@@ -2202,57 +2202,57 @@
         <line num="3" count="1" type="stmt"/>
         <line num="4" count="1" type="stmt"/>
         <line num="5" count="1" type="stmt"/>
-        <line num="6" count="44" type="cond" truecount="1" falsecount="0"/>
-        <line num="7" count="44" type="stmt"/>
-        <line num="8" count="44" type="stmt"/>
-        <line num="9" count="44" type="stmt"/>
-        <line num="10" count="44" type="cond" truecount="1" falsecount="0"/>
+        <line num="6" count="13" type="cond" truecount="1" falsecount="0"/>
+        <line num="7" count="13" type="stmt"/>
+        <line num="8" count="13" type="stmt"/>
+        <line num="9" count="13" type="stmt"/>
+        <line num="10" count="13" type="cond" truecount="1" falsecount="0"/>
         <line num="11" count="4" type="stmt"/>
         <line num="12" count="4" type="stmt"/>
         <line num="13" count="4" type="stmt"/>
         <line num="14" count="4" type="stmt"/>
         <line num="15" count="4" type="stmt"/>
-        <line num="16" count="40" type="cond" truecount="1" falsecount="0"/>
-        <line num="17" count="40" type="stmt"/>
-        <line num="18" count="40" type="stmt"/>
-        <line num="19" count="40" type="stmt"/>
-        <line num="20" count="44" type="cond" truecount="1" falsecount="0"/>
-        <line num="21" count="94" type="stmt"/>
-        <line num="22" count="94" type="stmt"/>
-        <line num="23" count="94" type="cond" truecount="1" falsecount="0"/>
-        <line num="24" count="13" type="stmt"/>
-        <line num="25" count="13" type="stmt"/>
-        <line num="26" count="94" type="stmt"/>
-        <line num="27" count="94" type="cond" truecount="1" falsecount="0"/>
-        <line num="28" count="65" type="stmt"/>
-        <line num="29" count="65" type="stmt"/>
-        <line num="30" count="94" type="stmt"/>
-        <line num="31" count="40" type="cond" truecount="1" falsecount="0"/>
-        <line num="32" count="40" type="stmt"/>
-        <line num="33" count="40" type="stmt"/>
+        <line num="16" count="9" type="cond" truecount="1" falsecount="0"/>
+        <line num="17" count="9" type="stmt"/>
+        <line num="18" count="9" type="stmt"/>
+        <line num="19" count="9" type="stmt"/>
+        <line num="20" count="13" type="cond" truecount="1" falsecount="0"/>
+        <line num="21" count="15" type="stmt"/>
+        <line num="22" count="15" type="stmt"/>
+        <line num="23" count="15" type="cond" truecount="1" falsecount="0"/>
+        <line num="24" count="5" type="stmt"/>
+        <line num="25" count="5" type="stmt"/>
+        <line num="26" count="15" type="stmt"/>
+        <line num="27" count="15" type="cond" truecount="1" falsecount="0"/>
+        <line num="28" count="8" type="stmt"/>
+        <line num="29" count="8" type="stmt"/>
+        <line num="30" count="15" type="stmt"/>
+        <line num="31" count="9" type="cond" truecount="1" falsecount="0"/>
+        <line num="32" count="9" type="stmt"/>
+        <line num="33" count="9" type="stmt"/>
       </file>
       <file name="is-primitive-value.ts" path="/Users/Yana/Documents/weather_forecast/server/src/shared/utils/is-primitive-value.ts">
         <metrics statements="6" coveredstatements="6" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
-        <line num="1" count="211" type="cond" truecount="1" falsecount="0"/>
-        <line num="2" count="211" type="stmt"/>
-        <line num="3" count="211" type="cond" truecount="1" falsecount="0"/>
-        <line num="4" count="208" type="cond" truecount="1" falsecount="0"/>
-        <line num="5" count="211" type="stmt"/>
-        <line num="6" count="211" type="stmt"/>
+        <line num="1" count="116" type="cond" truecount="1" falsecount="0"/>
+        <line num="2" count="116" type="stmt"/>
+        <line num="3" count="116" type="cond" truecount="1" falsecount="0"/>
+        <line num="4" count="114" type="cond" truecount="1" falsecount="0"/>
+        <line num="5" count="116" type="stmt"/>
+        <line num="6" count="116" type="stmt"/>
       </file>
       <file name="parse-ms.ts" path="/Users/Yana/Documents/weather_forecast/server/src/shared/utils/parse-ms.ts">
         <metrics statements="11" coveredstatements="11" conditionals="3" coveredconditionals="3" methods="1" coveredmethods="1"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
-        <line num="3" count="9" type="cond" truecount="1" falsecount="0"/>
-        <line num="4" count="9" type="stmt"/>
-        <line num="5" count="9" type="stmt"/>
-        <line num="6" count="9" type="cond" truecount="1" falsecount="0"/>
+        <line num="3" count="7" type="cond" truecount="1" falsecount="0"/>
+        <line num="4" count="7" type="stmt"/>
+        <line num="5" count="7" type="stmt"/>
+        <line num="6" count="7" type="cond" truecount="1" falsecount="0"/>
         <line num="7" count="1" type="stmt"/>
         <line num="8" count="1" type="stmt"/>
-        <line num="9" count="7" type="cond" truecount="1" falsecount="0"/>
-        <line num="10" count="7" type="stmt"/>
-        <line num="11" count="7" type="stmt"/>
+        <line num="9" count="5" type="cond" truecount="1" falsecount="0"/>
+        <line num="10" count="5" type="stmt"/>
+        <line num="11" count="5" type="stmt"/>
       </file>
     </package>
   </project>

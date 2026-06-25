@@ -3,8 +3,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CityEntity } from './entities';
 import { CitiesResolver } from './resolvers';
 import { CitiesService, CitiesQueryService } from './services';
-import { WeatherModule } from '../weather';
-import { AuthModule } from '../auth';
+import { AuthModule } from '@auth/index';
+import { WeatherModule } from '@weather/index';
 
 @Module({
   imports: [TypeOrmModule.forFeature([CityEntity]), WeatherModule, AuthModule],

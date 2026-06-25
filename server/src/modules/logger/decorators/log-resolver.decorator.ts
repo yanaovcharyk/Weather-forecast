@@ -1,5 +1,5 @@
 import { LogMethod } from './log-method.decorator';
-import { LogMethodOptions } from '../types';
+import { LogMethodOptions } from '@logger/types';
 
 export function LogResolver(options: LogMethodOptions = {}): MethodDecorator {
   return LogMethod({

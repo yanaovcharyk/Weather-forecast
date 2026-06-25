@@ -1,4 +1,7 @@
-import { createWeatherResolverContext, WeatherResolverTestContext } from "../../test/weather/contexts/weather-resolver.context";
+import {
+  createWeatherResolverContext,
+  WeatherResolverTestContext,
+} from '@weather/test/contexts';
 
 describe('WeatherResolver', () => {
   let ctx: WeatherResolverTestContext;
@@ -32,7 +35,10 @@ describe('WeatherResolver', () => {
 
     const result = await ctx.resolver.getWeatherDetails({ lat: 50, lon: 30 });
 
-    expect(ctx.weatherService.getWeatherDetails).toHaveBeenCalledWith({ lat: 50, lon: 30 });
+    expect(ctx.weatherService.getWeatherDetails).toHaveBeenCalledWith({
+      lat: 50,
+      lon: 30,
+    });
     expect(result).toEqual(expected);
   });
 });

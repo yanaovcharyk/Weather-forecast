@@ -1,10 +1,10 @@
 import {
   createClientLogsResolverContext,
   ClientLogsResolverTestContext,
-} from '@test/logger/contexts/client-logs-resolver.context';
+} from '@logger/test/contexts/client-logs-resolver.context';
 
-import { ClientInfoLog } from '@test/logger/fixtures/client-log.fixture';
-import { ClientLogInput } from '../dto';
+import { ClientInfoLog } from '@logger/test/fixtures/client-log.fixture';
+import { ClientLogInput } from '@logger/dto';
 
 describe('ClientLogsResolver', () => {
   let ctx: ClientLogsResolverTestContext;

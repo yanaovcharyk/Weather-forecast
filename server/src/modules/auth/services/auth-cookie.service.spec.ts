@@ -1,7 +1,10 @@
 import { TokenName } from '@auth/types';
 import { AuthCookieService } from '@auth/services';
-import { ACCESS_TOKEN_FIXTURE, REFRESH_TOKEN_FIXTURE } from '@test/auth/fixtures';
-import { createAuthCookieContext } from '@test/auth/contexts/services/auth-cookie-service.context';
+import {
+  ACCESS_TOKEN_FIXTURE,
+  REFRESH_TOKEN_FIXTURE,
+} from '@auth/test/fixtures';
+import { createAuthCookieContext } from '@auth/test/contexts/services';
 
 describe('AuthCookieService', () => {
   let service: AuthCookieService;

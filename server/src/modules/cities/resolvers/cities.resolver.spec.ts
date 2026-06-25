@@ -1,7 +1,7 @@
 import {
   CitiesResolverTestContext,
   createCitiesResolverContext,
-} from '../../test/cities/contexts/cities-resolver.context';
+} from '@cities/test/contexts/cities-resolver.context';
 
 describe('CitiesResolver', () => {
   let ctx: CitiesResolverTestContext;
@@ -23,7 +23,9 @@ describe('CitiesResolver', () => {
 
     const result = await ctx.resolver.cities(user);
 
-    expect(ctx.citiesQueryService.getCities).toHaveBeenCalledWith({ userId: 'u1' });
+    expect(ctx.citiesQueryService.getCities).toHaveBeenCalledWith({
+      userId: 'u1',
+    });
     expect(result).toEqual([
       { id: '1', city: 'Kyiv', lat: 50, lon: 30, isPinned: false },
     ]);
@@ -34,7 +36,6 @@ describe('CitiesResolver', () => {
 
     await expect(ctx.resolver.cities(user)).rejects.toThrow('fail');
   });
-
 
   it('citiesPaginated should call getCitiesPaginated', async () => {
     const query = { limit: 10, cursor: null };
@@ -57,11 +58,13 @@ describe('CitiesResolver', () => {
   });
 
   it('should propagate error from citiesPaginated', async () => {
-    ctx.citiesQueryService.getCitiesPaginated.mockRejectedValue(new Error('fail'));
+    ctx.citiesQueryService.getCitiesPaginated.mockRejectedValue(
+      new Error('fail'),
+    );
 
-    await expect(
-      ctx.resolver.citiesPaginated(user, {} as any),
-    ).rejects.toThrow('fail');
+    await expect(ctx.resolver.citiesPaginated(user, {} as any)).rejects.toThrow(
+      'fail',
+    );
   });
 
   it('city should call getCityById with userId and id', async () => {
@@ -192,7 +195,9 @@ describe('CitiesResolver', () => {
   it('should propagate error from togglePinnedCity', async () => {
     ctx.citiesService.togglePinned.mockRejectedValue(new Error('fail'));
 
-    await expect(ctx.resolver.togglePinnedCity(user, '5')).rejects.toThrow('fail');
+    await expect(ctx.resolver.togglePinnedCity(user, '5')).rejects.toThrow(
+      'fail',
+    );
   });
 
   it('weather should call weatherService.getWeatherPreview', async () => {

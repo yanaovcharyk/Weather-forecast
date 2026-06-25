@@ -1,5 +1,5 @@
 import { ConfigService } from '@nestjs/config';
-import { IAppConfig } from '../types/app.config';
+import { IAppConfig } from '@shared/types';
 
 export interface IWeatherConfig {
   apiKey: string;

@@ -1,4 +1,4 @@
-import { LoggerContext, LogMethodOptions } from '../types';
+import { LoggerContext, LogMethodOptions } from '@logger/types';
 import { createLogMethodWrapper } from './log-method.core';
 
 export function LogMethod(options: LogMethodOptions = {}): MethodDecorator {

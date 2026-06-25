@@ -1,7 +1,7 @@
 import {
   AppLoggerServiceTestContext,
   createAppLoggerServiceContext,
-} from '@test/logger/contexts/app-logger-service.context';
+} from '@logger/test/contexts/app-logger-service.context';
 import { AppLoggerService } from './app-logger.service';
 
 describe('AppLoggerService', () => {
@@ -15,19 +15,13 @@ describe('AppLoggerService', () => {
 
   describe('child', () => {
     it('should create child logger with context', () => {
-      const child = service.child(
-        'CitiesService',
-      );
+      const child = service.child('CitiesService');
 
-      expect(
-        ctx.logger.child,
-      ).toHaveBeenCalledWith({
+      expect(ctx.logger.child).toHaveBeenCalledWith({
         context: 'CitiesService',
       });
 
-      expect(child).toBeInstanceOf(
-        AppLoggerService,
-      );
+      expect(child).toBeInstanceOf(AppLoggerService);
     });
   });
 
@@ -39,15 +33,9 @@ describe('AppLoggerService', () => {
 
       service.info('message');
 
-      expect(
-        ctx.logger.log,
-      ).toHaveBeenCalledWith(
-        'info',
-        'message',
-        {
-          requestId: 'req-1',
-        },
-      );
+      expect(ctx.logger.log).toHaveBeenCalledWith('info', 'message', {
+        requestId: 'req-1',
+      });
     });
 
     it('should merge metadata', () => {
@@ -59,52 +47,30 @@ describe('AppLoggerService', () => {
         city: 'Kyiv',
       });
 
-      expect(
-        ctx.logger.log,
-      ).toHaveBeenCalledWith(
-        'info',
-        'message',
-        {
-          requestId: 'req-1',
-          city: 'Kyiv',
-        },
-      );
+      expect(ctx.logger.log).toHaveBeenCalledWith('info', 'message', {
+        requestId: 'req-1',
+        city: 'Kyiv',
+      });
     });
   });
 
   describe('debug', () => {
     it('should write debug log', () => {
-      ctx.contextService.get.mockReturnValue(
-        {},
-      );
+      ctx.contextService.get.mockReturnValue({});
 
       service.debug('debug');
 
-      expect(
-        ctx.logger.log,
-      ).toHaveBeenCalledWith(
-        'debug',
-        'debug',
-        {},
-      );
+      expect(ctx.logger.log).toHaveBeenCalledWith('debug', 'debug', {});
     });
   });
 
   describe('warn', () => {
     it('should write warn log', () => {
-      ctx.contextService.get.mockReturnValue(
-        {},
-      );
+      ctx.contextService.get.mockReturnValue({});
 
       service.warn('warn');
 
-      expect(
-        ctx.logger.log,
-      ).toHaveBeenCalledWith(
-        'warn',
-        'warn',
-        {},
-      );
+      expect(ctx.logger.log).toHaveBeenCalledWith('warn', 'warn', {});
     });
   });
 
@@ -116,17 +82,11 @@ describe('AppLoggerService', () => {
         requestId: 'req-1',
       });
 
-      service.error(
-        'failed',
-        error,
-        {
-          city: 'Kyiv',
-        },
-      );
+      service.error('failed', error, {
+        city: 'Kyiv',
+      });
 
-      expect(
-        ctx.logger.log,
-      ).toHaveBeenCalledWith(
+      expect(ctx.logger.log).toHaveBeenCalledWith(
         'error',
         'failed',
         expect.objectContaining({
@@ -139,22 +99,14 @@ describe('AppLoggerService', () => {
     });
 
     it('should write error log without error object', () => {
-      ctx.contextService.get.mockReturnValue(
-        {},
-      );
+      ctx.contextService.get.mockReturnValue({});
 
       service.error('failed');
 
-      expect(
-        ctx.logger.log,
-      ).toHaveBeenCalledWith(
-        'error',
-        'failed',
-        {
-          error: undefined,
-          stack: undefined,
-        },
-      );
+      expect(ctx.logger.log).toHaveBeenCalledWith('error', 'failed', {
+        error: undefined,
+        stack: undefined,
+      });
     });
   });
 
@@ -164,9 +116,7 @@ describe('AppLoggerService', () => {
         userId: 'u1',
       });
 
-      expect(
-        ctx.contextService.set,
-      ).toHaveBeenCalledWith({
+      expect(ctx.contextService.set).toHaveBeenCalledWith({
         userId: 'u1',
       });
     });

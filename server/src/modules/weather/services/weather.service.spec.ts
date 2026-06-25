@@ -1,12 +1,14 @@
 import {
   createWeatherServiceContext,
   WeatherServiceTestContext,
-} from '@test/weather/contexts/weather-service.context';
-import { currentWeatherFixture } from '@test/weather/fixtures/current-weather.fixture';
-import { forecastFixture } from '@test/weather/fixtures/forecast.fixture';
-import { kyivCoordinatesFixture } from '@test/weather/fixtures/kyiv-coordinates.fixture';
-import { citySuggestionsFixture } from '@test/weather/fixtures/city-suggestions.fixture';
-import { forecastWithoutTimezoneFixture } from '@test/weather/fixtures/forecast-without-timezone.fixture';
+} from '@weather/test/contexts/weather-service.context';
+import {
+  citySuggestionsFixture,
+  currentWeatherFixture,
+  forecastFixture,
+  forecastWithoutTimezoneFixture,
+  kyivCoordinatesFixture,
+} from '@weather/test/fixtures';
 
 describe('WeatherService', () => {
   let ctx: WeatherServiceTestContext;
@@ -28,9 +30,7 @@ describe('WeatherService', () => {
     ctx.weatherApi.getCurrentWeather.mockResolvedValue(currentWeatherFixture);
     ctx.weatherApi.getForecast.mockResolvedValue(forecastFixture);
 
-    const result = await ctx.service.getWeatherDetails(
-      kyivCoordinatesFixture,
-    );
+    const result = await ctx.service.getWeatherDetails(kyivCoordinatesFixture);
 
     expect(ctx.weatherApi.getCurrentWeather).toHaveBeenCalledWith(
       kyivCoordinatesFixture,
@@ -57,9 +57,7 @@ describe('WeatherService', () => {
       forecastWithoutTimezoneFixture,
     );
 
-    const result = await ctx.service.getWeatherDetails(
-      kyivCoordinatesFixture,
-    );
+    const result = await ctx.service.getWeatherDetails(kyivCoordinatesFixture);
 
     expect(result.meta?.timezone).toBe('');
   });
@@ -67,9 +65,7 @@ describe('WeatherService', () => {
   it('getWeatherPreview should return simplified data', async () => {
     ctx.weatherApi.getForecast.mockResolvedValue(forecastFixture);
 
-    const result = await ctx.service.getWeatherPreview(
-      kyivCoordinatesFixture,
-    );
+    const result = await ctx.service.getWeatherPreview(kyivCoordinatesFixture);
 
     expect(ctx.weatherApi.getForecast).toHaveBeenCalledWith(
       kyivCoordinatesFixture,

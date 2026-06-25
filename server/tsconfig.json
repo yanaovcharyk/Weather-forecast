@@ -22,7 +22,7 @@
       "@controllers/*": ["modules/controllers/*"],
       "@database/*": ["modules/database/*"],
       "@shared/*": ["shared/*"],
-      "@test/*": ["modules/test/*"],
+      "@test/*": ["shared/test/*"]
     }
   }
 }

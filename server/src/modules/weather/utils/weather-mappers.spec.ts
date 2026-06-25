@@ -1,11 +1,11 @@
 import {
   currentWeatherFixture,
   currentWeatherTimezoneZeroFixture,
-} from '@test/weather/fixtures/current-weather.fixture';
+} from '@weather/test/fixtures/current-weather.fixture';
 import {
   forecastFixture,
   forecastTimezoneZeroFixture,
-} from '@test/weather/fixtures/forecast.fixture';
+} from '@weather/test/fixtures/forecast.fixture';
 import {
   mapCurrentWeather,
   mapDailyForecast,
@@ -13,7 +13,7 @@ import {
   mapTodayTemperatureRange,
   mapWeatherPreview,
 } from './weather-mappers';
-import { IOpenWeatherForecastItem } from '../interfaces';
+import { IOpenWeatherForecastItem } from '@weather/interfaces';
 
 describe('Weather Mappers', () => {
   it('mapCurrentWeather should map fields correctly', () => {

@@ -1,6 +1,6 @@
 import { ObjectType, Field, Float, ID } from '@nestjs/graphql';
 import { WeatherOutput } from '@weather/dto';
-import { ICityOutput } from '../interfaces';
+import { ICityOutput } from '@cities/interfaces';
 
 @ObjectType()
 export class CityOutput implements ICityOutput {

@@ -1,8 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
-import { IAppConfig } from '../types/app.config';
-import { CreateUsers001 } from '../../modules/database/migrations/001-create-users';
-import { CreateCities002 } from '../../modules/database/migrations/002-create-cities';
+import { IAppConfig } from '@shared/types';
+import { CreateCities002, CreateUsers001 } from '@database/migrations';
 
 export const databaseConfig = (
   configService: ConfigService<IAppConfig>,

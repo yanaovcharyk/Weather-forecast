@@ -1,14 +1,14 @@
 import {
   createClientLoggerServiceContext,
   ClientLoggerServiceTestContext,
-} from '@test/logger/contexts/client-logger-service.context';
+} from '@logger/test/contexts/client-logger-service.context';
 
 import {
   ClientInfoLog,
   ClientWarnLog,
   ClientErrorLog,
   ClientDebugLog,
-} from '@test/logger/fixtures/client-log.fixture';
+} from '@logger/test/fixtures/client-log.fixture';
 
 describe('ClientLoggerService', () => {
   let ctx: ClientLoggerServiceTestContext;
@@ -19,57 +19,38 @@ describe('ClientLoggerService', () => {
 
   describe('writeLogs', () => {
     it('should write info log', () => {
-      ctx.service.writeLogs([
-        ClientInfoLog,
-      ]);
+      ctx.service.writeLogs([ClientInfoLog]);
 
-      expect(
-        ctx.logger.info,
-      ).toHaveBeenCalled();
+      expect(ctx.logger.info).toHaveBeenCalled();
     });
 
     it('should write warn log', () => {
-      ctx.service.writeLogs([
-        ClientWarnLog,
-      ]);
+      ctx.service.writeLogs([ClientWarnLog]);
 
-      expect(
-        ctx.logger.warn,
-      ).toHaveBeenCalled();
+      expect(ctx.logger.warn).toHaveBeenCalled();
     });
 
     it('should write error log', () => {
-      ctx.service.writeLogs([
-        ClientErrorLog,
-      ]);
+      ctx.service.writeLogs([ClientErrorLog]);
 
-      expect(
-        ctx.logger.error,
-      ).toHaveBeenCalled();
+      expect(ctx.logger.error).toHaveBeenCalled();
     });
 
     it('should write debug log', () => {
-      ctx.service.writeLogs([
-        ClientDebugLog,
-      ]);
+      ctx.service.writeLogs([ClientDebugLog]);
 
-      expect(
-        ctx.logger.debug,
-      ).toHaveBeenCalled();
+      expect(ctx.logger.debug).toHaveBeenCalled();
     });
 
     it('should parse metadata json', () => {
       ctx.service.writeLogs([
         {
           ...ClientInfoLog,
-          metadata:
-            '{"city":"Kyiv"}',
+          metadata: '{"city":"Kyiv"}',
         },
       ]);
 
-      expect(
-        ctx.logger.info,
-      ).toHaveBeenCalledWith(
+      expect(ctx.logger.info).toHaveBeenCalledWith(
         'info message',
         expect.objectContaining({
           city: 'Kyiv',
@@ -85,13 +66,10 @@ describe('ClientLoggerService', () => {
         },
       ]);
 
-      expect(
-        ctx.logger.info,
-      ).toHaveBeenCalledWith(
+      expect(ctx.logger.info).toHaveBeenCalledWith(
         'info message',
         expect.objectContaining({
-          invalidMeta:
-            'Failed to parse meta JSON',
+          invalidMeta: 'Failed to parse meta JSON',
         }),
       );
     });
@@ -104,9 +82,7 @@ describe('ClientLoggerService', () => {
         },
       ]);
 
-      expect(
-        ctx.logger.info,
-      ).toHaveBeenCalled();
+      expect(ctx.logger.info).toHaveBeenCalled();
     });
 
     it('should handle array metadata', () => {
@@ -117,13 +93,10 @@ describe('ClientLoggerService', () => {
         },
       ]);
 
-      expect(
-        ctx.logger.info,
-      ).toHaveBeenCalledWith(
+      expect(ctx.logger.info).toHaveBeenCalledWith(
         'info message',
         expect.objectContaining({
-          invalidMeta:
-            'Meta is not an object',
+          invalidMeta: 'Meta is not an object',
         }),
       );
     });
@@ -136,13 +109,10 @@ describe('ClientLoggerService', () => {
         },
       ]);
 
-      expect(
-        ctx.logger.info,
-      ).toHaveBeenCalledWith(
+      expect(ctx.logger.info).toHaveBeenCalledWith(
         'info message',
         expect.objectContaining({
-          invalidMeta:
-            'Meta is not an object',
+          invalidMeta: 'Meta is not an object',
         }),
       );
     });
@@ -155,13 +125,10 @@ describe('ClientLoggerService', () => {
         },
       ]);
 
-      expect(
-        ctx.logger.info,
-      ).toHaveBeenCalledWith(
+      expect(ctx.logger.info).toHaveBeenCalledWith(
         'info message',
         expect.objectContaining({
-          invalidMeta:
-            'Meta is not an object',
+          invalidMeta: 'Meta is not an object',
         }),
       );
     });

@@ -1,6 +1,8 @@
 import { Field, Float, ObjectType } from '@nestjs/graphql';
-import { IWeatherPreviewOutput } from '../interfaces';
-import { IWeatherPreviewDay } from '../interfaces/weather-preview.output.interface';
+import {
+  IWeatherPreviewDay,
+  IWeatherPreviewOutput,
+} from '@weather/interfaces';
 
 @ObjectType()
 export class WeatherPreviewDayOutput implements IWeatherPreviewDay {

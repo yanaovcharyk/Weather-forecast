@@ -1,4 +1,4 @@
-import { IAppConfig } from '../types/app.config';
+import { IAppConfig } from '@shared/types';
 import { Env } from './env.schema';
 
 export const configuration = (env: Env): IAppConfig => ({

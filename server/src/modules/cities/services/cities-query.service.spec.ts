@@ -1,10 +1,10 @@
 import { CitiesQueryService } from './cities-query.service';
 import { SortOrder } from '@shared/constants';
-import { createLoggerMock } from '@test/mocks/logger.mock';
+import { createLoggerMock } from '@shared/test/mocks/logger.mock';
 import { decodeCursor } from '@shared/utils/decode-cursor';
 import { buildConnection } from '@shared/utils/build-connection';
-import { createCityRepositoryMock } from '../../test/cities/mocks/city-repository.mock';
-import { CitySortField } from '../city-query.config';
+import { createCityRepositoryMock } from '@cities/test/mocks/city-repository.mock';
+import { CitySortField } from '@cities/city-query.config';
 
 jest.mock('@shared/utils/decode-cursor', () => ({
   decodeCursor: jest.fn(),

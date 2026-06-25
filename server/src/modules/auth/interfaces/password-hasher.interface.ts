@@ -2,7 +2,7 @@ import {
   HashPasswordParams,
   ValidatePasswordParams,
   HashPasswordResult,
-} from '../types';
+} from '@auth/types';
 
 export interface IPasswordHasher {
   hash(params: HashPasswordParams): Promise<HashPasswordResult>;

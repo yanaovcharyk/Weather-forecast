@@ -1,4 +1,4 @@
-import { TokenType } from "../types";
+import { TokenType } from '@auth/types';
 
 export interface IAccessJwtPayload {
   userId: string;

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AsyncLocalStorage } from 'node:async_hooks';
-import { ILoggerContext } from '../types';
+import { ILoggerContext } from '@logger/types';
 
 @Injectable()
 export class LoggerContextService {

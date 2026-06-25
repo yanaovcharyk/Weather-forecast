@@ -12,7 +12,7 @@ import {
   TokenPair,
   TokenType,
 } from '@auth/types';
-import { AUTH_GRAPHQL_ERRORS } from '../constants';
+import { AUTH_GRAPHQL_ERRORS } from '@auth/constants';
 import { AuthTokenService } from './auth-token.service';
 import { AuthCookieService } from './auth-cookie.service';
 import { Pbkdf2PasswordHasher } from './password-hasher.service';

@@ -5,7 +5,7 @@ import { AuthResolver } from './resolvers';
 
 import { AuthTokenService } from './services/auth-token.service';
 
-import { UsersModule } from '../users/user.module';
+import { UsersModule } from '@users/index';
 import { AuthService } from './services/auth.service';
 import { Pbkdf2PasswordHasher } from './services';
 import { AuthCookieService } from './services/auth-cookie.service';

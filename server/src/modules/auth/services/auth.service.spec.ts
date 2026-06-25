@@ -1,6 +1,6 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { createAuthContext } from '@test/auth';
+import { createAuthContext } from '@auth/test';
 import { AUTH_GRAPHQL_ERRORS } from '@auth/constants';
 import {
   ACCESS_TOKEN_FIXTURE,
@@ -10,7 +10,7 @@ import {
   MockUser,
   LoginInputFixture,
   RegisterInputFixture,
-} from '@test/auth/fixtures';
+} from '@auth/test/fixtures';
 
 describe('AuthService', () => {
   let service: AuthService;

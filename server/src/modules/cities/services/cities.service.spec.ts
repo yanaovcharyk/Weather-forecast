@@ -5,7 +5,7 @@ import { CitiesService } from './cities.service';
 import {
   CitiesServiceTestContext,
   createCitiesServiceContext,
-} from '../../test/cities/contexts/cities-service.context';
+} from '@cities/test/contexts/cities-service.context';
 
 import {
   KyivCity,
@@ -14,7 +14,7 @@ import {
   KharkivCity,
   DniproCity,
   PinnedDniproCity,
-} from '../../test/cities/fixtures/city.fixture';
+} from '@cities/test/fixtures/city.fixture';
 
 describe('CitiesService', () => {
   let service: CitiesService;

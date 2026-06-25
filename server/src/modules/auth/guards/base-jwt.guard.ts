@@ -3,10 +3,10 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { GqlExecutionContext } from '@nestjs/graphql';
 import { GraphQLError } from 'graphql';
-import { IGQLContext, JwtPayload } from '../interfaces';
+import { IGQLContext, JwtPayload } from '@auth/interfaces';
 import { Request } from 'express';
-import { AuthCookieService } from '../services';
-import { AUTH_GRAPHQL_ERRORS, AuthErrorMessage } from '../constants';
+import { AuthCookieService } from '@auth/services';
+import { AUTH_GRAPHQL_ERRORS, AuthErrorMessage } from '@auth/constants';
 
 @Injectable()
 export abstract class BaseJwtGuard implements CanActivate {

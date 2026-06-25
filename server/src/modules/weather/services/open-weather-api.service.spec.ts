@@ -1,13 +1,15 @@
 import { of } from 'rxjs';
-import { searchCitiesResponseFixture } from '@test/weather/fixtures/search-cities.fixture';
-import { currentWeatherFixture } from '@test/weather/fixtures/current-weather.fixture';
-import { forecastFixture } from '@test/weather/fixtures/forecast.fixture';
-import { kyivCoordinatesFixture } from '@test/weather/fixtures/kyiv-coordinates.fixture';
-import { mockAxiosResponse } from '@test/weather/mocks/axios-response.mock';
+import {
+  currentWeatherFixture,
+  forecastFixture,
+  kyivCoordinatesFixture,
+  searchCitiesResponseFixture,
+} from '@weather/test/fixtures';
+import { mockAxiosResponse } from '@weather/test/mocks/axios-response.mock';
 import {
   createOpenWeatherApiContext,
   OpenWeatherApiTestContext,
-} from '@test/weather/contexts';
+} from '@weather/test/contexts';
 
 import {
   CITY_SEARCH_URL_ENDPOINT,
@@ -44,9 +46,7 @@ describe('OpenWeatherApiService', () => {
       of(mockAxiosResponse(currentWeatherFixture)),
     );
 
-    const result = await ctx.service.getCurrentWeather(
-      kyivCoordinatesFixture,
-    );
+    const result = await ctx.service.getCurrentWeather(kyivCoordinatesFixture);
 
     expect(ctx.httpService.get).toHaveBeenCalledWith(
       `${ctx.weatherConfig.baseUrl}${WEATHER_URL_ENDPOINT}`,
@@ -57,13 +57,9 @@ describe('OpenWeatherApiService', () => {
   });
 
   it('getForecast should call forecast API with coordinates', async () => {
-    ctx.httpService.get.mockReturnValue(
-      of(mockAxiosResponse(forecastFixture)),
-    );
+    ctx.httpService.get.mockReturnValue(of(mockAxiosResponse(forecastFixture)));
 
-    const result = await ctx.service.getForecast(
-      kyivCoordinatesFixture,
-    );
+    const result = await ctx.service.getForecast(kyivCoordinatesFixture);
 
     expect(ctx.httpService.get).toHaveBeenCalledWith(
       `${ctx.weatherConfig.baseUrl}${FORECAST_URL_ENDPOINT}`,

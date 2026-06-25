@@ -1,9 +1,11 @@
 import { Field, Float, ObjectType } from '@nestjs/graphql';
-import { IWeatherCurrent } from '../interfaces/weather-current.interface';
-import { IDailyWeather } from '../interfaces/daily-weather.interface';
-import { IHourlyWeather } from '../interfaces/hourly-weather.interface';
-import { IWeatherMeta } from '../interfaces/weather-meta.interface';
-import { IWeatherDetails } from '../interfaces/weather-details.interface';
+import {
+  IDailyWeather,
+  IHourlyWeather,
+  IWeatherCurrent,
+  IWeatherDetails,
+  IWeatherMeta,
+} from '@weather/interfaces';
 
 @ObjectType()
 export class WeatherCurrent implements IWeatherCurrent {

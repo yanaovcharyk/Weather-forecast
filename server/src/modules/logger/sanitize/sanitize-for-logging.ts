@@ -1,6 +1,9 @@
 
 import { isPrimitiveValue } from '@shared/utils/is-primitive-value';
-import { SerializationPlaceholder, SerializeHandler } from '../types';
+import {
+  SerializationPlaceholder,
+  SerializeHandler,
+} from '@logger/types';
 import { isNonSerializableObject } from './is-non-serializable-object';
 
 export function sanitizeForLogging(

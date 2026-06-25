@@ -1,67 +1,269 @@
+-----------------------------------|---------|----------|---------|---------|----------------------------------
+File                               | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s
+-----------------------------------|---------|----------|---------|---------|----------------------------------
+All files                          |   68.57 |    98.13 |   81.44 |   68.57 |
+ modules/auth                      |     100 |      100 |     100 |     100 |
+  constants.ts                     |     100 |      100 |     100 |     100 |
+  types.ts                         |     100 |      100 |     100 |     100 |
+ modules/auth/guards               |   41.41 |        0 |       0 |   41.41 |
+  access-jwt.guard.ts              |    62.5 |      100 |       0 |    62.5 | 11-13,16-17,20-23
+  base-jwt.guard.ts                |   22.64 |        0 |       0 |   22.64 | 13-53
+  refresh-jwt.guard.ts             |   63.63 |      100 |       0 |   63.63 | 10-11,14-15,18-21
+ modules/auth/services             |   15.42 |      100 |       0 |   15.42 |
+  auth-cookie.service.ts           |   12.12 |      100 |       0 |   12.12 | 13-99
+  auth-token.service.ts            |   15.38 |      100 |       0 |   15.38 | 13-78
+  auth.service.ts                  |   11.29 |      100 |       0 |   11.29 | 22-186
+  password-hasher.service.ts       |    32.3 |      100 |       0 |    32.3 | 22-65
+ modules/cities/services           |     100 |      100 |     100 |     100 |
+  cities-query.service.ts          |     100 |      100 |     100 |     100 |
+ modules/cities/test/mocks         |   73.68 |      100 |     100 |   73.68 |
+  city-repository.mock.ts          |   73.68 |      100 |     100 |   73.68 | 10-14
+ modules/logger                    |     100 |      100 |     100 |     100 |
+  constants.ts                     |     100 |      100 |     100 |     100 |
+  types.ts                         |     100 |      100 |     100 |     100 |
+ modules/logger/resolvers          |     100 |      100 |     100 |     100 |
+  client-logs.resolver.ts          |     100 |      100 |     100 |     100 |
+ modules/logger/sanitize           |     100 |      100 |     100 |     100 |
+  is-non-serializable-object.ts    |     100 |      100 |     100 |     100 |
+  sanitize-for-logging.ts          |     100 |      100 |     100 |     100 |
+ modules/logger/services           |     100 |      100 |     100 |     100 |
+  app-logger.service.ts            |     100 |      100 |     100 |     100 |
+  client-logger.service.ts         |     100 |      100 |     100 |     100 |
+  logger-context.service.ts        |     100 |      100 |     100 |     100 |
+ modules/logger/test/contexts      |     100 |      100 |     100 |     100 |
+  app-logger-service.context.ts    |     100 |      100 |     100 |     100 |
+  client-logger-service.context.ts |     100 |      100 |     100 |     100 |
+  client-logs-resolver.context.ts  |     100 |      100 |     100 |     100 |
+ modules/logger/test/fixtures      |     100 |      100 |     100 |     100 |
+  client-log.fixture.ts            |     100 |      100 |     100 |     100 |
+ modules/users/services            |     100 |      100 |     100 |     100 |
+  user.service.ts                  |     100 |      100 |     100 |     100 |
+ modules/users/test/contexts       |     100 |      100 |     100 |     100 |
+  user-service.context.ts          |     100 |      100 |     100 |     100 |
+ modules/weather/constants         |     100 |      100 |     100 |     100 |
+  open-weather.constants.ts        |     100 |      100 |     100 |     100 |
+ modules/weather/resolvers         |     100 |      100 |     100 |     100 |
+  weather.resolver.ts              |     100 |      100 |     100 |     100 |
+ modules/weather/services          |   28.36 |        0 |       0 |   28.36 |
+  open-weather-api.service.ts      |   28.94 |        0 |       0 |   28.94 | 23-76
+  weather.service.ts               |   27.69 |        0 |       0 |   27.69 | 19-65
+ modules/weather/test/contexts     |     100 |      100 |     100 |     100 |
+  weather-resolver.context.ts      |     100 |      100 |     100 |     100 |
+ modules/weather/utils             |   43.75 |      100 |      50 |   43.75 |
+  calculate-average-by.util.ts     |     100 |      100 |     100 |     100 |
+  format-unix-time.util.ts         |     100 |      100 |     100 |     100 |
+  get-rounded-min-max.util.ts      |     100 |      100 |     100 |     100 |
+  get-temperature-range.util.ts    |     100 |      100 |     100 |     100 |
+  group-forecast-by-date.util.ts   |     100 |      100 |     100 |     100 |
+  weather-mappers.ts               |   17.02 |      100 |       0 |   17.02 | 21-43,45-59,61-97,99-115,117-141
+ shared                            |     100 |      100 |     100 |     100 |
+  constants.ts                     |     100 |      100 |     100 |     100 |
+ shared/test/mocks                 |     100 |      100 |     100 |     100 |
+  logger.mock.ts                   |     100 |      100 |     100 |     100 |
+ shared/test/utils                 |     100 |      100 |     100 |     100 |
+  create-context.ts                |     100 |      100 |     100 |     100 |
+ shared/utils                      |     100 |      100 |     100 |     100 |
+  build-connection.ts              |     100 |      100 |     100 |     100 |
+  calculate-average.util.ts        |     100 |      100 |     100 |     100 |
+  create-validation-pipe.util.ts   |     100 |      100 |     100 |     100 |
+  decode-cursor.ts                 |     100 |      100 |     100 |     100 |
+  encode-cursor.ts                 |     100 |      100 |     100 |     100 |
+  get-min-max.util.ts              |     100 |      100 |     100 |     100 |
+  is-primitive-value.ts            |     100 |      100 |     100 |     100 |
+  parse-ms.ts                      |     100 |      100 |     100 |     100 |
+-----------------------------------|---------|----------|---------|---------|----------------------------------
+Summary of all failing tests
+FAIL modules/weather/utils/weather-mappers.spec.ts
+  ● Test suite failed to run
 
-> server@0.0.1 test:cov
-> jest --config src/shared/config/jest.config.ts --coverage
+    [96msrc/modules/weather/utils/weather-mappers.spec.ts[0m:[93m4[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@test/weather/fixtures/current-weather.fixture' or its corresponding type declarations.
 
----------------------------------|---------|----------|---------|---------|-------------------
-File                             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
----------------------------------|---------|----------|---------|---------|-------------------
-All files                        |     100 |      100 |   95.65 |     100 |                   
- modules/auth                    |     100 |      100 |     100 |     100 |                   
-  constants.ts                   |     100 |      100 |     100 |     100 |                   
-  types.ts                       |     100 |      100 |     100 |     100 |                   
- modules/auth/guards             |     100 |      100 |     100 |     100 |                   
-  access-jwt.guard.ts            |     100 |      100 |     100 |     100 |                   
-  base-jwt.guard.ts              |     100 |      100 |     100 |     100 |                   
-  refresh-jwt.guard.ts           |     100 |      100 |     100 |     100 |                   
- modules/auth/resolvers          |     100 |      100 |     100 |     100 |                   
-  auth.resolver.ts               |     100 |      100 |     100 |     100 |                   
- modules/auth/services           |     100 |      100 |     100 |     100 |                   
-  auth-cookie.service.ts         |     100 |      100 |     100 |     100 |                   
-  auth-token.service.ts          |     100 |      100 |     100 |     100 |                   
-  auth.service.ts                |     100 |      100 |     100 |     100 |                   
-  password-hasher.service.ts     |     100 |      100 |     100 |     100 |                   
- modules/cities/resolvers        |     100 |      100 |    64.7 |     100 |                   
-  cities.resolver.ts             |     100 |      100 |    64.7 |     100 |                   
- modules/cities/services         |     100 |      100 |     100 |     100 |                   
-  cities-query.service.ts        |     100 |      100 |     100 |     100 |                   
-  cities.service.ts              |     100 |      100 |     100 |     100 |                   
- modules/logger                  |     100 |      100 |     100 |     100 |                   
-  constants.ts                   |     100 |      100 |     100 |     100 |                   
-  types.ts                       |     100 |      100 |     100 |     100 |                   
- modules/logger/resolvers        |     100 |      100 |      75 |     100 |                   
-  client-logs.resolver.ts        |     100 |      100 |      75 |     100 |                   
- modules/logger/sanitize         |     100 |      100 |     100 |     100 |                   
-  is-non-serializable-object.ts  |     100 |      100 |     100 |     100 |                   
-  sanitize-for-logging.ts        |     100 |      100 |     100 |     100 |                   
- modules/logger/services         |     100 |      100 |     100 |     100 |                   
-  app-logger.service.ts          |     100 |      100 |     100 |     100 |                   
-  client-logger.service.ts       |     100 |      100 |     100 |     100 |                   
-  logger-context.service.ts      |     100 |      100 |     100 |     100 |                   
- modules/users/services          |     100 |      100 |     100 |     100 |                   
-  user.service.ts                |     100 |      100 |     100 |     100 |                   
- modules/weather/constants       |     100 |      100 |     100 |     100 |                   
-  open-weather.constants.ts      |     100 |      100 |     100 |     100 |                   
- modules/weather/resolvers       |     100 |      100 |     100 |     100 |                   
-  weather.resolver.ts            |     100 |      100 |     100 |     100 |                   
- modules/weather/services        |     100 |      100 |     100 |     100 |                   
-  open-weather-api.service.ts    |     100 |      100 |     100 |     100 |                   
-  weather.service.ts             |     100 |      100 |     100 |     100 |                   
- modules/weather/utils           |     100 |      100 |     100 |     100 |                   
-  calculate-average-by.util.ts   |     100 |      100 |     100 |     100 |                   
-  format-unix-time.util.ts       |     100 |      100 |     100 |     100 |                   
-  get-rounded-min-max.util.ts    |     100 |      100 |     100 |     100 |                   
-  get-temperature-range.util.ts  |     100 |      100 |     100 |     100 |                   
-  group-forecast-by-date.util.ts |     100 |      100 |     100 |     100 |                   
-  weather-mappers.ts             |     100 |      100 |     100 |     100 |                   
- shared                          |     100 |      100 |     100 |     100 |                   
-  constants.ts                   |     100 |      100 |     100 |     100 |                   
- shared/utils                    |     100 |      100 |     100 |     100 |                   
-  build-connection.ts            |     100 |      100 |     100 |     100 |                   
-  calculate-average.util.ts      |     100 |      100 |     100 |     100 |                   
-  create-validation-pipe.util.ts |     100 |      100 |     100 |     100 |                   
-  decode-cursor.ts               |     100 |      100 |     100 |     100 |                   
-  encode-cursor.ts               |     100 |      100 |     100 |     100 |                   
-  get-min-max.util.ts            |     100 |      100 |     100 |     100 |                   
-  is-primitive-value.ts          |     100 |      100 |     100 |     100 |                   
-  parse-ms.ts                    |     100 |      100 |     100 |     100 |                   
----------------------------------|---------|----------|---------|---------|-------------------
+    [7m4[0m } from '@test/weather/fixtures/current-weather.fixture';
+    [7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/weather/utils/weather-mappers.spec.ts[0m:[93m8[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '@test/weather/fixtures/forecast.fixture' or its corresponding type declarations.
+
+    [7m8[0m } from '@test/weather/fixtures/forecast.fixture';
+    [7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/weather/utils/weather-mappers.spec.ts[0m:[93m67[0m:[93m56[0m - [91merror[0m[90m TS7031: [0mBinding element 'pop' implicitly has an 'any' type.
+
+    [7m67[0m     const listWithoutPop = forecastFixture.list.map(({ pop, ...rest }) => rest);
+    [7m  [0m [91m                                                       ~~~[0m
+    [96msrc/modules/weather/utils/weather-mappers.spec.ts[0m:[93m97[0m:[93m58[0m - [91merror[0m[90m TS7006: [0mParameter 'item' implicitly has an 'any' type.
+
+    [7m97[0m     const listWithoutWeather = forecastFixture.list.map((item, idx) =>
+    [7m  [0m [91m                                                         ~~~~[0m
+    [96msrc/modules/weather/utils/weather-mappers.spec.ts[0m:[93m97[0m:[93m64[0m - [91merror[0m[90m TS7006: [0mParameter 'idx' implicitly has an 'any' type.
+
+    [7m97[0m     const listWithoutWeather = forecastFixture.list.map((item, idx) =>
+    [7m  [0m [91m                                                               ~~~[0m
+
+FAIL modules/weather/services/weather.service.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/modules/weather/services/weather.service.spec.ts[0m:[93m5[0m:[93m39[0m - [91merror[0m[90m TS2307: [0mCannot find module '@test/weather/fixtures/current-weather.fixture' or its corresponding type declarations.
+
+    [7m5[0m import { currentWeatherFixture } from '@test/weather/fixtures/current-weather.fixture';
+    [7m [0m [91m                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/weather/services/weather.service.spec.ts[0m:[93m6[0m:[93m33[0m - [91merror[0m[90m TS2307: [0mCannot find module '@test/weather/fixtures/forecast.fixture' or its corresponding type declarations.
+
+    [7m6[0m import { forecastFixture } from '@test/weather/fixtures/forecast.fixture';
+    [7m [0m [91m                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/weather/services/weather.service.spec.ts[0m:[93m7[0m:[93m40[0m - [91merror[0m[90m TS2307: [0mCannot find module '@test/weather/fixtures/kyiv-coordinates.fixture' or its corresponding type declarations.
+
+    [7m7[0m import { kyivCoordinatesFixture } from '@test/weather/fixtures/kyiv-coordinates.fixture';
+    [7m [0m [91m                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/weather/services/weather.service.spec.ts[0m:[93m8[0m:[93m40[0m - [91merror[0m[90m TS2307: [0mCannot find module '@test/weather/fixtures/city-suggestions.fixture' or its corresponding type declarations.
+
+    [7m8[0m import { citySuggestionsFixture } from '@test/weather/fixtures/city-suggestions.fixture';
+    [7m [0m [91m                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/weather/services/weather.service.spec.ts[0m:[93m9[0m:[93m48[0m - [91merror[0m[90m TS2307: [0mCannot find module '@test/weather/fixtures/forecast-without-timezone.fixture' or its corresponding type declarations.
+
+    [7m9[0m import { forecastWithoutTimezoneFixture } from '@test/weather/fixtures/forecast-without-timezone.fixture';
+    [7m [0m [91m                                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+FAIL modules/weather/services/open-weather-api.service.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/modules/weather/services/open-weather-api.service.spec.ts[0m:[93m2[0m:[93m45[0m - [91merror[0m[90m TS2307: [0mCannot find module '@test/weather/fixtures/search-cities.fixture' or its corresponding type declarations.
+
+    [7m2[0m import { searchCitiesResponseFixture } from '@test/weather/fixtures/search-cities.fixture';
+    [7m [0m [91m                                            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/weather/services/open-weather-api.service.spec.ts[0m:[93m3[0m:[93m39[0m - [91merror[0m[90m TS2307: [0mCannot find module '@test/weather/fixtures/current-weather.fixture' or its corresponding type declarations.
+
+    [7m3[0m import { currentWeatherFixture } from '@test/weather/fixtures/current-weather.fixture';
+    [7m [0m [91m                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/weather/services/open-weather-api.service.spec.ts[0m:[93m4[0m:[93m33[0m - [91merror[0m[90m TS2307: [0mCannot find module '@test/weather/fixtures/forecast.fixture' or its corresponding type declarations.
+
+    [7m4[0m import { forecastFixture } from '@test/weather/fixtures/forecast.fixture';
+    [7m [0m [91m                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/weather/services/open-weather-api.service.spec.ts[0m:[93m5[0m:[93m40[0m - [91merror[0m[90m TS2307: [0mCannot find module '@test/weather/fixtures/kyiv-coordinates.fixture' or its corresponding type declarations.
+
+    [7m5[0m import { kyivCoordinatesFixture } from '@test/weather/fixtures/kyiv-coordinates.fixture';
+    [7m [0m [91m                                       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+FAIL modules/cities/services/cities.service.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/modules/cities/services/cities.service.spec.ts[0m:[93m8[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../shared/test/cities/contexts/cities-service.context' or its corresponding type declarations.
+
+    [7m8[0m } from '../../../shared/test/cities/contexts/cities-service.context';
+    [7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+FAIL modules/cities/resolvers/cities.resolver.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/modules/cities/resolvers/cities.resolver.spec.ts[0m:[93m4[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../shared/test/cities/contexts/cities-resolver.context' or its corresponding type declarations.
+
+    [7m4[0m } from '../../../shared/test/cities/contexts/cities-resolver.context';
+    [7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+FAIL modules/auth/resolvers/auth.resolver.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/modules/auth/resolvers/auth.resolver.spec.ts[0m:[93m7[0m:[93m43[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../shared/test/auth/contexts/resolvers/auth-resolver.context' or its corresponding type declarations.
+
+    [7m7[0m import { createAuthResolverContext } from '../../../shared/test/auth/contexts/resolvers/auth-resolver.context';
+    [7m [0m [91m                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+FAIL modules/auth/services/password-hasher.service.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m7[0m:[93m34[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../mocks/logger.mock' or its corresponding type declarations.
+
+    [7m7[0m import { createLoggerMock } from '../../../mocks/logger.mock';
+    [7m [0m [91m                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m8[0m:[93m39[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../mocks/user-service.mock' or its corresponding type declarations.
+
+    [7m8[0m import { createUserServiceMock } from '../../../mocks/user-service.mock';
+    [7m [0m [91m                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m12[0m:[93m35[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../mocks/request.mock' or its corresponding type declarations.
+
+    [7m12[0m import { createMockRequest } from '../../../mocks/request.mock';
+    [7m  [0m [91m                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m13[0m:[93m36[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../mocks/response.mock' or its corresponding type declarations.
+
+    [7m13[0m import { createResponseMock } from '../../../mocks/response.mock';
+    [7m  [0m [91m                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m14[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../utils/create-context' or its corresponding type declarations.
+
+    [7m14[0m import { createContext } from '../../../utils/create-context';
+    [7m  [0m [91m                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+FAIL modules/auth/services/auth.service.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m7[0m:[93m34[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../mocks/logger.mock' or its corresponding type declarations.
+
+    [7m7[0m import { createLoggerMock } from '../../../mocks/logger.mock';
+    [7m [0m [91m                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m8[0m:[93m39[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../mocks/user-service.mock' or its corresponding type declarations.
+
+    [7m8[0m import { createUserServiceMock } from '../../../mocks/user-service.mock';
+    [7m [0m [91m                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m12[0m:[93m35[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../mocks/request.mock' or its corresponding type declarations.
+
+    [7m12[0m import { createMockRequest } from '../../../mocks/request.mock';
+    [7m  [0m [91m                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m13[0m:[93m36[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../mocks/response.mock' or its corresponding type declarations.
+
+    [7m13[0m import { createResponseMock } from '../../../mocks/response.mock';
+    [7m  [0m [91m                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m14[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../utils/create-context' or its corresponding type declarations.
+
+    [7m14[0m import { createContext } from '../../../utils/create-context';
+    [7m  [0m [91m                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+FAIL modules/auth/services/auth-token.service.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m7[0m:[93m34[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../mocks/logger.mock' or its corresponding type declarations.
+
+    [7m7[0m import { createLoggerMock } from '../../../mocks/logger.mock';
+    [7m [0m [91m                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m8[0m:[93m39[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../mocks/user-service.mock' or its corresponding type declarations.
+
+    [7m8[0m import { createUserServiceMock } from '../../../mocks/user-service.mock';
+    [7m [0m [91m                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m12[0m:[93m35[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../mocks/request.mock' or its corresponding type declarations.
+
+    [7m12[0m import { createMockRequest } from '../../../mocks/request.mock';
+    [7m  [0m [91m                                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m13[0m:[93m36[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../mocks/response.mock' or its corresponding type declarations.
+
+    [7m13[0m import { createResponseMock } from '../../../mocks/response.mock';
+    [7m  [0m [91m                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+    [96msrc/modules/auth/test/contexts/services/auth-service.context.ts[0m:[93m14[0m:[93m31[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../utils/create-context' or its corresponding type declarations.
+
+    [7m14[0m import { createContext } from '../../../utils/create-context';
+    [7m  [0m [91m                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+FAIL modules/auth/services/auth-cookie.service.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/modules/auth/services/auth-cookie.service.spec.ts[0m:[93m7[0m:[93m41[0m - [91merror[0m[90m TS2307: [0mCannot find module '@test/auth/contexts/services/auth-cookie-service.context' or its corresponding type declarations.
+
+    [7m7[0m import { createAuthCookieContext } from '@test/auth/contexts/services/auth-cookie-service.context';
+    [7m [0m [91m                                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+FAIL modules/auth/guards/refresh-jwt.guard.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/modules/auth/guards/refresh-jwt.guard.spec.ts[0m:[93m7[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../shared/test/auth/contexts/guards/jwt-guard.context' or its corresponding type declarations.
+
+    [7m7[0m } from '../../../shared/test/auth/contexts/guards/jwt-guard.context';
+    [7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+FAIL modules/auth/guards/access-jwt.guard.spec.ts
+  ● Test suite failed to run
+
+    [96msrc/modules/auth/guards/access-jwt.guard.spec.ts[0m:[93m8[0m:[93m8[0m - [91merror[0m[90m TS2307: [0mCannot find module '../../../shared/test/auth/contexts/guards/jwt-guard.context' or its corresponding type declarations.
+
+    [7m8[0m } from '../../../shared/test/auth/contexts/guards/jwt-guard.context';
+    [7m [0m [91m       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~[0m
+
+
+Test Suites: 12 failed, 23 passed, 35 total
+Tests:       117 passed, 117 total
+Snapshots:   0 total
+Time:        63.475 s, estimated 87 s
+Ran all test suites.

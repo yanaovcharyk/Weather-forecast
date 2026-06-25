@@ -5,7 +5,6 @@ import {
   Args,
   Parent,
   ResolveField,
-  ID,
 } from '@nestjs/graphql';
 import { UseGuards, UsePipes } from '@nestjs/common';
 import { CitiesService, CitiesQueryService } from '@cities/services';
@@ -23,8 +22,19 @@ import { AppLoggerService } from '@logger/services';
 import { LogResolver } from '@logger/index';
 import { CurrentUser } from '@auth/decorators';
 import { ICurrentUser } from '@auth/interfaces';
+import {
+  graphqlIdType,
+  graphqlListType,
+  graphqlType,
+} from '@shared/decorators';
 
-@Resolver(() => CityOutput)
+const cityOutputType = graphqlType(CityOutput);
+const cityOutputListType = graphqlListType(CityOutput);
+const citiesConnectionType = graphqlType(CitiesConnection);
+const weatherOutputType = graphqlType(WeatherOutput);
+const booleanType = graphqlType(Boolean);
+
+@Resolver(cityOutputType)
 export class CitiesResolver {
   private readonly logger;
 
@@ -38,7 +48,7 @@ export class CitiesResolver {
   }
 
   @UseGuards(AccessJwtGuard)
-  @Query(() => [CityOutput])
+  @Query(cityOutputListType)
   @LogResolver()
   async cities(@CurrentUser() user: ICurrentUser): Promise<CityOutput[]> {
     return this.citiesQueryService.getCities({
@@ -47,12 +57,12 @@ export class CitiesResolver {
   }
 
   @UseGuards(AccessJwtGuard)
-  @Query(() => CitiesConnection)
+  @Query(citiesConnectionType)
   @UsePipes(createValidationPipe())
   @LogResolver()
   async citiesPaginated(
     @CurrentUser() user: ICurrentUser,
-    @Args('query', { type: () => CitiesQueryInput }) query: CitiesQueryInput,
+    @Args('query') query: CitiesQueryInput,
   ): Promise<CitiesConnection> {
     return this.citiesQueryService.getCitiesPaginated({
       userId: user.id,
@@ -61,11 +71,11 @@ export class CitiesResolver {
   }
 
   @UseGuards(AccessJwtGuard)
-  @Query(() => CityOutput)
+  @Query(cityOutputType)
   @LogResolver()
   async city(
     @CurrentUser() user: ICurrentUser,
-    @Args('id', { type: () => ID }) id: string,
+    @Args('id', { type: graphqlIdType }) id: string,
   ): Promise<CityOutput> {
     return this.citiesService.getCityById({
       userId: user.id,
@@ -74,7 +84,7 @@ export class CitiesResolver {
   }
 
   @UseGuards(AccessJwtGuard)
-  @Query(() => CityOutput, { nullable: true })
+  @Query(cityOutputType, { nullable: true })
   @LogResolver()
   async cityByName(
     @CurrentUser() user: ICurrentUser,
@@ -87,7 +97,7 @@ export class CitiesResolver {
   }
 
   @UseGuards(AccessJwtGuard)
-  @Mutation(() => CityOutput)
+  @Mutation(cityOutputType)
   @LogResolver()
   async addCity(
     @CurrentUser() user: ICurrentUser,
@@ -100,11 +110,11 @@ export class CitiesResolver {
   }
 
   @UseGuards(AccessJwtGuard)
-  @Mutation(() => CityOutput)
+  @Mutation(cityOutputType)
   @LogResolver()
   async removeCity(
     @CurrentUser() user: ICurrentUser,
-    @Args('id', { type: () => ID }) id: string,
+    @Args('id', { type: graphqlIdType }) id: string,
   ): Promise<CityOutput> {
     return this.citiesService.removeCity({
       userId: user.id,
@@ -113,7 +123,7 @@ export class CitiesResolver {
   }
 
   @UseGuards(AccessJwtGuard)
-  @Mutation(() => Boolean)
+  @Mutation(booleanType)
   @LogResolver()
   async removeAllCities(@CurrentUser() user: ICurrentUser): Promise<boolean> {
     await this.citiesService.removeAllCities({
@@ -124,11 +134,11 @@ export class CitiesResolver {
   }
 
   @UseGuards(AccessJwtGuard)
-  @Mutation(() => CityOutput)
+  @Mutation(cityOutputType)
   @LogResolver()
   async togglePinnedCity(
     @CurrentUser() user: ICurrentUser,
-    @Args('id', { type: () => ID }) id: string,
+    @Args('id', { type: graphqlIdType }) id: string,
   ): Promise<CityOutput> {
     return this.citiesService.togglePinned({
       userId: user.id,
@@ -136,7 +146,7 @@ export class CitiesResolver {
     });
   }
 
-  @ResolveField(() => WeatherOutput, { nullable: true })
+  @ResolveField(weatherOutputType, { nullable: true })
   @LogResolver()
   async weather(@Parent() city: CityOutput) {
     return this.weatherService.getWeatherPreview({

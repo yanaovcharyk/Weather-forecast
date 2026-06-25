@@ -2,7 +2,7 @@ import { SelectQueryBuilder } from 'typeorm';
 import { AddCityInput, CitiesQueryInput } from './dto';
 import { CityEntity } from './entities';
 import { CitySortField } from './city-query.config';
-import { SortOrder } from '../../shared/constants';
+import { SortOrder } from '@shared/constants';
 
 export type UserIdParams = {
   userId: string;

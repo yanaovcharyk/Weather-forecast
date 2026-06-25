@@ -1,5 +1,5 @@
 import { sanitizeForLogging } from './sanitize-for-logging';
-import { SerializationPlaceholder } from '../types';
+import { SerializationPlaceholder } from '@logger/types';
 
 describe('sanitizeForLogging', () => {
   describe('primitive values', () => {
