@@ -6,7 +6,7 @@ import { GraphQLError } from 'graphql';
 import { IGQLContext, JwtPayload } from '@auth/interfaces';
 import { Request } from 'express';
 import { AuthCookieService } from '@auth/services';
-import { AUTH_GRAPHQL_ERRORS, AuthErrorMessage } from '@auth/constants';
+import { AUTH_GRAPHQL_ERRORS } from '@auth/constants';
 
 @Injectable()
 export abstract class BaseJwtGuard implements CanActivate {
@@ -43,10 +43,7 @@ export abstract class BaseJwtGuard implements CanActivate {
       ctx.jwtToken = token;
 
       return true;
-    } catch (error) {
-      console.error(AuthErrorMessage.JWT_VERIFICATION_FAILED);
-      console.error(error);
-
+    } catch {
       throw AUTH_GRAPHQL_ERRORS.UNAUTHORIZED;
     }
   }

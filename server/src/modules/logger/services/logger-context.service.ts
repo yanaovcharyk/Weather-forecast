@@ -39,14 +39,4 @@ export class LoggerContextService {
       delete store[key as keyof ILoggerContext];
     });
   }
-
-  printContext(where: string) {
-    const ctx = this.storage.getStore();
-
-    console.log(`[CTX:${where}]`, {
-      exists: !!ctx,
-      keys: ctx ? Object.keys(ctx) : [],
-      value: ctx,
-    });
-  }
 }

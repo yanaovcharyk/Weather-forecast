@@ -8,7 +8,6 @@ import { JwtConfigKey } from '@auth/constants';
 @Injectable()
 export class AccessJwtGuard extends BaseJwtGuard {
   protected getToken(req: Request): string | null {
-    console.log('authCookieService', this.authCookieService);
     return this.authCookieService.getAccessToken(req);
   }
 

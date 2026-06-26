@@ -1,4 +1,5 @@
 import { Global, Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { WinstonModule } from 'nest-winston';
 import { winstonConfig } from '@logger/config';
@@ -10,7 +11,13 @@ import { ClientLoggerService } from './services/client-logger.service';
 
 @Global()
 @Module({
-  imports: [WinstonModule.forRoot(winstonConfig)],
+  imports: [
+    WinstonModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: winstonConfig,
+    }),
+  ],
 
   providers: [
     AppLoggerService,

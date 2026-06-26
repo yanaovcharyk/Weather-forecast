@@ -16,8 +16,6 @@ export class GraphqlContextInterceptor implements NestInterceptor {
     const gql = GqlExecutionContext.create(context);
     const ctx = gql.getContext();
 
-    console.log('FIELD:', gql.getInfo()?.fieldName);
-
     return this.contextService.run(
       {
         requestId: ctx.requestId,

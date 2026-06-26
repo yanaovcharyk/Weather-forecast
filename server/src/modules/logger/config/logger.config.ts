@@ -1,6 +1,8 @@
+import { ConfigService } from '@nestjs/config';
 import { format, transports } from 'winston';
 
 import 'winston-daily-rotate-file';
+import { IAppConfig } from '@shared/types';
 
 const { combine, timestamp, errors, json, colorize, printf } = format;
 
@@ -63,7 +65,7 @@ const createClientFileTransport = (level: string, maxFiles = '14d') =>
     ),
   });
 
-const consoleTransport = new transports.Console({
+const createConsoleTransport = () => new transports.Console({
   format: combine(
     colorize(),
     timestamp(),
@@ -71,14 +73,17 @@ const consoleTransport = new transports.Console({
   ),
 });
 
-export const winstonConfig = {
+export const winstonConfig = (config: ConfigService<IAppConfig>) => {
+  const isDev = config.get('nodeEnv', { infer: true }) === 'development';
+
+  return {
   level: 'debug',
   defaultMeta: {
     source: 'server',
   },
 
   transports: [
-    consoleTransport,
+    ...(isDev ? [createConsoleTransport()] : []),
     createServerFileTransport('error'),
     createServerFileTransport('warn'),
     createServerFileTransport('info'),
@@ -88,4 +93,5 @@ export const winstonConfig = {
     createClientFileTransport('info'),
     createClientFileTransport('debug', '7d'),
   ],
+};
 };

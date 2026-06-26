@@ -13,8 +13,6 @@ import { configuration } from './configuration';
         const parsed = envSchema.safeParse(env);
 
         if (!parsed.success) {
-          console.error('Invalid ENV config');
-          console.error(parsed.error.format());
           throw new Error('Invalid environment variables');
         }
 

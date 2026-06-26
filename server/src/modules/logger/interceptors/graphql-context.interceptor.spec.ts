@@ -52,8 +52,6 @@ describe('GraphqlContextInterceptor', () => {
       handle: jest.fn().mockReturnValue(of('result')),
     };
 
-    const logSpy = jest.spyOn(console, 'log').mockImplementation();
-
     const result = interceptor.intercept({} as any, next);
 
     expect(result).toBe(next.handle.mock.results[0].value);
@@ -67,8 +65,5 @@ describe('GraphqlContextInterceptor', () => {
       expect.any(Function),
     );
     expect(next.handle).toHaveBeenCalledTimes(1);
-    expect(logSpy).toHaveBeenCalledWith('FIELD:', 'cities');
-
-    logSpy.mockRestore();
   });
 });
