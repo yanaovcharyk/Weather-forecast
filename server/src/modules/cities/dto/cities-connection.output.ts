@@ -1,6 +1,6 @@
 import { ObjectType, Field } from '@nestjs/graphql';
 import { CityOutput } from './city.output';
-import { PageInfo } from '@shared/graphql/dto';
+import { PageInfo } from '@graphql/dto';
 
 @ObjectType()
 export class CityEdge {

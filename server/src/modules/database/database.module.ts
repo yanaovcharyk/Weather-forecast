@@ -1,6 +1,6 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { DATABASE_DRIVERS } from './database.drivers';
+import { DATABASE_DRIVERS } from './typeorm';
 import { DatabaseType } from './database.types';
 import { TypeOrmModule } from '@nestjs/typeorm';
 

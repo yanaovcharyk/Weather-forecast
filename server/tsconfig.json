@@ -20,8 +20,10 @@
       "@users/*": ["modules/users/*"],
       "@logger/*": ["modules/logger/*"],
       "@cities/*": ["modules/cities/*"],
+      "@config/*": ["modules/config/*"],
       "@controllers/*": ["modules/controllers/*"],
       "@database/*": ["modules/database/*"],
+      "@graphql/*": ["modules/graphql/*"],
       "@shared/*": ["shared/*"],
       "@test/*": ["shared/test/*"]
     }

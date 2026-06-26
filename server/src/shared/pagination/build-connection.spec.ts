@@ -57,4 +57,3 @@ describe('buildConnection', () => {
     expect(result.pageInfo.endCursor).toBeUndefined();
   });
 });
-

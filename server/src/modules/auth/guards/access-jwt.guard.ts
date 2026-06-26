@@ -3,7 +3,7 @@ import { BaseJwtGuard } from './base-jwt.guard';
 import { TokenType } from '@auth/types';
 import { IAccessJwtPayload } from '@auth/interfaces';
 import { Request } from 'express';
-import { JwtConfigKey } from '@shared/types/jwt.config';
+import { JwtConfigKey } from '@auth/constants';
 
 @Injectable()
 export class AccessJwtGuard extends BaseJwtGuard {

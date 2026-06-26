@@ -2,7 +2,7 @@ import { Field, InputType } from '@nestjs/graphql';
 import { Type } from 'class-transformer';
 import { IsBoolean, IsOptional, ValidateNested } from 'class-validator';
 import { CitiesSortingInput } from './cities-sorting.input';
-import { BaseQueryInput } from '@shared/graphql/dto';
+import { BaseQueryInput } from '@graphql/dto';
 
 @InputType()
 export class CitiesQueryInput extends BaseQueryInput<CitiesSortingInput> {

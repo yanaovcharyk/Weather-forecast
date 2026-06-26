@@ -2,11 +2,11 @@ import { ConfigService } from '@nestjs/config';
 import { INestApplication, ValidationPipe } from '@nestjs/common';
 import cookieParser from 'cookie-parser';
 
+import { GraphqlAuthExceptionFilter } from '@shared/filters';
+import { validationPipeConfig } from '@config/index';
 import { AllExceptionsFilter } from '@logger/filter/all-exceptions.filter';
 import { AppLoggerService } from '@logger/services/app-logger.service';
-import { GraphqlAuthExceptionFilter } from '@shared/filters/graphql-auth-exception.filter';
 import { IAppConfig } from '@shared/types';
-import { validationPipeConfig } from '@shared/config';
 
 export function setupApp(
   app: INestApplication,

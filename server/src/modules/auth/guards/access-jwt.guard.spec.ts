@@ -1,6 +1,5 @@
 import { TokenType } from '@auth/types';
-import { JwtConfigKey } from '@shared/types/jwt.config';
-import { AUTH_GRAPHQL_ERRORS } from '@auth/constants';
+import { AUTH_GRAPHQL_ERRORS, JwtConfigKey } from '@auth/constants';
 
 import {
   createGuardContext,

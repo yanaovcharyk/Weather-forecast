@@ -9,8 +9,8 @@ import {
   SORT_CONFIG,
 } from '@cities/city-query.config';
 import { SortOrder } from '@shared/constants';
-import { buildConnection } from '@shared/utils/build-connection';
-import { decodeCursor } from '@shared/utils/decode-cursor';
+import { buildConnection } from '@shared/pagination/build-connection';
+import { decodeCursor } from '@shared/pagination/decode-cursor';
 import {
   ApplyCursorParams,
   ApplyPaginationParams,

@@ -19,4 +19,3 @@ describe('decodeCursor', () => {
     expect(() => decodeCursor(invalidJson)).toThrow();
   });
 });
-

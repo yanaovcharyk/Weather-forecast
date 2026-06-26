@@ -28,4 +28,3 @@ describe('encodeCursor', () => {
     expect(decoded).toBe('test');
   });
 });
-

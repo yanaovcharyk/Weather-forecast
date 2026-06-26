@@ -1,6 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { JwtModuleOptions } from '@nestjs/jwt';
-import { JwtConfigKey, IAppConfig } from '@shared/types';
+import { JwtConfigKey } from '@auth/constants';
+import { IAppConfig } from '@shared/types';
 
 export const jwtConfig = (
   config: ConfigService<IAppConfig>,

@@ -10,6 +10,13 @@ export enum AuthErrorMessage {
   JWT_VERIFICATION_FAILED = 'JWT verification failed',
 }
 
+export enum JwtConfigKey {
+  ACCESS_SECRET = 'jwt.accessSecret',
+  REFRESH_SECRET = 'jwt.refreshSecret',
+  ACCESS_EXPIRES = 'jwt.accessExpires',
+  REFRESH_EXPIRES = 'jwt.refreshExpires',
+}
+
 export const AUTH_GRAPHQL_ERRORS = {
   UNAUTHORIZED: new GraphQLError('Unauthorized', {
     extensions: { code: 'UNAUTHENTICATED' },

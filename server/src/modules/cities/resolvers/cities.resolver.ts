@@ -25,7 +25,7 @@ import {
   graphqlIdType,
   graphqlListType,
   graphqlType,
-} from '@shared/decorators';
+} from '@graphql/decorators';
 
 const cityOutputType = graphqlType(CityOutput);
 const cityOutputListType = graphqlListType(CityOutput);

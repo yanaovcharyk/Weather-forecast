@@ -2,10 +2,7 @@ import { Args, Mutation, Resolver } from '@nestjs/graphql';
 
 import { ClientLoggerService } from '@logger/services';
 import { ClientLogInput } from '@logger/dto';
-import {
-  graphqlListType,
-  graphqlType,
-} from '@shared/decorators';
+import { graphqlListType, graphqlType } from '@graphql/decorators';
 
 const clientLogListType = graphqlListType(ClientLogInput);
 const booleanType = graphqlType(Boolean);

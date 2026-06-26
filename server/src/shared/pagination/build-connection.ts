@@ -1,16 +1,16 @@
 import { encodeCursor } from './encode-cursor';
 
-type ConnectionBuilderParams<TEntity, TNode> = {
+type ConnectionBuilderParams<TEntity> = {
   entities: TEntity[];
   limit: number;
   getCursorValue: (entity: TEntity) => unknown;
 };
 
-export const buildConnection = <TEntity extends { id: string }, TNode>({
+export const buildConnection = <TEntity extends { id: string }>({
   entities,
   limit,
   getCursorValue,
-}: ConnectionBuilderParams<TEntity, TNode>) => {
+}: ConnectionBuilderParams<TEntity>) => {
   const hasNextPage = entities.length > limit;
 
   const limitedEntities: TEntity[] = entities.slice(0, limit);
