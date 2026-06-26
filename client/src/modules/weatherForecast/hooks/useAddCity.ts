@@ -2,7 +2,7 @@ import { useMutation } from '@apollo/client/react';
 import { ADD_CITY_MUTATION } from '@/weatherForecast/graphql';
 import type { City } from '@/weatherForecast/types';
 
-type AddCityMutation = {
+export type AddCityMutation = {
   addCity: City;
 };
 

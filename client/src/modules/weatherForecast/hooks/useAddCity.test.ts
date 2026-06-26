@@ -1,74 +1,90 @@
 import { renderHook, act } from '@testing-library/react';
 import { vi, beforeEach, describe, it, expect } from 'vitest';
 import { useMutation } from '@apollo/client/react';
-import { useAddCity } from './useAddCity';
+import { useAddCity, type AddCityMutation } from './useAddCity';
 import { createMutationResult } from '@/common/test/factories';
+import type { City } from '@/weatherForecast/types';
 
 vi.mock('@apollo/client/react');
 
-type City = {
-  id: string;
-  city: string;
-};
-
-type AddCityMutation = {
-  addCity: City;
-};
-
 type MutationOptions = Parameters<typeof useMutation<AddCityMutation>>[1];
 
-type UpdateFn = NonNullable<NonNullable<MutationOptions>['update']>;
+type ApolloCacheUpdateCallback = NonNullable<
+  NonNullable<MutationOptions>['update']
+>;
 
 describe('useAddCity', () => {
-  const mutate = vi.fn();
+  const executeAddCityMutationMock = vi.fn();
 
-  let updateFn!: UpdateFn;
+  let capturedApolloCacheUpdateCallback!: ApolloCacheUpdateCallback;
 
-  const cacheEvict = vi.fn();
-  const cacheGc = vi.fn();
+  const evictCitiesPaginatedCacheMock = vi.fn();
+  const runApolloCacheGarbageCollectionMock = vi.fn();
+
+  const runCapturedApolloCacheUpdate = (
+    mutationData: AddCityMutation | undefined,
+    cache = {
+      evict: evictCitiesPaginatedCacheMock,
+      gc: runApolloCacheGarbageCollectionMock,
+    },
+  ) => {
+    capturedApolloCacheUpdateCallback(
+      cache as never,
+      {
+        data: mutationData,
+      } as never,
+      {} as never,
+    );
+
+    return cache;
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
 
-    vi.mocked(useMutation).mockImplementation((_doc, options) => {
+    vi.mocked(useMutation).mockImplementation((_mutationDocument, options) => {
       if (options?.update) {
-        updateFn = options.update;
+        capturedApolloCacheUpdateCallback = options.update;
       }
 
       return [
-        mutate,
+        executeAddCityMutationMock,
         createMutationResult<AddCityMutation>(),
       ] as unknown as ReturnType<typeof useMutation>;
     });
   });
 
-  it('returns loading state', () => {
+  it('returns loading state from Apollo mutation result', () => {
     const { result } = renderHook(() => useAddCity());
 
     expect(result.current.loading).toBe(false);
   });
 
-  it('adds city and triggers cache update (SUCCESS path)', async () => {
-    const city: City = {
+  it('adds city and clears citiesPaginated cache after successful mutation', async () => {
+    const addedCity: City = {
       id: '1',
       city: 'Kyiv',
+      lat: 50.45,
+      lon: 30.52,
+      isPinned: false,
+      weather: null,
     };
 
-    mutate.mockResolvedValue({
+    executeAddCityMutationMock.mockResolvedValue({
       data: {
-        addCity: city,
+        addCity: addedCity,
       },
     });
 
     const { result } = renderHook(() => useAddCity());
 
-    let response: City | null = null;
+    let addCityResult: City | null = null;
 
     await act(async () => {
-      response = await result.current.addCity(50.45, 30.52, 'Kyiv');
+      addCityResult = await result.current.addCity(50.45, 30.52, 'Kyiv');
     });
 
-    expect(mutate).toHaveBeenCalledWith({
+    expect(executeAddCityMutationMock).toHaveBeenCalledWith({
       variables: {
         input: {
           lat: 50.45,
@@ -78,30 +94,21 @@ describe('useAddCity', () => {
       },
     });
 
-    expect(response).toEqual(city);
+    expect(addCityResult).toEqual(addedCity);
 
-    updateFn(
-      {
-        evict: cacheEvict,
-        gc: cacheGc,
-      } as never,
-      {
-        data: {
-          addCity: city,
-        },
-      } as never,
-      {} as never,
-    );
+    runCapturedApolloCacheUpdate({
+      addCity: addedCity,
+    });
 
-    expect(cacheEvict).toHaveBeenCalledWith({
+    expect(evictCitiesPaginatedCacheMock).toHaveBeenCalledWith({
       fieldName: 'citiesPaginated',
     });
 
-    expect(cacheGc).toHaveBeenCalled();
+    expect(runApolloCacheGarbageCollectionMock).toHaveBeenCalled();
   });
 
-  it('does NOT update cache when no city returned', async () => {
-    mutate.mockResolvedValue({
+  it('does not clear Apollo cache when mutation returns no city', async () => {
+    executeAddCityMutationMock.mockResolvedValue({
       data: undefined,
     });
 
@@ -111,20 +118,12 @@ describe('useAddCity', () => {
       await result.current.addCity(1, 2, 'Kyiv');
     });
 
-    const cache = {
+    const apolloCacheMock = runCapturedApolloCacheUpdate(undefined, {
       evict: vi.fn(),
       gc: vi.fn(),
-    };
+    });
 
-    updateFn(
-      cache as never,
-      {
-        data: undefined,
-      } as never,
-      {} as never,
-    );
-
-    expect(cache.evict).not.toHaveBeenCalled();
-    expect(cache.gc).not.toHaveBeenCalled();
+    expect(apolloCacheMock.evict).not.toHaveBeenCalled();
+    expect(apolloCacheMock.gc).not.toHaveBeenCalled();
   });
 });
