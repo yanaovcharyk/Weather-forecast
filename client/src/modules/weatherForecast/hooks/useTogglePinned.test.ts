@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useMutation } from '@apollo/client/react';
 import { useTogglePinned } from './useTogglePinned';
-import { createMutationResult } from '@/common/test/factories';
+import { createMutationResult } from '@/common/testing/factories';
 
 vi.mock('@apollo/client/react');
 

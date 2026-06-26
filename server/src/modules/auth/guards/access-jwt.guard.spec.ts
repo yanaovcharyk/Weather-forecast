@@ -4,7 +4,7 @@ import { AUTH_GRAPHQL_ERRORS, JwtConfigKey } from '@auth/constants';
 import {
   createGuardContext,
   GuardContext,
-} from '@auth/test/contexts/guards';
+} from '@auth/testing/contexts/guards';
 import { AccessJwtGuard } from './access-jwt.guard';
 
 describe('AccessJwtGuard', () => {

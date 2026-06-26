@@ -13,7 +13,7 @@ import {
   LOGGER_FLUSH_INTERVAL_IN_MS,
 } from '@/logger/constants';
 import { loggerRetryQueue } from './LoggerRetryService';
-import { createLogRecord } from '@/logger/test/fixtures';
+import { createLogRecord } from '@/logger/testing/fixtures';
 
 const mocks = vi.hoisted(() => ({
   sendMock: vi.fn(),

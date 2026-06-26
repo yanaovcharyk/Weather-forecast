@@ -3,8 +3,8 @@ import { vi } from 'vitest';
 
 import { CityCard } from './CityCard';
 import { useSmartBackground } from '@/common/hooks';
-import { renderWithUser } from '@/common/test/render/renderWithUser';
-import { WEATHER_FIXTURE } from '@/weatherForecast/test/fixtures';
+import { renderWithUser } from '@/common/testing/render/renderWithUser';
+import { WEATHER_FIXTURE } from '@/weatherForecast/testing/fixtures';
 
 vi.mock('@/common/hooks', () => ({
   useSmartBackground: vi.fn(),

@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client/react';
 import { vi } from 'vitest';
 
 import { useCitiesPaginated } from './useCitiesPaginated';
-import { createQueryResult } from '@/common/test/factories';
+import { createQueryResult } from '@/common/testing/factories';
 
 vi.mock('@apollo/client/react');
 

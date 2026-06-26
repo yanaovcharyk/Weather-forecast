@@ -1,7 +1,7 @@
 import { beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { HourlyForecast } from './HourlyForecast';
-import { createHourlyWeather } from '@/weatherDetails/test/fixtures';
+import { createHourlyWeather } from '@/weatherDetails/testing/fixtures';
 
 const hourlyForecast = [
   createHourlyWeather(),

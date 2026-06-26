@@ -1,5 +1,5 @@
 import { Pbkdf2PasswordHasher } from './password-hasher.service';
-import { createPasswordHasherContext } from '@auth/test';
+import { createPasswordHasherContext } from '@auth/testing';
 
 describe('Pbkdf2PasswordHasher', () => {
   let service: Pbkdf2PasswordHasher;

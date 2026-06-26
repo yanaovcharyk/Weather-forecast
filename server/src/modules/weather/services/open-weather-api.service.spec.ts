@@ -4,12 +4,12 @@ import {
   forecastFixture,
   kyivCoordinatesFixture,
   searchCitiesResponseFixture,
-} from '@weather/test/fixtures';
-import { mockAxiosResponse } from '@weather/test/mocks/axios-response.mock';
+} from '@weather/testing/fixtures';
+import { mockAxiosResponse } from '@weather/testing/mocks/axios-response.mock';
 import {
   createOpenWeatherApiContext,
   OpenWeatherApiTestContext,
-} from '@weather/test/contexts';
+} from '@weather/testing/contexts';
 
 import {
   CITY_SEARCH_URL_ENDPOINT,

@@ -3,11 +3,11 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import {
   createAuthProviderContext,
   type AuthProviderContext,
-} from '@/auth/test/contexts';
+} from '@/auth/testing/contexts';
 
-import { setupAuthProviderRuntime } from '@/auth/test/runtimes';
-import { setupAuthProvider } from '@/auth/test/setups';
-import '@/common/test/mocks/apollo.mock';
+import { setupAuthProviderRuntime } from '@/auth/testing/runtimes';
+import { setupAuthProvider } from '@/auth/testing/setups';
+import '@/common/testing/mocks/apollo.mock';
 
 import { loggerContext } from '@/logger';
 

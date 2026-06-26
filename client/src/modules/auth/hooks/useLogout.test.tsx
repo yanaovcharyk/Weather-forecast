@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react';
 import { useMutation } from '@apollo/client/react';
 
 import { useLogout } from './useLogout';
-import { createLogoutContext } from '@/auth/test/contexts';
+import { createLogoutContext } from '@/auth/testing/contexts';
 
 vi.mock('@apollo/client/react');
 

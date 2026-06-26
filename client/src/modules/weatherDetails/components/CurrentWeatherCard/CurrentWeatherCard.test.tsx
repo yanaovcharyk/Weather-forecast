@@ -3,7 +3,7 @@ import { CurrentWeatherCard } from './CurrentWeatherCard';
 import {
   createCurrentWeather,
   createWeather,
-} from '@/weatherDetails/test/fixtures';
+} from '@/weatherDetails/testing/fixtures';
 
 const setup = (
   props: Partial<React.ComponentProps<typeof CurrentWeatherCard>> = {},

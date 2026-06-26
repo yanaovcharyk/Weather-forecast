@@ -1,13 +1,13 @@
 import { act } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { createControlledPromise } from '@/common/test/factories';
+import { createControlledPromise } from '@/common/testing/factories';
 import {
   createCityActionsContext,
   type CityActionsContext,
-} from '@/weatherForecast/test/contexts/cityActions.context';
-import { setupCityActionsRuntime } from '@/weatherForecast/test/setups/cityActions.runtime';
-import { setupCityActions } from '@/weatherForecast/test/setups/cityActions.setup';
+} from '@/weatherForecast/testing/contexts/cityActions.context';
+import { setupCityActionsRuntime } from '@/weatherForecast/testing/setups/cityActions.runtime';
+import { setupCityActions } from '@/weatherForecast/testing/setups/cityActions.setup';
 import type { City } from '@/weatherForecast/types';
 
 const mockHandleResult = vi.fn();

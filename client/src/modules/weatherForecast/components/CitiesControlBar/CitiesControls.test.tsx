@@ -3,7 +3,7 @@ import { vi } from 'vitest';
 
 vi.mock('@/common/components', async () => {
   const { ConfirmModalMock } =
-    await import('@/weatherForecast/test/mocks/CitiesControls.mocks');
+    await import('@/weatherForecast/testing/mocks/CitiesControls.mocks');
 
   return {
     ConfirmModal: ConfirmModalMock,
@@ -13,7 +13,7 @@ vi.mock('@/common/components', async () => {
 vi.mock('antd', async (importOriginal) => {
   const actual = await importOriginal<typeof import('antd')>();
   const { ButtonMock, CheckboxMock, SelectMock } =
-    await import('@/weatherForecast/test/mocks/CitiesControls.mocks');
+    await import('@/weatherForecast/testing/mocks/CitiesControls.mocks');
 
   return {
     ...actual,
@@ -26,7 +26,7 @@ vi.mock('antd', async (importOriginal) => {
 import {
   getSortingUpdater,
   setupCitiesControls as setup,
-} from '@/weatherForecast/test/setups/citiesControls.setup';
+} from '@/weatherForecast/testing/setups/citiesControls.setup';
 
 describe('CitiesControls', () => {
   beforeEach(() => {

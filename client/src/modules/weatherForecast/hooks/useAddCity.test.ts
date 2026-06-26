@@ -2,7 +2,7 @@ import { renderHook, act } from '@testing-library/react';
 import { vi, beforeEach, describe, it, expect } from 'vitest';
 import { useMutation } from '@apollo/client/react';
 import { useAddCity, type AddCityMutation } from './useAddCity';
-import { createMutationResult } from '@/common/test/factories';
+import { createMutationResult } from '@/common/testing/factories';
 import type { City } from '@/weatherForecast/types';
 
 vi.mock('@apollo/client/react');

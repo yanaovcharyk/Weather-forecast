@@ -10,7 +10,7 @@ const mocks = vi.hoisted(() => ({
 
 vi.mock('react-router-dom', () => ({
   useLocation: () => ({
-    pathname: '/test',
+    pathname: '/testing',
     search: '?q=1',
   }),
 }));
@@ -40,8 +40,8 @@ describe('useRouteTracking', () => {
     expect(mocks.info).toHaveBeenCalledWith(
       'route.changed',
       expect.objectContaining({
-        from: '/test',
-        to: '/test',
+        from: '/testing',
+        to: '/testing',
         search: '?q=1',
       }),
     );
@@ -51,7 +51,7 @@ describe('useRouteTracking', () => {
     renderHook(() => useRouteTracking());
 
     expect(mocks.set).toHaveBeenCalledWith({
-      route: '/test',
+      route: '/testing',
     });
   });
 });

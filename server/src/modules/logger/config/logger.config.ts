@@ -1,8 +1,8 @@
-import * as winston from 'winston';
+import { format, transports } from 'winston';
 
 import 'winston-daily-rotate-file';
 
-const { combine, timestamp, errors, json, colorize, printf } = winston.format;
+const { combine, timestamp, errors, json, colorize, printf } = format;
 
 const consoleLogsFormat = printf(
   ({ timestamp, level, context, message, trace, ...meta }) => {
@@ -18,17 +18,17 @@ const consoleLogsFormat = printf(
 );
 
 const filterByLogLevel = (level: string) =>
-  winston.format((info) => {
+  format((info) => {
     return info.level === level ? info : false;
   })();
 
 const filterBySource = (source: 'server' | 'client') =>
-  winston.format((info) => {
+  format((info) => {
     return info.source === source ? info : false;
   })();
 
 const createServerFileTransport = (level: string, maxFiles = '14d') =>
-  new winston.transports.DailyRotateFile({
+  new transports.DailyRotateFile({
     dirname: `logs/server/${level}`,
     filename: `%DATE%.${level}.log`,
     datePattern: 'YYYY-MM-DD',
@@ -46,7 +46,7 @@ const createServerFileTransport = (level: string, maxFiles = '14d') =>
   });
 
 const createClientFileTransport = (level: string, maxFiles = '14d') =>
-  new winston.transports.DailyRotateFile({
+  new transports.DailyRotateFile({
     dirname: `logs/client/${level}`,
     filename: `%DATE%.${level}.log`,
     datePattern: 'YYYY-MM-DD',
@@ -63,7 +63,7 @@ const createClientFileTransport = (level: string, maxFiles = '14d') =>
     ),
   });
 
-const consoleTransport = new winston.transports.Console({
+const consoleTransport = new transports.Console({
   format: combine(
     colorize(),
     timestamp(),

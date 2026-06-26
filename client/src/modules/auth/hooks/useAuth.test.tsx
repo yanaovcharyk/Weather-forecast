@@ -1,4 +1,4 @@
-import { testRenderHook } from '@/common/test/render/renderWithProviders';
+import { testRenderHook } from '@/common/testing/render/renderWithProviders';
 import { useAuth } from './useAuth';
 
 describe('useAuth', () => {

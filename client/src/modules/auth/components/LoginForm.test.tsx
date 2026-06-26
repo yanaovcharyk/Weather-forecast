@@ -7,8 +7,8 @@ import { useLogin } from '@/auth/hooks/useLogin';
 import {
   createLoginFormContext,
   type LoginFormContext,
-} from '@/auth/test/contexts';
-import { LOGIN_FIXTURE } from '@/auth/test/fixtures';
+} from '@/auth/testing/contexts';
+import { LOGIN_FIXTURE } from '@/auth/testing/fixtures';
 
 vi.mock('@/auth/hooks/useLogin');
 

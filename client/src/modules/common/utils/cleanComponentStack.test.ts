@@ -23,7 +23,7 @@ describe('cleanComponentStack', () => {
   it('removes unwanted library entries', () => {
     const stack = `
       ComponentA
-      node_modules/test
+      node_modules/testing
       antd/Button
       react-router
       react-dom

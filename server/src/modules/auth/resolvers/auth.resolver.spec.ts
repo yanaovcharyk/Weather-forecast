@@ -2,9 +2,9 @@ import { AuthResolver } from './auth.resolver';
 import {
   LoginInputFixture,
   RegisterInputFixture,
-} from '@auth/test/fixtures/auth-input.fixture';
-import { MockUser } from '@auth/test/fixtures';
-import { createAuthResolverContext } from '@auth/test/contexts/resolvers/auth-resolver.context';
+} from '@auth/testing/fixtures/auth-input.fixture';
+import { MockUser } from '@auth/testing/fixtures';
+import { createAuthResolverContext } from '@auth/testing/contexts/resolvers/auth-resolver.context';
 
 describe('AuthResolver', () => {
   let resolver: AuthResolver;

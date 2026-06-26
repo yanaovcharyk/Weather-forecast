@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { DailyForecast } from './DailyForecast';
-import { createDailyWeather } from '@/weatherDetails/test/fixtures';
+import { createDailyWeather } from '@/weatherDetails/testing/fixtures';
 
 const dailyForecast = [
   createDailyWeather({

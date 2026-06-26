@@ -1,7 +1,7 @@
 import {
   createUserServiceContext,
   UserServiceTestContext,
-} from '@users/test/contexts/user-service.context';
+} from '@users/testing/contexts/user-service.context';
 
 describe('UserService', () => {
   let ctx: UserServiceTestContext;

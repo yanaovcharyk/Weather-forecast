@@ -25,7 +25,7 @@
       "@database/*": ["modules/database/*"],
       "@graphql/*": ["modules/graphql/*"],
       "@shared/*": ["shared/*"],
-      "@test/*": ["shared/test/*"]
+      "@test/*": ["shared/testing/*"]
     }
   },
   "include": ["src/**/*.ts"]

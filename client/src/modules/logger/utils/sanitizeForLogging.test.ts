@@ -1,6 +1,12 @@
 import { describe, it, expect, vi, afterEach } from 'vitest';
 import { sanitizeForLogging } from './sanitizeForLogging';
-import * as isObjectModule from './isObject';
+import { isObject } from './isObject';
+
+vi.mock('./isObject', () => ({
+  isObject: vi.fn(
+    (value: unknown) => typeof value === 'object' && value !== null,
+  ),
+}));
 
 type Circular = {
   self?: Circular;
@@ -11,8 +17,12 @@ type Nested = {
 };
 
 describe('sanitizeForLogging', () => {
+  const isObjectMock = vi.mocked(isObject);
+
   afterEach(() => {
-    vi.restoreAllMocks();
+    isObjectMock.mockImplementation(
+      (value: unknown) => typeof value === 'object' && value !== null,
+    );
   });
 
   it('masks sensitive fields', () => {
@@ -158,7 +168,7 @@ describe('sanitizeForLogging', () => {
   });
 
   it('uses safeStringify when isObject returns false', () => {
-    vi.spyOn(isObjectModule, 'isObject').mockReturnValue(false);
+    isObjectMock.mockReturnValue(false);
 
     const date = new Date('2024-01-01');
 
@@ -168,7 +178,7 @@ describe('sanitizeForLogging', () => {
   });
 
   it('returns [Unstringifiable] when String() throws', () => {
-    vi.spyOn(isObjectModule, 'isObject').mockReturnValue(false);
+    isObjectMock.mockReturnValue(false);
 
     const value = {
       [Symbol.toPrimitive]() {

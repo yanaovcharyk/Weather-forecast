@@ -1,7 +1,7 @@
 import {
   AppLoggerServiceTestContext,
   createAppLoggerServiceContext,
-} from '@logger/test/contexts/app-logger-service.context';
+} from '@logger/testing/contexts/app-logger-service.context';
 import { AppLoggerService } from './app-logger.service';
 
 describe('AppLoggerService', () => {

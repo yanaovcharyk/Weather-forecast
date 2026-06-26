@@ -1,14 +1,14 @@
 import {
   createClientLoggerServiceContext,
   ClientLoggerServiceTestContext,
-} from '@logger/test/contexts/client-logger-service.context';
+} from '@logger/testing/contexts/client-logger-service.context';
 
 import {
   ClientInfoLog,
   ClientWarnLog,
   ClientErrorLog,
   ClientDebugLog,
-} from '@logger/test/fixtures/client-log.fixture';
+} from '@logger/testing/fixtures/client-log.fixture';
 
 describe('ClientLoggerService', () => {
   let ctx: ClientLoggerServiceTestContext;

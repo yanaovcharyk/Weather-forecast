@@ -1,14 +1,14 @@
 import {
   createWeatherServiceContext,
   WeatherServiceTestContext,
-} from '@weather/test/contexts/weather-service.context';
+} from '@weather/testing/contexts/weather-service.context';
 import {
   citySuggestionsFixture,
   currentWeatherFixture,
   forecastFixture,
   forecastWithoutTimezoneFixture,
   kyivCoordinatesFixture,
-} from '@weather/test/fixtures';
+} from '@weather/testing/fixtures';
 
 describe('WeatherService', () => {
   let ctx: WeatherServiceTestContext;

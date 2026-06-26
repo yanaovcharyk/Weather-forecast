@@ -4,7 +4,7 @@ import { vi, describe, it, expect } from 'vitest';
 
 import { useAuth } from '@/auth/hooks/useAuth';
 import { PrivateRoute } from './PrivateRoute';
-import { createAuthMock } from '@/common/test/mocks/auth.mock';
+import { createAuthMock } from '@/common/testing/mocks/auth.mock';
 
 vi.mock('@/auth/hooks/useAuth', () => ({
   useAuth: vi.fn(),

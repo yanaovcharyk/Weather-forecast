@@ -1,11 +1,11 @@
 import {
   currentWeatherFixture,
   currentWeatherTimezoneZeroFixture,
-} from '@weather/test/fixtures/current-weather.fixture';
+} from '@weather/testing/fixtures/current-weather.fixture';
 import {
   forecastFixture,
   forecastTimezoneZeroFixture,
-} from '@weather/test/fixtures/forecast.fixture';
+} from '@weather/testing/fixtures/forecast.fixture';
 import {
   mapCurrentWeather,
   mapDailyForecast,

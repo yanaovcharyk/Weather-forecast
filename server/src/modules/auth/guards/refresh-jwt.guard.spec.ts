@@ -4,7 +4,7 @@ import { AUTH_GRAPHQL_ERRORS } from '@auth/constants';
 import {
   createGuardContext,
   GuardContext,
-} from '@auth/test/contexts/guards';
+} from '@auth/testing/contexts/guards';
 import { RefreshJwtGuard } from './refresh-jwt.guard';
 
 describe('RefreshJwtGuard', () => {

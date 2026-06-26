@@ -1,7 +1,7 @@
 import {
   CitiesResolverTestContext,
   createCitiesResolverContext,
-} from '@cities/test/contexts/cities-resolver.context';
+} from '@cities/testing/contexts/cities-resolver.context';
 
 describe('CitiesResolver', () => {
   let ctx: CitiesResolverTestContext;

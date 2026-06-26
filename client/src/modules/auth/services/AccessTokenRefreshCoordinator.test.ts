@@ -1,16 +1,21 @@
-import * as utils from '@/auth/utils/fetchNewAccessToken';
+import { fetchNewAccessToken } from '@/auth/utils/fetchNewAccessToken';
 import { AccessTokenRefreshCoordinator } from './AccessTokenRefreshCoordinator';
+
+vi.mock('@/auth/utils/fetchNewAccessToken', () => ({
+  fetchNewAccessToken: vi.fn(),
+}));
 
 describe('AccessTokenRefreshCoordinator', () => {
   let coordinator: AccessTokenRefreshCoordinator;
+  const fetchNewAccessTokenMock = vi.mocked(fetchNewAccessToken);
 
   beforeEach(() => {
     coordinator = new AccessTokenRefreshCoordinator();
-    vi.restoreAllMocks();
+    fetchNewAccessTokenMock.mockReset();
   });
 
   it('executes queued operations on successful refresh', async () => {
-    vi.spyOn(utils, 'fetchNewAccessToken').mockResolvedValue(true);
+    fetchNewAccessTokenMock.mockResolvedValue(true);
 
     const retryOp = vi.fn();
     coordinator.queueRetryOperation(retryOp);
@@ -21,7 +26,7 @@ describe('AccessTokenRefreshCoordinator', () => {
   });
 
   it('clears queued operations on failed refresh', async () => {
-    vi.spyOn(utils, 'fetchNewAccessToken').mockResolvedValue(false);
+    fetchNewAccessTokenMock.mockResolvedValue(false);
 
     const retryOp = vi.fn();
     coordinator.queueRetryOperation(retryOp);
@@ -34,7 +39,7 @@ describe('AccessTokenRefreshCoordinator', () => {
   });
 
   it('reuses active promise for concurrent calls', async () => {
-    vi.spyOn(utils, 'fetchNewAccessToken').mockResolvedValue(true);
+    fetchNewAccessTokenMock.mockResolvedValue(true);
 
     const p1 = coordinator.refreshAccessToken();
     const p2 = coordinator.refreshAccessToken();

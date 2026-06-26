@@ -1,5 +1,25 @@
-export * from './constants';
-export type * from './types';
+export {
+  LOGGER_BATCH_SIZE,
+  LOGGER_FLUSH_INTERVAL_IN_MS,
+  LOGGER_MAX_RETRY_COUNT,
+  LOGGER_RETRY_DELAY_IN_MS,
+  LOGGER_MAX_LOGS_PER_MINUTE,
+  LOGGER_RATE_LIMIT_WINDOW_IN_MS,
+  LOG_LEVEL_PRIORITY,
+  DEFAULT_FIELDS_TO_MASK,
+} from './constants';
+export type {
+  ClientErrorLog,
+  IClientLogRecord,
+  ILoggerContext,
+  ILoggerTransport,
+  ISerializedClientLogRecord,
+  ISendLogsGraphQLRequestBody,
+  JsonPrimitive,
+  JsonValue,
+  LogLevel,
+  LogMetadata,
+} from './types';
 export { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 export { LoggerContextProvider } from './providers/LoggerContextProvider';
 export { RouteLoggerProvider } from './providers/RouteLoggerProvider';

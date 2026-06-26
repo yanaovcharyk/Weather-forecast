@@ -4,7 +4,7 @@ import React from 'react';
 import { CitiesList } from './CitiesList';
 import type { City } from '@/weatherForecast/types';
 import type { CityCardProps } from '@/weatherForecast/components/CityCard/CityCard';
-import { mockIntersectionObserver } from '@/common/test/mocks/browser.mock';
+import { mockIntersectionObserver } from '@/common/testing/mocks/browser.mock';
 
 type CityCardMockProps = CityCardProps;
 

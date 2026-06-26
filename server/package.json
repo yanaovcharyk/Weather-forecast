@@ -7,9 +7,9 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:prod": "node dist/main",
-    "test": "jest --config src/shared/test/jest.config.ts",
-    "test:cov": "jest --config src/shared/test/jest.config.ts --coverage",
-    "coverage:txt": "jest --config src/shared/test/jest.config.ts --coverage --runInBand 2>&1 | sed -n '/^---/,$p' | sed 's/[[:space:]]*$//' > coverage.txt"
+    "test": "jest --config src/shared/testing/jest.config.ts",
+    "test:cov": "jest --config src/shared/testing/jest.config.ts --coverage",
+    "coverage:txt": "jest --config src/shared/testing/jest.config.ts --coverage --runInBand 2>&1 | sed -n '/^---/,$p' | sed 's/[[:space:]]*$//' > coverage.txt"
   },
   "dependencies": {
     "@apollo/server": "^5.4.0",

@@ -4,8 +4,8 @@ import {
   REFRESH_EMPTY_RESPONSE,
   REFRESH_FAIL_RESPONSE,
   REFRESH_SUCCESS_RESPONSE,
-} from '@/auth/test/fixtures';
-import { createFetchMock } from '@/auth/test/mocks';
+} from '@/auth/testing/fixtures';
+import { createFetchMock } from '@/auth/testing/mocks';
 
 describe('fetchNewAccessToken', () => {
   beforeEach(() => {

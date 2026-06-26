@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { renderHook, act } from '@testing-library/react';
 
 import { useRemoveAllCities } from './useRemoveAllCities';
-import { createMutationResult } from '@/common/test/factories';
+import { createMutationResult } from '@/common/testing/factories';
 
 const mockMutate = vi.fn();
 const mockUseMutation = vi.fn();

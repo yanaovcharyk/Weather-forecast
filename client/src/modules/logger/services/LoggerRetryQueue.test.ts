@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { LoggerRetryQueue } from './LoggerRetryService';
-import { createLogRecord } from '@/logger/test/fixtures';
+import { createLogRecord } from '@/logger/testing/fixtures';
 
 const mocks = vi.hoisted(() => ({
   sendMock: vi.fn(),

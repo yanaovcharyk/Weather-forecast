@@ -3,7 +3,7 @@ import { vi } from 'vitest';
 import { useSearchParams } from 'react-router-dom';
 
 import { useSortingParams } from './useSortingParams';
-import { createRouterMocks } from '@/common/test/mocks/router.mock';
+import { createRouterMocks } from '@/common/testing/mocks/router.mock';
 
 vi.mock('react-router-dom');
 

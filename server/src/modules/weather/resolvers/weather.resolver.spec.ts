@@ -1,7 +1,7 @@
 import {
   createWeatherResolverContext,
   WeatherResolverTestContext,
-} from '@weather/test/contexts';
+} from '@weather/testing/contexts';
 
 describe('WeatherResolver', () => {
   let ctx: WeatherResolverTestContext;

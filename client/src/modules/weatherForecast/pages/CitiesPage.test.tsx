@@ -9,13 +9,13 @@ import type { EmptyState, PageLayout } from '@/common/components';
 import {
   CITY_FIXTURE,
   EXISTING_CITY_FIXTURE,
-} from '@/weatherForecast/test/fixtures';
+} from '@/weatherForecast/testing/fixtures';
 import {
   createCitiesPaginatedResult,
   createCityActionsResult,
   createSortingParamsResult,
-} from '@/weatherForecast/test/mocks';
-import { renderWithUser } from '@/common/test/render/renderWithUser';
+} from '@/weatherForecast/testing/mocks';
+import { renderWithUser } from '@/common/testing/render/renderWithUser';
 
 const mockNavigate = vi.fn();
 const mockToast = vi.fn();
