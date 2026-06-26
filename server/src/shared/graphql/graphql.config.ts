@@ -1,5 +1,4 @@
-import { ApolloDriverConfig } from '@nestjs/apollo';
-import { ApolloDriver } from '@nestjs/apollo';
+import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { randomUUID } from 'crypto';
 import { Request, Response } from 'express';
 

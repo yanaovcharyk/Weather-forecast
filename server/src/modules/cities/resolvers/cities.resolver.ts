@@ -6,7 +6,7 @@ import {
   Parent,
   ResolveField,
 } from '@nestjs/graphql';
-import { UseGuards, UsePipes } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { CitiesService, CitiesQueryService } from '@cities/services';
 import { WeatherService } from '@weather/services';
 import { WeatherOutput } from '@weather/dto';
@@ -17,7 +17,6 @@ import {
   AddCityInput,
   CityOutput,
 } from '@cities/dto';
-import { createValidationPipe } from '@shared/utils';
 import { AppLoggerService } from '@logger/services';
 import { LogResolver } from '@logger/index';
 import { CurrentUser } from '@auth/decorators';
@@ -58,7 +57,6 @@ export class CitiesResolver {
 
   @UseGuards(AccessJwtGuard)
   @Query(citiesConnectionType)
-  @UsePipes(createValidationPipe())
   @LogResolver()
   async citiesPaginated(
     @CurrentUser() user: ICurrentUser,

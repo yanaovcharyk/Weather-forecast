@@ -3,7 +3,7 @@ import { HttpModule } from '@nestjs/axios';
 import { WeatherResolver } from './resolvers';
 import { WeatherService } from './services';
 import { ConfigService } from '@nestjs/config';
-import { geoConfig, weatherConfig } from '@shared/config/weather.config';
+import { geoConfig, weatherConfig } from '@weather/config';
 import { AuthModule } from '@auth/index';
 import { OpenWeatherApiService } from './services/open-weather-api.service';
 

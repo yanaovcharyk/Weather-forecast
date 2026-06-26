@@ -1,4 +1,4 @@
-import { calculateAverage } from '@shared/utils';
+import { calculateAverage } from '@shared/utils/calculate-average.util';
 
 export function calculateAverageBy<T>(
   items: T[],

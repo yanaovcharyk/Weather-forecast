@@ -6,6 +6,7 @@ export interface IAppConfig {
   app: {
     prefix: string;
     cors: boolean;
+    corsOrigin: string;
   };
 
   db: {

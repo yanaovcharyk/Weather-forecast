@@ -2,11 +2,29 @@ import { z } from 'zod';
 import { StringValue } from 'ms';
 
 const msRegex = /^\d+(ms|s|m|h|d)$/;
+const booleanFromEnv = z.preprocess((value) => {
+  if (typeof value !== 'string') {
+    return value;
+  }
+
+  if (value === 'true') {
+    return true;
+  }
+
+  if (value === 'false') {
+    return false;
+  }
+
+  return value;
+}, z.boolean());
 
 export const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production']).default('development'),
 
   PORT: z.coerce.number().default(3000),
+  APP_PREFIX: z.string().min(1).default('api'),
+  APP_CORS: booleanFromEnv.default(true),
+  APP_CORS_ORIGIN: z.string().url().default('http://localhost:5173'),
 
   DB_DRIVER: z.literal('postgres'),
   DB_HOST: z.string().min(1),

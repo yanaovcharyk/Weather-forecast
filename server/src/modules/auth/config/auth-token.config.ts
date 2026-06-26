@@ -1,6 +1,7 @@
 import { ConfigService } from '@nestjs/config';
-import { IAppConfig } from '@shared/types';
 import { StringValue } from 'ms';
+
+import { IAppConfig } from '@shared/types';
 
 export interface IAuthTokenConfig {
   access: {

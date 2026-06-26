@@ -1,21 +1,23 @@
 import { Module } from '@nestjs/common';
-import { GraphQLModule } from '@nestjs/graphql';
 
-import { AuthModule } from './modules/auth/auth.module';
-import { CitiesModule } from './modules/cities/cities.module';
-import { WeatherModule } from './modules/weather/weather.module';
-import { graphqlConfig } from './shared/config/graphql.config';
-import { DatabaseModule } from './modules/database/database.module';
+import { AuthModule } from '@auth/index';
+import { CitiesModule } from '@cities/index';
+import { DatabaseModule } from '@database/index';
+import { LoggerModule } from '@logger/index';
+import { AppConfigModule } from '@shared/config';
+import { AppGraphqlModule } from '@shared/graphql';
+import { WeatherModule } from '@weather/index';
+
 import { AppHealthController } from './app.controller';
-import { AppConfigModule } from './shared/config/config.module';
-import { LoggerModule } from './modules/logger/logger.module';
 
 @Module({
   imports: [
     AppConfigModule,
     LoggerModule,
-    GraphQLModule.forRoot(graphqlConfig),
+  
+    AppGraphqlModule,
     DatabaseModule.forRoot(),
+
     AuthModule,
     CitiesModule,
     WeatherModule,

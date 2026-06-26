@@ -5,7 +5,7 @@ import { IAppConfig } from '@shared/types';
 import { IAccessJwtPayload, IRefreshJwtPayload, JwtPayload } from '@auth/interfaces';
 import { AppLoggerService } from '@logger/services';
 import { LogMethod } from '@logger/decorators';
-import { authTokenConfig, IAuthTokenConfig } from '@shared/config';
+import { authTokenConfig, IAuthTokenConfig } from '@auth/config';
 import { SignOptions } from 'jsonwebtoken';
 
 @Injectable()

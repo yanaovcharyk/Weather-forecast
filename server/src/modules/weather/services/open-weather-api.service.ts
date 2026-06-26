@@ -11,7 +11,7 @@ import {
   OPEN_WEATHER_CITY_SEARCH_LIMIT,
   OPEN_WEATHER_UNITS,
 } from '@weather/constants';
-import { IGeoConfig, IWeatherConfig } from '@shared/config/weather.config';
+import { IGeoConfig, IWeatherConfig } from '@weather/config';
 import {
   CITY_SEARCH_URL_ENDPOINT,
   FORECAST_URL_ENDPOINT,

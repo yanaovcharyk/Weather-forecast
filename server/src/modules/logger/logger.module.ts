@@ -1,7 +1,7 @@
 import { Global, Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { WinstonModule } from 'nest-winston';
-import { winstonConfig } from '@shared/config/logger.config';
+import { winstonConfig } from '@logger/config';
 import { AppLoggerService } from './services/app-logger.service';
 import { LoggerContextService } from './services/logger-context.service';
 import { GraphqlContextInterceptor } from './interceptors/graphql-context.interceptor';

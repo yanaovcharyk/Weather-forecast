@@ -6,8 +6,9 @@ export const configuration = (env: Env): IAppConfig => ({
   port: env.PORT,
 
   app: {
-    prefix: 'api',
-    cors: true,
+    prefix: env.APP_PREFIX,
+    cors: env.APP_CORS,
+    corsOrigin: env.APP_CORS_ORIGIN,
   },
 
   db: {

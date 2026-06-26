@@ -5,8 +5,8 @@ import { IAppConfig } from '@shared/types';
 import { TokenName } from '@auth/types';
 import { AppLoggerService } from '@logger/services';
 import { LogMethod } from '@logger/decorators';
-import { parseMs } from '@shared/utils';
-import { authCookieConfig } from '@shared/config';
+import { parseMs } from '@shared/utils/parse-ms';
+import { authCookieConfig } from '@auth/config';
 
 @Injectable()
 export class AuthCookieService {
