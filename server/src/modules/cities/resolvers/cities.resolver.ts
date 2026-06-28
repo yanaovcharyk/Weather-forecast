@@ -25,7 +25,7 @@ import {
   graphqlIdType,
   graphqlListType,
   graphqlType,
-} from '@graphql/decorators';
+} from '@graphql/type-functions';
 
 const cityOutputType = graphqlType(CityOutput);
 const cityOutputListType = graphqlListType(CityOutput);

@@ -2,4 +2,4 @@ export {
   graphqlIdType,
   graphqlListType,
   graphqlType,
-} from './graphql-type.decorator';
+} from './graphql-type-functions';
