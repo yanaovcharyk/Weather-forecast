@@ -1,5 +1,4 @@
 import {
-  ConflictException,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
@@ -36,11 +35,13 @@ export class CitiesService {
   @LogMethod()
   async addCity(params: AddCityParams): Promise<ICityOutput> {
     const { userId, input } = params;
+    const cityName = input.city.trim();
 
     const exists = await this.cityRepository.findOne({
       where: {
         userId,
-        city: input.city,
+        lat: input.lat,
+        lon: input.lon,
       },
     });
 
@@ -50,7 +51,7 @@ export class CitiesService {
 
     const city = this.cityRepository.create({
       userId,
-      city: input.city,
+      city: cityName,
       lat: input.lat,
       lon: input.lon,
     });

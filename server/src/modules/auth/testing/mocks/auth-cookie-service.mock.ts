@@ -6,7 +6,7 @@ export function createAuthCookieServiceMock() {
     setRefreshToken: jest.fn(),
     clearAccessToken: jest.fn(),
     clearRefreshToken: jest.fn(),
-    clearAuthCookies: jest.fn(),
+    clearAccessAndRefreshTokens: jest.fn(),
   };
 }
 

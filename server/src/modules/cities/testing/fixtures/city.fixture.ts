@@ -1,7 +1,5 @@
-import { CityEntity } from '@cities/entities';
-
 export const KyivCity = {
-  id: 1,
+  id: '1',
   userId: 'u1',
   city: 'Kyiv',
   lat: 50.45,
@@ -10,7 +8,7 @@ export const KyivCity = {
 };
 
 export const LvivCity = {
-  id: 2,
+  id: '2',
   userId: 'u1',
   city: 'Lviv',
   lat: 49,
@@ -19,7 +17,7 @@ export const LvivCity = {
 };
 
 export const OdesaCity = {
-  id: 3,
+  id: '3',
   userId: 'u1',
   city: 'Odesa',
   lat: 46.48,
@@ -28,7 +26,7 @@ export const OdesaCity = {
 };
 
 export const KharkivCity = {
-  id: 4,
+  id: '4',
   userId: 'u1',
   city: 'Kharkiv',
   lat: 49.99,
@@ -37,7 +35,7 @@ export const KharkivCity = {
 };
 
 export const DniproCity = {
-  id: 5,
+  id: '5',
   userId: 'u1',
   city: 'Dnipro',
   lat: 48.46,

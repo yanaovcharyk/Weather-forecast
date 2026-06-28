@@ -114,7 +114,7 @@ export class CitiesQueryService {
 
     const decoded = decodeCursor<{
       value: unknown;
-      id: number;
+      id: string;
     }>(query.pagination.cursor);
 
     const cursorQuery =

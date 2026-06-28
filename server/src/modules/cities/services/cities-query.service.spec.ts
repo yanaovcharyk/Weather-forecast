@@ -120,7 +120,7 @@ describe('CitiesQueryService', () => {
       };
       repo.createQueryBuilder.mockReturnValue(qb);
 
-      (decodeCursor as jest.Mock).mockReturnValue({ value: 'Kyiv', id: 1 });
+      (decodeCursor as jest.Mock).mockReturnValue({ value: 'Kyiv', id: '1' });
 
       (buildConnection as jest.Mock).mockReturnValue({
         edges: [{ node: { id: '2', city: 'Lviv' }, cursor: 'cursor-2' }],
@@ -154,7 +154,7 @@ describe('CitiesQueryService', () => {
       };
       repo.createQueryBuilder.mockReturnValue(qb);
 
-      const decodedCursor = { value: 'Dnipro', id: 4 };
+      const decodedCursor = { value: 'Dnipro', id: '4' };
       (decodeCursor as jest.Mock).mockReturnValue(decodedCursor);
 
       (buildConnection as jest.Mock).mockReturnValue({

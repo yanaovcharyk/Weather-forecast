@@ -49,5 +49,5 @@ export const PaginatedOdesaConnectionFixture = {
 
 export const DecodedCursorFixture = {
   value: 'Kyiv',
-  id: 1,
+  id: '1',
 };

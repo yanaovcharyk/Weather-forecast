@@ -134,7 +134,9 @@ describe('AuthService', () => {
         version: MockUser.refreshTokenVersion + 1,
       });
 
-      expect(ctx.cookieService.clearAuthCookies).toHaveBeenCalledWith(ctx.res);
+      expect(ctx.cookieService.clearAccessAndRefreshTokens).toHaveBeenCalledWith(
+        ctx.res,
+      );
     });
 
     it('should throw when user not found', async () => {
