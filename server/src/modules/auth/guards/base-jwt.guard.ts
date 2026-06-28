@@ -1,12 +1,15 @@
-import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
+import {
+  CanActivate,
+  ExecutionContext,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { GqlExecutionContext } from '@nestjs/graphql';
-import { GraphQLError } from 'graphql';
 import { IGQLContext, JwtPayload } from '@auth/interfaces';
 import { Request } from 'express';
 import { AuthCookieService } from '@auth/services';
-import { AUTH_GRAPHQL_ERRORS } from '@auth/constants';
 
 @Injectable()
 export abstract class BaseJwtGuard implements CanActivate {
@@ -26,7 +29,7 @@ export abstract class BaseJwtGuard implements CanActivate {
     const token = this.getToken(req);
 
     if (!token) {
-      throw AUTH_GRAPHQL_ERRORS.UNAUTHORIZED;
+      throw new UnauthorizedException('Unauthorized');
     }
 
     try {
@@ -44,7 +47,7 @@ export abstract class BaseJwtGuard implements CanActivate {
 
       return true;
     } catch {
-      throw AUTH_GRAPHQL_ERRORS.UNAUTHORIZED;
+      throw new UnauthorizedException('Unauthorized');
     }
   }
 }

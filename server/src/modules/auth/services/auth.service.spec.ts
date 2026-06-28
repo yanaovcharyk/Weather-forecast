@@ -1,7 +1,6 @@
 import { UnauthorizedException } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { createAuthContext } from '@auth/testing';
-import { AUTH_GRAPHQL_ERRORS } from '@auth/constants';
 import {
   ACCESS_TOKEN_FIXTURE,
   RAW_TOKEN_FIXTURE,
@@ -39,7 +38,6 @@ describe('AuthService', () => {
           ...LoginInputFixture,
           email: MockUser.email,
         },
-        req: ctx.req,
         res: ctx.res,
       });
 
@@ -62,7 +60,6 @@ describe('AuthService', () => {
       await expect(
         service.login({
           input: LoginInputFixture,
-          req: ctx.req,
           res: ctx.res,
         }),
       ).rejects.toThrow(UnauthorizedException);
@@ -79,7 +76,6 @@ describe('AuthService', () => {
             email: MockUser.email,
             password: 'wrong-password',
           },
-          req: ctx.req,
           res: ctx.res,
         }),
       ).rejects.toThrow(UnauthorizedException);
@@ -103,7 +99,6 @@ describe('AuthService', () => {
           ...RegisterInputFixture,
           email: MockUser.email,
         },
-        req: ctx.req,
         res: ctx.res,
       });
 
@@ -150,7 +145,7 @@ describe('AuthService', () => {
           userId: 'unknown-user',
           res: ctx.res,
         }),
-      ).rejects.toBe(AUTH_GRAPHQL_ERRORS.UNAUTHORIZED);
+      ).rejects.toThrow(UnauthorizedException);
     });
   });
 
@@ -209,7 +204,7 @@ describe('AuthService', () => {
           oldToken: RAW_TOKEN_FIXTURE,
           res: ctx.res,
         }),
-      ).rejects.toBe(AUTH_GRAPHQL_ERRORS.UNAUTHORIZED);
+      ).rejects.toThrow(UnauthorizedException);
     });
 
     it('should throw when refresh token version mismatch', async () => {
@@ -227,7 +222,7 @@ describe('AuthService', () => {
           oldToken: RAW_TOKEN_FIXTURE,
           res: ctx.res,
         }),
-      ).rejects.toBe(AUTH_GRAPHQL_ERRORS.UNAUTHORIZED);
+      ).rejects.toThrow(UnauthorizedException);
     });
   });
 });

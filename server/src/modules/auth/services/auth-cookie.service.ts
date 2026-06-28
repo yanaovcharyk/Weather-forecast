@@ -62,7 +62,7 @@ export class AuthCookieService {
   }
 
   @LogMethod()
-  clearAuthCookies(res: Response): void {
+  clearAccessAndRefreshTokens(res: Response): void {
     this.clearToken(res, TokenName.ACCESS);
     this.clearToken(res, TokenName.REFRESH);
   }

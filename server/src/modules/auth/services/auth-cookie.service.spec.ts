@@ -94,7 +94,7 @@ describe('AuthCookieService', () => {
 
   describe('clearAuthCookies', () => {
     it('should clear both cookies', () => {
-      service.clearAuthCookies(ctx.res);
+      service.clearAccessAndRefreshTokens(ctx.res);
       expect(ctx.res.clearCookie).toHaveBeenCalledTimes(2);
       expect(ctx.res.clearCookie).toHaveBeenNthCalledWith(
         1,

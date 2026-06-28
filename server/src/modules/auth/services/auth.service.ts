@@ -12,7 +12,6 @@ import {
   TokenPair,
   TokenType,
 } from '@auth/types';
-import { AUTH_GRAPHQL_ERRORS } from '@auth/constants';
 import { AuthTokenService } from './auth-token.service';
 import { AuthCookieService } from './auth-cookie.service';
 import { Pbkdf2PasswordHasher } from './password-hasher.service';
@@ -66,7 +65,7 @@ export class AuthService {
       this.logger.warn('Logout failed: user not found', {
         userId,
       });
-      throw AUTH_GRAPHQL_ERRORS.UNAUTHORIZED;
+      throw new UnauthorizedException('Unauthorized');
     }
 
     const nextVersion = user.refreshTokenVersion + 1;
@@ -76,7 +75,7 @@ export class AuthService {
       version: nextVersion,
     });
 
-    this.cookieService.clearAuthCookies(res);
+    this.cookieService.clearAccessAndRefreshTokens(res);
 
     this.logger.info('User logged out', {
       userId: user.id,
@@ -99,7 +98,7 @@ export class AuthService {
         userId: payload.userId,
       });
 
-      throw AUTH_GRAPHQL_ERRORS.UNAUTHORIZED;
+      throw new UnauthorizedException('Unauthorized');
     }
 
     if (payload.version !== user.refreshTokenVersion) {
@@ -108,7 +107,7 @@ export class AuthService {
         currentVersion: user.refreshTokenVersion,
       });
 
-      throw AUTH_GRAPHQL_ERRORS.UNAUTHORIZED;
+      throw new UnauthorizedException('Unauthorized');
     }
 
     const newVersion = user.refreshTokenVersion + 1;

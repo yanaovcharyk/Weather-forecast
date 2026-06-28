@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { Response } from 'express';
 import { LoginInput, RegisterInput } from './dto';
 
 export enum TokenType {
@@ -11,20 +11,13 @@ export enum TokenName {
   REFRESH = 'refreshToken',
 }
 
-export type Tokens = {
-  accessToken: string;
-  refreshToken: string;
-};
-
 export type LoginParams = {
   input: LoginInput;
-  req: Request;
   res: Response;
 };
 
 export type RegisterParams = {
   input: RegisterInput;
-  req: Request;
   res: Response;
 };
 
@@ -41,22 +34,6 @@ export type RotateRefreshTokenParams = {
 export type TokenPair = {
   accessToken: string;
   refreshToken: string;
-};
-
-export type SetCookieParams = {
-  res: Response;
-  token: string;
-  type: TokenType;
-};
-
-export type ClearCookieParams = {
-  res: Response;
-  type: TokenType;
-};
-
-export type GetTokenParams = {
-  req: Request;
-  type: TokenType;
 };
 
 export type HashPasswordParams = {

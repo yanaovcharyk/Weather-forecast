@@ -29,7 +29,6 @@ describe('AuthResolver', () => {
 
       expect(ctx.authService.login).toHaveBeenCalledWith({
         input: LoginInputFixture,
-        req: ctx.req,
         res: ctx.res,
       });
     });
@@ -60,7 +59,6 @@ describe('AuthResolver', () => {
 
       expect(ctx.authService.register).toHaveBeenCalledWith({
         input: RegisterInputFixture,
-        req: ctx.req,
         res: ctx.res,
       });
     });

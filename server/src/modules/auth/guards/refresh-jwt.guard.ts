@@ -3,6 +3,7 @@ import { BaseJwtGuard } from './base-jwt.guard';
 import { IRefreshJwtPayload } from '@auth/interfaces';
 import { Request } from 'express';
 import { TokenType } from '@auth/types';
+import { JwtConfigKey } from '@auth/constants';
 
 @Injectable()
 export class RefreshJwtGuard extends BaseJwtGuard {
@@ -11,7 +12,7 @@ export class RefreshJwtGuard extends BaseJwtGuard {
   }
 
   protected getSecret(): string {
-    return this.configService.get<string>('jwt.refreshSecret')!;
+    return this.configService.get<string>(JwtConfigKey.REFRESH_SECRET)!;
   }
 
   protected validatePayload(payload: IRefreshJwtPayload, token: string) {

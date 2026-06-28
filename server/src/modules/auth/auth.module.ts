@@ -1,7 +1,8 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { PassportModule } from '@nestjs/passport';
 import { AuthResolver } from './resolvers';
+import { jwtConfig } from './config';
 
 import { AuthTokenService } from './services/auth-token.service';
 
@@ -12,7 +13,14 @@ import { AuthCookieService } from './services/auth-cookie.service';
 import { AccessJwtGuard, RefreshJwtGuard } from './guards';
 
 @Module({
-  imports: [UsersModule, PassportModule, JwtModule.register({})],
+  imports: [
+    UsersModule,
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: jwtConfig,
+    }),
+  ],
   providers: [
     AuthResolver,
     AuthService,
@@ -22,7 +30,6 @@ import { AccessJwtGuard, RefreshJwtGuard } from './guards';
     AccessJwtGuard,
     RefreshJwtGuard,
   ],
-  exports: [JwtModule, AuthService, AuthTokenService, AuthCookieService, AccessJwtGuard,
-    RefreshJwtGuard],
+  exports: [AccessJwtGuard],
 })
 export class AuthModule {}

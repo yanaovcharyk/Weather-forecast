@@ -1,5 +1,6 @@
 import { CurrentUser, mapJwtToUser } from './current-user.decorator';
 import { GqlExecutionContext } from '@nestjs/graphql';
+import { TokenType } from '@auth/types';
 
 jest.mock('@nestjs/graphql', () => ({
   GqlExecutionContext: {
@@ -12,11 +13,10 @@ describe('mapJwtToUser', () => {
     expect(
       mapJwtToUser({
         userId: '123',
-        email: 'test@mail.com',
+        type: TokenType.ACCESS,
       }),
     ).toEqual({
       id: '123',
-      email: 'test@mail.com',
     });
   });
 });

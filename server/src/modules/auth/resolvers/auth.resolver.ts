@@ -24,7 +24,6 @@ export class AuthResolver {
   async login(@Args('input') input: LoginInput, @Context() ctx: IGQLContext) {
     return this.authService.login({
       input,
-      req: ctx.req,
       res: ctx.res,
     });
   }
@@ -37,7 +36,6 @@ export class AuthResolver {
   ) {
     return this.authService.register({
       input,
-      req: ctx.req,
       res: ctx.res,
     });
   }
@@ -46,15 +44,15 @@ export class AuthResolver {
   @UseGuards(RefreshJwtGuard)
   @LogResolver()
   async logout(@CurrentUser() user: ICurrentUser, @Context() ctx: IGQLContext) {
-  if (!user?.id) {
-    throw new UnauthorizedException('Missing user id');
-  }
+    if (!user?.id) {
+      throw new UnauthorizedException('Missing user id');
+    }
 
-  return this.authService.logout({
-    userId: user.id,
-    res: ctx.res,
-  });
-}
+    return this.authService.logout({
+      userId: user.id,
+      res: ctx.res,
+    });
+  }
 
   @Mutation(() => AuthOutput)
   @UseGuards(RefreshJwtGuard)

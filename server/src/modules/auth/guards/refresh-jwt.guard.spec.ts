@@ -1,5 +1,5 @@
+import { UnauthorizedException } from '@nestjs/common';
 import { TokenType } from '@auth/types';
-import { AUTH_GRAPHQL_ERRORS } from '@auth/constants';
 
 import {
   createGuardContext,
@@ -42,8 +42,8 @@ describe('RefreshJwtGuard', () => {
     it('should throw when token is missing', async () => {
       ctx.cookieService.getRefreshToken.mockReturnValue(null);
 
-      await expect(ctx.guard.canActivate({} as any)).rejects.toBe(
-        AUTH_GRAPHQL_ERRORS.UNAUTHORIZED,
+      await expect(ctx.guard.canActivate({} as any)).rejects.toThrow(
+        UnauthorizedException,
       );
     });
 
@@ -51,8 +51,8 @@ describe('RefreshJwtGuard', () => {
       ctx.cookieService.getRefreshToken.mockReturnValue('token');
       ctx.jwtService.verifyAsync.mockRejectedValue(new Error());
 
-      await expect(ctx.guard.canActivate({} as any)).rejects.toBe(
-        AUTH_GRAPHQL_ERRORS.UNAUTHORIZED,
+      await expect(ctx.guard.canActivate({} as any)).rejects.toThrow(
+        UnauthorizedException,
       );
     });
 
@@ -63,8 +63,8 @@ describe('RefreshJwtGuard', () => {
         type: TokenType.ACCESS,
       });
 
-      await expect(ctx.guard.canActivate({} as any)).rejects.toBe(
-        AUTH_GRAPHQL_ERRORS.UNAUTHORIZED,
+      await expect(ctx.guard.canActivate({} as any)).rejects.toThrow(
+        UnauthorizedException,
       );
     });
   });
