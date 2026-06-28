@@ -7,7 +7,7 @@ export interface ExistingCityLaypoutProps {
   existingCity: City;
   onBack: () => void;
   removingId: string | null;
-  onRemove: (id: string, city: string) => void;
+  onRemove: (id: string, cityName: string) => void;
   onTogglePinned: (id: string, currentPinned: boolean) => void;
   loading: boolean;
   onCityClick: (id: string) => void;

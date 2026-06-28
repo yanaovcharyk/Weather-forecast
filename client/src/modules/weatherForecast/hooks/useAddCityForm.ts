@@ -5,7 +5,7 @@ import { useCallback } from 'react';
 import { useCitySearch } from './useCitySearch';
 
 export type AddCityFormValues = {
-  city?: string;
+  cityName?: string;
 };
 
 export type AddCityFormApi = Pick<
@@ -25,19 +25,23 @@ export type AddCityFormResult = {
 };
 
 export const useAddCityForm = (
-  onSubmit: (lat: number, lon: number, city: string) => void | Promise<void>,
+  onSubmit: (
+    lat: number,
+    lon: number,
+    cityName: string,
+  ) => void | Promise<void>,
 ): AddCityFormResult => {
   const [form] = Form.useForm<AddCityFormValues>();
 
   const { loading, handleSearch, cityOptions } = useCitySearch();
 
   const handleSubmit = useCallback(
-    async ({ city }: AddCityFormValues) => {
-      if (!city) {
+    async ({ cityName }: AddCityFormValues) => {
+      if (!cityName) {
         return;
       }
 
-      const parsed = JSON.parse(city);
+      const parsed = JSON.parse(cityName);
 
       await onSubmit(parsed.lat, parsed.lon, parsed.name);
 

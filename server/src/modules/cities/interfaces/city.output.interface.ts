@@ -2,7 +2,7 @@ import { IWeatherPreviewOutput } from '@weather/interfaces';
 
 export interface ICityOutput {
   id: string;
-  city: string;
+  cityName: string;
   lat: number;
   lon: number;
   isPinned: boolean;

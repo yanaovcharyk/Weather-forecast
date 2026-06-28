@@ -22,7 +22,7 @@ describe('CityService.isCityNameValid', () => {
 });
 
 describe('CityService.isCityAlreadyAdded', () => {
-  const cities = [{ city: 'kyiv' }, { city: 'london' }];
+  const cities = [{ cityName: 'kyiv' }, { cityName: 'london' }];
 
   it('should return true if city already exists (case insensitive)', () => {
     expect(CityService.isCityAlreadyAdded(cities, 'KYIV')).toBe(true);
@@ -34,7 +34,7 @@ describe('CityService.isCityAlreadyAdded', () => {
 });
 
 describe('CityService.validateBeforeAdd', () => {
-  const cities = [{ city: 'kyiv' }, { city: 'london' }];
+  const cities = [{ cityName: 'kyiv' }, { cityName: 'london' }];
 
   it('should reject empty input', () => {
     const result = CityService.validateBeforeAdd('   ', cities);
@@ -59,7 +59,7 @@ describe('CityService.validateBeforeAdd', () => {
 
     expect(result).toEqual({
       ok: true,
-      city: 'paris',
+      cityName: 'paris',
     });
   });
 
@@ -68,7 +68,7 @@ describe('CityService.validateBeforeAdd', () => {
 
     expect(result).toEqual({
       ok: true,
-      city: 'new york',
+      cityName: 'new york',
     });
   });
 });

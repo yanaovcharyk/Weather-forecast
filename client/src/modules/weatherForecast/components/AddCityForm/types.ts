@@ -16,6 +16,10 @@ export interface SearchCitiesVars {
 }
 
 export interface AddCityFormProps {
-  onSubmit: (lat: number, lon: number, city: string) => Promise<void> | void;
+  onSubmit: (
+    lat: number,
+    lon: number,
+    cityName: string,
+  ) => Promise<void> | void;
   disabled?: boolean;
 }

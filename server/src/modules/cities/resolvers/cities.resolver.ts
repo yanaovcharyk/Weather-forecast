@@ -86,11 +86,11 @@ export class CitiesResolver {
   @LogResolver()
   async cityByName(
     @CurrentUser() user: ICurrentUser,
-    @Args('city') city: string,
+    @Args('cityName') cityName: string,
   ): Promise<CityOutput | null> {
     return this.citiesService.getCityByName({
       userId: user.id,
-      city,
+      cityName,
     });
   }
 

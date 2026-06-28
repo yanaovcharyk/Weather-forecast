@@ -14,7 +14,7 @@ export const createCitiesControlsProps = (
   overrides: Partial<CitiesControlsProps> = {},
 ): CitiesControlsProps => ({
   sorting: {
-    sortBy: 'city',
+    sortBy: 'cityName',
     sortOrder: 'ASC',
   },
   setSorting: vi.fn() as CitiesControlsProps['setSorting'],

@@ -7,12 +7,12 @@ import { AppTitle, AppText } from '@/common/components/Typography';
 import styles from './CurrentWeatherCard.module.scss';
 
 type CurrentWeatherCardProps = {
-  city: string;
+  cityName: string;
   weather: WeatherDetails;
 };
 
 export const CurrentWeatherCard = ({
-  city,
+  cityName,
   weather,
 }: CurrentWeatherCardProps) => {
   const { token } = theme.useToken();
@@ -34,7 +34,7 @@ export const CurrentWeatherCard = ({
               className={styles.cityTitle}
               style={{ color: token.colorText }}
             >
-              {city}
+              {cityName}
               <img
                 src={`https://openweathermap.org/img/wn/${current.icon}@2x.png`}
                 alt={current.description}

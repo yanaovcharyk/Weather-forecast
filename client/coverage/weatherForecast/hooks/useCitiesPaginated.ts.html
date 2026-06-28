@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>9/9</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -126,7 +126,19 @@
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
 <a name='L63'></a><a href='#L63'>63</a>
-<a name='L64'></a><a href='#L64'>64</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -139,6 +151,18 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">9x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -189,7 +213,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useCallback } from 'react';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useCallback, useMemo } from 'react';
 import { useQuery } from '@apollo/client/react';
 &nbsp;
 import { CITIES_PAGINATED } from '@/weatherForecast/graphql';
@@ -198,10 +222,22 @@ import type {
   SortingState,
 } from '@/weatherForecast/types';
 &nbsp;
+const CITY_SORT_FIELD_GRAPHQL_VALUES: Record&lt;SortingState['sortBy'], string&gt; = {
+  cityName: 'CITY_NAME',
+  createdAt: 'CREATED_AT',
+};
+&nbsp;
+const toCitiesQuerySorting = (sorting: SortingState) =&gt; ({
+  ...sorting,
+  sortBy: CITY_SORT_FIELD_GRAPHQL_VALUES[sorting.sortBy],
+});
+&nbsp;
 export const useCitiesPaginated = (
   sorting: SortingState,
   showPinnedOnly: boolean,
 ) =&gt; {
+  const querySorting = useMemo(() =&gt; toCitiesQuerySorting(sorting), [sorting]);
+&nbsp;
   const { data, loading, fetchMore } = useQuery&lt;CitiesPaginatedResponse&gt;(
     CITIES_PAGINATED,
     {
@@ -212,7 +248,7 @@ export const useCitiesPaginated = (
             cursor: null,
           },
 &nbsp;
-          sorting,
+          sorting: querySorting,
           showPinnedOnly,
         },
       },
@@ -238,12 +274,12 @@ export const useCitiesPaginated = (
             cursor: pageInfo.endCursor,
           },
 &nbsp;
-          sorting,
+          sorting: querySorting,
           showPinnedOnly,
         },
       },
     });
-  }, [data, fetchMore, sorting, showPinnedOnly]);
+  }, [data, fetchMore, querySorting, showPinnedOnly]);
 &nbsp;
   return {
     cities: data?.citiesPaginated?.edges.map((edge) =&gt; edge.node) ?? [],
@@ -259,7 +295,7 @@ export const useCitiesPaginated = (
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2026-06-26T16:59:23.228Z
+                at 2026-06-28T16:32:14.833Z
             </div>
         <script src="../../prettify.js"></script>
         <script>

@@ -26,7 +26,7 @@ export type Weather = {
 
 export type City = {
   id: string;
-  city: string;
+  cityName: string;
   lat: number;
   lon: number;
   isPinned: boolean;
@@ -51,7 +51,7 @@ export type CitiesPaginatedResponse = {
 };
 
 export type SortingState = {
-  sortBy: 'createdAt' | 'city';
+  sortBy: 'createdAt' | 'cityName';
   sortOrder: 'ASC' | 'DESC';
 };
 

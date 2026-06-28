@@ -63,7 +63,7 @@ describe('useAddCity', () => {
   it('adds city and clears citiesPaginated cache after successful mutation', async () => {
     const addedCity: City = {
       id: '1',
-      city: 'Kyiv',
+      cityName: 'Kyiv',
       lat: 50.45,
       lon: 30.52,
       isPinned: false,
@@ -89,7 +89,7 @@ describe('useAddCity', () => {
         input: {
           lat: 50.45,
           lon: 30.52,
-          city: 'Kyiv',
+          cityName: 'Kyiv',
         },
       },
     });

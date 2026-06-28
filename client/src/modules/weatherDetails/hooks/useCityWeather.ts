@@ -9,7 +9,7 @@ import type {
 import { GET_CITY_BY_ID, GET_WEATHER_DETAILS } from '@/weatherDetails/graphql';
 
 export type CityWeatherResult = {
-  city: GetCityByIdResponse['city']['city'] | undefined;
+  cityName: GetCityByIdResponse['city']['cityName'] | undefined;
   weather: GetWeatherDetailsResponse['getWeatherDetails'] | undefined;
   loading: boolean;
   error: Error | undefined;
@@ -42,7 +42,7 @@ export const useCityWeather = (): CityWeatherResult => {
   });
 
   return {
-    city: cityData?.city.city,
+    cityName: cityData?.city?.cityName,
     weather: weatherData?.getWeatherDetails,
     loading: cityLoading || weatherLoading,
     error: cityError || weatherError,

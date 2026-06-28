@@ -40,7 +40,7 @@ export const useCityActions = ({
   const { getCityByName } = useCityByName();
 
   const handleAddCity = useCallback(
-    async (lat: number, lon: number, city: string) => {
+    async (lat: number, lon: number, cityName: string) => {
       if (isAddingCity) {
         return;
       }
@@ -48,21 +48,21 @@ export const useCityActions = ({
       setIsAddingCity(true);
 
       try {
-        const existingCity = await getCityByName(city);
+        const existingCity = await getCityByName(cityName);
 
         if (existingCity) {
           const updatedParams = new URLSearchParams(searchParams);
           updatedParams.set('existingId', String(existingCity.id));
           setSearchParams(updatedParams);
           setCurrentlySelectedCity(existingCity);
-          showInfoNotification(`City ${city} already exists`);
+          showInfoNotification(`City ${cityName} already exists`);
 
           return;
         }
 
-        await addCity(lat, lon, city);
+        await addCity(lat, lon, cityName);
 
-        showSuccessNotification(`City ${city} added successfully`);
+        showSuccessNotification(`City ${cityName} added successfully`);
       } catch {
         showErrorNotification('Failed to add city');
       } finally {

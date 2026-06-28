@@ -29,5 +29,5 @@ export class AddCityInput implements IAddCityInput {
   @IsNotEmpty()
   @MaxLength(100)
   @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
-  city!: string;
+  cityName!: string;
 }

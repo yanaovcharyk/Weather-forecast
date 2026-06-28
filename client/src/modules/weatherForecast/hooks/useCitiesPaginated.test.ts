@@ -24,13 +24,13 @@ describe('useCitiesPaginated', () => {
               {
                 node: {
                   id: '1',
-                  city: 'Kyiv',
+                  cityName: 'Kyiv',
                 },
               },
               {
                 node: {
                   id: '2',
-                  city: 'Lviv',
+                  cityName: 'Lviv',
                 },
               },
             ],
@@ -45,7 +45,7 @@ describe('useCitiesPaginated', () => {
     const { result } = renderHook(() =>
       useCitiesPaginated(
         {
-          sortBy: 'city',
+          sortBy: 'cityName',
           sortOrder: 'ASC',
         },
         false,
@@ -54,6 +54,24 @@ describe('useCitiesPaginated', () => {
 
     expect(result.current.cities).toHaveLength(2);
     expect(result.current.hasNext).toBe(false);
+    expect(useQuery).toHaveBeenCalledWith(
+      expect.anything(),
+      expect.objectContaining({
+        variables: {
+          query: {
+            pagination: {
+              limit: 10,
+              cursor: null,
+            },
+            sorting: {
+              sortBy: 'CITY_NAME',
+              sortOrder: 'ASC',
+            },
+            showPinnedOnly: false,
+          },
+        },
+      }),
+    );
   });
 
   it('returns empty cities array', () => {
@@ -66,7 +84,7 @@ describe('useCitiesPaginated', () => {
     const { result } = renderHook(() =>
       useCitiesPaginated(
         {
-          sortBy: 'city',
+          sortBy: 'cityName',
           sortOrder: 'ASC',
         },
         false,
@@ -114,7 +132,7 @@ describe('useCitiesPaginated', () => {
             cursor: 'cursor-1',
           },
           sorting: {
-            sortBy: 'createdAt',
+            sortBy: 'CREATED_AT',
             sortOrder: 'DESC',
           },
           showPinnedOnly: true,
@@ -141,7 +159,7 @@ describe('useCitiesPaginated', () => {
     const { result } = renderHook(() =>
       useCitiesPaginated(
         {
-          sortBy: 'city',
+          sortBy: 'cityName',
           sortOrder: 'ASC',
         },
         false,

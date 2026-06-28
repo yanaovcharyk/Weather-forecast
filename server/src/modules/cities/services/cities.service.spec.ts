@@ -60,7 +60,7 @@ describe('CitiesService', () => {
       const result = await service.addCity({
         userId: 'u1',
         input: {
-          city: 'Kyiv',
+          cityName: 'Kyiv',
           lat: 50,
           lon: 30,
         },
@@ -79,7 +79,7 @@ describe('CitiesService', () => {
       const result = await service.addCity({
         userId: 'u1',
         input: {
-          city: 'Lviv',
+          cityName: 'Lviv',
           lat: 49,
           lon: 24,
         },
@@ -87,7 +87,7 @@ describe('CitiesService', () => {
 
       expect(ctx.repo.create).toHaveBeenCalledWith({
         userId: 'u1',
-        city: 'Lviv',
+        cityName: 'Lviv',
         lat: 49,
         lon: 24,
       });
@@ -103,7 +103,7 @@ describe('CitiesService', () => {
 
       const result = await service.getCityByName({
         userId: 'u1',
-        city: 'Odesa',
+        cityName: 'Odesa',
       });
 
       expect(result).toEqual(OdesaCity);
@@ -114,7 +114,7 @@ describe('CitiesService', () => {
 
       const result = await service.getCityByName({
         userId: 'u1',
-        city: 'Dnipro',
+        cityName: 'Dnipro',
       });
 
       expect(result).toBeNull();

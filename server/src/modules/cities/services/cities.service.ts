@@ -35,7 +35,7 @@ export class CitiesService {
   @LogMethod()
   async addCity(params: AddCityParams): Promise<ICityOutput> {
     const { userId, input } = params;
-    const cityName = input.city.trim();
+    const cityName = input.cityName.trim();
 
     const exists = await this.cityRepository.findOne({
       where: {
@@ -51,7 +51,7 @@ export class CitiesService {
 
     const city = this.cityRepository.create({
       userId,
-      city: cityName,
+      cityName,
       lat: input.lat,
       lon: input.lon,
     });
@@ -64,7 +64,7 @@ export class CitiesService {
     return this.cityRepository.findOne({
       where: {
         userId: params.userId,
-        city: params.city,
+        cityName: params.cityName,
       },
     });
   }

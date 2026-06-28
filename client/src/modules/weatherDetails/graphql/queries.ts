@@ -49,7 +49,7 @@ export const GET_CITY_BY_ID = gql`
   query GetCityById($id: ID!) {
     city(id: $id) {
       id
-      city
+      cityName
       lat
       lon
     }

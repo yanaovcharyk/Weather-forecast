@@ -27,7 +27,7 @@ describe('CityCard', () => {
   it('renders full card with weather', () => {
     render(
       <CityCard
-        city="Kyiv"
+        cityName="Kyiv"
         weather={WEATHER_FIXTURE}
         isPinned={false}
         onTogglePinned={vi.fn()}
@@ -45,7 +45,7 @@ describe('CityCard', () => {
 
     render(
       <CityCard
-        city="Kyiv"
+        cityName="Kyiv"
         weather={WEATHER_FIXTURE}
         isPinned={false}
         onTogglePinned={vi.fn()}
@@ -59,7 +59,7 @@ describe('CityCard', () => {
   it('renders fallback when weather is null', () => {
     render(
       <CityCard
-        city="Kyiv"
+        cityName="Kyiv"
         weather={null}
         isPinned={false}
         onTogglePinned={vi.fn()}
@@ -76,7 +76,7 @@ describe('CityCard', () => {
 
     const { user } = renderWithUser(
       <CityCard
-        city="Kyiv"
+        cityName="Kyiv"
         weather={WEATHER_FIXTURE}
         isPinned={false}
         onTogglePinned={onTogglePinned}
@@ -99,7 +99,7 @@ describe('CityCard', () => {
 
     const { user } = renderWithUser(
       <CityCard
-        city="Kyiv"
+        cityName="Kyiv"
         weather={WEATHER_FIXTURE}
         isPinned={false}
         onTogglePinned={onTogglePinned}
@@ -120,7 +120,7 @@ describe('CityCard', () => {
   it('covers pinned icon toggle branch', () => {
     const { rerender } = render(
       <CityCard
-        city="Kyiv"
+        cityName="Kyiv"
         weather={WEATHER_FIXTURE}
         isPinned={false}
         onTogglePinned={vi.fn()}
@@ -132,7 +132,7 @@ describe('CityCard', () => {
 
     rerender(
       <CityCard
-        city="Kyiv"
+        cityName="Kyiv"
         weather={WEATHER_FIXTURE}
         isPinned={true}
         onTogglePinned={vi.fn()}

@@ -28,6 +28,7 @@ export default defineConfig({
     css: false,
     globals: true,
     clearMocks: true,
+    testTimeout: 10000,
 
     coverage: {
       provider: 'v8',

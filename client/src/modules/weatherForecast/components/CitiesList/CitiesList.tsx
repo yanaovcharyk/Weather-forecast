@@ -7,7 +7,7 @@ import type { City } from '@/weatherForecast/types';
 export type CitiesListProps = {
   cities: City[];
   removingCityId: string | null;
-  onRemove: (id: string, city: string) => void;
+  onRemove: (id: string, cityName: string) => void;
   onTogglePinned: (id: string, currentPinned: boolean) => void;
   onCityClick?: (id: string) => void;
   loadMore: () => void;
@@ -61,11 +61,11 @@ export const CitiesList = React.memo(function CitiesList({
         {cities.map((city) => (
           <Col key={city.id} xs={24} sm={24} md={12}>
             <CityCard
-              city={city.city}
+              cityName={city.cityName}
               weather={city.weather}
               isPinned={city.isPinned}
               onTogglePinned={() => onTogglePinned(city.id, city.isPinned)}
-              onRemove={() => onRemove(city.id, city.city)}
+              onRemove={() => onRemove(city.id, city.cityName)}
               loading={removingCityId === city.id}
               onClick={() => onCityClick?.(city.id)}
             />

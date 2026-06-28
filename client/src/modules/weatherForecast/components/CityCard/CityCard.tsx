@@ -9,7 +9,7 @@ import styles from './CityCard.module.scss';
 import type { City } from '@/weatherForecast/types';
 
 export interface CityCardProps {
-  city: string;
+  cityName: string;
   weather: City['weather'];
   isPinned: boolean;
   onTogglePinned: () => void;
@@ -19,7 +19,7 @@ export interface CityCardProps {
 }
 
 export const CityCard = React.memo(function CityCard({
-  city,
+  cityName,
   weather,
   isPinned,
   onTogglePinned,
@@ -43,7 +43,7 @@ export const CityCard = React.memo(function CityCard({
     <BackgroundCard
       className={`${styles.card} ${isDisabled ? styles.cardLoading : ''}`}
       onClick={isDisabled ? undefined : onClick}
-      headerLeft={<AppTitle level={5}>{city}</AppTitle>}
+      headerLeft={<AppTitle level={5}>{cityName}</AppTitle>}
       headerRight={
         <Flex gap={4}>
           <Button

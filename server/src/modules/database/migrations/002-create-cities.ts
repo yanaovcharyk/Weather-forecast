@@ -5,7 +5,7 @@ export class CreateCities002 implements MigrationInterface {
     await queryRunner.query(`
       CREATE TABLE cities (
         id SERIAL PRIMARY KEY,
-        city VARCHAR NOT NULL,
+        cityName VARCHAR NOT NULL,
         "userId" INTEGER,
         CONSTRAINT fk_user FOREIGN KEY ("userId") REFERENCES users(id)
       );

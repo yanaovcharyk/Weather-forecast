@@ -61,7 +61,7 @@ describe('useAddCityForm', () => {
 
     const { result } = renderHook(() => useAddCityForm(onSubmit));
 
-    const city = JSON.stringify({
+    const cityName = JSON.stringify({
       lat: 50.45,
       lon: 30.52,
       name: 'Kyiv',
@@ -69,7 +69,7 @@ describe('useAddCityForm', () => {
 
     await act(async () => {
       await result.current.handleSubmit({
-        city,
+        cityName,
       });
     });
 

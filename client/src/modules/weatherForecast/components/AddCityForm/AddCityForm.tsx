@@ -12,7 +12,7 @@ export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
   const { form, loading, handleSearch, cityOptions, handleSubmit } =
     useAddCityForm(onSubmit);
 
-  const error = form.getFieldError('city');
+  const error = form.getFieldError('cityName');
 
   return (
     <AppCard className={styles.formCard}>
@@ -20,7 +20,7 @@ export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
         <Row gutter={16} align="top">
           <Col span={isMobile ? 18 : 22}>
             <Form.Item
-              name="city"
+              name="cityName"
               rules={[{ required: true, message: 'Select a city' }]}
               className={styles.formItem}
               validateStatus={error.length ? 'error' : undefined}

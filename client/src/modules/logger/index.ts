@@ -6,7 +6,6 @@ export {
   LOGGER_MAX_LOGS_PER_MINUTE,
   LOGGER_RATE_LIMIT_WINDOW_IN_MS,
   LOG_LEVEL_PRIORITY,
-  DEFAULT_FIELDS_TO_MASK,
 } from './constants';
 export type {
   ClientErrorLog,
@@ -20,6 +19,7 @@ export type {
   LogLevel,
   LogMetadata,
 } from './types';
+export { DEFAULT_FIELDS_TO_MASK } from './types';
 export { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 export { LoggerContextProvider } from './providers/LoggerContextProvider';
 export { RouteLoggerProvider } from './providers/RouteLoggerProvider';

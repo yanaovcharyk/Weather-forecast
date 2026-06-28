@@ -6,7 +6,7 @@ import type { ErrorLike } from '@apollo/client';
 type AddCityFn = (
   lat: number,
   lon: number,
-  city: string,
+  cityName: string,
 ) => Promise<City | null>;
 
 type RemoveCityFn = (id: string) => Promise<void>;
@@ -18,7 +18,7 @@ type RemoveAllCitiesFn = () => Promise<{
 
 type TogglePinnedFn = (id: string, currentPinned: boolean) => Promise<void>;
 
-type GetCityByNameFn = (city: string) => Promise<City | null>;
+type GetCityByNameFn = (cityName: string) => Promise<City | null>;
 
 export type CityActionsContext = {
   addCity: Mock<AddCityFn>;

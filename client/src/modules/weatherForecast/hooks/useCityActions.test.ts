@@ -60,7 +60,7 @@ describe('useCityActions', () => {
   it('should handle existing city', async () => {
     ctx.getCityByName.mockResolvedValue({
       id: '123',
-      city: 'Kyiv',
+      cityName: 'Kyiv',
     } as City);
 
     const { handleAddCity } = setupCityActions(ctx);
@@ -205,7 +205,7 @@ describe('useCityActions', () => {
     act(() => {
       result.current.setCurrentlySelectedCity({
         id: '123',
-        city: 'Kyiv',
+        cityName: 'Kyiv',
         isPinned: false,
       } as React.SetStateAction<City | null>);
     });
@@ -216,7 +216,7 @@ describe('useCityActions', () => {
 
     expect(result.current.currentlySelectedCity).toEqual({
       id: '123',
-      city: 'Kyiv',
+      cityName: 'Kyiv',
       isPinned: true,
     });
   });

@@ -14,7 +14,7 @@ import {
 } from '@/weatherDetails/components';
 
 export const CityDetailsPage = () => {
-  const { city, weather, loading, error } = useCityWeather();
+  const { cityName, weather, loading, error } = useCityWeather();
   const navigate = useNavigate();
   const [params] = useSearchParams();
 
@@ -43,14 +43,14 @@ export const CityDetailsPage = () => {
           </Button>
         </AppCard>
 
-        <BlurLoaderOverlay loading={loading || !weather || !city}>
-          {city && weather && (
+        <BlurLoaderOverlay loading={loading || !weather || !cityName}>
+          {cityName && weather && (
             <Space
               orientation="vertical"
               size="large"
               style={{ width: '100%' }}
             >
-              <CurrentWeatherCard city={city} weather={weather} />
+              <CurrentWeatherCard cityName={cityName} weather={weather} />
               <HourlyForecast hourly={weather.hourly} />
               <DailyForecast daily={weather.daily} />
             </Space>

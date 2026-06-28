@@ -53,7 +53,7 @@ describe('CitiesControls', () => {
 
     const updater = getSortingUpdater(setSorting);
 
-    expect(updater({ sortBy: 'city', sortOrder: 'ASC' })).toEqual({
+    expect(updater({ sortBy: 'cityName', sortOrder: 'ASC' })).toEqual({
       sortBy: 'createdAt',
       sortOrder: 'ASC',
     });
@@ -67,8 +67,8 @@ describe('CitiesControls', () => {
 
     const updater = getSortingUpdater(setSorting);
 
-    expect(updater({ sortBy: 'city', sortOrder: 'ASC' })).toEqual({
-      sortBy: 'city',
+    expect(updater({ sortBy: 'cityName', sortOrder: 'ASC' })).toEqual({
+      sortBy: 'cityName',
       sortOrder: 'DESC',
     });
   });
@@ -76,7 +76,7 @@ describe('CitiesControls', () => {
   it('toggles sort order from DESC to ASC', async () => {
     const setSorting = vi.fn();
     const { user, getSortOrderButton } = setup({
-      sorting: { sortBy: 'city', sortOrder: 'DESC' },
+      sorting: { sortBy: 'cityName', sortOrder: 'DESC' },
       setSorting,
     });
 
@@ -84,8 +84,8 @@ describe('CitiesControls', () => {
 
     const updater = getSortingUpdater(setSorting);
 
-    expect(updater({ sortBy: 'city', sortOrder: 'DESC' })).toEqual({
-      sortBy: 'city',
+    expect(updater({ sortBy: 'cityName', sortOrder: 'DESC' })).toEqual({
+      sortBy: 'cityName',
       sortOrder: 'ASC',
     });
   });
@@ -151,7 +151,7 @@ describe('CitiesControls', () => {
   it('renders down icon when sortOrder is DESC', () => {
     setup({
       sorting: {
-        sortBy: 'city',
+        sortBy: 'cityName',
         sortOrder: 'DESC',
       },
     });
@@ -162,7 +162,7 @@ describe('CitiesControls', () => {
   it('renders up icon when sortOrder is ASC', () => {
     setup({
       sorting: {
-        sortBy: 'city',
+        sortBy: 'cityName',
         sortOrder: 'ASC',
       },
     });

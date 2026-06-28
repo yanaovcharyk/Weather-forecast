@@ -18,7 +18,7 @@ vi.mock('@/weatherForecast/components/CitiesList', () => ({
 describe('ExistingCityLayout', () => {
   const city = {
     id: '1',
-    city: 'Kyiv',
+    cityName: 'Kyiv',
     weather: null,
     isPinned: false,
   };

@@ -1,7 +1,7 @@
 export const KyivCity = {
   id: '1',
   userId: 'u1',
-  city: 'Kyiv',
+  cityName: 'Kyiv',
   lat: 50.45,
   lon: 30.52,
   isPinned: false,
@@ -10,7 +10,7 @@ export const KyivCity = {
 export const LvivCity = {
   id: '2',
   userId: 'u1',
-  city: 'Lviv',
+  cityName: 'Lviv',
   lat: 49,
   lon: 24,
   isPinned: false,
@@ -19,7 +19,7 @@ export const LvivCity = {
 export const OdesaCity = {
   id: '3',
   userId: 'u1',
-  city: 'Odesa',
+  cityName: 'Odesa',
   lat: 46.48,
   lon: 30.73,
   isPinned: false,
@@ -28,7 +28,7 @@ export const OdesaCity = {
 export const KharkivCity = {
   id: '4',
   userId: 'u1',
-  city: 'Kharkiv',
+  cityName: 'Kharkiv',
   lat: 49.99,
   lon: 36.23,
   isPinned: false,
@@ -37,7 +37,7 @@ export const KharkivCity = {
 export const DniproCity = {
   id: '5',
   userId: 'u1',
-  city: 'Dnipro',
+  cityName: 'Dnipro',
   lat: 48.46,
   lon: 35.04,
   isPinned: false,

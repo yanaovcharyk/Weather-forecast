@@ -52,7 +52,7 @@ export const createHourlyWeather = (
 export const createWeather = (
   overrides: Partial<WeatherDetails> = {},
 ): WeatherDetails => ({
-  city: 'Kyiv',
+  cityName: 'Kyiv',
   lat: 50.45,
   lon: 30.52,
   current: createCurrentWeather(),

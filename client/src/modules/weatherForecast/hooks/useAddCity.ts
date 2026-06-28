@@ -27,11 +27,11 @@ export const useAddCity = () => {
   const addCity = async (
     lat: number,
     lon: number,
-    city: string,
+    cityName: string,
   ): Promise<City | null> => {
     const { data } = await mutate({
       variables: {
-        input: { lat, lon, city },
+        input: { lat, lon, cityName },
       },
     });
 

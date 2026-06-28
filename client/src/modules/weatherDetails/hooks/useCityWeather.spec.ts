@@ -49,7 +49,7 @@ describe('useCityWeather', () => {
 
     const { result } = setupCityWeather();
 
-    expect(result.current.city).toBe(CITY_RESPONSE.city.city);
+    expect(result.current.cityName).toBe(CITY_RESPONSE.city.cityName);
 
     expect(result.current.weather).toEqual(WEATHER_RESPONSE.getWeatherDetails);
   });
@@ -81,6 +81,6 @@ describe('useCityWeather', () => {
   it('returns undefined city when no data', () => {
     const { result } = setupCityWeather();
 
-    expect(result.current.city).toBeUndefined();
+    expect(result.current.cityName).toBeUndefined();
   });
 });

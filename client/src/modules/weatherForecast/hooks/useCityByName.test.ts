@@ -20,7 +20,7 @@ describe('useCityByName', () => {
   it('returns city', async () => {
     const city = {
       id: '1',
-      city: 'Kyiv',
+      cityName: 'Kyiv',
     };
 
     query.mockResolvedValue({

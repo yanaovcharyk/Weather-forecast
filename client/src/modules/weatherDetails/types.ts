@@ -38,7 +38,7 @@ export type WeatherMeta = {
 };
 
 export type WeatherDetails = {
-  city: string;
+  cityName: string;
   lat: number;
   lon: number;
   current: CurrentWeather;
@@ -53,7 +53,7 @@ export type GetWeatherDetailsResponse = {
 
 export type City = {
   id: string;
-  city: string;
+  cityName: string;
   lat: number;
   lon: number;
 };

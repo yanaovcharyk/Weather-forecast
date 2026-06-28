@@ -15,7 +15,7 @@ export type CityByIdParams = {
 
 export interface CityByNameParams {
   userId: string;
-  city: string;
+  cityName: string;
 }
 
 export type AddCityParams = {
@@ -48,13 +48,13 @@ export type ApplyPaginationParams = {
   limit: number;
 };
 
-export type ToConnectionParams = {
+export type BuildCitiesConnectionParams = {
   cities: CityEntity[];
   limit: number;
   sortBy: CitySortField;
 };
 
-export type ApplySorting = {
+export type AppliedSorting = {
   sortBy: CitySortField;
   sortOrder: SortOrder;
 };

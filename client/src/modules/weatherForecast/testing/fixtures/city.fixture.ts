@@ -2,7 +2,7 @@ import type { City } from '@/weatherForecast/types';
 
 export const CITY_FIXTURE: City = {
   id: '1',
-  city: 'Kyiv',
+  cityName: 'Kyiv',
   lat: 50.45,
   lon: 30.52,
   isPinned: false,
@@ -10,7 +10,7 @@ export const CITY_FIXTURE: City = {
 
 export const EXISTING_CITY_FIXTURE: City = {
   id: '2',
-  city: 'Lviv',
+  cityName: 'Lviv',
   lat: 49.84,
   lon: 24.03,
   isPinned: true,
@@ -19,7 +19,7 @@ export const EXISTING_CITY_FIXTURE: City = {
 export const CITY_RESPONSE = {
   city: {
     id: '1',
-    city: 'Kyiv',
+    cityName: 'Kyiv',
     lat: 50.45,
     lon: 30.52,
   },
@@ -27,7 +27,7 @@ export const CITY_RESPONSE = {
 
 export const WEATHER_RESPONSE = {
   getWeatherDetails: {
-    city: 'Kyiv',
+    cityName: 'Kyiv',
     lat: 50.45,
     lon: 30.52,
 

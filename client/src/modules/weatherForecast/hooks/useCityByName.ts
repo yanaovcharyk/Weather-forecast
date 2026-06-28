@@ -9,11 +9,11 @@ type GetCityByNameQuery = {
 export const useCityByName = () => {
   const client = useApolloClient();
 
-  const getCityByName = async (city: string): Promise<City | null> => {
+  const getCityByName = async (cityName: string): Promise<City | null> => {
     const { data } = await client.query<GetCityByNameQuery>({
       query: GET_EXISTS_CITY_BY_NAME,
       variables: {
-        city,
+        cityName,
       },
       fetchPolicy: 'network-only',
     });

@@ -1,4 +1,4 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useQuery } from '@apollo/client/react';
 
 import { CITIES_PAGINATED } from '@/weatherForecast/graphql';
@@ -7,10 +7,22 @@ import type {
   SortingState,
 } from '@/weatherForecast/types';
 
+const CITY_SORT_FIELD_GRAPHQL_VALUES: Record<SortingState['sortBy'], string> = {
+  cityName: 'CITY_NAME',
+  createdAt: 'CREATED_AT',
+};
+
+const toCitiesQuerySorting = (sorting: SortingState) => ({
+  ...sorting,
+  sortBy: CITY_SORT_FIELD_GRAPHQL_VALUES[sorting.sortBy],
+});
+
 export const useCitiesPaginated = (
   sorting: SortingState,
   showPinnedOnly: boolean,
 ) => {
+  const querySorting = useMemo(() => toCitiesQuerySorting(sorting), [sorting]);
+
   const { data, loading, fetchMore } = useQuery<CitiesPaginatedResponse>(
     CITIES_PAGINATED,
     {
@@ -21,7 +33,7 @@ export const useCitiesPaginated = (
             cursor: null,
           },
 
-          sorting,
+          sorting: querySorting,
           showPinnedOnly,
         },
       },
@@ -47,12 +59,12 @@ export const useCitiesPaginated = (
             cursor: pageInfo.endCursor,
           },
 
-          sorting,
+          sorting: querySorting,
           showPinnedOnly,
         },
       },
     });
-  }, [data, fetchMore, sorting, showPinnedOnly]);
+  }, [data, fetchMore, querySorting, showPinnedOnly]);
 
   return {
     cities: data?.citiesPaginated?.edges.map((edge) => edge.node) ?? [],

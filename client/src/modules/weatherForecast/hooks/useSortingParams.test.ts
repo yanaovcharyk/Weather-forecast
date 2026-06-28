@@ -35,13 +35,13 @@ describe('useSortingParams', () => {
 
     act(() => {
       result.current.setSorting({
-        sortBy: 'city',
+        sortBy: 'cityName',
         sortOrder: 'ASC',
       });
     });
 
     expect(result.current.sorting).toEqual({
-      sortBy: 'city',
+      sortBy: 'cityName',
       sortOrder: 'ASC',
     });
   });

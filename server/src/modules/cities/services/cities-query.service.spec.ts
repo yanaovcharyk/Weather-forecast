@@ -27,7 +27,7 @@ describe('CitiesQueryService', () => {
 
   describe('getCities', () => {
     it('should call repository.find with userId and return cities', async () => {
-      const mockCities = [{ id: '1', city: 'Kyiv' }];
+      const mockCities = [{ id: '1', cityName: 'Kyiv' }];
       repo.find.mockResolvedValue(mockCities);
 
       const result = await service.getCities({ userId: 'u1' });
@@ -48,12 +48,12 @@ describe('CitiesQueryService', () => {
         orderBy: jest.fn().mockReturnThis(),
         addOrderBy: jest.fn().mockReturnThis(),
         take: jest.fn().mockReturnThis(),
-        getMany: jest.fn().mockResolvedValue([{ id: '1', city: 'Kyiv' }]),
+        getMany: jest.fn().mockResolvedValue([{ id: '1', cityName: 'Kyiv' }]),
       };
       repo.createQueryBuilder.mockReturnValue(qb);
 
       (buildConnection as jest.Mock).mockReturnValue({
-        edges: [{ node: { id: '1', city: 'Kyiv' }, cursor: 'cursor-1' }],
+        edges: [{ node: { id: '1', cityName: 'Kyiv' }, cursor: 'cursor-1' }],
         pageInfo: { hasNextPage: false, endCursor: 'cursor-1' },
       });
 
@@ -116,14 +116,14 @@ describe('CitiesQueryService', () => {
         orderBy: jest.fn().mockReturnThis(),
         addOrderBy: jest.fn().mockReturnThis(),
         take: jest.fn().mockReturnThis(),
-        getMany: jest.fn().mockResolvedValue([{ id: '2', city: 'Lviv' }]),
+        getMany: jest.fn().mockResolvedValue([{ id: '2', cityName: 'Lviv' }]),
       };
       repo.createQueryBuilder.mockReturnValue(qb);
 
       (decodeCursor as jest.Mock).mockReturnValue({ value: 'Kyiv', id: '1' });
 
       (buildConnection as jest.Mock).mockReturnValue({
-        edges: [{ node: { id: '2', city: 'Lviv' }, cursor: 'cursor-2' }],
+        edges: [{ node: { id: '2', cityName: 'Lviv' }, cursor: 'cursor-2' }],
         pageInfo: { hasNextPage: false, endCursor: 'cursor-2' },
       });
 
@@ -150,7 +150,7 @@ describe('CitiesQueryService', () => {
         orderBy: jest.fn().mockReturnThis(),
         addOrderBy: jest.fn().mockReturnThis(),
         take: jest.fn().mockReturnThis(),
-        getMany: jest.fn().mockResolvedValue([{ id: '4', city: 'Dnipro' }]),
+        getMany: jest.fn().mockResolvedValue([{ id: '4', cityName: 'Dnipro' }]),
       };
       repo.createQueryBuilder.mockReturnValue(qb);
 
@@ -158,7 +158,7 @@ describe('CitiesQueryService', () => {
       (decodeCursor as jest.Mock).mockReturnValue(decodedCursor);
 
       (buildConnection as jest.Mock).mockReturnValue({
-        edges: [{ node: { id: '4', city: 'Dnipro' }, cursor: 'cursor-4' }],
+        edges: [{ node: { id: '4', cityName: 'Dnipro' }, cursor: 'cursor-4' }],
         pageInfo: { hasNextPage: false, endCursor: 'cursor-4' },
       });
 
@@ -219,12 +219,12 @@ describe('CitiesQueryService', () => {
         orderBy: jest.fn().mockReturnThis(),
         addOrderBy: jest.fn().mockReturnThis(),
         take: jest.fn().mockReturnThis(),
-        getMany: jest.fn().mockResolvedValue([{ id: '3', city: 'Odesa' }]),
+        getMany: jest.fn().mockResolvedValue([{ id: '3', cityName: 'Odesa' }]),
       };
       repo.createQueryBuilder.mockReturnValue(qb);
 
       (buildConnection as jest.Mock).mockReturnValue({
-        edges: [{ node: { id: '3', city: 'Odesa' }, cursor: 'cursor-3' }],
+        edges: [{ node: { id: '3', cityName: 'Odesa' }, cursor: 'cursor-3' }],
         pageInfo: { hasNextPage: false, endCursor: 'cursor-3' },
       });
 

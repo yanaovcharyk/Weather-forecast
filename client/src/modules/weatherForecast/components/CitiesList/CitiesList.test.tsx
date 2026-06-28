@@ -14,7 +14,7 @@ let intersectionObserver: ReturnType<typeof mockIntersectionObserver>;
 vi.mock('@/weatherForecast/components/CityCard', () => ({
   CityCard: (props: CityCardMockProps) => {
     cityCardProps.push(props);
-    return <div>{props.city}</div>;
+    return <div>{props.cityName}</div>;
   },
 }));
 
@@ -27,7 +27,7 @@ beforeEach(() => {
 const cities: City[] = [
   {
     id: '1',
-    city: 'Kyiv',
+    cityName: 'Kyiv',
     weather: null,
     isPinned: false,
     lat: 50.45,
@@ -120,7 +120,7 @@ describe('CitiesList', () => {
           ...cities,
           {
             id: '2',
-            city: 'Lviv',
+            cityName: 'Lviv',
             weather: null,
             isPinned: false,
             lat: 49.84,

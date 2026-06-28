@@ -7,11 +7,14 @@ export class CityService {
     return this.normalizeCityName(name).length > 0;
   }
 
-  static isCityAlreadyAdded(cities: { city: string }[], city: string): boolean {
-    const normalized = this.normalizeCityName(city);
+  static isCityAlreadyAdded(
+    cities: { cityName: string }[],
+    cityName: string,
+  ): boolean {
+    const normalized = this.normalizeCityName(cityName);
 
     return cities.some(
-      (city) => this.normalizeCityName(city.city) === normalized,
+      (city) => this.normalizeCityName(city.cityName) === normalized,
     );
   }
 
@@ -19,7 +22,7 @@ export class CityService {
   //   return cities.length >= limit;
   // }
 
-  static validateBeforeAdd(input: string, cities: { city: string }[]) {
+  static validateBeforeAdd(input: string, cities: { cityName: string }[]) {
     if (!this.isCityNameValid(input)) {
       return { ok: false as const, code: 'INVALID_CITY' };
     }
@@ -34,7 +37,7 @@ export class CityService {
 
     return {
       ok: true as const,
-      city: this.normalizeCityName(input),
+      cityName: this.normalizeCityName(input),
     };
   }
 }

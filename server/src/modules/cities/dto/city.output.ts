@@ -8,7 +8,7 @@ export class CityOutput implements ICityOutput {
   id!: string;
 
   @Field()
-  city!: string;
+  cityName!: string;
 
   @Field(() => Float)
   lat!: number;

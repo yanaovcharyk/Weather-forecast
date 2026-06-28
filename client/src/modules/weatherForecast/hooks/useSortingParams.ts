@@ -6,7 +6,7 @@ export const useSortingParams = () => {
   const [params, setParams] = useSearchParams();
 
   const initialSorting: SortingState = {
-    sortBy: (params.get('sortBy') as 'createdAt' | 'city') ?? 'createdAt',
+    sortBy: (params.get('sortBy') as 'createdAt' | 'cityName') ?? 'createdAt',
     sortOrder: (params.get('sortOrder') as 'ASC' | 'DESC') ?? 'DESC',
   };
 

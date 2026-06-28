@@ -1,5 +1,5 @@
 export interface IAddCityInput {
   lat: number;
   lon: number;
-  city: string;
+  cityName: string;
 }

@@ -30,6 +30,6 @@ import { AccessJwtGuard, RefreshJwtGuard } from './guards';
     AccessJwtGuard,
     RefreshJwtGuard,
   ],
-  exports: [AccessJwtGuard],
+  exports: [JwtModule, AuthCookieService, AccessJwtGuard],
 })
 export class AuthModule {}

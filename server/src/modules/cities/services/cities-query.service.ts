@@ -4,9 +4,9 @@ import { Repository } from 'typeorm';
 import { CityEntity } from '@cities/entities';
 import { CitiesConnection, CityOutput } from '@cities/dto';
 import {
-  CITY_CURSOR_VALUES,
+  CITY_CURSOR_VALUE_GETTERS,
   CitySortField,
-  SORT_CONFIG,
+  CITY_SORT_CONFIG,
 } from '@cities/city-query.config';
 import { SortOrder } from '@shared/constants';
 import { buildConnection } from '@shared/pagination/build-connection';
@@ -15,10 +15,10 @@ import {
   ApplyCursorParams,
   ApplyPaginationParams,
   ApplySortingParams,
-  ApplySorting,
+  AppliedSorting,
   GetCitiesPaginatedParams,
   GetCitiesParams,
-  ToConnectionParams,
+  BuildCitiesConnectionParams,
 } from '@cities/types';
 import { AppLoggerService } from '@logger/services';
 import { LogMethod } from '@logger/decorators';
@@ -91,13 +91,13 @@ export class CitiesQueryService {
     });
   }
 
-  private applySorting(params: ApplySortingParams): ApplySorting {
+  private applySorting(params: ApplySortingParams): AppliedSorting {
     const { qb, query } = params;
 
     const sortBy = query.sorting?.sortBy ?? CitySortField.CREATED_AT;
     const sortOrder = query.sorting?.sortOrder ?? SortOrder.DESC;
 
-    SORT_CONFIG[sortBy].orderBy(qb, sortOrder);
+    CITY_SORT_CONFIG[sortBy].orderBy(qb, sortOrder);
 
     return {
       sortBy,
@@ -119,8 +119,8 @@ export class CitiesQueryService {
 
     const cursorQuery =
       sortOrder === SortOrder.ASC
-        ? SORT_CONFIG[sortBy].cursor.asc
-        : SORT_CONFIG[sortBy].cursor.desc;
+        ? CITY_SORT_CONFIG[sortBy].cursor.asc
+        : CITY_SORT_CONFIG[sortBy].cursor.desc;
 
     this.logger.debug('Applying decoded cursor', {
       decoded,
@@ -138,10 +138,10 @@ export class CitiesQueryService {
     qb.take(limit + 1);
   }
 
-  private toConnection(params: ToConnectionParams): CitiesConnection {
+  private toConnection(params: BuildCitiesConnectionParams): CitiesConnection {
     const { cities, limit, sortBy } = params;
 
-    const getCursorValue = CITY_CURSOR_VALUES[sortBy];
+    const getCursorValue = CITY_CURSOR_VALUE_GETTERS[sortBy];
 
     return buildConnection({
       entities: cities,

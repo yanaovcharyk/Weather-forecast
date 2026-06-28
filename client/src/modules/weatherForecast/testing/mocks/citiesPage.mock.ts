@@ -14,7 +14,7 @@ export const createSortingParamsResult = (
   overrides: Partial<SortingParamsResult> = {},
 ): SortingParamsResult => ({
   sorting: {
-    sortBy: 'city',
+    sortBy: 'cityName',
     sortOrder: 'ASC',
   },
   setSorting: vi.fn(),

@@ -5,7 +5,7 @@ import { BaseEntity } from '@shared/entities';
 @Entity('cities')
 export class CityEntity extends BaseEntity {
   @Column()
-  city!: string;
+  cityName!: string;
 
   @Column('float')
   lat!: number;

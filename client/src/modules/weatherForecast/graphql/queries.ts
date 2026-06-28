@@ -6,7 +6,7 @@ export const CITIES_PAGINATED = gql`
       edges {
         node {
           id
-          city
+          cityName
           lat
           lon
           isPinned
@@ -44,10 +44,10 @@ export const SEARCH_CITIES = gql`
 `;
 
 export const GET_EXISTS_CITY_BY_NAME = gql`
-  query GetCityByName($city: String!) {
-    cityByName(city: $city) {
+  query GetCityByName($cityName: String!) {
+    cityByName(cityName: $cityName) {
       id
-      city
+      cityName
       lat
       lon
       isPinned

@@ -28,8 +28,8 @@ vi.mock('@/common/components', () => ({
 }));
 
 vi.mock('@/weatherDetails/components', () => ({
-  CurrentWeatherCard: ({ city }: { city: string }) => (
-    <div>Current: {city}</div>
+  CurrentWeatherCard: ({ cityName }: { cityName: string }) => (
+    <div>Current: {cityName}</div>
   ),
   HourlyForecast: () => <div>Hourly</div>,
   DailyForecast: () => <div>Daily</div>,
@@ -57,7 +57,7 @@ describe('CityDetailsPage', () => {
   it('shows loading state', () => {
     setup(
       createCityWeatherState({
-        city: undefined,
+        cityName: undefined,
         weather: undefined,
         loading: true,
       }),
@@ -69,7 +69,7 @@ describe('CityDetailsPage', () => {
   it('shows error state', () => {
     setup(
       createCityWeatherState({
-        city: undefined,
+        cityName: undefined,
         weather: undefined,
         error: new Error('Network error'),
       }),

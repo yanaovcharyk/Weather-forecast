@@ -9,7 +9,7 @@ const setup = (
   props: Partial<React.ComponentProps<typeof CurrentWeatherCard>> = {},
 ) => {
   return render(
-    <CurrentWeatherCard city="Kyiv" weather={createWeather()} {...props} />,
+    <CurrentWeatherCard cityName="Kyiv" weather={createWeather()} {...props} />,
   );
 };
 

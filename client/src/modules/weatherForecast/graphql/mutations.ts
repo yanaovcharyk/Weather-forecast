@@ -4,7 +4,7 @@ export const ADD_CITY_MUTATION = gql`
   mutation AddCity($input: AddCityInput!) {
     addCity(input: $input) {
       id
-      city
+      cityName
       lat
       lon
       isPinned

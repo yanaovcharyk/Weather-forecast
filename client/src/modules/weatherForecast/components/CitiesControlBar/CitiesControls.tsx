@@ -63,7 +63,7 @@ export const CitiesControls: React.FC<CitiesControlsProps> = ({
                   setSorting((s) => ({ ...s, sortBy: value }))
                 }
                 options={[
-                  { label: 'City name', value: 'city' },
+                  { label: 'City name', value: 'cityName' },
                   { label: 'Date added', value: 'createdAt' },
                 ]}
               />
