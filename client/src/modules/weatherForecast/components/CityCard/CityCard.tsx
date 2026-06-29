@@ -73,7 +73,9 @@ export const CityCard = React.memo(function CityCard({
         <Flex vertical gap={4}>
           <Flex vertical gap={8}>
             <Flex align="center">
-              <Flex flex={1} />
+              <Flex flex={1}>
+                <div />
+              </Flex>
 
               <Flex flex={1} vertical align="center" gap={2}>
                 <AppText strong size="lg">

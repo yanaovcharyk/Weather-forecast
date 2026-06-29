@@ -32,8 +32,6 @@ services:
     container_name: weather-client
     ports:
       - "${CLIENT_PORT}:${CLIENT_INTERNAL_PORT}"
-    environment:
-      VITE_API_BASE: http://localhost:${SERVER_INTERNAL_PORT}
     depends_on:
       - server
 
