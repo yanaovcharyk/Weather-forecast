@@ -31,7 +31,7 @@ export function mapCurrentWeather(
     max,
     feelsLike: Math.round(current.main.feels_like),
     humidity: current.main.humidity,
-    windSpeed: current.wind.speed,
+    windSpeed: Math.round(current.wind.speed),
     pressure: current.main.pressure,
     description: current.weather[0].description,
     icon: current.weather[0].icon,
@@ -67,17 +67,24 @@ export function mapDailyForecast(
     .slice(1, 4)
     .map(([date, items]) => {
       const { min, max } = getRoundedMinMax(items, (item) => item.main.temp);
-      const humidity = calculateAverageBy(items, (item) => item.main.humidity);
-      const pressure = calculateAverageBy(items, (item) => item.main.pressure);
+      const humidity = calculateAverageBy(
+        items,
+        (item) => item.main.humidity,
+      );
+      const pressure = calculateAverageBy(
+        items,
+        (item) => item.main.pressure,
+      );
       const clouds = calculateAverageBy(items, (item) => item.clouds.all);
-      const windSpeed = calculateAverageBy(items, (item) => item.wind.speed);
+      const windSpeed = calculateAverageBy(
+        items,
+        (item) => item.wind.speed,
+      );
       const feelsLike = calculateAverageBy(
         items,
         (item) => item.main.feels_like,
       );
-      const pop = Math.round(
-        calculateAverageBy(items, (item) => item.pop ?? 0) * 100,
-      );
+      const pop = calculateAverageBy(items, (item) => (item.pop ?? 0) * 100);
       const dailyWeather: IDailyWeather = {
         date,
         min,

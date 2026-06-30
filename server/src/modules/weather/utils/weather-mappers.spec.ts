@@ -72,6 +72,19 @@ describe('Weather Mappers', () => {
     expect(typeof result[0].pop).toBe('number');
   });
 
+  it('mapDailyForecast should round averaged daily values', () => {
+    const result = mapDailyForecast(forecastFixture.list);
+
+    result.forEach((day) => {
+      expect(Number.isInteger(day.humidity)).toBe(true);
+      expect(Number.isInteger(day.pressure)).toBe(true);
+      expect(Number.isInteger(day.clouds)).toBe(true);
+      expect(Number.isInteger(day.windSpeed)).toBe(true);
+      expect(Number.isInteger(day.feelsLike)).toBe(true);
+      expect(Number.isInteger(day.pop)).toBe(true);
+    });
+  });
+
   it('mapTodayTemperatureRange should return numeric min and max', () => {
     const result = mapTodayTemperatureRange(forecastFixture.list);
 

@@ -192,7 +192,7 @@ describe('CitiesService', () => {
       ctx.repo.findOne.mockResolvedValue(DniproCity);
       ctx.repo.save.mockResolvedValue(PinnedDniproCity);
 
-      const result = await service.togglePinned({
+      const result = await service.togglePinnedCity({
         id: '5',
         userId: 'u1',
       });
@@ -224,7 +224,7 @@ describe('CitiesService', () => {
       ctx.repo.findOne.mockResolvedValue(pinnedCity);
       ctx.repo.save.mockResolvedValue(unpinnedCity);
 
-      const result = await service.togglePinned({
+      const result = await service.togglePinnedCity({
         id: String(pinnedCity.id),
         userId: pinnedCity.userId,
       });
@@ -245,7 +245,7 @@ describe('CitiesService', () => {
       ctx.repo.findOne.mockResolvedValue(null);
 
       await expect(
-        service.togglePinned({
+        service.togglePinnedCity({
           id: '999',
           userId: 'u1',
         }),

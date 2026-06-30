@@ -25,7 +25,7 @@ describe('calculateAverageBy', () => {
     expect(result).toBe(0);
   });
 
-  it('should work with negative numbers', () => {
+  it('should return rounded average for negative numbers', () => {
     const items = [
       { value: -10 },
       { value: 20 },
@@ -37,6 +37,6 @@ describe('calculateAverageBy', () => {
       (item) => item.value,
     );
 
-    expect(result).toBeCloseTo(1.6666667);
+    expect(result).toBe(2);
   });
 });

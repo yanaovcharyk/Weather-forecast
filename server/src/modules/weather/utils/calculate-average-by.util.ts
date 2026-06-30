@@ -4,5 +4,5 @@ export function calculateAverageBy<T>(
   items: T[],
   selector: (item: T) => number,
 ): number {
-  return calculateAverage(items.map(selector));
+  return Math.round(calculateAverage(items.map(selector)));
 }

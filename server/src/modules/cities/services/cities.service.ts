@@ -1,7 +1,4 @@
-import {
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CityEntity } from '@cities/entities';
@@ -90,7 +87,7 @@ export class CitiesService {
   }
 
   @LogMethod()
-  async togglePinned(params: CityByIdParams): Promise<ICityOutput> {
+  async togglePinnedCity(params: CityByIdParams): Promise<ICityOutput> {
     const city = await this.findCityOrFail(params);
 
     const previous = city.isPinned;

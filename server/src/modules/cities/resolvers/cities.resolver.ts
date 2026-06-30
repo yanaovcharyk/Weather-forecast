@@ -138,7 +138,7 @@ export class CitiesResolver {
     @CurrentUser() user: ICurrentUser,
     @Args('id', { type: graphqlIdType }) id: string,
   ): Promise<CityOutput> {
-    return this.citiesService.togglePinned({
+    return this.citiesService.togglePinnedCity({
       userId: user.id,
       id,
     });
