@@ -10,5 +10,4 @@ export const configuration = (env: FrontendEnv): IFrontendConfig => ({
   loggerEnabled: env.VITE_LOGGER_ENABLED,
   loggerLevel: env.VITE_LOGGER_LEVEL,
   loggerConsole: env.VITE_LOGGER_CONSOLE,
-  loggerRemote: env.VITE_LOGGER_REMOTE,
 });

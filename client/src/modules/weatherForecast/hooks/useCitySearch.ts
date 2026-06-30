@@ -7,7 +7,7 @@ import type {
   SearchCitiesData,
   SearchCitiesVars,
 } from '@/weatherForecast/components/AddCityForm/types';
-import { CityService } from '@/weatherForecast/services/CityService';
+import { normalizeCityName } from '@/weatherForecast/utils';
 
 const DEBOUNCE_DELAY_MS = 300;
 const MIN_SEARCH_LENGTH = 2;
@@ -41,7 +41,7 @@ export const useCitySearch = () => {
   };
 
   const requestCitySearch = (inputValue: string) => {
-    const query = CityService.normalizeCityName(inputValue);
+    const query = normalizeCityName(inputValue);
 
     cancelPreviousSearch();
 

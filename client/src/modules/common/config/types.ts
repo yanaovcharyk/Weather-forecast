@@ -9,9 +9,4 @@ export interface IFrontendConfig {
   loggerEnabled: boolean;
   loggerLevel: LogLevel;
   loggerConsole: boolean;
-  loggerRemote: boolean;
 }
-
-export type ConfigKey = keyof IFrontendConfig;
-export type EnvVarName = string;
-export type ConfigSchema = Record<ConfigKey, EnvVarName>;

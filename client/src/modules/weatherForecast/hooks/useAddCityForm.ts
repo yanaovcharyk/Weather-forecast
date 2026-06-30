@@ -10,11 +10,6 @@ export type AddCityFormValues = {
   cityName?: string;
 };
 
-export type AddCityFormApi = Pick<
-  FormInstance<AddCityFormValues>,
-  'getFieldError' | 'resetFields'
->;
-
 export type AddCityFormResult = {
   form: FormInstance<AddCityFormValues>;
   loading: boolean;

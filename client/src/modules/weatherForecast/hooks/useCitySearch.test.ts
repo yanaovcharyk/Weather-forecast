@@ -3,7 +3,6 @@ import { useLazyQuery } from '@apollo/client/react';
 import { vi } from 'vitest';
 
 import { useCitySearch } from './useCitySearch';
-import { CityService } from '@/weatherForecast/services/CityService';
 import { createQueryResult } from '@/common/testing/factories';
 
 vi.mock('@apollo/client/react');
@@ -19,10 +18,6 @@ describe('useCitySearch', () => {
       executeSearch,
       createQueryResult(),
     ] as never);
-
-    vi.spyOn(CityService, 'normalizeCityName').mockImplementation((v) =>
-      v.trim(),
-    );
   });
 
   afterEach(() => {
@@ -77,7 +72,7 @@ describe('useCitySearch', () => {
     expect(executeSearch).not.toHaveBeenCalled();
   });
 
-  it('searches after debounce', () => {
+  it('normalizes query and searches after debounce', () => {
     const { result } = renderHook(() => useCitySearch());
 
     act(() => {
@@ -93,7 +88,7 @@ describe('useCitySearch', () => {
     expect(executeSearch).toHaveBeenCalledWith({
       variables: {
         input: {
-          query: 'Kyiv',
+          query: 'kyiv',
         },
       },
     });

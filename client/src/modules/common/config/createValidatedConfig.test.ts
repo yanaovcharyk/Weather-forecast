@@ -12,7 +12,6 @@ describe('createValidatedConfig', () => {
       VITE_LOGGER_ENABLED: 'true',
       VITE_LOGGER_LEVEL: 'warn',
       VITE_LOGGER_CONSOLE: 'false',
-      VITE_LOGGER_REMOTE: 'true',
     });
 
     expect(result).toEqual({
@@ -23,7 +22,6 @@ describe('createValidatedConfig', () => {
       loggerEnabled: true,
       loggerLevel: 'warn',
       loggerConsole: false,
-      loggerRemote: true,
     });
   });
 
@@ -36,7 +34,6 @@ describe('createValidatedConfig', () => {
       loggerEnabled: false,
       loggerLevel: 'info',
       loggerConsole: false,
-      loggerRemote: false,
     });
   });
 
