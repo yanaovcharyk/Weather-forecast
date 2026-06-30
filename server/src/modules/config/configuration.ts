@@ -2,7 +2,6 @@ import { IAppConfig } from '@shared/types';
 import { Env } from './env.schema';
 
 export const configuration = (env: Env): IAppConfig => ({
-  nodeEnv: env.NODE_ENV,
   port: env.PORT,
 
   app: {
@@ -18,6 +17,23 @@ export const configuration = (env: Env): IAppConfig => ({
     user: env.DB_USER,
     password: env.DB_PASSWORD,
     name: env.DB_NAME,
+    synchronize: env.DB_SYNCHRONIZE,
+    logging: env.DB_LOGGING,
+    migrationsRun: env.DB_MIGRATIONS_RUN,
+  },
+
+  auth: {
+    cookie: {
+      httpOnly: env.AUTH_COOKIE_HTTP_ONLY,
+      secure: env.AUTH_COOKIE_SECURE,
+      sameSite: env.AUTH_COOKIE_SAME_SITE,
+      path: env.AUTH_COOKIE_PATH,
+    },
+  },
+
+  logger: {
+    level: env.SERVER_LOG_LEVEL,
+    consoleEnabled: env.SERVER_LOG_CONSOLE_ENABLED,
   },
 
   jwt: {

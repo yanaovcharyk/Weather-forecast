@@ -1,18 +1,16 @@
 import { ConfigService } from '@nestjs/config';
+import { getRequiredConfig } from '@config/config-service.util';
 import { IAppConfig } from '@shared/types';
 
 export const authCookieConfig = (
   config: ConfigService<IAppConfig>,
 ) => {
-  const isProd =
-    config.get('nodeEnv', {
-      infer: true,
-    }) === 'production';
+  const cookieConfig = getRequiredConfig(config, 'auth.cookie');
 
   return {
-    httpOnly: true,
-    secure: isProd,
-    sameSite: 'lax' as const,
-    path: '/',
+    httpOnly: cookieConfig.httpOnly,
+    secure: cookieConfig.secure,
+    sameSite: cookieConfig.sameSite,
+    path: cookieConfig.path,
   };
 };

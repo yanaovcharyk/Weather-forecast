@@ -12,10 +12,6 @@ describe('CitiesResolver', () => {
     jest.clearAllMocks();
   });
 
-  // it('should initialize child logger', () => {
-  //   expect(ctx.logger.child).toHaveBeenCalledWith('CitiesResolver');
-  // });
-
   it('cities should call getCities with userId', async () => {
     ctx.citiesQueryService.getCities.mockResolvedValue([
       { id: '1', cityName: 'Kyiv', lat: 50, lon: 30, isPinned: false },
@@ -178,13 +174,13 @@ describe('CitiesResolver', () => {
     await expect(ctx.resolver.removeAllCities(user)).rejects.toThrow('fail');
   });
 
-  it('togglePinnedCity should call service.togglePinned', async () => {
+  it('togglePinnedCity should call service.togglePinnedCity', async () => {
     const city = { id: '5', cityName: 'Kharkiv', lat: 50, lon: 36, isPinned: true };
-    ctx.citiesService.togglePinned.mockResolvedValue(city);
+    ctx.citiesService.togglePinnedCity.mockResolvedValue(city);
 
     const result = await ctx.resolver.togglePinnedCity(user, '5');
 
-    expect(ctx.citiesService.togglePinned).toHaveBeenCalledWith({
+    expect(ctx.citiesService.togglePinnedCity).toHaveBeenCalledWith({
       userId: 'u1',
       id: '5',
     });
@@ -193,7 +189,7 @@ describe('CitiesResolver', () => {
   });
 
   it('should propagate error from togglePinnedCity', async () => {
-    ctx.citiesService.togglePinned.mockRejectedValue(new Error('fail'));
+    ctx.citiesService.togglePinnedCity.mockRejectedValue(new Error('fail'));
 
     await expect(ctx.resolver.togglePinnedCity(user, '5')).rejects.toThrow(
       'fail',

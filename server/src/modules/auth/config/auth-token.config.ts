@@ -1,6 +1,7 @@
 import { ConfigService } from '@nestjs/config';
 import { StringValue } from 'ms';
 
+import { getRequiredConfig } from '@config/config-service.util';
 import { IAppConfig } from '@shared/types';
 
 export interface IAuthTokenConfig {
@@ -17,9 +18,7 @@ export interface IAuthTokenConfig {
 export const authTokenConfig = (
   config: ConfigService<IAppConfig>,
 ) => {
-  const jwt = config.get('jwt', {
-    infer: true,
-  })!;
+  const jwt = getRequiredConfig(config, 'jwt');
 
   return {
     access: {

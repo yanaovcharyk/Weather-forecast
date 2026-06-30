@@ -19,7 +19,18 @@ export type AuthCookieTestContext = {
 
 export async function createAuthCookieContext(): Promise<AuthCookieTestContext> {
   const config = createConfigMock();
-  config.getOrThrow.mockReturnValue('15m');
+  config.getOrThrow.mockImplementation((key: string) => {
+    if (key === 'auth.cookie') {
+      return {
+        httpOnly: true,
+        secure: false,
+        sameSite: 'lax',
+        path: '/',
+      };
+    }
+
+    return '15m';
+  });
 
   const logger = createLoggerMock();
 

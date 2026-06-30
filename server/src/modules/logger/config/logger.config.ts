@@ -2,6 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { format, transports } from 'winston';
 
 import 'winston-daily-rotate-file';
+import { getRequiredConfig } from '@config/config-service.util';
 import { IAppConfig } from '@shared/types';
 
 const { combine, timestamp, errors, json, colorize, printf } = format;
@@ -74,24 +75,24 @@ const createConsoleTransport = () => new transports.Console({
 });
 
 export const winstonConfig = (config: ConfigService<IAppConfig>) => {
-  const isDev = config.get('nodeEnv', { infer: true }) === 'development';
+  const loggerConfig = getRequiredConfig(config, 'logger');
 
   return {
-  level: 'debug',
-  defaultMeta: {
-    source: 'server',
-  },
+    level: loggerConfig.level,
+    defaultMeta: {
+      source: 'server',
+    },
 
-  transports: [
-    ...(isDev ? [createConsoleTransport()] : []),
-    createServerFileTransport('error'),
-    createServerFileTransport('warn'),
-    createServerFileTransport('info'),
-    createServerFileTransport('debug', '7d'),
-    createClientFileTransport('error'),
-    createClientFileTransport('warn'),
-    createClientFileTransport('info'),
-    createClientFileTransport('debug', '7d'),
-  ],
-};
+    transports: [
+      ...(loggerConfig.consoleEnabled ? [createConsoleTransport()] : []),
+      createServerFileTransport('error'),
+      createServerFileTransport('warn'),
+      createServerFileTransport('info'),
+      createServerFileTransport('debug', '7d'),
+      createClientFileTransport('error'),
+      createClientFileTransport('warn'),
+      createClientFileTransport('info'),
+      createClientFileTransport('debug', '7d'),
+    ],
+  };
 };

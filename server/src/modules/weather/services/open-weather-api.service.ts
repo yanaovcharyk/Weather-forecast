@@ -1,5 +1,6 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { BadGatewayException, Inject, Injectable } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
+import { isAxiosError } from 'axios';
 import { firstValueFrom } from 'rxjs';
 import {
   IOpenWeatherCurrent,
@@ -36,10 +37,21 @@ export class OpenWeatherApiService {
   }
 
   private async get<T>(url: string, params: Record<string, any>): Promise<T> {
-    const { data } = await firstValueFrom(
-      this.http.get<T>(url, { params: { ...this.baseParams, ...params } }),
-    );
-    return data;
+    try {
+      const { data } = await firstValueFrom(
+        this.http.get<T>(url, { params: { ...this.baseParams, ...params } }),
+      );
+
+      return data;
+    } catch (error) {
+      if (isAxiosError(error) && error.response?.status === 401) {
+        throw new BadGatewayException(
+          'OpenWeather API rejected the request. Check OPENWEATHER_API_KEY.',
+        );
+      }
+
+      throw error;
+    }
   }
 
   private async getWeather<T>(

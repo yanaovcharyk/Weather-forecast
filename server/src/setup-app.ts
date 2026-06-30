@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 
 import { GraphqlAuthExceptionFilter } from '@auth/filters';
 import { validationPipeConfig } from '@config/index';
+import { getRequiredConfig } from '@config/config-service.util';
 import { AllExceptionsFilter } from '@logger/filters';
 import { AppLoggerService } from '@logger/services';
 import { IAppConfig } from '@shared/types';
@@ -13,7 +14,7 @@ export function setupApp(
   config: ConfigService<IAppConfig>,
 ) {
   const logger = app.get(AppLoggerService);
-  const appConfig = config.getOrThrow('app', { infer: true });
+  const appConfig = getRequiredConfig(config, 'app');
 
   app.setGlobalPrefix(appConfig.prefix);
 

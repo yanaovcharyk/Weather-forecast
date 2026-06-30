@@ -12,6 +12,7 @@ import {
   LOGGER_BATCH_SIZE,
   LOGGER_FLUSH_INTERVAL_IN_MS,
 } from '@/logger/constants';
+import { config } from '@/common/config';
 import { loggerRetryQueue } from './LoggerRetryService';
 import { createLogRecord } from '@/logger/testing/fixtures';
 
@@ -49,6 +50,7 @@ describe('LoggerQueue', () => {
     vi.useFakeTimers();
     vi.clearAllMocks();
 
+    config.loggerRemote = true;
     queue = new LoggerQueue(false);
 
     consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -68,6 +70,15 @@ describe('LoggerQueue', () => {
   });
 
   it('does nothing when queue is empty', async () => {
+    await queue.sendQueuedLogs();
+
+    expect(mocks.sendMock).not.toHaveBeenCalled();
+  });
+
+  it('does not queue logs when remote logging is disabled', async () => {
+    config.loggerRemote = false;
+
+    queue.addLog(createLogRecord({ message: 'test' }));
     await queue.sendQueuedLogs();
 
     expect(mocks.sendMock).not.toHaveBeenCalled();

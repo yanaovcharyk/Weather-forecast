@@ -1,6 +1,6 @@
 import { StringValue } from 'ms';
+
 export interface IAppConfig {
-  nodeEnv: 'development' | 'production';
   port: number;
 
   app: {
@@ -16,6 +16,23 @@ export interface IAppConfig {
     user: string;
     password: string;
     name: string;
+    synchronize: boolean;
+    logging: boolean;
+    migrationsRun: boolean;
+  };
+
+  auth: {
+    cookie: {
+      httpOnly: boolean;
+      secure: boolean;
+      sameSite: 'strict' | 'lax' | 'none';
+      path: string;
+    };
+  };
+
+  logger: {
+    level: 'error' | 'warn' | 'info' | 'debug' | 'verbose' | 'silly';
+    consoleEnabled: boolean;
   };
 
   jwt: {

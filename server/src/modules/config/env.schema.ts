@@ -19,8 +19,6 @@ const booleanFromEnv = z.preprocess((value) => {
 }, z.boolean());
 
 export const envSchema = z.object({
-  NODE_ENV: z.enum(['development', 'production']).default('development'),
-
   PORT: z.coerce.number().default(3000),
   APP_PREFIX: z.string().min(1).default('api'),
   APP_CORS: booleanFromEnv.default(true),
@@ -32,6 +30,19 @@ export const envSchema = z.object({
   DB_USER: z.string(),
   DB_PASSWORD: z.string(),
   DB_NAME: z.string(),
+  DB_SYNCHRONIZE: booleanFromEnv.default(false),
+  DB_LOGGING: booleanFromEnv.default(false),
+  DB_MIGRATIONS_RUN: booleanFromEnv.default(false),
+
+  AUTH_COOKIE_HTTP_ONLY: booleanFromEnv.default(true),
+  AUTH_COOKIE_SECURE: booleanFromEnv.default(false),
+  AUTH_COOKIE_SAME_SITE: z.enum(['strict', 'lax', 'none']).default('lax'),
+  AUTH_COOKIE_PATH: z.string().min(1).default('/'),
+
+  SERVER_LOG_LEVEL: z
+    .enum(['error', 'warn', 'info', 'debug', 'verbose', 'silly'])
+    .default('debug'),
+  SERVER_LOG_CONSOLE_ENABLED: booleanFromEnv.default(true),
 
   JWT_ACCESS_SECRET: z.string().min(10),
   JWT_ACCESS_EXPIRES: z
@@ -45,7 +56,9 @@ export const envSchema = z.object({
     .regex(msRegex, 'Must be like 7d, 1h')
     .default('7d'),
 
-  OPENWEATHER_API_KEY: z.string(),
+  OPENWEATHER_API_KEY: z
+    .string()
+    .min(20),
   WEATHER_BASE_URL: z
     .string()
     .url()

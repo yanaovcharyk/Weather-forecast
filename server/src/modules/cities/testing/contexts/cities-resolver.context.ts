@@ -16,7 +16,7 @@ export function createCitiesServiceMock() {
     addCity: jest.fn(),
     removeCity: jest.fn(),
     removeAllCities: jest.fn(),
-    togglePinned: jest.fn(),
+    togglePinnedCity: jest.fn(),
   };
 }
 

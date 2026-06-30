@@ -24,6 +24,7 @@ export async function createAuthTokenContext(): Promise<AuthTokenTestContext> {
 
   const config = createConfigMock();
   config.get.mockReturnValue(jwtConfigFixture);
+  config.getOrThrow.mockReturnValue(jwtConfigFixture);
 
   const logger = createLoggerMock();
 

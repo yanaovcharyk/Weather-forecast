@@ -6,8 +6,8 @@ export const configuration = (env: FrontendEnv): IFrontendConfig => ({
   graphqlPath: env.VITE_GRAPHQL_PATH,
   loggerApiUrl: env.VITE_LOGGER_API_URL,
 
-  appEnv: env.VITE_APP_ENV,
   loggerEnabled: env.VITE_LOGGER_ENABLED,
   loggerLevel: env.VITE_LOGGER_LEVEL,
   loggerConsole: env.VITE_LOGGER_CONSOLE,
+  loggerRemote: env.VITE_LOGGER_REMOTE,
 });

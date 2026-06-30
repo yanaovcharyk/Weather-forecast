@@ -1,27 +1,26 @@
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
+import { getRequiredConfig } from '@config/config-service.util';
 import { CreateCities002, CreateUsers001 } from '@database/migrations';
 import { IAppConfig } from '@shared/types';
 
 export const typeormConfig = (
   configService: ConfigService<IAppConfig>,
 ): TypeOrmModuleOptions => {
-  const isProd = configService.get('nodeEnv', { infer: true }) === 'production';
-
   return {
     type: 'postgres',
-    host: configService.get('db.host', { infer: true }),
-    port: configService.get('db.port', { infer: true }),
-    username: configService.get('db.user', { infer: true }),
-    password: configService.get('db.password', { infer: true }),
-    database: configService.get('db.name', { infer: true }),
+    host: getRequiredConfig(configService, 'db.host'),
+    port: getRequiredConfig(configService, 'db.port'),
+    username: getRequiredConfig(configService, 'db.user'),
+    password: getRequiredConfig(configService, 'db.password'),
+    database: getRequiredConfig(configService, 'db.name'),
 
     autoLoadEntities: true,
-    synchronize: !isProd,
-    logging: !isProd,
+    synchronize: getRequiredConfig(configService, 'db.synchronize'),
+    logging: getRequiredConfig(configService, 'db.logging'),
 
-    migrations: isProd ? [CreateUsers001, CreateCities002] : [],
-    migrationsRun: isProd,
+    migrations: [CreateUsers001, CreateCities002],
+    migrationsRun: getRequiredConfig(configService, 'db.migrationsRun'),
   };
 };

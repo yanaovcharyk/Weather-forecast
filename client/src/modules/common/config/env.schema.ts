@@ -25,14 +25,12 @@ export const envSchema = z.object({
     .url()
     .default('http://localhost:3000/graphql'),
 
-  VITE_APP_ENV: z
-    .enum(['development', 'production', 'test'])
-    .default('development'),
   VITE_LOGGER_ENABLED: booleanFromEnv.default(false),
   VITE_LOGGER_LEVEL: z
     .enum(['info', 'warn', 'error', 'debug'])
     .default('info') satisfies z.ZodType<LogLevel>,
   VITE_LOGGER_CONSOLE: booleanFromEnv.default(false),
+  VITE_LOGGER_REMOTE: booleanFromEnv.default(false),
 });
 
 export type FrontendEnv = z.infer<typeof envSchema>;

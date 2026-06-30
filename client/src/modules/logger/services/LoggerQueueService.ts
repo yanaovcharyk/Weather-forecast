@@ -5,6 +5,7 @@ import {
 import type { IClientLogRecord } from '@/logger/types';
 import { GraphQLLoggerTransport } from './GraphQLLoggerTransport';
 import { loggerRetryQueue } from './LoggerRetryService';
+import { config } from '@/common/config';
 
 export class LoggerQueue {
   private queuedLogs: IClientLogRecord[] = [];
@@ -20,6 +21,10 @@ export class LoggerQueue {
   }
 
   addLog(logRecord: IClientLogRecord): void {
+    if (!config.loggerRemote) {
+      return;
+    }
+
     this.queuedLogs.push(logRecord);
 
     if (this.queuedLogs.length >= LOGGER_BATCH_SIZE) {
@@ -32,7 +37,9 @@ export class LoggerQueue {
   async sendQueuedLogs(
     mode: 'batch' | 'auto' | 'manual' = 'manual',
   ): Promise<void> {
-    if (!this.queuedLogs.length) return;
+    if (!this.queuedLogs.length || !config.loggerRemote) {
+      return;
+    }
 
     const logsToSend = [...this.queuedLogs];
     this.queuedLogs = [];
@@ -57,7 +64,9 @@ export class LoggerQueue {
     if (this.intervalId) return;
 
     this.intervalId = window.setInterval(() => {
-      if (!this.queuedLogs.length) return;
+      if (!this.queuedLogs.length) {
+        return;
+      }
 
       this.sendQueuedLogs('auto').catch((error: unknown) => {
         console.error('Failed to auto send logs', error);
@@ -67,7 +76,9 @@ export class LoggerQueue {
 
   private registerPageCloseListeners(): void {
     const flush = (): void => {
-      if (!this.queuedLogs.length) return;
+      if (!this.queuedLogs.length || !config.loggerRemote) {
+        return;
+      }
 
       const logs = [...this.queuedLogs];
       this.queuedLogs = [];

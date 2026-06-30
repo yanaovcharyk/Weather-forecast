@@ -7,6 +7,7 @@ import { AppLoggerService } from '@logger/services';
 import { LogMethod } from '@logger/decorators';
 import { parseMs } from '@shared/utils/parse-ms';
 import { authCookieConfig } from '@auth/config';
+import { getRequiredConfig } from '@config/config-service.util';
 
 @Injectable()
 export class AuthCookieService {
@@ -78,9 +79,7 @@ export class AuthCookieService {
   private getTokenMaxAge(
     configKey: 'jwt.accessExpires' | 'jwt.refreshExpires',
   ): number {
-    const expires = this.config.getOrThrow(configKey, {
-      infer: true,
-    });
+    const expires = getRequiredConfig(this.config, configKey);
 
     return parseMs(expires);
   }

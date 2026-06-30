@@ -5,8 +5,8 @@ export interface IFrontendConfig {
   graphqlPath: string;
   loggerApiUrl: string;
 
-  appEnv: 'development' | 'production' | 'test';
   loggerEnabled: boolean;
   loggerLevel: LogLevel;
   loggerConsole: boolean;
+  loggerRemote: boolean;
 }

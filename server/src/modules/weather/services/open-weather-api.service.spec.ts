@@ -1,4 +1,5 @@
-import { of } from 'rxjs';
+import { throwError, of } from 'rxjs';
+import { BadGatewayException } from '@nestjs/common';
 import {
   currentWeatherFixture,
   forecastFixture,
@@ -67,5 +68,24 @@ describe('OpenWeatherApiService', () => {
     );
 
     expect(result).toEqual(forecastFixture);
+  });
+
+  it('getForecast should throw clear error for invalid OpenWeather API key', async () => {
+    ctx.httpService.get.mockReturnValue(
+      throwError(() => ({
+        isAxiosError: true,
+        response: {
+          status: 401,
+        },
+      })),
+    );
+
+    await expect(ctx.service.getForecast(kyivCoordinatesFixture)).rejects.toThrow(
+      BadGatewayException,
+    );
+
+    await expect(ctx.service.getForecast(kyivCoordinatesFixture)).rejects.toThrow(
+      'Check OPENWEATHER_API_KEY',
+    );
   });
 });

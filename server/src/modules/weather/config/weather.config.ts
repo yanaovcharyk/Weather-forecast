@@ -1,5 +1,6 @@
 import { ConfigService } from '@nestjs/config';
 
+import { getRequiredConfig } from '@config/config-service.util';
 import { IAppConfig } from '@shared/types';
 
 export interface IWeatherConfig {
@@ -14,12 +15,12 @@ export interface IGeoConfig {
 export const weatherConfig = (
   config: ConfigService<IAppConfig>,
 ): IWeatherConfig => ({
-  apiKey: config.get('weatherApi.key', { infer: true })!,
-  baseUrl: config.get('weatherApi.baseUrl', { infer: true })!,
+  apiKey: getRequiredConfig(config, 'weatherApi.key'),
+  baseUrl: getRequiredConfig(config, 'weatherApi.baseUrl'),
 });
 
 export const geoConfig = (
   config: ConfigService<IAppConfig>,
 ): IGeoConfig => ({
-  baseUrl: config.get('geoApi.baseUrl', { infer: true })!,
+  baseUrl: getRequiredConfig(config, 'geoApi.baseUrl'),
 });
