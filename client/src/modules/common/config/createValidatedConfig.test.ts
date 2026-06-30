@@ -1,34 +1,50 @@
-import { describe, expect, it, vi } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
-vi.mock('./getRequiredEnvVar', () => ({
-  getRequiredEnvVar: vi.fn(),
-}));
-
-import { getRequiredEnvVar } from './getRequiredEnvVar';
 import { createValidatedConfig } from './createValidatedConfig';
 
 describe('createValidatedConfig', () => {
-  it('creates validated config object', () => {
-    vi.mocked(getRequiredEnvVar)
-      .mockReturnValueOnce('api-url')
-      .mockReturnValueOnce('/graphql');
-
-    const configSchema = {
-      apiBaseUrl: 'VITE_API_URL',
-      graphqlPath: 'VITE_GRAPHQL_PATH',
-    };
-
-    const result = createValidatedConfig(configSchema as never);
-
-    expect(result).toEqual({
-      apiBaseUrl: 'api-url',
-      graphqlPath: '/graphql',
+  it('creates typed config object from environment variables', () => {
+    const result = createValidatedConfig({
+      VITE_API_BASE_URL: 'http://localhost:3000',
+      VITE_GRAPHQL_PATH: '/graphql',
+      VITE_LOGGER_API_URL: 'http://localhost:3000/graphql',
+      VITE_APP_ENV: 'test',
+      VITE_LOGGER_ENABLED: 'true',
+      VITE_LOGGER_LEVEL: 'warn',
+      VITE_LOGGER_CONSOLE: 'false',
+      VITE_LOGGER_REMOTE: 'true',
     });
 
-    expect(getRequiredEnvVar).toHaveBeenCalledTimes(2);
+    expect(result).toEqual({
+      apiBaseUrl: 'http://localhost:3000',
+      graphqlPath: '/graphql',
+      loggerApiUrl: 'http://localhost:3000/graphql',
+      appEnv: 'test',
+      loggerEnabled: true,
+      loggerLevel: 'warn',
+      loggerConsole: false,
+      loggerRemote: true,
+    });
+  });
 
-    expect(getRequiredEnvVar).toHaveBeenNthCalledWith(1, 'VITE_API_URL');
+  it('uses defaults for optional frontend environment variables', () => {
+    expect(createValidatedConfig({})).toEqual({
+      apiBaseUrl: 'http://localhost:3000',
+      graphqlPath: '/graphql',
+      loggerApiUrl: 'http://localhost:3000/graphql',
+      appEnv: 'development',
+      loggerEnabled: false,
+      loggerLevel: 'info',
+      loggerConsole: false,
+      loggerRemote: false,
+    });
+  });
 
-    expect(getRequiredEnvVar).toHaveBeenNthCalledWith(2, 'VITE_GRAPHQL_PATH');
+  it('throws for invalid frontend environment variables', () => {
+    expect(() =>
+      createValidatedConfig({
+        VITE_LOGGER_LEVEL: 'verbose',
+      }),
+    ).toThrow('Invalid frontend environment variables');
   });
 });

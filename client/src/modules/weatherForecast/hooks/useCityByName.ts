@@ -6,11 +6,18 @@ type GetCityByNameQuery = {
   cityByName: City | null;
 };
 
+type GetCityByNameVariables = {
+  cityName: string;
+};
+
 export const useCityByName = () => {
   const client = useApolloClient();
 
   const getCityByName = async (cityName: string): Promise<City | null> => {
-    const { data } = await client.query<GetCityByNameQuery>({
+    const { data } = await client.query<
+      GetCityByNameQuery,
+      GetCityByNameVariables
+    >({
       query: GET_EXISTS_CITY_BY_NAME,
       variables: {
         cityName,

@@ -15,6 +15,12 @@ export interface SearchCitiesVars {
   };
 }
 
+export type CitySelectValue = {
+  lat: number;
+  lon: number;
+  name: string;
+};
+
 export interface AddCityFormProps {
   onSubmit: (
     lat: number,

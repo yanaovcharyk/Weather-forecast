@@ -1,15 +1,15 @@
-import { getRequiredEnvVar } from './getRequiredEnvVar';
-import type { ConfigKey, ConfigSchema, IFrontendConfig } from './types';
+import { configuration } from './configuration';
+import { envSchema, type FrontendEnv } from './env.schema';
+import type { IFrontendConfig } from './types';
 
 export function createValidatedConfig(
-  configSchema: ConfigSchema,
+  env: Record<string, unknown> = import.meta.env,
 ): IFrontendConfig {
-  const validatedConfig = {} as IFrontendConfig;
+  const parsed = envSchema.safeParse(env);
 
-  for (const key in configSchema) {
-    const envKey = configSchema[key as ConfigKey];
-    validatedConfig[key as ConfigKey] = getRequiredEnvVar(envKey);
+  if (!parsed.success) {
+    throw new Error('Invalid frontend environment variables');
   }
 
-  return validatedConfig;
+  return configuration(parsed.data as FrontendEnv);
 }

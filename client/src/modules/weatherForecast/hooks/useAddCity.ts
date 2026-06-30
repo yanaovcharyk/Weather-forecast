@@ -6,8 +6,16 @@ export type AddCityMutation = {
   addCity: City;
 };
 
+export type AddCityVariables = {
+  input: {
+    lat: number;
+    lon: number;
+    cityName: string;
+  };
+};
+
 export const useAddCity = () => {
-  const [mutate, { loading }] = useMutation<AddCityMutation>(
+  const [mutate, { loading }] = useMutation<AddCityMutation, AddCityVariables>(
     ADD_CITY_MUTATION,
     {
       update(cache, { data }) {

@@ -18,10 +18,6 @@ export class CityService {
     );
   }
 
-  // static isCityLimitReached(cities: unknown[], limit = 10): boolean {
-  //   return cities.length >= limit;
-  // }
-
   static validateBeforeAdd(input: string, cities: { cityName: string }[]) {
     if (!this.isCityNameValid(input)) {
       return { ok: false as const, code: 'INVALID_CITY' };
@@ -30,10 +26,6 @@ export class CityService {
     if (this.isCityAlreadyAdded(cities, input)) {
       return { ok: false as const, code: 'CITY_EXISTS' };
     }
-
-    // if (this.isCityLimitReached(cities)) {
-    //   return { ok: false as const, code: 'CITY_LIMIT' };
-    // }
 
     return {
       ok: true as const,

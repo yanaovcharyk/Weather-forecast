@@ -55,6 +55,21 @@ export type SortingState = {
   sortOrder: 'ASC' | 'DESC';
 };
 
+export type CitiesQuerySorting = Omit<SortingState, 'sortBy'> & {
+  sortBy: 'CITY_NAME' | 'CREATED_AT';
+};
+
+export type CitiesPaginatedVariables = {
+  query: {
+    pagination: {
+      limit: number;
+      cursor: string | null;
+    };
+    sorting: CitiesQuerySorting;
+    showPinnedOnly: boolean;
+  };
+};
+
 export type DisabledStates = {
   sorting: boolean;
   pinnedFilter: boolean;

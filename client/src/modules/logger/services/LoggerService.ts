@@ -80,7 +80,7 @@ export class Logger {
 
     loggerQueue.addLog(logRecord);
 
-    if (config.loggerConsole === 'true') {
+    if (config.loggerConsole) {
       this.printLogToBrowserConsole(logRecord);
     }
   }

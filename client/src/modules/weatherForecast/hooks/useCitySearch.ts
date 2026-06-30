@@ -3,6 +3,7 @@ import { useMemo, useRef } from 'react';
 
 import { SEARCH_CITIES } from '@/weatherForecast/graphql';
 import type {
+  CitySelectValue,
   SearchCitiesData,
   SearchCitiesVars,
 } from '@/weatherForecast/components/AddCityForm/types';
@@ -58,7 +59,7 @@ export const useCitySearch = () => {
           lat: city.lat,
           lon: city.lon,
           name: city.name,
-        }),
+        } satisfies CitySelectValue),
       })) ?? []
     );
   }, [data]);

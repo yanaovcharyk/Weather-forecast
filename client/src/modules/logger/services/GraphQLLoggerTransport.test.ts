@@ -8,7 +8,7 @@ describe('GraphQLLoggerTransport', () => {
   beforeEach(() => {
     transport = new GraphQLLoggerTransport();
 
-    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({}));
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({ ok: true }));
 
     Object.defineProperty(navigator, 'sendBeacon', {
       value: vi.fn(),
@@ -35,27 +35,36 @@ describe('GraphQLLoggerTransport', () => {
     expect(fetch).toHaveBeenCalled();
   });
 
-  it('logs error when fetch fails', async () => {
+  it('throws when fetch fails', async () => {
     const networkError = new Error('Network error');
 
     vi.stubGlobal('fetch', vi.fn().mockRejectedValue(networkError));
 
-    const consoleErrorSpy = vi
-      .spyOn(console, 'error')
-      .mockImplementation(() => {});
+    await expect(
+      transport.send([
+        {
+          message: 'event',
+        },
+      ] as never),
+    ).rejects.toThrow(networkError);
+  });
 
-    await transport.send([
-      {
-        message: 'event',
-      },
-    ] as never);
-
-    expect(consoleErrorSpy).toHaveBeenCalledWith(
-      'Failed to send logs',
-      networkError,
+  it('throws when logger response is not ok', async () => {
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockResolvedValue({
+        ok: false,
+        status: 500,
+      }),
     );
 
-    consoleErrorSpy.mockRestore();
+    await expect(
+      transport.send([
+        {
+          message: 'event',
+        },
+      ] as never),
+    ).rejects.toThrow('Failed to send logs: 500');
   });
 
   it('uses sendBeacon on page close', () => {

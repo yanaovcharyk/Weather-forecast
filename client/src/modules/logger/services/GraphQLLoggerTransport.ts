@@ -37,17 +37,17 @@ export class GraphQLLoggerTransport implements ILoggerTransport {
 
     const graphqlRequestBody = this.createRequestBody(logRecords);
 
-    try {
-      await fetch(config.loggerApiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify(graphqlRequestBody),
-      });
-    } catch (networkError: unknown) {
-      console.error('Failed to send logs', networkError);
+    const response = await fetch(config.loggerApiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify(graphqlRequestBody),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to send logs: ${response.status}`);
     }
   }
 

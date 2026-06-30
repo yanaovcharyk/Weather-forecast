@@ -1,8 +1,10 @@
 import { Form } from 'antd';
 import type { FormInstance } from 'antd';
 import { useCallback } from 'react';
+import { z } from 'zod';
 
 import { useCitySearch } from './useCitySearch';
+import type { CitySelectValue } from '@/weatherForecast/components/AddCityForm/types';
 
 export type AddCityFormValues = {
   cityName?: string;
@@ -24,6 +26,15 @@ export type AddCityFormResult = {
   handleSubmit: (values: AddCityFormValues) => Promise<void>;
 };
 
+const citySelectValueSchema = z.object({
+  lat: z.number(),
+  lon: z.number(),
+  name: z.string().min(1),
+}) satisfies z.ZodType<CitySelectValue>;
+
+const parseCitySelectValue = (value: string): CitySelectValue =>
+  citySelectValueSchema.parse(JSON.parse(value));
+
 export const useAddCityForm = (
   onSubmit: (
     lat: number,
@@ -41,7 +52,7 @@ export const useAddCityForm = (
         return;
       }
 
-      const parsed = JSON.parse(cityName);
+      const parsed = parseCitySelectValue(cityName);
 
       await onSubmit(parsed.lat, parsed.lon, parsed.name);
 

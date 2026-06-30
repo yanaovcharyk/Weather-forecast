@@ -1,8 +1,8 @@
 import type { IRoutableModule, AppRoute } from '@/common/types';
 import { CityDetailsPage } from './pages/CityDetailsPage';
 
-class AuthModule implements IRoutableModule {
-  name = 'auth';
+class WeatherDetailsModule implements IRoutableModule {
+  name = 'weatherDetails';
 
   routes: AppRoute[] = [
     {
@@ -13,4 +13,4 @@ class AuthModule implements IRoutableModule {
   ];
 }
 
-export default new AuthModule();
+export default new WeatherDetailsModule();

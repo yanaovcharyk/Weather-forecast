@@ -59,7 +59,7 @@ describe('Logger', () => {
       (metadata: unknown) => metadata as JsonValue | undefined,
     );
 
-    config.loggerConsole = 'false';
+    config.loggerConsole = false;
 
     vi.spyOn(console, 'info').mockImplementation(() => {});
     vi.spyOn(console, 'warn').mockImplementation(() => {});
@@ -196,7 +196,7 @@ describe('Logger', () => {
 
   describe('console logging', () => {
     beforeEach(() => {
-      config.loggerConsole = 'true';
+      config.loggerConsole = true;
     });
 
     it('prints info logs into browser console', () => {

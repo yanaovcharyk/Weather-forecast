@@ -1,13 +1,15 @@
+import type { LogLevel } from '@/logger/types';
+
 export interface IFrontendConfig {
   apiBaseUrl: string;
   graphqlPath: string;
   loggerApiUrl: string;
 
-  appEnv: string;
-  loggerEnabled: string;
-  loggerLevel: string;
-  loggerConsole: string;
-  loggerRemote: string;
+  appEnv: 'development' | 'production' | 'test';
+  loggerEnabled: boolean;
+  loggerLevel: LogLevel;
+  loggerConsole: boolean;
+  loggerRemote: boolean;
 }
 
 export type ConfigKey = keyof IFrontendConfig;

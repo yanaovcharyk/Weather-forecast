@@ -2,14 +2,12 @@ import type { LogLevel } from '@/logger/types';
 import { LOG_LEVEL_PRIORITY } from '@/logger/constants';
 import { config } from '@/common/config';
 
-const isLoggerEnabled = () => config.loggerEnabled === 'true';
-
 export const shouldLog = (level: LogLevel) => {
-  if (!isLoggerEnabled()) {
+  if (!config.loggerEnabled) {
     return false;
   }
 
-  const minLevel = (config.loggerLevel as LogLevel) ?? 'info';
+  const minLevel = config.loggerLevel ?? 'info';
 
   return LOG_LEVEL_PRIORITY[level] >= LOG_LEVEL_PRIORITY[minLevel];
 };
