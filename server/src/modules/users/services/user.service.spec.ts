@@ -42,7 +42,7 @@ describe('UserService', () => {
     ctx.repo.create.mockReturnValue(created);
     ctx.repo.save.mockResolvedValue(created);
 
-    const result = await ctx.service.createUser(data);
+    const result = await ctx.service.create(data);
 
     expect(ctx.repo.create).toHaveBeenCalledWith(data);
     expect(ctx.repo.save).toHaveBeenCalledWith(created);

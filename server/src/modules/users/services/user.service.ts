@@ -30,7 +30,7 @@ export class UserService {
   }
 
   @LogResolver()
-  async createUser(params: CreateUserParams): Promise<IUserEntity> {
+  async create(params: CreateUserParams): Promise<IUserEntity> {
     const user = this.userRepository.create(params);
     const savedUser = await this.userRepository.save(user);
 

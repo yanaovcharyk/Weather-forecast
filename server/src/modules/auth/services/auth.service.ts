@@ -49,7 +49,7 @@ export class AuthService {
       password: input.password,
     });
 
-    const user = await this.usersService.createUser({
+    const user = await this.usersService.create({
       email: input.email,
       password: hash,
       salt,
