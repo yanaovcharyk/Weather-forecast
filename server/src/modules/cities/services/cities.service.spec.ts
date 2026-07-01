@@ -15,6 +15,7 @@ import {
   DniproCity,
   PinnedDniproCity,
 } from '@cities/testing/fixtures/city.fixture';
+import { citySuggestionsFixture } from '@cities/testing/fixtures';
 
 describe('CitiesService', () => {
   let service: CitiesService;
@@ -23,6 +24,19 @@ describe('CitiesService', () => {
   beforeEach(async () => {
     ctx = await createCitiesServiceContext();
     service = ctx.service;
+  });
+
+  describe('searchCities', () => {
+    it('should delegate request to open weather city api', async () => {
+      ctx.openWeatherCityApi.searchCities.mockResolvedValue(
+        citySuggestionsFixture,
+      );
+
+      const result = await service.searchCities('Kyiv');
+
+      expect(ctx.openWeatherCityApi.searchCities).toHaveBeenCalledWith('Kyiv');
+      expect(result).toEqual(citySuggestionsFixture);
+    });
   });
 
   describe('getCityById', () => {

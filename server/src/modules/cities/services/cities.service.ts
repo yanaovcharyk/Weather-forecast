@@ -15,9 +15,11 @@ import {
   UpdateField,
   UserIdParams,
 } from '@cities/types';
-import { ICityOutput } from '@cities/interfaces';
+import { ICityOutput, ICitySuggestion } from '@cities/interfaces';
 import { LogMethod } from '@logger/decorators';
 import { removeUndefined } from '@shared/utils';
+import { OpenWeatherCityApiService } from './open-weather-city-api.service';
+
 @Injectable()
 export class CitiesService {
   private readonly logger;
@@ -25,9 +27,15 @@ export class CitiesService {
   constructor(
     @InjectRepository(CityEntity)
     private readonly cityRepository: Repository<CityEntity>,
+    private readonly openWeatherCityApi: OpenWeatherCityApiService,
     loggerService: AppLoggerService,
   ) {
     this.logger = loggerService.child(CitiesService.name);
+  }
+
+  @LogMethod()
+  async searchCities(query: string): Promise<ICitySuggestion[]> {
+    return this.openWeatherCityApi.searchCities(query);
   }
 
   @LogMethod()

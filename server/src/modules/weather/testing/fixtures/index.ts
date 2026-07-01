@@ -1,7 +1,4 @@
 export {
-  citySuggestionsFixture,
-} from './city-suggestions.fixture';
-export {
   currentWeatherAlternativeFixture,
   currentWeatherFixture,
   currentWeatherTimezoneZeroFixture,
@@ -16,11 +13,5 @@ export {
   forecastWithTimezoneFixture,
 } from './forecast.fixture';
 export { kyivCoordinatesFixture } from './kyiv-coordinates.fixture';
-export {
-  emptyCitiesResponseFixture,
-  mappedCitiesFixture,
-  searchCitiesResponseFixture,
-  undefinedCitiesResponseFixture,
-} from './search-cities.fixture';
 export { weatherDetailsFixture } from './weather-details.fixture';
 export { weatherPreviewFixture } from './weather-preview.fixture';

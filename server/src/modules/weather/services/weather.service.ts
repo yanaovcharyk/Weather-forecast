@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import {
-  ICitySuggestion,
   IGetWeatherInput,
   IWeatherDetails,
   IWeatherPreviewOutput,
@@ -17,11 +16,6 @@ import {
 @Injectable()
 export class WeatherService {
   constructor(private readonly weatherApi: OpenWeatherApiService) {}
-
-  @LogMethod()
-  async searchCities(query: string): Promise<ICitySuggestion[]> {
-    return this.weatherApi.searchCities(query);
-  }
 
   @LogMethod()
   async getWeatherDetails(

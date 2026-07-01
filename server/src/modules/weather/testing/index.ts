@@ -7,7 +7,6 @@ export {
   WeatherServiceTestContext,
 } from './contexts';
 export {
-  citySuggestionsFixture,
   currentWeatherAlternativeFixture,
   currentWeatherFixture,
   currentWeatherTimezoneZeroFixture,
@@ -19,10 +18,6 @@ export {
   forecastTimezoneZeroFixture,
   forecastWithTimezoneFixture,
   kyivCoordinatesFixture,
-  emptyCitiesResponseFixture,
-  mappedCitiesFixture,
-  searchCitiesResponseFixture,
-  undefinedCitiesResponseFixture,
   weatherDetailsFixture,
   weatherPreviewFixture,
 } from './fixtures';

@@ -11,6 +11,7 @@ import { createContext } from '@shared/testing/utils/create-context';
 
 export function createCitiesServiceMock() {
   return {
+    searchCities: jest.fn(),
     getCityById: jest.fn(),
     getCityByName: jest.fn(),
     addCity: jest.fn(),

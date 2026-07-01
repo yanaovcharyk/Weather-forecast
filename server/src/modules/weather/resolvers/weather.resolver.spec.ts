@@ -10,19 +10,6 @@ describe('WeatherResolver', () => {
     ctx = await createWeatherResolverContext();
   });
 
-  it('searchCities should call weatherService.searchCities', async () => {
-    const expected = [
-      { name: 'Kyiv', country: 'UA', lat: 50, lon: 30 },
-      { name: 'Lviv', country: 'UA', lat: 49, lon: 24 },
-    ];
-    ctx.weatherService.searchCities.mockResolvedValue(expected);
-
-    const result = await ctx.resolver.searchCities({ query: 'Kyiv' });
-
-    expect(ctx.weatherService.searchCities).toHaveBeenCalledWith('Kyiv');
-    expect(result).toEqual(expected);
-  });
-
   it('getWeatherDetails should call weatherService.getWeatherDetails', async () => {
     const expected = {
       coordinates: { lat: 50, lon: 30 },

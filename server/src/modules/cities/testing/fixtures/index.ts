@@ -5,6 +5,7 @@ export {
   PaginatedLvivConnectionFixture,
   PaginatedOdesaConnectionFixture,
 } from './cities-query.fixture';
+export { citySuggestionsFixture } from './city-suggestions.fixture';
 export {
   DniproCity,
   KharkivCity,
@@ -14,3 +15,4 @@ export {
   PinnedDniproCity,
 } from './city.fixture';
 export { createQueryBuilderMock } from './query-builder.fixture';
+export { searchCitiesResponseFixture } from './search-cities.fixture';

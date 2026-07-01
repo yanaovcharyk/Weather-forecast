@@ -3,9 +3,7 @@ import { UseGuards } from '@nestjs/common';
 import { WeatherService } from '@weather/services';
 import {
   WeatherDetailsOutput,
-  CitySuggestion,
   GetWeatherInput,
-  CitySearchInput,
 } from '@weather/dto';
 import { AppLoggerService } from '@logger/services';
 import { LogResolver } from '@logger/index';
@@ -19,13 +17,6 @@ export class WeatherResolver {
     loggerService: AppLoggerService,
   ) {
     this.logger = loggerService.child(WeatherResolver.name);
-  }
-
-  @UseGuards(AccessJwtGuard)
-  @Query(() => [CitySuggestion])
-  @LogResolver()
-  async searchCities(@Args('input') input: CitySearchInput) {
-    return this.weatherService.searchCities(input.query);
   }
 
   @UseGuards(AccessJwtGuard)

@@ -1,5 +1,5 @@
-import { ObjectType, Field, Float } from '@nestjs/graphql';
-import { ICitySuggestion } from '@weather/interfaces';
+import { Field, Float, ObjectType } from '@nestjs/graphql';
+import { ICitySuggestion } from '@cities/interfaces';
 
 @ObjectType()
 export class CitySuggestion implements ICitySuggestion {

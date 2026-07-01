@@ -3,7 +3,6 @@ import {
   WeatherServiceTestContext,
 } from '@weather/testing/contexts/weather-service.context';
 import {
-  citySuggestionsFixture,
   currentWeatherFixture,
   forecastFixture,
   forecastWithoutTimezoneFixture,
@@ -15,15 +14,6 @@ describe('WeatherService', () => {
 
   beforeEach(async () => {
     ctx = await createWeatherServiceContext();
-  });
-
-  it('searchCities should delegate request to weather api', async () => {
-    ctx.weatherApi.searchCities.mockResolvedValue(citySuggestionsFixture);
-
-    const result = await ctx.service.searchCities('Kyiv');
-
-    expect(ctx.weatherApi.searchCities).toHaveBeenCalledWith('Kyiv');
-    expect(result).toEqual(citySuggestionsFixture);
   });
 
   it('getWeatherDetails should aggregate current and forecast data', async () => {

@@ -4,7 +4,6 @@ import {
   currentWeatherFixture,
   forecastFixture,
   kyivCoordinatesFixture,
-  searchCitiesResponseFixture,
 } from '@weather/testing/fixtures';
 import { mockAxiosResponse } from '@weather/testing/mocks/axios-response.mock';
 import {
@@ -13,7 +12,6 @@ import {
 } from '@weather/testing/contexts';
 
 import {
-  CITY_SEARCH_URL_ENDPOINT,
   WEATHER_URL_ENDPOINT,
   FORECAST_URL_ENDPOINT,
 } from '@weather/constants/open-weather.constants';
@@ -23,23 +21,6 @@ describe('OpenWeatherApiService', () => {
 
   beforeEach(async () => {
     ctx = await createOpenWeatherApiContext();
-  });
-
-  it('searchCities should call geo API with query', async () => {
-    ctx.httpService.get.mockReturnValue(of(searchCitiesResponseFixture));
-
-    const result = await ctx.service.searchCities('Kyiv');
-
-    expect(ctx.httpService.get).toHaveBeenCalledWith(
-      `${ctx.geoConfig.baseUrl}${CITY_SEARCH_URL_ENDPOINT}`,
-      expect.objectContaining({
-        params: expect.objectContaining({
-          q: 'Kyiv',
-        }),
-      }),
-    );
-
-    expect(result).toEqual(searchCitiesResponseFixture.data);
   });
 
   it('getCurrentWeather should call weather API with coordinates', async () => {

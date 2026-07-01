@@ -12,6 +12,19 @@ describe('CitiesResolver', () => {
     jest.clearAllMocks();
   });
 
+  it('searchCities should call citiesService.searchCities', async () => {
+    const expected = [
+      { name: 'Kyiv', country: 'UA', lat: 50, lon: 30 },
+      { name: 'Lviv', country: 'UA', lat: 49, lon: 24 },
+    ];
+    ctx.citiesService.searchCities.mockResolvedValue(expected);
+
+    const result = await ctx.resolver.searchCities({ query: 'Kyiv' });
+
+    expect(ctx.citiesService.searchCities).toHaveBeenCalledWith('Kyiv');
+    expect(result).toEqual(expected);
+  });
+
   it('cities should call getCities with userId', async () => {
     ctx.citiesQueryService.getCities.mockResolvedValue([
       { id: '1', cityName: 'Kyiv', lat: 50, lon: 30, isPinned: false },

@@ -14,6 +14,8 @@ import { AccessJwtGuard } from '@auth/guards';
 import {
   CitiesConnection,
   CitiesQueryInput,
+  CitySearchInput,
+  CitySuggestion,
   AddCityInput,
   UpdateCityInput,
   CityOutput,
@@ -30,6 +32,7 @@ import {
 
 const cityOutputType = graphqlType(CityOutput);
 const cityOutputListType = graphqlListType(CityOutput);
+const citySuggestionListType = graphqlListType(CitySuggestion);
 const citiesConnectionType = graphqlType(CitiesConnection);
 const weatherOutputType = graphqlType(WeatherOutput);
 const booleanType = graphqlType(Boolean);
@@ -45,6 +48,13 @@ export class CitiesResolver {
     loggerService: AppLoggerService,
   ) {
     this.logger = loggerService.child(CitiesResolver.name);
+  }
+
+  @UseGuards(AccessJwtGuard)
+  @Query(citySuggestionListType)
+  @LogResolver()
+  async searchCities(@Args('input') input: CitySearchInput) {
+    return this.citiesService.searchCities(input.query);
   }
 
   @UseGuards(AccessJwtGuard)

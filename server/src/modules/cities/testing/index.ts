@@ -12,6 +12,7 @@ export {
   PaginatedKyivConnectionFixture,
   PaginatedLvivConnectionFixture,
   PaginatedOdesaConnectionFixture,
+  citySuggestionsFixture,
   DniproCity,
   KharkivCity,
   KyivCity,
@@ -19,6 +20,7 @@ export {
   OdesaCity,
   PinnedDniproCity,
   createQueryBuilderMock,
+  searchCitiesResponseFixture,
 } from './fixtures';
 export {
   CityRepositoryMock,

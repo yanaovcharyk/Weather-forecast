@@ -15,16 +15,11 @@ export const weatherConfigMock = {
   baseUrl: 'http://weather',
 };
 
-export const geoConfigMock = {
-  baseUrl: 'http://geo',
-};
-
 export type OpenWeatherApiTestContext = {
   service: OpenWeatherApiService;
   httpService: ReturnType<typeof createHttpServiceMock>;
   logger: ReturnType<typeof createLoggerMock>;
   weatherConfig: typeof weatherConfigMock;
-  geoConfig: typeof geoConfigMock;
 };
 
 export async function createOpenWeatherApiContext(): Promise<OpenWeatherApiTestContext> {
@@ -43,10 +38,6 @@ export async function createOpenWeatherApiContext(): Promise<OpenWeatherApiTestC
         useValue: weatherConfigMock,
       },
       {
-        provide: 'GEO_CONFIG',
-        useValue: geoConfigMock,
-      },
-      {
         provide: AppLoggerService,
         useValue: {
           child: jest.fn().mockReturnValue(logger),
@@ -60,6 +51,5 @@ export async function createOpenWeatherApiContext(): Promise<OpenWeatherApiTestC
     httpService,
     logger,
     weatherConfig: weatherConfigMock,
-    geoConfig: geoConfigMock,
   };
 }

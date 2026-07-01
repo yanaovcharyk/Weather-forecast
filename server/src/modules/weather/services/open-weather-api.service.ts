@@ -5,16 +5,11 @@ import { firstValueFrom } from 'rxjs';
 import {
   IOpenWeatherCurrent,
   IOpenWeatherForecast,
-  ICitySuggestion,
   IGetWeatherInput,
 } from '@weather/interfaces';
+import { OPEN_WEATHER_UNITS } from '@weather/constants';
+import { IWeatherConfig } from '@weather/config';
 import {
-  OPEN_WEATHER_CITY_SEARCH_LIMIT,
-  OPEN_WEATHER_UNITS,
-} from '@weather/constants';
-import { IGeoConfig, IWeatherConfig } from '@weather/config';
-import {
-  CITY_SEARCH_URL_ENDPOINT,
   FORECAST_URL_ENDPOINT,
   WEATHER_URL_ENDPOINT,
 } from '@weather/constants/open-weather.constants';
@@ -25,8 +20,6 @@ export class OpenWeatherApiService {
     private readonly http: HttpService,
     @Inject('WEATHER_CONFIG')
     private readonly weatherConfig: IWeatherConfig,
-    @Inject('GEO_CONFIG')
-    private readonly geoConfig: IGeoConfig,
   ) {}
 
   private get baseParams() {
@@ -59,13 +52,6 @@ export class OpenWeatherApiService {
     coordinates: IGetWeatherInput,
   ): Promise<T> {
     return this.get<T>(`${this.weatherConfig.baseUrl}${endpoint}`, coordinates);
-  }
-
-  async searchCities(query: string): Promise<ICitySuggestion[]> {
-    return this.get<ICitySuggestion[]>(
-      `${this.geoConfig.baseUrl}${CITY_SEARCH_URL_ENDPOINT}`,
-      { q: query, limit: OPEN_WEATHER_CITY_SEARCH_LIMIT },
-    );
   }
 
   async getCurrentWeather(

@@ -10,7 +10,6 @@ import { AuthCookieService } from '@auth/services';
 
 export function createWeatherServiceMock() {
   return {
-    searchCities: jest.fn(),
     getWeatherDetails: jest.fn(),
   };
 }

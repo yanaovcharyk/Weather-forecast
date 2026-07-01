@@ -3,7 +3,7 @@ import { HttpModule } from '@nestjs/axios';
 import { WeatherResolver } from './resolvers';
 import { WeatherService } from './services';
 import { ConfigService } from '@nestjs/config';
-import { geoConfig, weatherConfig } from '@weather/config';
+import { weatherConfig } from '@weather/config';
 import { AuthModule } from '@auth/index';
 import { OpenWeatherApiService } from './services/open-weather-api.service';
 
@@ -18,12 +18,6 @@ import { OpenWeatherApiService } from './services/open-weather-api.service';
       provide: 'WEATHER_CONFIG',
       inject: [ConfigService],
       useFactory: weatherConfig,
-    },
-
-    {
-      provide: 'GEO_CONFIG',
-      inject: [ConfigService],
-      useFactory: geoConfig,
     },
   ],
   exports: [WeatherService],

@@ -6,7 +6,6 @@ import { AppLoggerService } from '@logger/services';
 
 export function createWeatherApiMock() {
   return {
-    searchCities: jest.fn(),
     getCurrentWeather: jest.fn(),
     getForecast: jest.fn(),
   };

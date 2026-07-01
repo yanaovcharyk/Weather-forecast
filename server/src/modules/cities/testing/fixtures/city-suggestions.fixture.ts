@@ -1,4 +1,4 @@
-import { ICitySuggestion } from "@weather/interfaces";
+import { ICitySuggestion } from '@cities/interfaces';
 
 export const citySuggestionsFixture: ICitySuggestion[] = [
   {
