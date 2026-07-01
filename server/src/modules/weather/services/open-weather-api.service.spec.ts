@@ -80,12 +80,22 @@ describe('OpenWeatherApiService', () => {
       })),
     );
 
-    await expect(ctx.service.getForecast(kyivCoordinatesFixture)).rejects.toThrow(
-      BadGatewayException,
-    );
+    await expect(
+      ctx.service.getForecast(kyivCoordinatesFixture),
+    ).rejects.toThrow(BadGatewayException);
 
-    await expect(ctx.service.getForecast(kyivCoordinatesFixture)).rejects.toThrow(
-      'Check OPENWEATHER_API_KEY',
+    await expect(
+      ctx.service.getForecast(kyivCoordinatesFixture),
+    ).rejects.toThrow('Check OPENWEATHER_API_KEY');
+  });
+
+  it('getForecast should rethrow non-auth OpenWeather errors', async () => {
+    const openWeatherError = new Error('OpenWeather is unavailable');
+
+    ctx.httpService.get.mockReturnValue(throwError(() => openWeatherError));
+
+    await expect(ctx.service.getForecast(kyivCoordinatesFixture)).rejects.toBe(
+      openWeatherError,
     );
   });
 });

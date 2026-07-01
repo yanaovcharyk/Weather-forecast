@@ -3,6 +3,7 @@ import { AddCityInput, CitiesQueryInput, UpdateCityInput } from './dto';
 import { CityEntity } from './entities';
 import { CitySortField } from './city-query.config';
 import { SortOrder } from '@shared/constants';
+import { IUpdateCityInput } from './interfaces';
 
 export type UserIdParams = {
   userId: string;
@@ -63,3 +64,5 @@ export type AppliedSorting = {
   sortBy: CitySortField;
   sortOrder: SortOrder;
 };
+
+export type UpdateField = keyof IUpdateCityInput;

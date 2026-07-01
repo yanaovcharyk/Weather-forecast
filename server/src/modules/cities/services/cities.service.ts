@@ -12,10 +12,12 @@ import {
   CityByIdParams,
   CityByNameParams,
   UpdateCityParams,
+  UpdateField,
   UserIdParams,
 } from '@cities/types';
 import { ICityOutput } from '@cities/interfaces';
 import { LogMethod } from '@logger/decorators';
+import { removeUndefined } from '@shared/utils';
 @Injectable()
 export class CitiesService {
   private readonly logger;
@@ -94,40 +96,30 @@ export class CitiesService {
   @LogMethod()
   async updateCity(params: UpdateCityParams): Promise<ICityOutput> {
     const city = await this.findCityOrFail(params);
-    const updates = this.getCityUpdates(params.input);
+    const updates = removeUndefined(params.input);
 
-    if (!Object.keys(updates).length) {
+    const updatedFields = Object.keys(updates) as UpdateField[];
+
+    if (updatedFields.length === 0) {
       throw new BadRequestException('No city fields provided for update');
     }
 
-    const updatedFields = Object.keys(updates) as (keyof typeof updates)[];
-    const previous = Object.fromEntries(
+    const previousFields = Object.fromEntries(
       updatedFields.map((field) => [field, city[field]]),
     );
 
     Object.assign(city, updates);
 
-    const saved = await this.cityRepository.save(city);
+    const updatedCity = await this.cityRepository.save(city);
 
     this.logger.info('updateCity: city updated', {
-      id: saved.id,
+      id: updatedCity.id,
       fields: updatedFields,
-      previous,
+      previous: previousFields,
       current: updates,
     });
 
-    return saved;
-  }
-
-  private getCityUpdates(
-    input: UpdateCityParams['input'],
-  ): Partial<Pick<CityEntity, 'cityName' | 'lat' | 'lon' | 'isPinned'>> {
-    return {
-      ...(input.cityName !== undefined ? { cityName: input.cityName } : {}),
-      ...(input.lat !== undefined ? { lat: input.lat } : {}),
-      ...(input.lon !== undefined ? { lon: input.lon } : {}),
-      ...(input.isPinned !== undefined ? { isPinned: input.isPinned } : {}),
-    };
+    return updatedCity;
   }
 
   private async findCityOrFail(params: CityByIdParams): Promise<CityEntity> {
