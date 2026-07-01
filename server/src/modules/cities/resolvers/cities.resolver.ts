@@ -15,6 +15,7 @@ import {
   CitiesConnection,
   CitiesQueryInput,
   AddCityInput,
+  UpdateCityInput,
   CityOutput,
 } from '@cities/dto';
 import { AppLoggerService } from '@logger/services';
@@ -134,13 +135,15 @@ export class CitiesResolver {
   @UseGuards(AccessJwtGuard)
   @Mutation(cityOutputType)
   @LogResolver()
-  async togglePinnedCity(
+  async updateCity(
     @CurrentUser() user: ICurrentUser,
     @Args('id', { type: graphqlIdType }) id: string,
+    @Args('input') input: UpdateCityInput,
   ): Promise<CityOutput> {
-    return this.citiesService.togglePinnedCity({
+    return this.citiesService.updateCity({
       userId: user.id,
       id,
+      input,
     });
   }
 

@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CityEntity } from '@cities/entities';
@@ -7,6 +11,7 @@ import {
   AddCityParams,
   CityByIdParams,
   CityByNameParams,
+  UpdateCityParams,
   UserIdParams,
 } from '@cities/types';
 import { ICityOutput } from '@cities/interfaces';
@@ -87,21 +92,42 @@ export class CitiesService {
   }
 
   @LogMethod()
-  async togglePinnedCity(params: CityByIdParams): Promise<ICityOutput> {
+  async updateCity(params: UpdateCityParams): Promise<ICityOutput> {
     const city = await this.findCityOrFail(params);
+    const updates = this.getCityUpdates(params.input);
 
-    const previous = city.isPinned;
-    city.isPinned = !city.isPinned;
+    if (!Object.keys(updates).length) {
+      throw new BadRequestException('No city fields provided for update');
+    }
+
+    const updatedFields = Object.keys(updates) as (keyof typeof updates)[];
+    const previous = Object.fromEntries(
+      updatedFields.map((field) => [field, city[field]]),
+    );
+
+    Object.assign(city, updates);
 
     const saved = await this.cityRepository.save(city);
 
-    this.logger.info('togglePinned: pinned state updated', {
+    this.logger.info('updateCity: city updated', {
       id: saved.id,
+      fields: updatedFields,
       previous,
-      current: saved.isPinned,
+      current: updates,
     });
 
     return saved;
+  }
+
+  private getCityUpdates(
+    input: UpdateCityParams['input'],
+  ): Partial<Pick<CityEntity, 'cityName' | 'lat' | 'lon' | 'isPinned'>> {
+    return {
+      ...(input.cityName !== undefined ? { cityName: input.cityName } : {}),
+      ...(input.lat !== undefined ? { lat: input.lat } : {}),
+      ...(input.lon !== undefined ? { lon: input.lon } : {}),
+      ...(input.isPinned !== undefined ? { isPinned: input.isPinned } : {}),
+    };
   }
 
   private async findCityOrFail(params: CityByIdParams): Promise<CityEntity> {

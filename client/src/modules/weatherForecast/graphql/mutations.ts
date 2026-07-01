@@ -12,9 +12,9 @@ export const ADD_CITY_MUTATION = gql`
   }
 `;
 
-export const TOGGLE_CITY_PIN = gql`
-  mutation TogglePinnedCity($id: ID!) {
-    togglePinnedCity(id: $id) {
+export const UPDATE_CITY_MUTATION = gql`
+  mutation UpdateCity($id: ID!, $input: UpdateCityInput!) {
+    updateCity(id: $id, input: $input) {
       id
       isPinned
     }

@@ -64,7 +64,13 @@ describe('CitiesResolver', () => {
   });
 
   it('city should call getCityById with userId and id', async () => {
-    const city = { id: '1', cityName: 'Kyiv', lat: 50, lon: 30, isPinned: false };
+    const city = {
+      id: '1',
+      cityName: 'Kyiv',
+      lat: 50,
+      lon: 30,
+      isPinned: false,
+    };
     ctx.citiesService.getCityById.mockResolvedValue(city);
 
     const result = await ctx.resolver.city(user, '1');
@@ -83,7 +89,13 @@ describe('CitiesResolver', () => {
   });
 
   it('cityByName should call getCityByName', async () => {
-    const city = { id: '2', cityName: 'Lviv', lat: 49, lon: 24, isPinned: false };
+    const city = {
+      id: '2',
+      cityName: 'Lviv',
+      lat: 49,
+      lon: 24,
+      isPinned: false,
+    };
     ctx.citiesService.getCityByName.mockResolvedValue(city);
 
     const result = await ctx.resolver.cityByName(user, 'Lviv');
@@ -111,7 +123,13 @@ describe('CitiesResolver', () => {
   });
 
   it('addCity should call service.addCity', async () => {
-    const city = { id: '3', cityName: 'Odesa', lat: 46, lon: 30, isPinned: false };
+    const city = {
+      id: '3',
+      cityName: 'Odesa',
+      lat: 46,
+      lon: 30,
+      isPinned: false,
+    };
     ctx.citiesService.addCity.mockResolvedValue(city);
 
     const result = await ctx.resolver.addCity(user, {
@@ -137,7 +155,13 @@ describe('CitiesResolver', () => {
   });
 
   it('removeCity should call service.removeCity', async () => {
-    const city = { id: '4', cityName: 'Dnipro', lat: 48, lon: 35, isPinned: false };
+    const city = {
+      id: '4',
+      cityName: 'Dnipro',
+      lat: 48,
+      lon: 35,
+      isPinned: false,
+    };
     ctx.citiesService.removeCity.mockResolvedValue(city);
 
     const result = await ctx.resolver.removeCity(user, '4');
@@ -174,30 +198,44 @@ describe('CitiesResolver', () => {
     await expect(ctx.resolver.removeAllCities(user)).rejects.toThrow('fail');
   });
 
-  it('togglePinnedCity should call service.togglePinnedCity', async () => {
-    const city = { id: '5', cityName: 'Kharkiv', lat: 50, lon: 36, isPinned: true };
-    ctx.citiesService.togglePinnedCity.mockResolvedValue(city);
+  it('updateCity should call service.updateCity', async () => {
+    const city = {
+      id: '5',
+      cityName: 'Kharkiv',
+      lat: 50,
+      lon: 36,
+      isPinned: true,
+    };
+    const input = { isPinned: true };
+    ctx.citiesService.updateCity.mockResolvedValue(city);
 
-    const result = await ctx.resolver.togglePinnedCity(user, '5');
+    const result = await ctx.resolver.updateCity(user, '5', input);
 
-    expect(ctx.citiesService.togglePinnedCity).toHaveBeenCalledWith({
+    expect(ctx.citiesService.updateCity).toHaveBeenCalledWith({
       userId: 'u1',
       id: '5',
+      input,
     });
 
     expect(result).toEqual(city);
   });
 
-  it('should propagate error from togglePinnedCity', async () => {
-    ctx.citiesService.togglePinnedCity.mockRejectedValue(new Error('fail'));
+  it('should propagate error from updateCity', async () => {
+    ctx.citiesService.updateCity.mockRejectedValue(new Error('fail'));
 
-    await expect(ctx.resolver.togglePinnedCity(user, '5')).rejects.toThrow(
-      'fail',
-    );
+    await expect(
+      ctx.resolver.updateCity(user, '5', { isPinned: true }),
+    ).rejects.toThrow('fail');
   });
 
   it('weather should call weatherService.getWeatherPreview', async () => {
-    const city = { id: '6', cityName: 'Sumy', lat: 50, lon: 30, isPinned: false };
+    const city = {
+      id: '6',
+      cityName: 'Sumy',
+      lat: 50,
+      lon: 30,
+      isPinned: false,
+    };
 
     const weather = {
       temperature: 20,

@@ -6,27 +6,30 @@ import { createMutationResult } from '@/common/testing/factories';
 
 vi.mock('@apollo/client/react');
 
-type ToggleCityPinMutation = {
-  togglePinnedCity: {
+type UpdateCityMutation = {
+  updateCity: {
     __typename: 'CityOutput';
     id: string;
     isPinned: boolean;
   } | null;
 };
 
-type ToggleCityPinVariables = {
+type UpdateCityVariables = {
   id: string;
+  input: {
+    isPinned: boolean;
+  };
 };
 
 type MutateFn = (options: {
-  variables: ToggleCityPinVariables;
-  optimisticResponse: ToggleCityPinMutation;
+  variables: UpdateCityVariables;
+  optimisticResponse: UpdateCityMutation;
   update?: (
     cache: {
       modify: ReturnType<typeof vi.fn>;
       identify: ReturnType<typeof vi.fn>;
     },
-    result: { data?: ToggleCityPinMutation | null },
+    result: { data?: UpdateCityMutation | null },
   ) => void;
 }) => Promise<void>;
 
@@ -55,7 +58,7 @@ describe('useTogglePinned', () => {
         },
         {
           data: {
-            togglePinnedCity: {
+            updateCity: {
               __typename: 'CityOutput',
               id: '1',
               isPinned: true,
@@ -83,7 +86,7 @@ describe('useTogglePinned', () => {
         },
         {
           data: {
-            togglePinnedCity: {
+            updateCity: {
               __typename: 'CityOutput',
               id: '1',
               isPinned: true,
@@ -98,6 +101,17 @@ describe('useTogglePinned', () => {
     await act(async () => {
       await result.current.togglePinned('1', false);
     });
+
+    expect(mutate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        variables: {
+          id: '1',
+          input: {
+            isPinned: true,
+          },
+        },
+      }),
+    );
 
     const modifyArg = cacheModifyMock.mock.calls[0][0];
 
@@ -114,7 +128,7 @@ describe('useTogglePinned', () => {
         },
         {
           data: {
-            togglePinnedCity: null,
+            updateCity: null,
           },
         },
       );

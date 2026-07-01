@@ -1,5 +1,5 @@
 import { SelectQueryBuilder } from 'typeorm';
-import { AddCityInput, CitiesQueryInput } from './dto';
+import { AddCityInput, CitiesQueryInput, UpdateCityInput } from './dto';
 import { CityEntity } from './entities';
 import { CitySortField } from './city-query.config';
 import { SortOrder } from '@shared/constants';
@@ -22,6 +22,11 @@ export type AddCityParams = {
   userId: string;
   input: AddCityInput;
 };
+
+export type UpdateCityParams = CityByIdParams & {
+  input: UpdateCityInput;
+};
+
 export type GetCitiesParams = {
   userId: string;
 };

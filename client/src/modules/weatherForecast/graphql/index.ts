@@ -6,7 +6,7 @@ export {
 
 export {
   ADD_CITY_MUTATION,
+  UPDATE_CITY_MUTATION,
   REMOVE_CITY_MUTATION,
   REMOVE_ALL_CITIES,
-  TOGGLE_CITY_PIN,
 } from './mutations';

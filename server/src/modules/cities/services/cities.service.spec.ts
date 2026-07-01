@@ -1,4 +1,4 @@
-import { NotFoundException } from '@nestjs/common';
+import { BadRequestException, NotFoundException } from '@nestjs/common';
 
 import { CitiesService } from './cities.service';
 
@@ -187,31 +187,53 @@ describe('CitiesService', () => {
     });
   });
 
-  describe('togglePinned', () => {
-    it('should toggle pinned state and save', async () => {
-      ctx.repo.findOne.mockResolvedValue(DniproCity);
-      ctx.repo.save.mockResolvedValue(PinnedDniproCity);
+  describe('updateCity', () => {
+    it('should update provided city fields and save', async () => {
+      const city = {
+        ...DniproCity,
+      };
+      const previousCityName = city.cityName;
 
-      const result = await service.togglePinnedCity({
-        id: '5',
-        userId: 'u1',
+      ctx.repo.findOne.mockResolvedValue(city);
+      ctx.repo.save.mockResolvedValue({
+        ...city,
+        cityName: 'New Dnipro',
+        isPinned: true,
       });
 
-      expect(ctx.repo.save).toHaveBeenCalledWith(DniproCity);
-
-      expect(ctx.logger.info).toHaveBeenCalledWith(
-        'togglePinned: pinned state updated',
-        {
-          id: PinnedDniproCity.id,
-          previous: false,
-          current: true,
+      const result = await service.updateCity({
+        id: '5',
+        userId: 'u1',
+        input: {
+          cityName: 'New Dnipro',
+          isPinned: true,
         },
-      );
+      });
 
+      expect(ctx.repo.save).toHaveBeenCalledWith({
+        ...city,
+        cityName: 'New Dnipro',
+        isPinned: true,
+      });
+
+      expect(ctx.logger.info).toHaveBeenCalledWith('updateCity: city updated', {
+        id: city.id,
+        fields: ['cityName', 'isPinned'],
+        previous: {
+          cityName: previousCityName,
+          isPinned: false,
+        },
+        current: {
+          cityName: 'New Dnipro',
+          isPinned: true,
+        },
+      });
+
+      expect(result.cityName).toBe('New Dnipro');
       expect(result.isPinned).toBe(true);
     });
 
-    it('should unpin city when city is already pinned', async () => {
+    it('should update isPinned to false when false is provided', async () => {
       const pinnedCity = {
         ...PinnedDniproCity,
       };
@@ -224,30 +246,52 @@ describe('CitiesService', () => {
       ctx.repo.findOne.mockResolvedValue(pinnedCity);
       ctx.repo.save.mockResolvedValue(unpinnedCity);
 
-      const result = await service.togglePinnedCity({
+      const result = await service.updateCity({
         id: String(pinnedCity.id),
         userId: pinnedCity.userId,
+        input: {
+          isPinned: false,
+        },
       });
 
-      expect(ctx.logger.info).toHaveBeenCalledWith(
-        'togglePinned: pinned state updated',
-        {
-          id: pinnedCity.id,
-          previous: true,
-          current: false,
+      expect(ctx.logger.info).toHaveBeenCalledWith('updateCity: city updated', {
+        id: pinnedCity.id,
+        fields: ['isPinned'],
+        previous: {
+          isPinned: true,
         },
-      );
+        current: {
+          isPinned: false,
+        },
+      });
 
       expect(result.isPinned).toBe(false);
+    });
+
+    it('should throw BadRequestException when no fields are provided', async () => {
+      ctx.repo.findOne.mockResolvedValue(DniproCity);
+
+      await expect(
+        service.updateCity({
+          id: '5',
+          userId: 'u1',
+          input: {},
+        }),
+      ).rejects.toThrow(BadRequestException);
+
+      expect(ctx.repo.save).not.toHaveBeenCalled();
     });
 
     it('should throw NotFoundException when city does not exist', async () => {
       ctx.repo.findOne.mockResolvedValue(null);
 
       await expect(
-        service.togglePinnedCity({
+        service.updateCity({
           id: '999',
           userId: 'u1',
+          input: {
+            isPinned: true,
+          },
         }),
       ).rejects.toThrow(NotFoundException);
 
