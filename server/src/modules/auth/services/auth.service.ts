@@ -45,8 +45,15 @@ export class AuthService {
   @LogMethod()
   async register(params: RegisterParams): Promise<IAuthOutput> {
     const { input, res } = params;
+    const { hash, salt } = await this.passwordHasher.hash({
+      password: input.password,
+    });
 
-    const user = await this.usersService.register(input);
+    const user = await this.usersService.createUser({
+      email: input.email,
+      password: hash,
+      salt,
+    });
     const tokens = await this.generateTokens(user);
     this.setCookies(res, tokens);
     this.logger.info('User registered successfully', {
@@ -68,12 +75,7 @@ export class AuthService {
       throw new UnauthorizedException('Unauthorized');
     }
 
-    const nextVersion = user.refreshTokenVersion + 1;
-
-    await this.usersService.updateRefreshTokenVersion({
-      userId: user.id,
-      version: nextVersion,
-    });
+    await this.usersService.incrementRefreshTokenVersion(user.id);
 
     this.cookieService.clearAccessAndRefreshTokens(res);
 
@@ -110,12 +112,9 @@ export class AuthService {
       throw new UnauthorizedException('Unauthorized');
     }
 
-    const newVersion = user.refreshTokenVersion + 1;
-
-    await this.usersService.updateRefreshTokenVersion({
-      userId: user.id,
-      version: newVersion,
-    });
+    const newVersion = await this.usersService.incrementRefreshTokenVersion(
+      user.id,
+    );
 
     user.refreshTokenVersion = newVersion;
     const tokens = await this.generateTokens(user);

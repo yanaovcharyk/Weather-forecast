@@ -1,4 +1,5 @@
-export type UpdateRefreshTokenVersionParams = {
-  userId: string;
-  version: number;
-}
+export type CreateUserParams = {
+  email: string;
+  password: string;
+  salt: string;
+};

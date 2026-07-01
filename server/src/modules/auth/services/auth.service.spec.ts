@@ -84,7 +84,11 @@ describe('AuthService', () => {
 
   describe('register', () => {
     it('should register user successfully', async () => {
-      ctx.usersService.register.mockResolvedValue(MockUser);
+      ctx.passwordHasher.hash.mockResolvedValue({
+        hash: MockUser.password,
+        salt: MockUser.salt,
+      });
+      ctx.usersService.create.mockResolvedValue(MockUser);
 
       ctx.tokenService.createAccessToken.mockResolvedValue(
         ACCESS_TOKEN_FIXTURE,
@@ -104,7 +108,14 @@ describe('AuthService', () => {
 
       expect(result).toEqual({ success: true });
 
-      expect(ctx.usersService.register).toHaveBeenCalled();
+      expect(ctx.passwordHasher.hash).toHaveBeenCalledWith({
+        password: RegisterInputFixture.password,
+      });
+      expect(ctx.usersService.create).toHaveBeenCalledWith({
+        email: MockUser.email,
+        password: MockUser.password,
+        salt: MockUser.salt,
+      });
 
       expect(ctx.cookieService.setAccessToken).toHaveBeenCalledWith(
         ctx.res,
@@ -129,10 +140,9 @@ describe('AuthService', () => {
 
       expect(result).toEqual({ success: true });
 
-      expect(ctx.usersService.updateRefreshTokenVersion).toHaveBeenCalledWith({
-        userId: MockUser.id,
-        version: MockUser.refreshTokenVersion + 1,
-      });
+      expect(ctx.usersService.incrementRefreshTokenVersion).toHaveBeenCalledWith(
+        MockUser.id,
+      );
 
       expect(ctx.cookieService.clearAccessAndRefreshTokens).toHaveBeenCalledWith(
         ctx.res,
@@ -162,6 +172,9 @@ describe('AuthService', () => {
       ctx.usersService.findById.mockResolvedValue({
         ...MockUser,
       });
+      ctx.usersService.incrementRefreshTokenVersion.mockResolvedValue(
+        MockUser.refreshTokenVersion + 1,
+      );
 
       ctx.tokenService.createAccessToken.mockResolvedValue(
         ACCESS_TOKEN_FIXTURE,
@@ -178,10 +191,9 @@ describe('AuthService', () => {
 
       expect(result).toEqual({ success: true });
 
-      expect(ctx.usersService.updateRefreshTokenVersion).toHaveBeenCalledWith({
-        userId: MockUser.id,
-        version: MockUser.refreshTokenVersion + 1,
-      });
+      expect(ctx.usersService.incrementRefreshTokenVersion).toHaveBeenCalledWith(
+        MockUser.id,
+      );
 
       expect(ctx.cookieService.setAccessToken).toHaveBeenCalledWith(
         ctx.res,

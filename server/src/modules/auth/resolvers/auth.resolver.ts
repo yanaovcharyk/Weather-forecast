@@ -1,8 +1,8 @@
-import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
+import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { UnauthorizedException, UseGuards } from '@nestjs/common';
-import { LoginInput, RegisterInput, AuthOutput, MeOutput } from '@auth/dto';
+import { LoginInput, RegisterInput, AuthOutput } from '@auth/dto';
 import { AuthService } from '@auth/services';
-import { AccessJwtGuard, RefreshJwtGuard } from '@auth/guards';
+import { RefreshJwtGuard } from '@auth/guards';
 import { AppLoggerService } from '@logger/services';
 import { LogResolver } from '@logger/decorators';
 import { CurrentUser } from '@auth/decorators';
@@ -64,12 +64,4 @@ export class AuthResolver {
     });
   }
 
-  @Query(() => MeOutput)
-  @UseGuards(AccessJwtGuard)
-  @LogResolver()
-  async me(@CurrentUser() user: ICurrentUser) {
-    return {
-      userId: user.id,
-    };
-  }
 }

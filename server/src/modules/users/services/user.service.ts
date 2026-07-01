@@ -1,13 +1,12 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { UserEntity } from '@users/entities';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Pbkdf2PasswordHasher } from '@auth/services';
-import { RegisterInput } from '@auth/dto';
 import { AppLoggerService } from '@logger/services';
-import { UpdateRefreshTokenVersionParams } from '@users/types';
+import { CreateUserParams } from '@users/types';
 import { IUserEntity } from '@users/interfaces';
 import { LogResolver } from '@logger/index';
+
 @Injectable()
 export class UserService {
   private readonly logger;
@@ -15,7 +14,6 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
-    private readonly passwordHasher: Pbkdf2PasswordHasher,
     loggerService: AppLoggerService,
   ) {
     this.logger = loggerService.child(UserService.name);
@@ -32,38 +30,31 @@ export class UserService {
   }
 
   @LogResolver()
-  async register(input: RegisterInput): Promise<IUserEntity> {
-    const { hash, salt } = await this.passwordHasher.hash({
-      password: input.password,
+  async createUser(params: CreateUserParams): Promise<IUserEntity> {
+    const user = this.userRepository.create(params);
+    const savedUser = await this.userRepository.save(user);
+
+    this.logger.info('User created', {
+      userId: savedUser.id,
     });
 
-    const user = this.userRepository.create({
-      email: input.email,
-      password: hash,
-      salt,
-    });
-
-    const saved = await this.userRepository.save(user);
-
-    this.logger.info('User registered', {
-      userId: saved.id,
-    });
-
-    return saved;
+    return savedUser;
   }
 
   @LogResolver()
-  async createUser(data: Partial<UserEntity>): Promise<IUserEntity> {
-    const user = this.userRepository.create(data);
-    return this.userRepository.save(user);
-  }
+  async incrementRefreshTokenVersion(userId: string): Promise<number> {
+    await this.userRepository.increment(
+      { id: userId },
+      'refreshTokenVersion',
+      1,
+    );
 
-  @LogResolver()
-  async updateRefreshTokenVersion(
-    params: UpdateRefreshTokenVersionParams,
-  ): Promise<void> {
-    await this.userRepository.update(params.userId, {
-      refreshTokenVersion: params.version,
-    });
+    const user = await this.findById(userId);
+
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+
+    return user.refreshTokenVersion;
   }
 }

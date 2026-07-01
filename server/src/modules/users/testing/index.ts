@@ -1,6 +1,7 @@
 export {
-  createPasswordHasherMock,
   createUserRepositoryMock,
   createUserServiceContext,
   UserServiceTestContext,
+  createUsersResolverContext,
+  UsersResolverTestContext,
 } from './contexts';

@@ -143,23 +143,4 @@ describe('AuthResolver', () => {
     });
   });
 
-  describe('me', () => {
-    it('should return current user', async () => {
-      const result = await resolver.me({
-        id: MockUser.id,
-      });
-
-      expect(result).toEqual({
-        userId: MockUser.id,
-      });
-    });
-
-    it('should handle missing user id', async () => {
-      const result = await resolver.me({ id: undefined } as any);
-
-      expect(result).toEqual({
-        userId: undefined,
-      });
-    });
-  });
 });

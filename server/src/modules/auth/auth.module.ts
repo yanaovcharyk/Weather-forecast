@@ -11,6 +11,7 @@ import { AuthService } from './services/auth.service';
 import { Pbkdf2PasswordHasher } from './services';
 import { AuthCookieService } from './services/auth-cookie.service';
 import { AccessJwtGuard, RefreshJwtGuard } from './guards';
+import { UsersResolver } from '@users/resolvers';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { AccessJwtGuard, RefreshJwtGuard } from './guards';
   ],
   providers: [
     AuthResolver,
+    UsersResolver,
     AuthService,
     AuthTokenService,
     AuthCookieService,
