@@ -13,28 +13,52 @@ import {
   OdesaCity,
   KharkivCity,
   DniproCity,
-  PinnedDniproCity,
-} from '@cities/testing/fixtures/city.fixture';
-import { citySuggestionsFixture } from '@cities/testing/fixtures';
+  NewDniproCityName,
+  UnpinnedDniproCity,
+  UpdatedDniproCity,
+  UpdateDniproCityParams,
+  UpdatePinnedDniproCityParams,
+  citySuggestionsFixture,
+} from '@cities/testing/fixtures';
 
 describe('CitiesService', () => {
   let service: CitiesService;
   let ctx: CitiesServiceTestContext;
+
+  const mockCityUpdateSuccess = (city = UpdatedDniproCity) => {
+    ctx.repo.update.mockResolvedValue({
+      affected: 1,
+    });
+    ctx.repo.findOne.mockResolvedValue(city);
+  };
+
+  const expectCityUpdate = (
+    params: { id: string; userId: string },
+    updates: Record<string, unknown>,
+  ) => {
+    expect(ctx.repo.update).toHaveBeenCalledWith(
+      {
+        id: params.id,
+        userId: params.userId,
+      },
+      updates,
+    );
+  };
 
   beforeEach(async () => {
     ctx = await createCitiesServiceContext();
     service = ctx.service;
   });
 
-  describe('searchCities', () => {
+  describe('getCitySuggestions', () => {
     it('should delegate request to open weather city api', async () => {
-      ctx.openWeatherCityApi.searchCities.mockResolvedValue(
+      ctx.openWeatherCityApi.getCitySuggestions.mockResolvedValue(
         citySuggestionsFixture,
       );
 
-      const result = await service.searchCities('Kyiv');
+      const result = await service.getCitySuggestions('Kyiv');
 
-      expect(ctx.openWeatherCityApi.searchCities).toHaveBeenCalledWith('Kyiv');
+      expect(ctx.openWeatherCityApi.getCitySuggestions).toHaveBeenCalledWith('Kyiv');
       expect(result).toEqual(citySuggestionsFixture);
     });
   });
@@ -67,11 +91,11 @@ describe('CitiesService', () => {
     });
   });
 
-  describe('addCity', () => {
+  describe('addSavedCity', () => {
     it('should return existing city if found', async () => {
       ctx.repo.findOne.mockResolvedValue(KyivCity);
 
-      const result = await service.addCity({
+      const result = await service.addSavedCity({
         userId: 'u1',
         input: {
           cityName: 'Kyiv',
@@ -90,7 +114,7 @@ describe('CitiesService', () => {
       ctx.repo.create.mockReturnValue(LvivCity);
       ctx.repo.save.mockResolvedValue(LvivCity);
 
-      const result = await service.addCity({
+      const result = await service.addSavedCity({
         userId: 'u1',
         input: {
           cityName: 'Lviv',
@@ -111,11 +135,11 @@ describe('CitiesService', () => {
     });
   });
 
-  describe('getCityByName', () => {
+  describe('getSavedCityByName', () => {
     it('should return city when found', async () => {
       ctx.repo.findOne.mockResolvedValue(OdesaCity);
 
-      const result = await service.getCityByName({
+      const result = await service.getSavedCityByName({
         userId: 'u1',
         cityName: 'Odesa',
       });
@@ -126,7 +150,7 @@ describe('CitiesService', () => {
     it('should return null when not found', async () => {
       ctx.repo.findOne.mockResolvedValue(null);
 
-      const result = await service.getCityByName({
+      const result = await service.getSavedCityByName({
         userId: 'u1',
         cityName: 'Dnipro',
       });
@@ -135,12 +159,12 @@ describe('CitiesService', () => {
     });
   });
 
-  describe('removeCity', () => {
+  describe('removeSavedCity', () => {
     it('should remove city when found', async () => {
       ctx.repo.findOne.mockResolvedValue(KharkivCity);
       ctx.repo.remove.mockResolvedValue(KharkivCity);
 
-      const result = await service.removeCity({
+      const result = await service.removeSavedCity({
         id: '4',
         userId: 'u1',
       });
@@ -153,7 +177,7 @@ describe('CitiesService', () => {
       ctx.repo.findOne.mockResolvedValue(null);
 
       await expect(
-        service.removeCity({
+        service.removeSavedCity({
           id: '99',
           userId: 'u1',
         }),
@@ -161,13 +185,13 @@ describe('CitiesService', () => {
     });
   });
 
-  describe('removeAllCities', () => {
+  describe('removeAllSavedCities', () => {
     it('should call delete and log affected count', async () => {
       ctx.repo.delete.mockResolvedValue({
         affected: 2,
       });
 
-      await service.removeAllCities({
+      await service.removeAllSavedCities({
         userId: 'u1',
       });
 
@@ -176,7 +200,7 @@ describe('CitiesService', () => {
       });
 
       expect(ctx.logger.info).toHaveBeenCalledWith(
-        'removeAllCities: cities removed',
+        'removeAllSavedCities: cities removed',
         {
           affected: 2,
         },
@@ -188,12 +212,12 @@ describe('CitiesService', () => {
         affected: undefined,
       });
 
-      await service.removeAllCities({
+      await service.removeAllSavedCities({
         userId: 'u1',
       });
 
       expect(ctx.logger.info).toHaveBeenCalledWith(
-        'removeAllCities: cities removed',
+        'removeAllSavedCities: cities removed',
         {
           affected: 0,
         },
@@ -201,114 +225,108 @@ describe('CitiesService', () => {
     });
   });
 
-  describe('updateCity', () => {
-    it('should update provided city fields and save', async () => {
-      const city = {
-        ...DniproCity,
-      };
-      const previousCityName = city.cityName;
+  describe('updateSavedCity', () => {
+    it('should update provided city fields and return updated city', async () => {
+      mockCityUpdateSuccess();
 
-      ctx.repo.findOne.mockResolvedValue(city);
-      ctx.repo.save.mockResolvedValue({
-        ...city,
-        cityName: 'New Dnipro',
-        isPinned: true,
-      });
+      const result = await service.updateSavedCity(UpdateDniproCityParams);
 
-      const result = await service.updateCity({
-        id: '5',
-        userId: 'u1',
-        input: {
-          cityName: 'New Dnipro',
-          isPinned: true,
+      expectCityUpdate(UpdateDniproCityParams, UpdateDniproCityParams.input);
+
+      expect(ctx.repo.findOne).toHaveBeenCalledWith({
+        where: {
+          id: UpdateDniproCityParams.id,
+          userId: UpdateDniproCityParams.userId,
         },
       });
 
-      expect(ctx.repo.save).toHaveBeenCalledWith({
-        ...city,
-        cityName: 'New Dnipro',
-        isPinned: true,
-      });
-
-      expect(ctx.logger.info).toHaveBeenCalledWith('updateCity: city updated', {
-        id: city.id,
+      expect(ctx.logger.info).toHaveBeenCalledWith('updateSavedCity: city updated', {
+        id: UpdateDniproCityParams.id,
         fields: ['cityName', 'isPinned'],
-        previous: {
-          cityName: previousCityName,
-          isPinned: false,
-        },
-        current: {
-          cityName: 'New Dnipro',
-          isPinned: true,
-        },
+        current: UpdateDniproCityParams.input,
       });
 
-      expect(result.cityName).toBe('New Dnipro');
-      expect(result.isPinned).toBe(true);
+      expect(result).toEqual(UpdatedDniproCity);
     });
 
     it('should update isPinned to false when false is provided', async () => {
-      const pinnedCity = {
-        ...PinnedDniproCity,
-      };
+      mockCityUpdateSuccess(UnpinnedDniproCity);
 
-      const unpinnedCity = {
-        ...PinnedDniproCity,
-        isPinned: false,
-      };
+      const result = await service.updateSavedCity(UpdatePinnedDniproCityParams);
 
-      ctx.repo.findOne.mockResolvedValue(pinnedCity);
-      ctx.repo.save.mockResolvedValue(unpinnedCity);
+      expectCityUpdate(
+        UpdatePinnedDniproCityParams,
+        UpdatePinnedDniproCityParams.input,
+      );
 
-      const result = await service.updateCity({
-        id: String(pinnedCity.id),
-        userId: pinnedCity.userId,
-        input: {
-          isPinned: false,
-        },
-      });
-
-      expect(ctx.logger.info).toHaveBeenCalledWith('updateCity: city updated', {
-        id: pinnedCity.id,
+      expect(ctx.logger.info).toHaveBeenCalledWith('updateSavedCity: city updated', {
+        id: UpdatePinnedDniproCityParams.id,
         fields: ['isPinned'],
-        previous: {
-          isPinned: true,
-        },
-        current: {
-          isPinned: false,
-        },
+        current: UpdatePinnedDniproCityParams.input,
       });
 
       expect(result.isPinned).toBe(false);
     });
 
-    it('should throw BadRequestException when no fields are provided', async () => {
-      ctx.repo.findOne.mockResolvedValue(DniproCity);
+    it('should remove undefined fields before update', async () => {
+      mockCityUpdateSuccess({
+        ...DniproCity,
+        cityName: NewDniproCityName,
+      });
 
+      await service.updateSavedCity({
+        id: DniproCity.id,
+        userId: DniproCity.userId,
+        input: {
+          cityName: NewDniproCityName,
+          isPinned: undefined,
+        },
+      });
+
+      expectCityUpdate(DniproCity, {
+        cityName: NewDniproCityName,
+      });
+    });
+
+    it('should throw BadRequestException when no fields are provided', async () => {
       await expect(
-        service.updateCity({
+        service.updateSavedCity({
           id: '5',
           userId: 'u1',
           input: {},
         }),
       ).rejects.toThrow(BadRequestException);
 
+      expect(ctx.repo.update).not.toHaveBeenCalled();
       expect(ctx.repo.save).not.toHaveBeenCalled();
     });
 
     it('should throw NotFoundException when city does not exist', async () => {
-      ctx.repo.findOne.mockResolvedValue(null);
+      ctx.repo.update.mockResolvedValue({
+        affected: 0,
+      });
 
       await expect(
-        service.updateCity({
+        service.updateSavedCity({
           id: '999',
-          userId: 'u1',
+          userId: DniproCity.userId,
           input: {
             isPinned: true,
           },
         }),
       ).rejects.toThrow(NotFoundException);
 
+      expect(ctx.repo.update).toHaveBeenCalledWith(
+        {
+          id: '999',
+          userId: DniproCity.userId,
+        },
+        {
+          isPinned: true,
+        },
+      );
+
+      expect(ctx.repo.findOne).not.toHaveBeenCalled();
       expect(ctx.repo.save).not.toHaveBeenCalled();
     });
   });

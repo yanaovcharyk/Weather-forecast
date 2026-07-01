@@ -1,8 +1,8 @@
 import { useMutation } from '@apollo/client/react';
-import { UPDATE_CITY_MUTATION } from '@/weatherForecast/graphql';
+import { UPDATE_SAVED_CITY_MUTATION } from '@/weatherForecast/graphql';
 
 export type UpdateCityMutation = {
-  updateCity: {
+  updateSavedCity: {
     __typename: 'CityOutput';
     id: string;
     isPinned: boolean;
@@ -20,7 +20,7 @@ export const useTogglePinned = () => {
   const [toggleCityPinMutation, { loading }] = useMutation<
     UpdateCityMutation,
     UpdateCityVariables
-  >(UPDATE_CITY_MUTATION);
+  >(UPDATE_SAVED_CITY_MUTATION);
 
   const togglePinned = async (id: string, currentPinned: boolean) => {
     await toggleCityPinMutation({
@@ -32,7 +32,7 @@ export const useTogglePinned = () => {
       },
 
       optimisticResponse: {
-        updateCity: {
+        updateSavedCity: {
           __typename: 'CityOutput',
           id,
           isPinned: !currentPinned,
@@ -40,7 +40,7 @@ export const useTogglePinned = () => {
       },
 
       update(cache, { data }) {
-        const city = data?.updateCity;
+        const city = data?.updateSavedCity;
         if (!city) {
           return;
         }

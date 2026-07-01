@@ -11,20 +11,20 @@ import { createContext } from '@shared/testing/utils/create-context';
 
 export function createCitiesServiceMock() {
   return {
-    searchCities: jest.fn(),
+    getCitySuggestions: jest.fn(),
     getCityById: jest.fn(),
-    getCityByName: jest.fn(),
-    addCity: jest.fn(),
-    removeCity: jest.fn(),
-    removeAllCities: jest.fn(),
-    updateCity: jest.fn(),
+    getSavedCityByName: jest.fn(),
+    addSavedCity: jest.fn(),
+    removeSavedCity: jest.fn(),
+    removeAllSavedCities: jest.fn(),
+    updateSavedCity: jest.fn(),
   };
 }
 
 export function createCitiesQueryServiceMock() {
   return {
-    getCities: jest.fn(),
-    getCitiesPaginated: jest.fn(),
+    getSavedCities: jest.fn(),
+    getSavedCitiesPaginated: jest.fn(),
   };
 }
 

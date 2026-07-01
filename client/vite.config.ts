@@ -34,6 +34,7 @@ export default defineConfig(({ mode }) => {
       css: false,
       globals: true,
       clearMocks: true,
+      fileParallelism: false,
       testTimeout: 10000,
 
       coverage: {

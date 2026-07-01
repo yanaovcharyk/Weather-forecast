@@ -9,7 +9,7 @@ import type {
 import { GET_CITY_BY_ID, GET_WEATHER_DETAILS } from '@/weatherDetails/graphql';
 
 export type CityWeatherResult = {
-  cityName: GetCityByIdResponse['city']['cityName'] | undefined;
+  cityName: GetCityByIdResponse['getCityById']['cityName'] | undefined;
   weather: GetWeatherDetailsResponse['getWeatherDetails'] | undefined;
   loading: boolean;
   error: Error | undefined;
@@ -28,8 +28,8 @@ export const useCityWeather = (): CityWeatherResult => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const lat = cityData?.city?.lat;
-  const lon = cityData?.city?.lon;
+  const lat = cityData?.getCityById?.lat;
+  const lon = cityData?.getCityById?.lon;
 
   const {
     data: weatherData,
@@ -42,7 +42,7 @@ export const useCityWeather = (): CityWeatherResult => {
   });
 
   return {
-    cityName: cityData?.city?.cityName,
+    cityName: cityData?.getCityById?.cityName,
     weather: weatherData?.getWeatherDetails,
     loading: cityLoading || weatherLoading,
     error: cityError || weatherError,

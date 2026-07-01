@@ -66,7 +66,7 @@ describe('useAddCity', () => {
     expect(result.current.loading).toBe(false);
   });
 
-  it('adds city and clears citiesPaginated cache after successful mutation', async () => {
+  it('adds city and clears getSavedCitiesPaginated cache after successful mutation', async () => {
     const addedCity: City = {
       id: '1',
       cityName: 'Kyiv',
@@ -78,7 +78,7 @@ describe('useAddCity', () => {
 
     executeAddCityMutationMock.mockResolvedValue({
       data: {
-        addCity: addedCity,
+        addSavedCity: addedCity,
       },
     });
 
@@ -103,11 +103,11 @@ describe('useAddCity', () => {
     expect(addCityResult).toEqual(addedCity);
 
     runCapturedApolloCacheUpdate({
-      addCity: addedCity,
+      addSavedCity: addedCity,
     });
 
     expect(evictCitiesPaginatedCacheMock).toHaveBeenCalledWith({
-      fieldName: 'citiesPaginated',
+      fieldName: 'getSavedCitiesPaginated',
     });
 
     expect(runApolloCacheGarbageCollectionMock).toHaveBeenCalled();

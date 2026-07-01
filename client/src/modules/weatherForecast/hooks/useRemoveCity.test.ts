@@ -13,7 +13,7 @@ vi.mock('@apollo/client/react', () => ({
 }));
 
 vi.mock('@/weatherForecast/graphql', () => ({
-  REMOVE_CITY_MUTATION: 'REMOVE_CITY_MUTATION',
+  REMOVE_SAVED_CITY_MUTATION: 'REMOVE_SAVED_CITY_MUTATION',
 }));
 
 describe('useRemoveCity', () => {
@@ -74,7 +74,7 @@ describe('useRemoveCity', () => {
 
     const modifyCall = cache.modify.mock.calls[0][0];
 
-    const citiesPaginated = modifyCall.fields.citiesPaginated;
+    const getSavedCitiesPaginated = modifyCall.fields.getSavedCitiesPaginated;
 
     const existingConnection = {
       edges: [{ id: 'edge1' }, { id: 'edge2' }],
@@ -94,7 +94,7 @@ describe('useRemoveCity', () => {
       }
     });
 
-    const result = citiesPaginated(existingConnection, { readField });
+    const result = getSavedCitiesPaginated(existingConnection, { readField });
 
     expect(result.edges).toEqual([{ id: 'edge2' }]);
 
@@ -133,9 +133,9 @@ describe('useRemoveCity', () => {
 
     const modifyCall = cache.modify.mock.calls[0][0];
 
-    const citiesPaginated = modifyCall.fields.citiesPaginated;
+    const getSavedCitiesPaginated = modifyCall.fields.getSavedCitiesPaginated;
 
-    const result = citiesPaginated(undefined, {
+    const result = getSavedCitiesPaginated(undefined, {
       readField: vi.fn(),
     });
 

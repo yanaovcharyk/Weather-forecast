@@ -1,9 +1,9 @@
 import { useMutation } from '@apollo/client/react';
-import { ADD_CITY_MUTATION } from '@/weatherForecast/graphql';
+import { ADD_SAVED_CITY_MUTATION } from '@/weatherForecast/graphql';
 import type { City } from '@/weatherForecast/types';
 
 export type AddCityMutation = {
-  addCity: City;
+  addSavedCity: City;
 };
 
 export type AddCityVariables = {
@@ -16,15 +16,15 @@ export type AddCityVariables = {
 
 export const useAddCity = () => {
   const [mutate, { loading }] = useMutation<AddCityMutation, AddCityVariables>(
-    ADD_CITY_MUTATION,
+    ADD_SAVED_CITY_MUTATION,
     {
       update(cache, { data }) {
-        if (!data?.addCity) {
+        if (!data?.addSavedCity) {
           return;
         }
 
         cache.evict({
-          fieldName: 'citiesPaginated',
+          fieldName: 'getSavedCitiesPaginated',
         });
 
         cache.gc();
@@ -43,7 +43,7 @@ export const useAddCity = () => {
       },
     });
 
-    return data?.addCity ?? null;
+    return data?.addSavedCity ?? null;
   };
 
   return {

@@ -43,7 +43,7 @@ export const createApolloClient = ({
 
         Query: {
           fields: {
-            citiesPaginated: {
+            getSavedCitiesPaginated: {
               keyArgs: ['query', ['sorting', 'showPinnedOnly']],
 
               merge(existing, incoming, { args, readField }) {

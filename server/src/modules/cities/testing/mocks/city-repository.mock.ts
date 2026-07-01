@@ -6,6 +6,7 @@ export function createCityRepositoryMock() {
     save: jest.fn(),
     remove: jest.fn(),
     delete: jest.fn(),
+    update: jest.fn(),
     createQueryBuilder: jest.fn(() => ({
       where: jest.fn().mockReturnThis(),
       andWhere: jest.fn().mockReturnThis(),
@@ -17,4 +18,3 @@ export function createCityRepositoryMock() {
 }
 
 export type CityRepositoryMock = ReturnType<typeof createCityRepositoryMock>;
-

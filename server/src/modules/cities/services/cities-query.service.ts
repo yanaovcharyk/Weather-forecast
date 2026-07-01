@@ -16,8 +16,8 @@ import {
   ApplyPaginationParams,
   ApplySortingParams,
   AppliedSorting,
-  GetCitiesPaginatedParams,
-  GetCitiesParams,
+  GetSavedCitiesPaginatedParams,
+  GetSavedCitiesParams,
   BuildCitiesConnectionParams,
 } from '@cities/types';
 import { AppLoggerService } from '@logger/services';
@@ -38,7 +38,7 @@ export class CitiesQueryService {
   @LogMethod({
     shouldLogResult: true,
   })
-  async getCities(params: GetCitiesParams): Promise<CityOutput[]> {
+  async getSavedCities(params: GetSavedCitiesParams): Promise<CityOutput[]> {
     const { userId } = params;
 
     const cities = await this.cityRepository.find({
@@ -52,8 +52,8 @@ export class CitiesQueryService {
   @LogMethod({
     shouldLogArguments: true,
   })
-  async getCitiesPaginated(
-    params: GetCitiesPaginatedParams,
+  async getSavedCitiesPaginated(
+    params: GetSavedCitiesPaginatedParams,
   ): Promise<CitiesConnection> {
     const { userId, query } = params;
 

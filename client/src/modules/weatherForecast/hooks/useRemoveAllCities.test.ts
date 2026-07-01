@@ -12,7 +12,7 @@ vi.mock('@apollo/client/react', () => ({
 }));
 
 vi.mock('@/weatherForecast/graphql', () => ({
-  REMOVE_ALL_CITIES: 'REMOVE_ALL_CITIES',
+  REMOVE_ALL_SAVED_CITIES: 'REMOVE_ALL_SAVED_CITIES',
 }));
 
 describe('useRemoveAllCities', () => {
@@ -33,7 +33,7 @@ describe('useRemoveAllCities', () => {
   it('should return ok=true when mutation succeeds', async () => {
     mockMutate.mockResolvedValue({
       data: {
-        removeAllCities: true,
+        removeAllSavedCities: true,
       },
     });
 
@@ -56,7 +56,7 @@ describe('useRemoveAllCities', () => {
   it('should return ok=false when mutation returns false', async () => {
     mockMutate.mockResolvedValue({
       data: {
-        removeAllCities: false,
+        removeAllSavedCities: false,
       },
     });
 
@@ -108,7 +108,7 @@ describe('useRemoveAllCities', () => {
 
     const modifyCall = cache.modify.mock.calls[0][0];
 
-    const citiesPaginated = modifyCall.fields.citiesPaginated;
+    const getSavedCitiesPaginated = modifyCall.fields.getSavedCitiesPaginated;
 
     const existingConnection = {
       __typename: 'CitiesConnection',
@@ -119,7 +119,7 @@ describe('useRemoveAllCities', () => {
       },
     };
 
-    const result = citiesPaginated(existingConnection);
+    const result = getSavedCitiesPaginated(existingConnection);
 
     expect(result).toEqual({
       __typename: 'CitiesConnection',
@@ -147,9 +147,9 @@ describe('useRemoveAllCities', () => {
 
     const modifyCall = cache.modify.mock.calls[0][0];
 
-    const citiesPaginated = modifyCall.fields.citiesPaginated;
+    const getSavedCitiesPaginated = modifyCall.fields.getSavedCitiesPaginated;
 
-    const result = citiesPaginated(undefined);
+    const result = getSavedCitiesPaginated(undefined);
 
     expect(result).toBe(undefined);
   });

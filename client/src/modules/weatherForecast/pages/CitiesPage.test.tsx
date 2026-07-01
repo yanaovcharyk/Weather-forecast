@@ -199,7 +199,7 @@ describe('CitiesPage', () => {
     expect(setCurrentlySelectedCity).toHaveBeenCalledWith(null);
   });
 
-  it('should pass hasNext=false and loading=true', () => {
+  it('should pass hasNext and loading states', () => {
     mockUseSortingParams.mockReturnValue(
       createSortingParamsResult({
         showPinnedOnly: true,
@@ -214,7 +214,7 @@ describe('CitiesPage', () => {
 
     setup();
 
-    expect(screen.getByText('hasNext:false')).toBeInTheDocument();
+    expect(screen.getByText('hasNext:true')).toBeInTheDocument();
 
     expect(screen.getByText('loading:true')).toBeInTheDocument();
   });

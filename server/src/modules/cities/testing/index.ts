@@ -17,10 +17,15 @@ export {
   KharkivCity,
   KyivCity,
   LvivCity,
+  NewDniproCityName,
   OdesaCity,
   PinnedDniproCity,
+  UnpinnedDniproCity,
+  UpdatedDniproCity,
+  UpdateDniproCityParams,
+  UpdatePinnedDniproCityParams,
   createQueryBuilderMock,
-  searchCitiesResponseFixture,
+  citySuggestionsResponseFixture,
 } from './fixtures';
 export {
   CityRepositoryMock,

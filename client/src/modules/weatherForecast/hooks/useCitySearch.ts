@@ -1,11 +1,11 @@
 import { useLazyQuery } from '@apollo/client/react';
 import { useMemo, useRef } from 'react';
 
-import { SEARCH_CITIES } from '@/weatherForecast/graphql';
+import { GET_CITY_SUGGESTIONS } from '@/weatherForecast/graphql';
 import type {
   CitySelectValue,
-  SearchCitiesData,
-  SearchCitiesVars,
+  CitySuggestionsData,
+  CitySuggestionsVars,
 } from '@/weatherForecast/components/AddCityForm/types';
 import { normalizeCityName } from '@/weatherForecast/utils';
 
@@ -16,9 +16,9 @@ export const useCitySearch = () => {
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const [executeCitySearch, { data, loading }] = useLazyQuery<
-    SearchCitiesData,
-    SearchCitiesVars
-  >(SEARCH_CITIES, {
+    CitySuggestionsData,
+    CitySuggestionsVars
+  >(GET_CITY_SUGGESTIONS, {
     fetchPolicy: 'no-cache',
   });
 
@@ -52,7 +52,7 @@ export const useCitySearch = () => {
 
   const cityOptions = useMemo(() => {
     return (
-      data?.searchCities?.map((city) => ({
+      data?.getCitySuggestions?.map((city) => ({
         label: `${city.name}, ${city.country}`,
 
         value: JSON.stringify({

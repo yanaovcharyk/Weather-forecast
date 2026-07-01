@@ -1,15 +1,15 @@
-export interface SearchCity {
+export interface CitySuggestion {
   name: string;
   country: string;
   lat: number;
   lon: number;
 }
 
-export interface SearchCitiesData {
-  searchCities: SearchCity[];
+export interface CitySuggestionsData {
+  getCitySuggestions: CitySuggestion[];
 }
 
-export interface SearchCitiesVars {
+export interface CitySuggestionsVars {
   input: {
     query: string;
   };

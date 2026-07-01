@@ -25,12 +25,12 @@ describe('CitiesQueryService', () => {
     service = new CitiesQueryService(repo as any, logger as any);
   });
 
-  describe('getCities', () => {
+  describe('getSavedCities', () => {
     it('should call repository.find with userId and return cities', async () => {
       const mockCities = [{ id: '1', cityName: 'Kyiv' }];
       repo.find.mockResolvedValue(mockCities);
 
-      const result = await service.getCities({ userId: 'u1' });
+      const result = await service.getSavedCities({ userId: 'u1' });
 
       expect(repo.find).toHaveBeenCalledWith({
         where: { userId: 'u1' },
@@ -40,7 +40,7 @@ describe('CitiesQueryService', () => {
     });
   });
 
-  describe('getCitiesPaginated', () => {
+  describe('getSavedCitiesPaginated', () => {
     it('should filter pinned cities when showPinnedOnly=true', async () => {
       const qb = {
         where: jest.fn().mockReturnThis(),
@@ -57,7 +57,7 @@ describe('CitiesQueryService', () => {
         pageInfo: { hasNextPage: false, endCursor: 'cursor-1' },
       });
 
-      const result = await service.getCitiesPaginated({
+      const result = await service.getSavedCitiesPaginated({
         userId: 'u1',
         query: {
           showPinnedOnly: true,
@@ -94,7 +94,7 @@ describe('CitiesQueryService', () => {
         },
       });
 
-      await service.getCitiesPaginated({
+      await service.getSavedCitiesPaginated({
         userId: 'u1',
         query: {
           showPinnedOnly: false,
@@ -127,7 +127,7 @@ describe('CitiesQueryService', () => {
         pageInfo: { hasNextPage: false, endCursor: 'cursor-2' },
       });
 
-      const result = await service.getCitiesPaginated({
+      const result = await service.getSavedCitiesPaginated({
         userId: 'u1',
         query: {
           pagination: { limit: 1, cursor: 'encoded-cursor' },
@@ -162,7 +162,7 @@ describe('CitiesQueryService', () => {
         pageInfo: { hasNextPage: false, endCursor: 'cursor-4' },
       });
 
-      await service.getCitiesPaginated({
+      await service.getSavedCitiesPaginated({
         userId: 'u1',
         query: {
           pagination: { limit: 1, cursor: 'encoded-cursor' },
@@ -202,7 +202,7 @@ describe('CitiesQueryService', () => {
         },
       });
 
-      await service.getCitiesPaginated({
+      await service.getSavedCitiesPaginated({
         userId: 'u1',
         query: {
           pagination: { limit: 5 },
@@ -228,7 +228,7 @@ describe('CitiesQueryService', () => {
         pageInfo: { hasNextPage: false, endCursor: 'cursor-3' },
       });
 
-      await service.getCitiesPaginated({
+      await service.getSavedCitiesPaginated({
         userId: 'u1',
         query: {
           pagination: { limit: 5 },
@@ -262,7 +262,7 @@ describe('CitiesQueryService', () => {
         },
       });
 
-      await service.getCitiesPaginated({
+      await service.getSavedCitiesPaginated({
         userId: 'u1',
         query: {
           pagination: { limit: 5 },

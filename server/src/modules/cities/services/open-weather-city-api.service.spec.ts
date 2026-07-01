@@ -9,7 +9,7 @@ import {
   createOpenWeatherCityApiContext,
   OpenWeatherCityApiTestContext,
 } from '@cities/testing/contexts/open-weather-city-api.context';
-import { searchCitiesResponseFixture } from '@cities/testing/fixtures';
+import { citySuggestionsResponseFixture } from '@cities/testing/fixtures';
 
 describe('OpenWeatherCityApiService', () => {
   let ctx: OpenWeatherCityApiTestContext;
@@ -18,10 +18,10 @@ describe('OpenWeatherCityApiService', () => {
     ctx = await createOpenWeatherCityApiContext();
   });
 
-  it('searchCities should call geo API with query', async () => {
-    ctx.httpService.get.mockReturnValue(of(searchCitiesResponseFixture));
+  it('getCitySuggestions should call geo API with query', async () => {
+    ctx.httpService.get.mockReturnValue(of(citySuggestionsResponseFixture));
 
-    const result = await ctx.service.searchCities('Kyiv');
+    const result = await ctx.service.getCitySuggestions('Kyiv');
 
     expect(ctx.httpService.get).toHaveBeenCalledWith(
       `${ctx.openWeatherConfig.geoBaseUrl}${CITY_SEARCH_URL_ENDPOINT}`,
@@ -34,10 +34,10 @@ describe('OpenWeatherCityApiService', () => {
       }),
     );
 
-    expect(result).toEqual(searchCitiesResponseFixture.data);
+    expect(result).toEqual(citySuggestionsResponseFixture.data);
   });
 
-  it('searchCities should throw clear error for invalid OpenWeather API key', async () => {
+  it('getCitySuggestions should throw clear error for invalid OpenWeather API key', async () => {
     ctx.httpService.get.mockReturnValue(
       throwError(() => ({
         isAxiosError: true,
@@ -47,21 +47,21 @@ describe('OpenWeatherCityApiService', () => {
       })),
     );
 
-    await expect(ctx.service.searchCities('Kyiv')).rejects.toThrow(
+    await expect(ctx.service.getCitySuggestions('Kyiv')).rejects.toThrow(
       BadGatewayException,
     );
 
-    await expect(ctx.service.searchCities('Kyiv')).rejects.toThrow(
+    await expect(ctx.service.getCitySuggestions('Kyiv')).rejects.toThrow(
       'Check OPENWEATHER_API_KEY',
     );
   });
 
-  it('searchCities should rethrow non-auth OpenWeather errors', async () => {
+  it('getCitySuggestions should rethrow non-auth OpenWeather errors', async () => {
     const openWeatherError = new Error('OpenWeather is unavailable');
 
     ctx.httpService.get.mockReturnValue(throwError(() => openWeatherError));
 
-    await expect(ctx.service.searchCities('Kyiv')).rejects.toBe(
+    await expect(ctx.service.getCitySuggestions('Kyiv')).rejects.toBe(
       openWeatherError,
     );
   });

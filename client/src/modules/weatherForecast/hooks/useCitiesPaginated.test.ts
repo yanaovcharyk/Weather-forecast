@@ -19,7 +19,7 @@ describe('useCitiesPaginated', () => {
       createQueryResult({
         fetchMore,
         data: {
-          citiesPaginated: {
+          getSavedCitiesPaginated: {
             edges: [
               {
                 node: {
@@ -99,7 +99,7 @@ describe('useCitiesPaginated', () => {
       createQueryResult({
         fetchMore,
         data: {
-          citiesPaginated: {
+          getSavedCitiesPaginated: {
             edges: [],
             pageInfo: {
               hasNextPage: true,
@@ -146,7 +146,7 @@ describe('useCitiesPaginated', () => {
       createQueryResult({
         fetchMore,
         data: {
-          citiesPaginated: {
+          getSavedCitiesPaginated: {
             edges: [],
             pageInfo: {
               hasNextPage: false,

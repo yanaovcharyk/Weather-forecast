@@ -12,14 +12,14 @@ import { createCityRepositoryMock } from '@cities/testing/mocks/city-repository.
 export type CitiesServiceTestContext = {
   service: CitiesService;
   repo: ReturnType<typeof createCityRepositoryMock>;
-  openWeatherCityApi: { searchCities: jest.Mock };
+  openWeatherCityApi: { getCitySuggestions: jest.Mock };
   logger: ReturnType<typeof createLoggerMock>;
 };
 
 export async function createCitiesServiceContext(): Promise<CitiesServiceTestContext> {
   const repo = createCityRepositoryMock();
   const openWeatherCityApi = {
-    searchCities: jest.fn(),
+    getCitySuggestions: jest.fn(),
   };
   const logger = createLoggerMock();
 

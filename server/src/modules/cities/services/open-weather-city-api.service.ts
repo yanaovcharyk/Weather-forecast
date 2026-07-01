@@ -23,7 +23,7 @@ export class OpenWeatherCityApiService {
     };
   }
 
-  async searchCities(query: string): Promise<ICitySuggestion[]> {
+  async getCitySuggestions(query: string): Promise<ICitySuggestion[]> {
     try {
       const { data } = await firstValueFrom(
         this.http.get<ICitySuggestion[]>(

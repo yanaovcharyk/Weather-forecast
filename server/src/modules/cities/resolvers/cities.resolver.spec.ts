@@ -12,27 +12,27 @@ describe('CitiesResolver', () => {
     jest.clearAllMocks();
   });
 
-  it('searchCities should call citiesService.searchCities', async () => {
+  it('getCitySuggestions should call citiesService.getCitySuggestions', async () => {
     const expected = [
       { name: 'Kyiv', country: 'UA', lat: 50, lon: 30 },
       { name: 'Lviv', country: 'UA', lat: 49, lon: 24 },
     ];
-    ctx.citiesService.searchCities.mockResolvedValue(expected);
+    ctx.citiesService.getCitySuggestions.mockResolvedValue(expected);
 
-    const result = await ctx.resolver.searchCities({ query: 'Kyiv' });
+    const result = await ctx.resolver.getCitySuggestions({ query: 'Kyiv' });
 
-    expect(ctx.citiesService.searchCities).toHaveBeenCalledWith('Kyiv');
+    expect(ctx.citiesService.getCitySuggestions).toHaveBeenCalledWith('Kyiv');
     expect(result).toEqual(expected);
   });
 
-  it('cities should call getCities with userId', async () => {
-    ctx.citiesQueryService.getCities.mockResolvedValue([
+  it('getSavedCities should call getSavedCities with userId', async () => {
+    ctx.citiesQueryService.getSavedCities.mockResolvedValue([
       { id: '1', cityName: 'Kyiv', lat: 50, lon: 30, isPinned: false },
     ]);
 
-    const result = await ctx.resolver.cities(user);
+    const result = await ctx.resolver.getSavedCities(user);
 
-    expect(ctx.citiesQueryService.getCities).toHaveBeenCalledWith({
+    expect(ctx.citiesQueryService.getSavedCities).toHaveBeenCalledWith({
       userId: 'u1',
     });
     expect(result).toEqual([
@@ -40,13 +40,13 @@ describe('CitiesResolver', () => {
     ]);
   });
 
-  it('should propagate error from cities', async () => {
-    ctx.citiesQueryService.getCities.mockRejectedValue(new Error('fail'));
+  it('should propagate error from getSavedCities', async () => {
+    ctx.citiesQueryService.getSavedCities.mockRejectedValue(new Error('fail'));
 
-    await expect(ctx.resolver.cities(user)).rejects.toThrow('fail');
+    await expect(ctx.resolver.getSavedCities(user)).rejects.toThrow('fail');
   });
 
-  it('citiesPaginated should call getCitiesPaginated', async () => {
+  it('getSavedCitiesPaginated should call getSavedCitiesPaginated', async () => {
     const query = { limit: 10, cursor: null };
 
     const response = {
@@ -54,11 +54,14 @@ describe('CitiesResolver', () => {
       pageInfo: { hasNextPage: false, endCursor: null },
     };
 
-    ctx.citiesQueryService.getCitiesPaginated.mockResolvedValue(response);
+    ctx.citiesQueryService.getSavedCitiesPaginated.mockResolvedValue(response);
 
-    const result = await ctx.resolver.citiesPaginated(user, query as any);
+    const result = await ctx.resolver.getSavedCitiesPaginated(
+      user,
+      query as any,
+    );
 
-    expect(ctx.citiesQueryService.getCitiesPaginated).toHaveBeenCalledWith({
+    expect(ctx.citiesQueryService.getSavedCitiesPaginated).toHaveBeenCalledWith({
       userId: 'u1',
       query,
     });
@@ -66,17 +69,17 @@ describe('CitiesResolver', () => {
     expect(result).toEqual(response);
   });
 
-  it('should propagate error from citiesPaginated', async () => {
-    ctx.citiesQueryService.getCitiesPaginated.mockRejectedValue(
+  it('should propagate error from getSavedCitiesPaginated', async () => {
+    ctx.citiesQueryService.getSavedCitiesPaginated.mockRejectedValue(
       new Error('fail'),
     );
 
-    await expect(ctx.resolver.citiesPaginated(user, {} as any)).rejects.toThrow(
-      'fail',
-    );
+    await expect(
+      ctx.resolver.getSavedCitiesPaginated(user, {} as any),
+    ).rejects.toThrow('fail');
   });
 
-  it('city should call getCityById with userId and id', async () => {
+  it('getCityById should call getCityById with userId and id', async () => {
     const city = {
       id: '1',
       cityName: 'Kyiv',
@@ -86,7 +89,7 @@ describe('CitiesResolver', () => {
     };
     ctx.citiesService.getCityById.mockResolvedValue(city);
 
-    const result = await ctx.resolver.city(user, '1');
+    const result = await ctx.resolver.getCityById(user, '1');
 
     expect(ctx.citiesService.getCityById).toHaveBeenCalledWith({
       userId: 'u1',
@@ -95,13 +98,13 @@ describe('CitiesResolver', () => {
     expect(result).toEqual(city);
   });
 
-  it('should propagate error from city', async () => {
+  it('should propagate error from getCityById', async () => {
     ctx.citiesService.getCityById.mockRejectedValue(new Error('fail'));
 
-    await expect(ctx.resolver.city(user, '1')).rejects.toThrow('fail');
+    await expect(ctx.resolver.getCityById(user, '1')).rejects.toThrow('fail');
   });
 
-  it('cityByName should call getCityByName', async () => {
+  it('getSavedCityByName should call getSavedCityByName', async () => {
     const city = {
       id: '2',
       cityName: 'Lviv',
@@ -109,11 +112,11 @@ describe('CitiesResolver', () => {
       lon: 24,
       isPinned: false,
     };
-    ctx.citiesService.getCityByName.mockResolvedValue(city);
+    ctx.citiesService.getSavedCityByName.mockResolvedValue(city);
 
-    const result = await ctx.resolver.cityByName(user, 'Lviv');
+    const result = await ctx.resolver.getSavedCityByName(user, 'Lviv');
 
-    expect(ctx.citiesService.getCityByName).toHaveBeenCalledWith({
+    expect(ctx.citiesService.getSavedCityByName).toHaveBeenCalledWith({
       userId: 'u1',
       cityName: 'Lviv',
     });
@@ -121,21 +124,23 @@ describe('CitiesResolver', () => {
     expect(result).toEqual(city);
   });
 
-  it('cityByName should return null', async () => {
-    ctx.citiesService.getCityByName.mockResolvedValue(null);
+  it('getSavedCityByName should return null', async () => {
+    ctx.citiesService.getSavedCityByName.mockResolvedValue(null);
 
-    const result = await ctx.resolver.cityByName(user, 'Unknown');
+    const result = await ctx.resolver.getSavedCityByName(user, 'Unknown');
 
     expect(result).toBeNull();
   });
 
-  it('should propagate error from cityByName', async () => {
-    ctx.citiesService.getCityByName.mockRejectedValue(new Error('fail'));
+  it('should propagate error from getSavedCityByName', async () => {
+    ctx.citiesService.getSavedCityByName.mockRejectedValue(new Error('fail'));
 
-    await expect(ctx.resolver.cityByName(user, 'X')).rejects.toThrow('fail');
+    await expect(ctx.resolver.getSavedCityByName(user, 'X')).rejects.toThrow(
+      'fail',
+    );
   });
 
-  it('addCity should call service.addCity', async () => {
+  it('addSavedCity should call service.addSavedCity', async () => {
     const city = {
       id: '3',
       cityName: 'Odesa',
@@ -143,15 +148,15 @@ describe('CitiesResolver', () => {
       lon: 30,
       isPinned: false,
     };
-    ctx.citiesService.addCity.mockResolvedValue(city);
+    ctx.citiesService.addSavedCity.mockResolvedValue(city);
 
-    const result = await ctx.resolver.addCity(user, {
+    const result = await ctx.resolver.addSavedCity(user, {
       cityName: 'Odesa',
       lat: 46,
       lon: 30,
     });
 
-    expect(ctx.citiesService.addCity).toHaveBeenCalledWith({
+    expect(ctx.citiesService.addSavedCity).toHaveBeenCalledWith({
       userId: 'u1',
       input: { cityName: 'Odesa', lat: 46, lon: 30 },
     });
@@ -159,15 +164,15 @@ describe('CitiesResolver', () => {
     expect(result).toEqual(city);
   });
 
-  it('should propagate error from addCity', async () => {
-    ctx.citiesService.addCity.mockRejectedValue(new Error('fail'));
+  it('should propagate error from addSavedCity', async () => {
+    ctx.citiesService.addSavedCity.mockRejectedValue(new Error('fail'));
 
     await expect(
-      ctx.resolver.addCity(user, { cityName: 'Odesa', lat: 46, lon: 30 }),
+      ctx.resolver.addSavedCity(user, { cityName: 'Odesa', lat: 46, lon: 30 }),
     ).rejects.toThrow('fail');
   });
 
-  it('removeCity should call service.removeCity', async () => {
+  it('removeSavedCity should call service.removeSavedCity', async () => {
     const city = {
       id: '4',
       cityName: 'Dnipro',
@@ -175,11 +180,11 @@ describe('CitiesResolver', () => {
       lon: 35,
       isPinned: false,
     };
-    ctx.citiesService.removeCity.mockResolvedValue(city);
+    ctx.citiesService.removeSavedCity.mockResolvedValue(city);
 
-    const result = await ctx.resolver.removeCity(user, '4');
+    const result = await ctx.resolver.removeSavedCity(user, '4');
 
-    expect(ctx.citiesService.removeCity).toHaveBeenCalledWith({
+    expect(ctx.citiesService.removeSavedCity).toHaveBeenCalledWith({
       userId: 'u1',
       id: '4',
     });
@@ -187,31 +192,35 @@ describe('CitiesResolver', () => {
     expect(result).toEqual(city);
   });
 
-  it('should propagate error from removeCity', async () => {
-    ctx.citiesService.removeCity.mockRejectedValue(new Error('fail'));
+  it('should propagate error from removeSavedCity', async () => {
+    ctx.citiesService.removeSavedCity.mockRejectedValue(new Error('fail'));
 
-    await expect(ctx.resolver.removeCity(user, '4')).rejects.toThrow('fail');
+    await expect(ctx.resolver.removeSavedCity(user, '4')).rejects.toThrow(
+      'fail',
+    );
   });
 
-  it('removeAllCities should return true', async () => {
-    ctx.citiesService.removeAllCities.mockResolvedValue(undefined);
+  it('removeAllSavedCities should return true', async () => {
+    ctx.citiesService.removeAllSavedCities.mockResolvedValue(undefined);
 
-    const result = await ctx.resolver.removeAllCities(user);
+    const result = await ctx.resolver.removeAllSavedCities(user);
 
-    expect(ctx.citiesService.removeAllCities).toHaveBeenCalledWith({
+    expect(ctx.citiesService.removeAllSavedCities).toHaveBeenCalledWith({
       userId: 'u1',
     });
 
     expect(result).toBe(true);
   });
 
-  it('should propagate error from removeAllCities', async () => {
-    ctx.citiesService.removeAllCities.mockRejectedValue(new Error('fail'));
+  it('should propagate error from removeAllSavedCities', async () => {
+    ctx.citiesService.removeAllSavedCities.mockRejectedValue(new Error('fail'));
 
-    await expect(ctx.resolver.removeAllCities(user)).rejects.toThrow('fail');
+    await expect(ctx.resolver.removeAllSavedCities(user)).rejects.toThrow(
+      'fail',
+    );
   });
 
-  it('updateCity should call service.updateCity', async () => {
+  it('updateSavedCity should call service.updateSavedCity', async () => {
     const city = {
       id: '5',
       cityName: 'Kharkiv',
@@ -220,11 +229,11 @@ describe('CitiesResolver', () => {
       isPinned: true,
     };
     const input = { isPinned: true };
-    ctx.citiesService.updateCity.mockResolvedValue(city);
+    ctx.citiesService.updateSavedCity.mockResolvedValue(city);
 
-    const result = await ctx.resolver.updateCity(user, '5', input);
+    const result = await ctx.resolver.updateSavedCity(user, '5', input);
 
-    expect(ctx.citiesService.updateCity).toHaveBeenCalledWith({
+    expect(ctx.citiesService.updateSavedCity).toHaveBeenCalledWith({
       userId: 'u1',
       id: '5',
       input,
@@ -233,11 +242,11 @@ describe('CitiesResolver', () => {
     expect(result).toEqual(city);
   });
 
-  it('should propagate error from updateCity', async () => {
-    ctx.citiesService.updateCity.mockRejectedValue(new Error('fail'));
+  it('should propagate error from updateSavedCity', async () => {
+    ctx.citiesService.updateSavedCity.mockRejectedValue(new Error('fail'));
 
     await expect(
-      ctx.resolver.updateCity(user, '5', { isPinned: true }),
+      ctx.resolver.updateSavedCity(user, '5', { isPinned: true }),
     ).rejects.toThrow('fail');
   });
 

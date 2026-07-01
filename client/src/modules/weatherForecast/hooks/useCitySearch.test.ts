@@ -35,7 +35,7 @@ describe('useCitySearch', () => {
       executeSearch,
       createQueryResult({
         data: {
-          searchCities: [
+          getCitySuggestions: [
             {
               name: 'Kyiv',
               country: 'UA',

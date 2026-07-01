@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client/react';
-import { REMOVE_CITY_MUTATION } from '@/weatherForecast/graphql';
+import { REMOVE_SAVED_CITY_MUTATION } from '@/weatherForecast/graphql';
 import type {
   IRemoveCityMutation,
   IRemoveCityVariables,
@@ -10,13 +10,16 @@ export const useRemoveCity = () => {
   const [mutate, { loading, error }] = useMutation<
     IRemoveCityMutation,
     IRemoveCityVariables
-  >(REMOVE_CITY_MUTATION, {
+  >(REMOVE_SAVED_CITY_MUTATION, {
     update(cache, _, { variables }) {
       const deletedId = variables?.id;
 
       cache.modify({
         fields: {
-          citiesPaginated(existingConnection = { edges: [] }, { readField }) {
+          getSavedCitiesPaginated(
+            existingConnection = { edges: [] },
+            { readField },
+          ) {
             return {
               ...existingConnection,
 

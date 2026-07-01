@@ -1,4 +1,4 @@
-export const searchCitiesResponseFixture = {
+export const citySuggestionsResponseFixture = {
   data: [
     {
       name: 'Kyiv',

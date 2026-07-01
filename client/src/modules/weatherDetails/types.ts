@@ -59,5 +59,5 @@ export type City = {
 };
 
 export type GetCityByIdResponse = {
-  city: City;
+  getCityById: City;
 };

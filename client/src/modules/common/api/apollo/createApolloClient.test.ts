@@ -12,7 +12,7 @@ type CacheConfig = {
   typePolicies: {
     Query: {
       fields: {
-        citiesPaginated: {
+        getSavedCitiesPaginated: {
           merge: (
             existing: unknown,
             incoming: unknown,
@@ -121,8 +121,8 @@ describe('createApolloClient', () => {
     });
 
     const merge =
-      mocks.capturedCacheConfig?.typePolicies.Query.fields.citiesPaginated
-        .merge;
+      mocks.capturedCacheConfig?.typePolicies.Query.fields
+        .getSavedCitiesPaginated.merge;
 
     expect(merge).toBeDefined();
 
@@ -151,8 +151,8 @@ describe('createApolloClient', () => {
     });
 
     const merge =
-      mocks.capturedCacheConfig?.typePolicies.Query.fields.citiesPaginated
-        .merge;
+      mocks.capturedCacheConfig?.typePolicies.Query.fields
+        .getSavedCitiesPaginated.merge;
 
     expect(merge).toBeDefined();
 
@@ -199,8 +199,8 @@ describe('createApolloClient', () => {
     });
 
     const merge =
-      mocks.capturedCacheConfig?.typePolicies.Query.fields.citiesPaginated
-        .merge;
+      mocks.capturedCacheConfig?.typePolicies.Query.fields
+        .getSavedCitiesPaginated.merge;
 
     expect(merge).toBeDefined();
 
@@ -235,8 +235,8 @@ describe('createApolloClient', () => {
     });
 
     const merge =
-      mocks.capturedCacheConfig?.typePolicies.Query.fields.citiesPaginated
-        .merge;
+      mocks.capturedCacheConfig?.typePolicies.Query.fields
+        .getSavedCitiesPaginated.merge;
 
     expect(merge).toBeDefined();
 

@@ -7,7 +7,7 @@ import { createMutationResult } from '@/common/testing/factories';
 vi.mock('@apollo/client/react');
 
 type UpdateCityMutation = {
-  updateCity: {
+  updateSavedCity: {
     __typename: 'CityOutput';
     id: string;
     isPinned: boolean;
@@ -58,7 +58,7 @@ describe('useTogglePinned', () => {
         },
         {
           data: {
-            updateCity: {
+            updateSavedCity: {
               __typename: 'CityOutput',
               id: '1',
               isPinned: true,
@@ -86,7 +86,7 @@ describe('useTogglePinned', () => {
         },
         {
           data: {
-            updateCity: {
+            updateSavedCity: {
               __typename: 'CityOutput',
               id: '1',
               isPinned: true,
@@ -128,7 +128,7 @@ describe('useTogglePinned', () => {
         },
         {
           data: {
-            updateCity: null,
+            updateSavedCity: null,
           },
         },
       );

@@ -11,8 +11,13 @@ export {
   KharkivCity,
   KyivCity,
   LvivCity,
+  NewDniproCityName,
   OdesaCity,
   PinnedDniproCity,
+  UnpinnedDniproCity,
+  UpdatedDniproCity,
+  UpdateDniproCityParams,
+  UpdatePinnedDniproCityParams,
 } from './city.fixture';
 export { createQueryBuilderMock } from './query-builder.fixture';
-export { searchCitiesResponseFixture } from './search-cities.fixture';
+export { citySuggestionsResponseFixture } from './city-suggestions-response.fixture';

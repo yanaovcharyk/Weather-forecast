@@ -3,7 +3,7 @@ export interface IRemoveCityVariables {
 }
 
 export interface IRemoveCityMutation {
-  removeCity: {
+  removeSavedCity: {
     id: string;
     __typename: string;
   };
@@ -44,7 +44,7 @@ export type PageInfo = {
 };
 
 export type CitiesPaginatedResponse = {
-  citiesPaginated: {
+  getSavedCitiesPaginated: {
     edges: CityEdge[];
     pageInfo: PageInfo;
   };

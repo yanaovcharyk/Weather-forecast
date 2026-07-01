@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { useQuery } from '@apollo/client/react';
 
-import { CITIES_PAGINATED } from '@/weatherForecast/graphql';
+import { GET_SAVED_CITIES_PAGINATED } from '@/weatherForecast/graphql';
 import type {
   CitiesPaginatedVariables,
   CitiesQuerySorting,
@@ -31,7 +31,7 @@ export const useCitiesPaginated = (
   const { data, loading, fetchMore } = useQuery<
     CitiesPaginatedResponse,
     CitiesPaginatedVariables
-  >(CITIES_PAGINATED, {
+  >(GET_SAVED_CITIES_PAGINATED, {
     variables: {
       query: {
         pagination: {
@@ -50,7 +50,7 @@ export const useCitiesPaginated = (
   });
 
   const loadMore = useCallback(() => {
-    const pageInfo = data?.citiesPaginated?.pageInfo;
+    const pageInfo = data?.getSavedCitiesPaginated?.pageInfo;
 
     if (!pageInfo?.hasNextPage) {
       return;
@@ -72,9 +72,9 @@ export const useCitiesPaginated = (
   }, [data, fetchMore, querySorting, showPinnedOnly]);
 
   return {
-    cities: data?.citiesPaginated?.edges.map((edge) => edge.node) ?? [],
+    cities: data?.getSavedCitiesPaginated?.edges.map((edge) => edge.node) ?? [],
     loading,
     loadMore,
-    hasNext: data?.citiesPaginated?.pageInfo.hasNextPage ?? false,
+    hasNext: data?.getSavedCitiesPaginated?.pageInfo.hasNextPage ?? false,
   };
 };

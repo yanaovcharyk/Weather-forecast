@@ -47,3 +47,33 @@ export const PinnedDniproCity = {
   ...DniproCity,
   isPinned: true,
 };
+
+export const NewDniproCityName = 'New Dnipro';
+
+export const UpdatedDniproCity = {
+  ...DniproCity,
+  cityName: NewDniproCityName,
+  isPinned: true,
+};
+
+export const UnpinnedDniproCity = {
+  ...PinnedDniproCity,
+  isPinned: false,
+};
+
+export const UpdateDniproCityParams = {
+  id: DniproCity.id,
+  userId: DniproCity.userId,
+  input: {
+    cityName: NewDniproCityName,
+    isPinned: true,
+  },
+};
+
+export const UpdatePinnedDniproCityParams = {
+  id: PinnedDniproCity.id,
+  userId: PinnedDniproCity.userId,
+  input: {
+    isPinned: false,
+  },
+};

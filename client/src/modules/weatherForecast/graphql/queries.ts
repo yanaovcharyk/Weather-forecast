@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
-export const CITIES_PAGINATED = gql`
-  query CitiesPaginated($query: CitiesQueryInput!) {
-    citiesPaginated(query: $query) {
+export const GET_SAVED_CITIES_PAGINATED = gql`
+  query GetSavedCitiesPaginated($query: CitiesQueryInput!) {
+    getSavedCitiesPaginated(query: $query) {
       edges {
         node {
           id
@@ -32,9 +32,9 @@ export const CITIES_PAGINATED = gql`
   }
 `;
 
-export const SEARCH_CITIES = gql`
-  query SearchCities($input: CitySearchInput!) {
-    searchCities(input: $input) {
+export const GET_CITY_SUGGESTIONS = gql`
+  query GetCitySuggestions($input: CitySearchInput!) {
+    getCitySuggestions(input: $input) {
       name
       country
       lat
@@ -43,9 +43,9 @@ export const SEARCH_CITIES = gql`
   }
 `;
 
-export const GET_EXISTS_CITY_BY_NAME = gql`
-  query GetCityByName($cityName: String!) {
-    cityByName(cityName: $cityName) {
+export const GET_SAVED_CITY_BY_NAME = gql`
+  query GetSavedCityByName($cityName: String!) {
+    getSavedCityByName(cityName: $cityName) {
       id
       cityName
       lat

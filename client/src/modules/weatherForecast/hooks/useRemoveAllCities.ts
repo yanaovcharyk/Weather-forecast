@@ -1,19 +1,19 @@
 import { useMutation } from '@apollo/client/react';
 
-import { REMOVE_ALL_CITIES } from '@/weatherForecast/graphql';
+import { REMOVE_ALL_SAVED_CITIES } from '@/weatherForecast/graphql';
 
 type RemoveAllCitiesMutation = {
-  removeAllCities: boolean;
+  removeAllSavedCities: boolean;
 };
 
 export const useRemoveAllCities = () => {
   const [mutate, { loading }] = useMutation<RemoveAllCitiesMutation>(
-    REMOVE_ALL_CITIES,
+    REMOVE_ALL_SAVED_CITIES,
     {
       update(cache) {
         cache.modify({
           fields: {
-            citiesPaginated(existingConnection) {
+            getSavedCitiesPaginated(existingConnection) {
               if (!existingConnection) {
                 return existingConnection;
               }
@@ -38,7 +38,7 @@ export const useRemoveAllCities = () => {
     try {
       const { data } = await mutate();
       return {
-        ok: data?.removeAllCities === true,
+        ok: data?.removeAllSavedCities === true,
         code: undefined,
       };
     } catch {

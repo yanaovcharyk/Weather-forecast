@@ -8,11 +8,10 @@ import { Repository } from 'typeorm';
 import { CityEntity } from '@cities/entities';
 import { AppLoggerService } from '@logger/services';
 import {
-  AddCityParams,
+  AddSavedCityParams,
   CityByIdParams,
-  CityByNameParams,
-  UpdateCityParams,
-  UpdateField,
+  SavedCityByNameParams,
+  UpdateSavedCityParams,
   UserIdParams,
 } from '@cities/types';
 import { ICityOutput, ICitySuggestion } from '@cities/interfaces';
@@ -34,18 +33,18 @@ export class CitiesService {
   }
 
   @LogMethod()
-  async searchCities(query: string): Promise<ICitySuggestion[]> {
-    return this.openWeatherCityApi.searchCities(query);
+  async getCitySuggestions(query: string): Promise<ICitySuggestion[]> {
+    return this.openWeatherCityApi.getCitySuggestions(query);
   }
 
   @LogMethod()
   async getCityById(params: CityByIdParams): Promise<ICityOutput> {
-    const city = await this.findCityOrFail(params);
+    const city = await this.findSavedCityOrFail(params);
     return city;
   }
 
   @LogMethod()
-  async addCity(params: AddCityParams): Promise<ICityOutput> {
+  async addSavedCity(params: AddSavedCityParams): Promise<ICityOutput> {
     const { userId, input } = params;
     const cityName = input.cityName.trim();
 
@@ -72,7 +71,9 @@ export class CitiesService {
   }
 
   @LogMethod()
-  async getCityByName(params: CityByNameParams): Promise<ICityOutput | null> {
+  async getSavedCityByName(
+    params: SavedCityByNameParams,
+  ): Promise<ICityOutput | null> {
     return this.cityRepository.findOne({
       where: {
         userId: params.userId,
@@ -82,8 +83,8 @@ export class CitiesService {
   }
 
   @LogMethod()
-  async removeCity(params: CityByIdParams): Promise<ICityOutput> {
-    const city = await this.findCityOrFail(params);
+  async removeSavedCity(params: CityByIdParams): Promise<ICityOutput> {
+    const city = await this.findSavedCityOrFail(params);
     const removedCity = { ...city };
     await this.cityRepository.remove(city);
 
@@ -91,46 +92,50 @@ export class CitiesService {
   }
 
   @LogMethod()
-  async removeAllCities(params: UserIdParams): Promise<void> {
+  async removeAllSavedCities(params: UserIdParams): Promise<void> {
     const result = await this.cityRepository.delete({
       userId: params.userId,
     });
 
-    this.logger.info('removeAllCities: cities removed', {
+    this.logger.info('removeAllSavedCities: cities removed', {
       affected: result.affected ?? 0,
     });
   }
 
   @LogMethod()
-  async updateCity(params: UpdateCityParams): Promise<ICityOutput> {
-    const city = await this.findCityOrFail(params);
+  async updateSavedCity(params: UpdateSavedCityParams): Promise<ICityOutput> {
     const updates = removeUndefined(params.input);
-
-    const updatedFields = Object.keys(updates) as UpdateField[];
+    const updatedFields = Object.keys(updates);
 
     if (updatedFields.length === 0) {
       throw new BadRequestException('No city fields provided for update');
     }
 
-    const previousFields = Object.fromEntries(
-      updatedFields.map((field) => [field, city[field]]),
+    const result = await this.cityRepository.update(
+      {
+        id: params.id,
+        userId: params.userId,
+      },
+      updates,
     );
 
-    Object.assign(city, updates);
+    if (result.affected === 0) {
+      this.logger.warn('City not found', { id: params.id });
+      throw new NotFoundException('City not found');
+    }
 
-    const updatedCity = await this.cityRepository.save(city);
-
-    this.logger.info('updateCity: city updated', {
-      id: updatedCity.id,
+    this.logger.info('updateSavedCity: city updated', {
+      id: params.id,
       fields: updatedFields,
-      previous: previousFields,
       current: updates,
     });
 
-    return updatedCity;
+    return this.findSavedCityOrFail(params);
   }
 
-  private async findCityOrFail(params: CityByIdParams): Promise<CityEntity> {
+  private async findSavedCityOrFail(
+    params: CityByIdParams,
+  ): Promise<CityEntity> {
     const city = await this.cityRepository.findOne({
       where: { id: params.id, userId: params.userId },
     });

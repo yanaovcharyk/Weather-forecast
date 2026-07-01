@@ -25,7 +25,7 @@ describe('useCityByName', () => {
 
     query.mockResolvedValue({
       data: {
-        cityByName: city,
+        getSavedCityByName: city,
       },
     });
 
@@ -43,7 +43,7 @@ describe('useCityByName', () => {
   it('returns null', async () => {
     query.mockResolvedValue({
       data: {
-        cityByName: null,
+        getSavedCityByName: null,
       },
     });
 

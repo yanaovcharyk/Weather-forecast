@@ -117,7 +117,7 @@ export const CitiesPage = () => {
                     onRemove={handleRemoveCity}
                     onTogglePinned={handleTogglePinned}
                     loadMore={loadMore}
-                    hasNext={hasNext && !showPinnedOnly}
+                    hasNext={hasNext}
                     onCityClick={handleOpenCity}
                     loading={loading && cities.length === 0}
                   />

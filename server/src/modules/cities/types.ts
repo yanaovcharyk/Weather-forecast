@@ -14,25 +14,25 @@ export type CityByIdParams = {
   id: string;
 };
 
-export interface CityByNameParams {
+export interface SavedCityByNameParams {
   userId: string;
   cityName: string;
 }
 
-export type AddCityParams = {
+export type AddSavedCityParams = {
   userId: string;
   input: AddCityInput;
 };
 
-export type UpdateCityParams = CityByIdParams & {
+export type UpdateSavedCityParams = CityByIdParams & {
   input: UpdateCityInput;
 };
 
-export type GetCitiesParams = {
+export type GetSavedCitiesParams = {
   userId: string;
 };
 
-export type GetCitiesPaginatedParams = {
+export type GetSavedCitiesPaginatedParams = {
   userId: string;
   query: CitiesQueryInput;
 };

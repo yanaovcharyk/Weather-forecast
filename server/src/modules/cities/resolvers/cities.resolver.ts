@@ -53,15 +53,17 @@ export class CitiesResolver {
   @UseGuards(AccessJwtGuard)
   @Query(citySuggestionListType)
   @LogResolver()
-  async searchCities(@Args('input') input: CitySearchInput) {
-    return this.citiesService.searchCities(input.query);
+  async getCitySuggestions(@Args('input') input: CitySearchInput) {
+    return this.citiesService.getCitySuggestions(input.query);
   }
 
   @UseGuards(AccessJwtGuard)
   @Query(cityOutputListType)
   @LogResolver()
-  async cities(@CurrentUser() user: ICurrentUser): Promise<CityOutput[]> {
-    return this.citiesQueryService.getCities({
+  async getSavedCities(
+    @CurrentUser() user: ICurrentUser,
+  ): Promise<CityOutput[]> {
+    return this.citiesQueryService.getSavedCities({
       userId: user.id,
     });
   }
@@ -69,11 +71,11 @@ export class CitiesResolver {
   @UseGuards(AccessJwtGuard)
   @Query(citiesConnectionType)
   @LogResolver()
-  async citiesPaginated(
+  async getSavedCitiesPaginated(
     @CurrentUser() user: ICurrentUser,
     @Args('query') query: CitiesQueryInput,
   ): Promise<CitiesConnection> {
-    return this.citiesQueryService.getCitiesPaginated({
+    return this.citiesQueryService.getSavedCitiesPaginated({
       userId: user.id,
       query,
     });
@@ -82,7 +84,7 @@ export class CitiesResolver {
   @UseGuards(AccessJwtGuard)
   @Query(cityOutputType)
   @LogResolver()
-  async city(
+  async getCityById(
     @CurrentUser() user: ICurrentUser,
     @Args('id', { type: graphqlIdType }) id: string,
   ): Promise<CityOutput> {
@@ -95,11 +97,11 @@ export class CitiesResolver {
   @UseGuards(AccessJwtGuard)
   @Query(cityOutputType, { nullable: true })
   @LogResolver()
-  async cityByName(
+  async getSavedCityByName(
     @CurrentUser() user: ICurrentUser,
     @Args('cityName') cityName: string,
   ): Promise<CityOutput | null> {
-    return this.citiesService.getCityByName({
+    return this.citiesService.getSavedCityByName({
       userId: user.id,
       cityName,
     });
@@ -108,11 +110,11 @@ export class CitiesResolver {
   @UseGuards(AccessJwtGuard)
   @Mutation(cityOutputType)
   @LogResolver()
-  async addCity(
+  async addSavedCity(
     @CurrentUser() user: ICurrentUser,
     @Args('input') input: AddCityInput,
   ) {
-    return this.citiesService.addCity({
+    return this.citiesService.addSavedCity({
       userId: user.id,
       input,
     });
@@ -121,11 +123,11 @@ export class CitiesResolver {
   @UseGuards(AccessJwtGuard)
   @Mutation(cityOutputType)
   @LogResolver()
-  async removeCity(
+  async removeSavedCity(
     @CurrentUser() user: ICurrentUser,
     @Args('id', { type: graphqlIdType }) id: string,
   ): Promise<CityOutput> {
-    return this.citiesService.removeCity({
+    return this.citiesService.removeSavedCity({
       userId: user.id,
       id,
     });
@@ -134,8 +136,10 @@ export class CitiesResolver {
   @UseGuards(AccessJwtGuard)
   @Mutation(booleanType)
   @LogResolver()
-  async removeAllCities(@CurrentUser() user: ICurrentUser): Promise<boolean> {
-    await this.citiesService.removeAllCities({
+  async removeAllSavedCities(
+    @CurrentUser() user: ICurrentUser,
+  ): Promise<boolean> {
+    await this.citiesService.removeAllSavedCities({
       userId: user.id,
     });
 
@@ -145,12 +149,12 @@ export class CitiesResolver {
   @UseGuards(AccessJwtGuard)
   @Mutation(cityOutputType)
   @LogResolver()
-  async updateCity(
+  async updateSavedCity(
     @CurrentUser() user: ICurrentUser,
     @Args('id', { type: graphqlIdType }) id: string,
     @Args('input') input: UpdateCityInput,
   ): Promise<CityOutput> {
-    return this.citiesService.updateCity({
+    return this.citiesService.updateSavedCity({
       userId: user.id,
       id,
       input,
