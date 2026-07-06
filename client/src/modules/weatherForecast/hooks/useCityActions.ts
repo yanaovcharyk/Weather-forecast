@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { handleResult } from '@/common/utils';
 import { useAddCity } from './useAddCity';
@@ -38,6 +38,64 @@ export const useCityActions = ({
     useState<City | null>(null);
 
   const { getSavedCity } = useSavedCityLookup();
+
+  const clearExistingCitySelection = useCallback(() => {
+    const updatedParams = new URLSearchParams(searchParams);
+    updatedParams.delete('existingId');
+    setSearchParams(updatedParams);
+    setCurrentlySelectedCity(null);
+  }, [searchParams, setSearchParams]);
+
+  useEffect(() => {
+    if (!selectedExistingCityId) {
+      return;
+    }
+
+    if (currentlySelectedCity?.id === selectedExistingCityId) {
+      return;
+    }
+
+    let isActive = true;
+
+    const loadExistingCity = async () => {
+      try {
+        const city = await getSavedCity({
+          id: selectedExistingCityId,
+          includeWeather: true,
+        });
+
+        if (!isActive) {
+          return;
+        }
+
+        if (city) {
+          setCurrentlySelectedCity(city);
+          return;
+        }
+
+        clearExistingCitySelection();
+      } catch {
+        if (isActive) {
+          clearExistingCitySelection();
+        }
+      }
+    };
+
+    void loadExistingCity();
+
+    return () => {
+      isActive = false;
+    };
+  }, [
+    selectedExistingCityId,
+    currentlySelectedCity?.id,
+    getSavedCity,
+    clearExistingCitySelection,
+  ]);
+
+  const selectedCityFromUrl = selectedExistingCityId
+    ? currentlySelectedCity
+    : null;
 
   const handleAddCity = useCallback(
     async (lat: number, lon: number, cityName: string) => {
@@ -147,9 +205,10 @@ export const useCityActions = ({
     handleRemoveCity,
     handleTogglePinned,
     handleDeleteAllCities,
+    clearExistingCitySelection,
     isAddingCity,
     currentlyRemovingCityId,
-    currentlySelectedCity,
+    currentlySelectedCity: selectedCityFromUrl,
     setCurrentlySelectedCity,
   };
 };

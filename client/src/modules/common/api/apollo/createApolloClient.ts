@@ -37,7 +37,7 @@ export const createApolloClient = ({
 
     cache: new InMemoryCache({
       typePolicies: {
-        City: {
+        CityOutput: {
           keyFields: ['id'],
         },
 

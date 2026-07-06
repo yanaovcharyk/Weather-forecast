@@ -35,10 +35,10 @@ export const CitiesPage = () => {
     handleRemoveCity,
     handleTogglePinned,
     handleDeleteAllCities,
+    clearExistingCitySelection,
     isAddingCity,
     currentlyRemovingCityId,
     currentlySelectedCity,
-    setCurrentlySelectedCity,
   } = useCityActions({
     showSuccessNotification,
     showErrorNotification,
@@ -66,7 +66,6 @@ export const CitiesPage = () => {
   );
 
   const isEmpty = !loading && filteredCities.length === 0;
-  const handleBack = () => setCurrentlySelectedCity(null);
   const handleOpenCity = (id: string) => {
     navigate(`/cities/${id}`);
   };
@@ -79,7 +78,7 @@ export const CitiesPage = () => {
             {currentlySelectedCity ? (
               <ExistingCityLayout
                 existingCity={currentlySelectedCity}
-                onBack={handleBack}
+                onBack={clearExistingCitySelection}
                 removingId={currentlyRemovingCityId}
                 onRemove={handleRemoveCity}
                 onTogglePinned={handleTogglePinned}

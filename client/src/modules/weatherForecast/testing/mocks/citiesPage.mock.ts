@@ -30,6 +30,7 @@ export const createCityActionsResult = (
   handleRemoveCity: vi.fn(),
   handleTogglePinned: vi.fn(),
   handleDeleteAllCities: vi.fn(),
+  clearExistingCitySelection: vi.fn(),
   isAddingCity: false,
   currentlyRemovingCityId: null,
   currentlySelectedCity: null,

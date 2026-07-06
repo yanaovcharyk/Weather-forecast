@@ -34,7 +34,7 @@ export const useRemoveCity = () => {
 
       cache.evict({
         id: cache.identify({
-          __typename: 'City',
+          __typename: 'CityOutput',
           id: deletedId,
         }),
       });

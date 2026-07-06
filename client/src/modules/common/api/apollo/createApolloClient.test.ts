@@ -10,6 +10,10 @@ type Edge = {
 
 type CacheConfig = {
   typePolicies: {
+    CityOutput: {
+      keyFields: string[];
+    };
+
     Query: {
       fields: {
         getSavedCitiesPaginated: {
@@ -114,6 +118,17 @@ describe('createApolloClient', () => {
     expect(mocks.mockApolloClient).toHaveBeenCalledTimes(1);
   });
 
+  it('normalizes city outputs by id', () => {
+    createApolloClient({
+      performLogout: vi.fn(),
+      displayErrorMessage: vi.fn(),
+    });
+
+    expect(mocks.capturedCacheConfig?.typePolicies.CityOutput).toEqual({
+      keyFields: ['id'],
+    });
+  });
+
   it('returns incoming data for first page', () => {
     createApolloClient({
       performLogout: vi.fn(),
@@ -127,7 +142,7 @@ describe('createApolloClient', () => {
     expect(merge).toBeDefined();
 
     const incoming = {
-      __typename: 'CityConnection',
+      __typename: 'CitiesConnection',
       edges: [{ node: { id: '1' } }],
       pageInfo: {},
     };
@@ -161,7 +176,7 @@ describe('createApolloClient', () => {
     };
 
     const incoming = {
-      __typename: 'CityConnection',
+      __typename: 'CitiesConnection',
       edges: [{ node: { id: '2' } }, { node: { id: '3' } }] satisfies Edge[],
       pageInfo: {
         hasNextPage: false,
@@ -180,7 +195,7 @@ describe('createApolloClient', () => {
     });
 
     expect(result).toEqual({
-      __typename: 'CityConnection',
+      __typename: 'CitiesConnection',
       edges: [
         { node: { id: '1' } },
         { node: { id: '2' } },
@@ -209,7 +224,7 @@ describe('createApolloClient', () => {
         edges: [{ node: { id: '1' } }] satisfies Edge[],
       },
       {
-        __typename: 'CityConnection',
+        __typename: 'CitiesConnection',
         edges: [{ node: { id: '1' } }] satisfies Edge[],
         pageInfo: {},
       },
@@ -243,7 +258,7 @@ describe('createApolloClient', () => {
     const result = merge?.(
       {},
       {
-        __typename: 'CityConnection',
+        __typename: 'CitiesConnection',
         pageInfo: {
           hasNextPage: false,
         },
@@ -261,7 +276,7 @@ describe('createApolloClient', () => {
     );
 
     expect(result).toEqual({
-      __typename: 'CityConnection',
+      __typename: 'CitiesConnection',
       edges: [],
       pageInfo: {
         hasNextPage: false,

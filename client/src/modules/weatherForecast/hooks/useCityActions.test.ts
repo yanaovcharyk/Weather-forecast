@@ -1,4 +1,4 @@
-import { act } from '@testing-library/react';
+import { act, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { createControlledPromise } from '@/common/testing/factories';
@@ -200,14 +200,20 @@ describe('useCityActions', () => {
   });
 
   it('should update selected city pinned state', async () => {
+    ctx.getSavedCity.mockResolvedValue({
+      id: '123',
+      cityName: 'Kyiv',
+      isPinned: false,
+    } as City);
+
+    setupCityActionsRuntime(ctx, {
+      existingId: '123',
+    });
+
     const { result } = setupCityActions(ctx);
 
-    act(() => {
-      result.current.setCurrentlySelectedCity({
-        id: '123',
-        cityName: 'Kyiv',
-        isPinned: false,
-      } as React.SetStateAction<City | null>);
+    await waitFor(() => {
+      expect(result.current.currentlySelectedCity?.id).toBe('123');
     });
 
     await act(async () => {

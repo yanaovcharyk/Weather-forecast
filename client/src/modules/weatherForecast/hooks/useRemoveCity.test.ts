@@ -57,7 +57,7 @@ describe('useRemoveCity', () => {
     const cache = {
       modify: vi.fn(),
       evict: vi.fn(),
-      identify: vi.fn(() => 'City:123'),
+      identify: vi.fn(() => 'CityOutput:123'),
     };
 
     update(
@@ -99,12 +99,12 @@ describe('useRemoveCity', () => {
     expect(result.edges).toEqual([{ id: 'edge2' }]);
 
     expect(cache.identify).toHaveBeenCalledWith({
-      __typename: 'City',
+      __typename: 'CityOutput',
       id: '123',
     });
 
     expect(cache.evict).toHaveBeenCalledWith({
-      id: 'City:123',
+      id: 'CityOutput:123',
     });
   });
 
@@ -118,7 +118,7 @@ describe('useRemoveCity', () => {
     const cache = {
       modify: vi.fn(),
       evict: vi.fn(),
-      identify: vi.fn(() => 'City:123'),
+      identify: vi.fn(() => 'CityOutput:123'),
     };
 
     update(

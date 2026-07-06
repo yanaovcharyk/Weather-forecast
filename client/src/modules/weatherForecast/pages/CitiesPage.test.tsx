@@ -179,12 +179,12 @@ describe('CitiesPage', () => {
   });
 
   it('should call back handler', async () => {
-    const setCurrentlySelectedCity = vi.fn();
+    const clearExistingCitySelection = vi.fn();
 
     mockUseCityActions.mockReturnValue(
       createCityActionsResult({
         currentlySelectedCity: CITY_FIXTURE,
-        setCurrentlySelectedCity,
+        clearExistingCitySelection,
       }),
     );
 
@@ -196,7 +196,7 @@ describe('CitiesPage', () => {
       }),
     );
 
-    expect(setCurrentlySelectedCity).toHaveBeenCalledWith(null);
+    expect(clearExistingCitySelection).toHaveBeenCalledTimes(1);
   });
 
   it('should pass hasNext and loading states', () => {
