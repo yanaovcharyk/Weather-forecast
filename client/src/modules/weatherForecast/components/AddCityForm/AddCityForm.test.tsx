@@ -143,14 +143,14 @@ describe('AddCityForm', () => {
     expect(props.getPopupContainer?.()).toBe(document.body);
   });
 
-  it('uses topLeft placement on mobile', () => {
+  it('uses bottomLeft placement on mobile to keep suggestions visible', () => {
     vi.mocked(useIsMobile).mockReturnValue(true);
 
     setup();
 
     const props = selectMock.mock.calls[0][0];
 
-    expect(props.placement).toBe('topLeft');
+    expect(props.placement).toBe('bottomLeft');
   });
 
   it('renders with form error', () => {

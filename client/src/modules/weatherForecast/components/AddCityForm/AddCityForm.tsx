@@ -35,7 +35,7 @@ export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
                 allowClear
                 options={cityOptions}
                 size="middle"
-                placement={isMobile ? 'topLeft' : 'bottomLeft'}
+                placement="bottomLeft"
                 getPopupContainer={() => document.body}
                 notFoundContent={<EmptyState description="No cities found" />}
               />
