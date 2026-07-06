@@ -1,9 +1,10 @@
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { UserEntity } from '@users/entities';
 import { BaseEntity } from '@shared/entities';
+import { IUserAuthOutput } from '../interfaces';
 
 @Entity('user_auth')
-export class UserAuthEntity extends BaseEntity {
+export class UserAuthEntity extends BaseEntity implements IUserAuthOutput {
   @Column({ type: 'uuid', unique: true })
   userId!: string;
 
