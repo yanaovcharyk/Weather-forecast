@@ -17,7 +17,6 @@ export {
 } from './contexts';
 export {
   LoginInputFixture,
-  RegisterInputFixture,
   MockUser,
   jwtConfigFixture,
   accessJwtPayloadFixture,

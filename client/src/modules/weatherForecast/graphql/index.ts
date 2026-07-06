@@ -1,8 +1,4 @@
-export {
-  GET_CITY_SUGGESTIONS,
-  GET_SAVED_CITIES_PAGINATED,
-  GET_SAVED_CITY_BY_NAME,
-} from './queries';
+export { GET_CITY_SUGGESTIONS, GET_SAVED_CITIES_PAGINATED } from './queries';
 
 export {
   ADD_SAVED_CITY_MUTATION,

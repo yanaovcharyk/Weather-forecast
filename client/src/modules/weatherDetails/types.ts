@@ -58,6 +58,6 @@ export type City = {
   lon: number;
 };
 
-export type GetCityByIdResponse = {
-  getCityById: City;
+export type GetSavedCityResponse = {
+  getSavedCity: City | null;
 };

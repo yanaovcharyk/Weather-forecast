@@ -44,14 +44,3 @@ export const GET_WEATHER_DETAILS = gql`
     }
   }
 `;
-
-export const GET_CITY_BY_ID = gql`
-  query GetCityById($id: ID!) {
-    getCityById(id: $id) {
-      id
-      cityName
-      lat
-      lon
-    }
-  }
-`;

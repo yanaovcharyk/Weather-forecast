@@ -6,7 +6,6 @@ import { IUserEntity } from '@users/interfaces';
 import { IAuthOutput } from '@auth/interfaces';
 import {
   LoginParams,
-  RegisterParams,
   LogoutParams,
   RotateRefreshTokenParams,
   TokenPair,
@@ -34,31 +33,16 @@ export class AuthService {
   async login(params: LoginParams): Promise<IAuthOutput> {
     const { input, res } = params;
 
-    const user = await this.validateUser(input.email, input.password);
-    const tokens = await this.generateTokens(user);
+    const { user, refreshTokenVersion } = await this.validateUser(
+      input.email,
+      input.password,
+    );
+    const tokens = await this.generateTokens({
+      userId: user.id,
+      refreshTokenVersion,
+    });
     this.setCookies(res, tokens);
     this.logger.info('User login success');
-
-    return { success: true };
-  }
-
-  @LogMethod()
-  async register(params: RegisterParams): Promise<IAuthOutput> {
-    const { input, res } = params;
-    const { hash, salt } = await this.passwordHasher.hash({
-      password: input.password,
-    });
-
-    const user = await this.usersService.create({
-      email: input.email,
-      password: hash,
-      salt,
-    });
-    const tokens = await this.generateTokens(user);
-    this.setCookies(res, tokens);
-    this.logger.info('User registered successfully', {
-      userId: user.id,
-    });
 
     return { success: true };
   }
@@ -75,7 +59,7 @@ export class AuthService {
       throw new UnauthorizedException('Unauthorized');
     }
 
-    await this.usersService.incrementRefreshTokenVersion(user.id);
+    await this.usersService.incrementRefreshTokenVersion({ userId: user.id });
 
     this.cookieService.clearAccessAndRefreshTokens(res);
 
@@ -94,8 +78,11 @@ export class AuthService {
 
     const payload = await this.jwtService.verifyRefreshToken(oldToken);
     const user = await this.usersService.findById(payload.userId);
+    const userAuth = await this.usersService.findAuthByUserId({
+      userId: payload.userId,
+    });
 
-    if (!user) {
+    if (!user || !userAuth) {
       this.logger.warn('Refresh token rotation failed: user not found', {
         userId: payload.userId,
       });
@@ -103,21 +90,23 @@ export class AuthService {
       throw new UnauthorizedException('Unauthorized');
     }
 
-    if (payload.version !== user.refreshTokenVersion) {
+    if (payload.version !== userAuth.refreshTokenVersion) {
       this.logger.warn('Refresh token version mismatch', {
         tokenVersion: payload.version,
-        currentVersion: user.refreshTokenVersion,
+        currentVersion: userAuth.refreshTokenVersion,
       });
 
       throw new UnauthorizedException('Unauthorized');
     }
 
-    const newVersion = await this.usersService.incrementRefreshTokenVersion(
-      user.id,
-    );
+    const newVersion = await this.usersService.incrementRefreshTokenVersion({
+      userId: user.id,
+    });
 
-    user.refreshTokenVersion = newVersion;
-    const tokens = await this.generateTokens(user);
+    const tokens = await this.generateTokens({
+      userId: user.id,
+      refreshTokenVersion: newVersion,
+    });
     this.setCookies(res, tokens);
     this.logger.info('Refresh token rotated', {
       userId: user.id,
@@ -130,7 +119,7 @@ export class AuthService {
   private async validateUser(
     email: string,
     password: string,
-  ): Promise<IUserEntity> {
+  ): Promise<{ user: IUserEntity; refreshTokenVersion: number }> {
     const user = await this.usersService.findByEmail(email);
 
     if (!user) {
@@ -141,10 +130,23 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
+    const userAuth = await this.usersService.findAuthByUserId({
+      userId: user.id,
+    });
+
+    if (!userAuth) {
+      this.logger.warn('Login failed: user auth not found', {
+        userId: user.id,
+        email,
+      });
+
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
     const isValid = await this.passwordHasher.validatePassword({
       password,
-      expectedHashPassword: user.password,
-      salt: user.salt,
+      expectedHashPassword: userAuth.passwordHash,
+      salt: userAuth.salt,
     });
 
     if (!isValid) {
@@ -156,18 +158,24 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return user;
+    return {
+      user,
+      refreshTokenVersion: userAuth.refreshTokenVersion,
+    };
   }
 
-  private async generateTokens(user: IUserEntity): Promise<TokenPair> {
+  private async generateTokens(params: {
+    userId: string;
+    refreshTokenVersion: number;
+  }): Promise<TokenPair> {
     const accessToken = await this.jwtService.createAccessToken({
-      userId: user.id,
+      userId: params.userId,
       type: TokenType.ACCESS,
     });
 
     const refreshToken = await this.jwtService.createRefreshToken({
-      userId: user.id,
-      version: user.refreshTokenVersion,
+      userId: params.userId,
+      version: params.refreshTokenVersion,
       type: TokenType.REFRESH,
     });
 

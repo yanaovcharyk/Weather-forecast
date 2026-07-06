@@ -19,6 +19,16 @@ export interface SavedCityByNameParams {
   cityName: string;
 }
 
+export type SavedCityLookupParams =
+  | {
+      userId: string;
+      id: string;
+    }
+  | {
+      userId: string;
+      cityName: string;
+    };
+
 export type AddSavedCityParams = {
   userId: string;
   input: AddCityInput;

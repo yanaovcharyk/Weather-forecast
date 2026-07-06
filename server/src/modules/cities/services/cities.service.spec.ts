@@ -18,7 +18,6 @@ import {
   UpdatedDniproCity,
   UpdateDniproCityParams,
   UpdatePinnedDniproCityParams,
-  citySuggestionsFixture,
 } from '@cities/testing/fixtures';
 
 describe('CitiesService', () => {
@@ -50,44 +49,50 @@ describe('CitiesService', () => {
     service = ctx.service;
   });
 
-  describe('getCitySuggestions', () => {
-    it('should delegate request to open weather city api', async () => {
-      ctx.openWeatherCityApi.getCitySuggestions.mockResolvedValue(
-        citySuggestionsFixture,
-      );
-
-      const result = await service.getCitySuggestions('Kyiv');
-
-      expect(ctx.openWeatherCityApi.getCitySuggestions).toHaveBeenCalledWith('Kyiv');
-      expect(result).toEqual(citySuggestionsFixture);
-    });
-  });
-
-  describe('getCityById', () => {
-    it('should return city when found', async () => {
+  describe('getSavedCity', () => {
+    it('should return city by id when found', async () => {
       ctx.repo.findOne.mockResolvedValue(KyivCity);
 
-      const result = await service.getCityById({
+      const result = await service.getSavedCity({
         id: '1',
         userId: 'u1',
       });
 
+      expect(ctx.repo.findOne).toHaveBeenCalledWith({
+        where: {
+          id: '1',
+          userId: 'u1',
+        },
+      });
       expect(result).toEqual(KyivCity);
     });
 
-    it('should throw NotFoundException when not found', async () => {
+    it('should return city by name when found', async () => {
+      ctx.repo.findOne.mockResolvedValue(OdesaCity);
+
+      const result = await service.getSavedCity({
+        userId: 'u1',
+        cityName: 'Odesa',
+      });
+
+      expect(ctx.repo.findOne).toHaveBeenCalledWith({
+        where: {
+          userId: 'u1',
+          cityName: 'Odesa',
+        },
+      });
+      expect(result).toEqual(OdesaCity);
+    });
+
+    it('should return null when not found', async () => {
       ctx.repo.findOne.mockResolvedValue(null);
 
-      await expect(
-        service.getCityById({
-          id: '1',
-          userId: 'u1',
-        }),
-      ).rejects.toThrow(NotFoundException);
-
-      expect(ctx.logger.warn).toHaveBeenCalledWith('City not found', {
-        id: '1',
+      const result = await service.getSavedCity({
+        userId: 'u1',
+        cityName: 'Dnipro',
       });
+
+      expect(result).toBeNull();
     });
   });
 
@@ -132,30 +137,6 @@ describe('CitiesService', () => {
 
       expect(ctx.repo.save).toHaveBeenCalledWith(LvivCity);
       expect(result).toBe(LvivCity);
-    });
-  });
-
-  describe('getSavedCityByName', () => {
-    it('should return city when found', async () => {
-      ctx.repo.findOne.mockResolvedValue(OdesaCity);
-
-      const result = await service.getSavedCityByName({
-        userId: 'u1',
-        cityName: 'Odesa',
-      });
-
-      expect(result).toEqual(OdesaCity);
-    });
-
-    it('should return null when not found', async () => {
-      ctx.repo.findOne.mockResolvedValue(null);
-
-      const result = await service.getSavedCityByName({
-        userId: 'u1',
-        cityName: 'Dnipro',
-      });
-
-      expect(result).toBeNull();
     });
   });
 

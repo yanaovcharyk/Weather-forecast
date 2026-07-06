@@ -17,7 +17,7 @@ export const EXISTING_CITY_FIXTURE: City = {
 };
 
 export const CITY_RESPONSE = {
-  getCityById: {
+  getSavedCity: {
     id: '1',
     cityName: 'Kyiv',
     lat: 50.45,

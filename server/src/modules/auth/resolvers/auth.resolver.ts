@@ -1,6 +1,6 @@
 import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { UnauthorizedException, UseGuards } from '@nestjs/common';
-import { LoginInput, RegisterInput, AuthOutput } from '@auth/dto';
+import { LoginInput, AuthOutput } from '@auth/dto';
 import { AuthService } from '@auth/services';
 import { RefreshJwtGuard } from '@auth/guards';
 import { AppLoggerService } from '@logger/services';
@@ -23,18 +23,6 @@ export class AuthResolver {
   @LogResolver()
   async login(@Args('input') input: LoginInput, @Context() ctx: IGQLContext) {
     return this.authService.login({
-      input,
-      res: ctx.res,
-    });
-  }
-
-  @Mutation(() => AuthOutput)
-  @LogResolver()
-  async register(
-    @Args('input') input: RegisterInput,
-    @Context() ctx: IGQLContext,
-  ) {
-    return this.authService.register({
       input,
       res: ctx.res,
     });

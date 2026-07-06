@@ -1,8 +1,5 @@
 import { AuthResolver } from './auth.resolver';
-import {
-  LoginInputFixture,
-  RegisterInputFixture,
-} from '@auth/testing/fixtures/auth-input.fixture';
+import { LoginInputFixture } from '@auth/testing/fixtures/auth-input.fixture';
 import { MockUser } from '@auth/testing/fixtures';
 import { createAuthResolverContext } from '@auth/testing/contexts/resolvers/auth-resolver.context';
 
@@ -39,36 +36,6 @@ describe('AuthResolver', () => {
       await expect(
         resolver.login(LoginInputFixture, ctx.gqlContext),
       ).rejects.toThrow('login failed');
-    });
-  });
-
-  describe('register', () => {
-    it('should call authService.register', async () => {
-      ctx.authService.register.mockResolvedValue({
-        success: true,
-      });
-
-      const result = await resolver.register(
-        RegisterInputFixture,
-        ctx.gqlContext,
-      );
-
-      expect(result).toEqual({
-        success: true,
-      });
-
-      expect(ctx.authService.register).toHaveBeenCalledWith({
-        input: RegisterInputFixture,
-        res: ctx.res,
-      });
-    });
-
-    it('should propagate register error', async () => {
-      ctx.authService.register.mockRejectedValue(new Error('register failed'));
-
-      await expect(
-        resolver.register(RegisterInputFixture, ctx.gqlContext),
-      ).rejects.toThrow('register failed');
     });
   });
 

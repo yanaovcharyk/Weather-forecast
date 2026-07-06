@@ -1,11 +1,11 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateCities002 implements MigrationInterface {
+export class CreateCities1720000000002 implements MigrationInterface {
   async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`CREATE EXTENSION IF NOT EXISTS "pgcrypto"`);
 
     await queryRunner.query(`
-      CREATE TABLE cities (
+      CREATE TABLE IF NOT EXISTS cities (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         "cityName" VARCHAR NOT NULL,
         lat DOUBLE PRECISION NOT NULL,

@@ -6,7 +6,7 @@ import { useRemoveCity } from './useRemoveCity';
 import { useRemoveAllCities } from './useRemoveAllCities';
 import { useTogglePinned } from './useTogglePinned';
 import type { City } from '@/weatherForecast/types';
-import { useCityByName } from './useCityByName';
+import { useSavedCityLookup } from './useSavedCityLookup';
 
 type NotificationFunction = (message: string) => void;
 
@@ -37,7 +37,7 @@ export const useCityActions = ({
   const [currentlySelectedCity, setCurrentlySelectedCity] =
     useState<City | null>(null);
 
-  const { getCityByName } = useCityByName();
+  const { getSavedCity } = useSavedCityLookup();
 
   const handleAddCity = useCallback(
     async (lat: number, lon: number, cityName: string) => {
@@ -48,7 +48,10 @@ export const useCityActions = ({
       setIsAddingCity(true);
 
       try {
-        const existingCity = await getCityByName(cityName);
+        const existingCity = await getSavedCity({
+          cityName,
+          includeWeather: true,
+        });
 
         if (existingCity) {
           const updatedParams = new URLSearchParams(searchParams);
@@ -75,7 +78,7 @@ export const useCityActions = ({
       showInfoNotification,
       showSuccessNotification,
       showErrorNotification,
-      getCityByName,
+      getSavedCity,
       setSearchParams,
       searchParams,
     ],

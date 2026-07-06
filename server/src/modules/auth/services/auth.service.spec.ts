@@ -7,8 +7,8 @@ import {
   REFRESH_TOKEN_FIXTURE,
   refreshJwtPayloadFixture,
   MockUser,
+  MockUserAuth,
   LoginInputFixture,
-  RegisterInputFixture,
 } from '@auth/testing/fixtures';
 
 describe('AuthService', () => {
@@ -23,6 +23,7 @@ describe('AuthService', () => {
   describe('login', () => {
     it('should login successfully', async () => {
       ctx.usersService.findByEmail.mockResolvedValue(MockUser);
+      ctx.usersService.findAuthByUserId.mockResolvedValue(MockUserAuth);
       ctx.passwordHasher.validatePassword.mockResolvedValue(true);
 
       ctx.tokenService.createAccessToken.mockResolvedValue(
@@ -67,6 +68,7 @@ describe('AuthService', () => {
 
     it('should throw when password is invalid', async () => {
       ctx.usersService.findByEmail.mockResolvedValue(MockUser);
+      ctx.usersService.findAuthByUserId.mockResolvedValue(MockUserAuth);
       ctx.passwordHasher.validatePassword.mockResolvedValue(false);
 
       await expect(
@@ -82,53 +84,6 @@ describe('AuthService', () => {
     });
   });
 
-  describe('register', () => {
-    it('should register user successfully', async () => {
-      ctx.passwordHasher.hash.mockResolvedValue({
-        hash: MockUser.password,
-        salt: MockUser.salt,
-      });
-      ctx.usersService.create.mockResolvedValue(MockUser);
-
-      ctx.tokenService.createAccessToken.mockResolvedValue(
-        ACCESS_TOKEN_FIXTURE,
-      );
-
-      ctx.tokenService.createRefreshToken.mockResolvedValue(
-        REFRESH_TOKEN_FIXTURE,
-      );
-
-      const result = await service.register({
-        input: {
-          ...RegisterInputFixture,
-          email: MockUser.email,
-        },
-        res: ctx.res,
-      });
-
-      expect(result).toEqual({ success: true });
-
-      expect(ctx.passwordHasher.hash).toHaveBeenCalledWith({
-        password: RegisterInputFixture.password,
-      });
-      expect(ctx.usersService.create).toHaveBeenCalledWith({
-        email: MockUser.email,
-        password: MockUser.password,
-        salt: MockUser.salt,
-      });
-
-      expect(ctx.cookieService.setAccessToken).toHaveBeenCalledWith(
-        ctx.res,
-        ACCESS_TOKEN_FIXTURE,
-      );
-
-      expect(ctx.cookieService.setRefreshToken).toHaveBeenCalledWith(
-        ctx.res,
-        REFRESH_TOKEN_FIXTURE,
-      );
-    });
-  });
-
   describe('logout', () => {
     it('should logout user', async () => {
       ctx.usersService.findById.mockResolvedValue(MockUser);
@@ -140,9 +95,9 @@ describe('AuthService', () => {
 
       expect(result).toEqual({ success: true });
 
-      expect(ctx.usersService.incrementRefreshTokenVersion).toHaveBeenCalledWith(
-        MockUser.id,
-      );
+      expect(ctx.usersService.incrementRefreshTokenVersion).toHaveBeenCalledWith({
+        userId: MockUser.id,
+      });
 
       expect(ctx.cookieService.clearAccessAndRefreshTokens).toHaveBeenCalledWith(
         ctx.res,
@@ -166,14 +121,17 @@ describe('AuthService', () => {
       ctx.tokenService.verifyRefreshToken.mockResolvedValue({
         ...refreshJwtPayloadFixture,
         userId: MockUser.id,
-        version: MockUser.refreshTokenVersion,
+        version: MockUserAuth.refreshTokenVersion,
       });
 
       ctx.usersService.findById.mockResolvedValue({
         ...MockUser,
       });
+      ctx.usersService.findAuthByUserId.mockResolvedValue({
+        ...MockUserAuth,
+      });
       ctx.usersService.incrementRefreshTokenVersion.mockResolvedValue(
-        MockUser.refreshTokenVersion + 1,
+        MockUserAuth.refreshTokenVersion + 1,
       );
 
       ctx.tokenService.createAccessToken.mockResolvedValue(
@@ -191,9 +149,9 @@ describe('AuthService', () => {
 
       expect(result).toEqual({ success: true });
 
-      expect(ctx.usersService.incrementRefreshTokenVersion).toHaveBeenCalledWith(
-        MockUser.id,
-      );
+      expect(ctx.usersService.incrementRefreshTokenVersion).toHaveBeenCalledWith({
+        userId: MockUser.id,
+      });
 
       expect(ctx.cookieService.setAccessToken).toHaveBeenCalledWith(
         ctx.res,
@@ -228,6 +186,9 @@ describe('AuthService', () => {
 
       ctx.usersService.findById.mockResolvedValue({
         ...MockUser,
+      });
+      ctx.usersService.findAuthByUserId.mockResolvedValue({
+        ...MockUserAuth,
         refreshTokenVersion: 999,
       });
 

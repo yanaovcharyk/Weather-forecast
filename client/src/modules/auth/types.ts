@@ -6,7 +6,10 @@ export interface ILoginMutationResponse {
 
 export interface IMeQuery {
   me: {
-    userId: string;
+    id: string;
+    email: string;
+    createdAt: string;
+    updatedAt: string;
   };
 }
 

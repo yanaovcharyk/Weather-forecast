@@ -2,11 +2,12 @@ import { renderHook, act } from '@testing-library/react';
 import { vi } from 'vitest';
 import { useApolloClient } from '@apollo/client/react';
 
-import { useCityByName } from './useCityByName';
+import { GET_SAVED_CITY } from '@/common/graphql';
+import { useSavedCityLookup } from './useSavedCityLookup';
 
 vi.mock('@apollo/client/react');
 
-describe('useCityByName', () => {
+describe('useSavedCityLookup', () => {
   const query = vi.fn();
 
   beforeEach(() => {
@@ -25,34 +26,45 @@ describe('useCityByName', () => {
 
     query.mockResolvedValue({
       data: {
-        getSavedCityByName: city,
+        getSavedCity: city,
       },
     });
 
-    const { result } = renderHook(() => useCityByName());
+    const { result } = renderHook(() => useSavedCityLookup());
 
     let response;
 
     await act(async () => {
-      response = await result.current.getCityByName('Kyiv');
+      response = await result.current.getSavedCity({
+        cityName: 'Kyiv',
+        includeWeather: true,
+      });
     });
 
+    expect(query).toHaveBeenCalledWith({
+      query: GET_SAVED_CITY,
+      variables: {
+        cityName: 'Kyiv',
+        includeWeather: true,
+      },
+      fetchPolicy: 'network-only',
+    });
     expect(response).toEqual(city);
   });
 
   it('returns null', async () => {
     query.mockResolvedValue({
       data: {
-        getSavedCityByName: null,
+        getSavedCity: null,
       },
     });
 
-    const { result } = renderHook(() => useCityByName());
+    const { result } = renderHook(() => useSavedCityLookup());
 
     let response;
 
     await act(async () => {
-      response = await result.current.getCityByName('Kyiv');
+      response = await result.current.getSavedCity({ cityName: 'Kyiv' });
     });
 
     expect(response).toBeNull();

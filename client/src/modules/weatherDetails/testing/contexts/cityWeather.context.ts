@@ -1,13 +1,13 @@
 import type { ErrorLike } from '@apollo/client';
 import type {
-  GetCityByIdResponse,
+  GetSavedCityResponse,
   GetWeatherDetailsResponse,
 } from '@/weatherDetails/types';
 
 export type CityWeatherContext = {
   id: string;
 
-  cityData?: GetCityByIdResponse;
+  cityData?: GetSavedCityResponse;
   weatherData?: GetWeatherDetailsResponse;
 
   cityLoading: boolean;

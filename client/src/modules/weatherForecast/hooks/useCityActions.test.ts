@@ -32,7 +32,7 @@ vi.mock('./useAddCity');
 vi.mock('./useRemoveCity');
 vi.mock('./useRemoveAllCities');
 vi.mock('./useTogglePinned');
-vi.mock('./useCityByName');
+vi.mock('./useSavedCityLookup');
 
 describe('useCityActions', () => {
   let ctx: CityActionsContext;
@@ -43,7 +43,7 @@ describe('useCityActions', () => {
   });
 
   it('should add city successfully', async () => {
-    ctx.getCityByName.mockResolvedValue(null);
+    ctx.getSavedCity.mockResolvedValue(null);
 
     const { handleAddCity } = setupCityActions(ctx);
 
@@ -58,7 +58,7 @@ describe('useCityActions', () => {
   });
 
   it('should handle existing city', async () => {
-    ctx.getCityByName.mockResolvedValue({
+    ctx.getSavedCity.mockResolvedValue({
       id: '123',
       cityName: 'Kyiv',
     } as City);
@@ -77,7 +77,7 @@ describe('useCityActions', () => {
   });
 
   it('should handle add city error', async () => {
-    ctx.getCityByName.mockRejectedValue(new Error());
+    ctx.getSavedCity.mockRejectedValue(new Error());
 
     const { handleAddCity } = setupCityActions(ctx);
 
@@ -177,7 +177,7 @@ describe('useCityActions', () => {
 
   it('should return early when city is already being added', async () => {
     const deferred = createControlledPromise<City | null>();
-    ctx.getCityByName.mockReturnValue(deferred.promise);
+    ctx.getSavedCity.mockReturnValue(deferred.promise);
 
     const { result } = setupCityActions(ctx);
 
@@ -191,7 +191,7 @@ describe('useCityActions', () => {
       await result.current.handleAddCity(10, 20, 'Kyiv');
     });
 
-    expect(ctx.getCityByName).toHaveBeenCalledTimes(1);
+    expect(ctx.getSavedCity).toHaveBeenCalledTimes(1);
 
     await act(async () => {
       deferred.resolve(null);

@@ -6,8 +6,12 @@ import {
   Parent,
   ResolveField,
 } from '@nestjs/graphql';
-import { UseGuards } from '@nestjs/common';
-import { CitiesService, CitiesQueryService } from '@cities/services';
+import { BadRequestException, UseGuards } from '@nestjs/common';
+import {
+  CitiesService,
+  CitiesQueryService,
+  OpenWeatherCityApiService,
+} from '@cities/services';
 import { WeatherService } from '@weather/services';
 import { WeatherOutput } from '@weather/dto';
 import { AccessJwtGuard } from '@auth/guards';
@@ -29,6 +33,7 @@ import {
   graphqlListType,
   graphqlType,
 } from '@graphql/type-functions';
+import { SavedCityLookupParams } from '@cities/types';
 
 const cityOutputType = graphqlType(CityOutput);
 const cityOutputListType = graphqlListType(CityOutput);
@@ -44,6 +49,7 @@ export class CitiesResolver {
   constructor(
     private readonly citiesService: CitiesService,
     private readonly citiesQueryService: CitiesQueryService,
+    private readonly openWeatherCityApi: OpenWeatherCityApiService,
     private readonly weatherService: WeatherService,
     loggerService: AppLoggerService,
   ) {
@@ -54,7 +60,7 @@ export class CitiesResolver {
   @Query(citySuggestionListType)
   @LogResolver()
   async getCitySuggestions(@Args('input') input: CitySearchInput) {
-    return this.citiesService.getCitySuggestions(input.query);
+    return this.openWeatherCityApi.getCitySuggestions(input.query);
   }
 
   @UseGuards(AccessJwtGuard)
@@ -82,29 +88,16 @@ export class CitiesResolver {
   }
 
   @UseGuards(AccessJwtGuard)
-  @Query(cityOutputType)
-  @LogResolver()
-  async getCityById(
-    @CurrentUser() user: ICurrentUser,
-    @Args('id', { type: graphqlIdType }) id: string,
-  ): Promise<CityOutput> {
-    return this.citiesService.getCityById({
-      userId: user.id,
-      id,
-    });
-  }
-
-  @UseGuards(AccessJwtGuard)
   @Query(cityOutputType, { nullable: true })
   @LogResolver()
-  async getSavedCityByName(
+  async getSavedCity(
     @CurrentUser() user: ICurrentUser,
-    @Args('cityName') cityName: string,
+    @Args('id', { type: graphqlIdType, nullable: true }) id?: string,
+    @Args('cityName', { nullable: true }) cityName?: string,
   ): Promise<CityOutput | null> {
-    return this.citiesService.getSavedCityByName({
-      userId: user.id,
-      cityName,
-    });
+    return this.citiesService.getSavedCity(
+      this.toSavedCityLookupParams(user.id, { id, cityName }),
+    );
   }
 
   @UseGuards(AccessJwtGuard)
@@ -168,5 +161,31 @@ export class CitiesResolver {
       lat: city.lat,
       lon: city.lon,
     });
+  }
+
+  private toSavedCityLookupParams(
+    userId: string,
+    args: {
+      id?: string;
+      cityName?: string;
+    },
+  ): SavedCityLookupParams {
+    const cityName = args.cityName?.trim();
+
+    if (args.id) {
+      return {
+        userId,
+        id: args.id,
+      };
+    }
+
+    if (cityName) {
+      return {
+        userId,
+        cityName,
+      };
+    }
+
+    throw new BadRequestException('City id or name is required');
   }
 }

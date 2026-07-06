@@ -1,3 +1,2 @@
-export { AddUserInput } from './add-user.input';
-export { MeOutput } from './me.output';
+export { CreateUserInput } from './create-user.input';
 export { UserOutput } from './user.output';

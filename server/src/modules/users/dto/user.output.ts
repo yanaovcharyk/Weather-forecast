@@ -8,4 +8,10 @@ export class UserOutput implements IUserOutput {
 
   @Field()
   email!: string;
+
+  @Field()
+  createdAt!: Date;
+
+  @Field()
+  updatedAt!: Date;
 }

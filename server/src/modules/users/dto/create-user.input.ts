@@ -1,9 +1,9 @@
 import { InputType, Field } from '@nestjs/graphql';
 import { IsEmail, IsString, MinLength } from 'class-validator';
-import { IAddUserInput } from '@users/interfaces';
+import { ICreateUserInput } from '@users/interfaces';
 
 @InputType()
-export class AddUserInput implements IAddUserInput {
+export class CreateUserInput implements ICreateUserInput {
   @Field()
   @IsEmail()
   email!: string;
@@ -12,8 +12,4 @@ export class AddUserInput implements IAddUserInput {
   @IsString()
   @MinLength(6)
   password!: string;
-
-  @Field()
-  @IsString()
-  salt!: string;
 }

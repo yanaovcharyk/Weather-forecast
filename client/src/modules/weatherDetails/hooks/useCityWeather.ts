@@ -2,14 +2,15 @@ import { useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client/react';
 
 import type {
-  GetCityByIdResponse,
+  GetSavedCityResponse,
   GetWeatherDetailsResponse,
 } from '@/weatherDetails/types';
 
-import { GET_CITY_BY_ID, GET_WEATHER_DETAILS } from '@/weatherDetails/graphql';
+import { GET_SAVED_CITY } from '@/common/graphql';
+import { GET_WEATHER_DETAILS } from '@/weatherDetails/graphql';
 
 export type CityWeatherResult = {
-  cityName: GetCityByIdResponse['getCityById']['cityName'] | undefined;
+  cityName: string | undefined;
   weather: GetWeatherDetailsResponse['getWeatherDetails'] | undefined;
   loading: boolean;
   error: Error | undefined;
@@ -22,14 +23,14 @@ export const useCityWeather = (): CityWeatherResult => {
     data: cityData,
     loading: cityLoading,
     error: cityError,
-  } = useQuery<GetCityByIdResponse>(GET_CITY_BY_ID, {
-    variables: { id },
+  } = useQuery<GetSavedCityResponse>(GET_SAVED_CITY, {
+    variables: { id, includeWeather: false },
     skip: !id,
     fetchPolicy: 'cache-and-network',
   });
 
-  const lat = cityData?.getCityById?.lat;
-  const lon = cityData?.getCityById?.lon;
+  const lat = cityData?.getSavedCity?.lat;
+  const lon = cityData?.getSavedCity?.lon;
 
   const {
     data: weatherData,
@@ -42,7 +43,7 @@ export const useCityWeather = (): CityWeatherResult => {
   });
 
   return {
-    cityName: cityData?.getCityById?.cityName,
+    cityName: cityData?.getSavedCity?.cityName,
     weather: weatherData?.getWeatherDetails,
     loading: cityLoading || weatherLoading,
     error: cityError || weatherError,

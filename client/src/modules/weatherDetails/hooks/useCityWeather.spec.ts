@@ -49,7 +49,7 @@ describe('useCityWeather', () => {
 
     const { result } = setupCityWeather();
 
-    expect(result.current.cityName).toBe(CITY_RESPONSE.getCityById.cityName);
+    expect(result.current.cityName).toBe(CITY_RESPONSE.getSavedCity.cityName);
 
     expect(result.current.weather).toEqual(WEATHER_RESPONSE.getWeatherDetails);
   });

@@ -1,5 +1,9 @@
 import { CitiesResolver } from '@cities/resolvers/cities.resolver';
-import { CitiesService, CitiesQueryService } from '@cities/services';
+import {
+  CitiesService,
+  CitiesQueryService,
+  OpenWeatherCityApiService,
+} from '@cities/services';
 import { WeatherService } from '@weather/services';
 import { AppLoggerService } from '@logger/services';
 import { AccessJwtGuard } from '@auth/guards';
@@ -11,13 +15,17 @@ import { createContext } from '@shared/testing/utils/create-context';
 
 export function createCitiesServiceMock() {
   return {
-    getCitySuggestions: jest.fn(),
-    getCityById: jest.fn(),
-    getSavedCityByName: jest.fn(),
+    getSavedCity: jest.fn(),
     addSavedCity: jest.fn(),
     removeSavedCity: jest.fn(),
     removeAllSavedCities: jest.fn(),
     updateSavedCity: jest.fn(),
+  };
+}
+
+export function createOpenWeatherCityApiMock() {
+  return {
+    getCitySuggestions: jest.fn(),
   };
 }
 
@@ -38,6 +46,7 @@ export type CitiesResolverTestContext = {
   resolver: CitiesResolver;
   citiesService: ReturnType<typeof createCitiesServiceMock>;
   citiesQueryService: ReturnType<typeof createCitiesQueryServiceMock>;
+  openWeatherCityApi: ReturnType<typeof createOpenWeatherCityApiMock>;
   weatherService: ReturnType<typeof createWeatherServiceMock>;
   logger: ReturnType<typeof createLoggerMock>;
 };
@@ -45,12 +54,14 @@ export type CitiesResolverTestContext = {
 export async function createCitiesResolverContext(): Promise<CitiesResolverTestContext> {
   const citiesService = createCitiesServiceMock();
   const citiesQueryService = createCitiesQueryServiceMock();
+  const openWeatherCityApi = createOpenWeatherCityApiMock();
   const weatherService = createWeatherServiceMock();
   const logger = createLoggerMock();
 
   const resolver = await createContext(CitiesResolver, [
     { provide: CitiesService, useValue: citiesService },
     { provide: CitiesQueryService, useValue: citiesQueryService },
+    { provide: OpenWeatherCityApiService, useValue: openWeatherCityApi },
     { provide: WeatherService, useValue: weatherService },
     { provide: AppLoggerService, useValue: logger },
     {
@@ -78,6 +89,7 @@ export async function createCitiesResolverContext(): Promise<CitiesResolverTestC
     resolver,
     citiesService,
     citiesQueryService,
+    openWeatherCityApi,
     weatherService,
     logger,
   };

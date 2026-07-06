@@ -19,6 +19,8 @@ services:
     restart: always
     env_file:
       - ${SERVER_ENV_FILE}
+    environment:
+      DB_HOST: postgres
     ports:
       - "${SERVER_PORT}:${SERVER_INTERNAL_PORT}"
     depends_on:

@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { LoginInput, RegisterInput } from './dto';
+import { LoginInput } from './dto';
 
 export enum TokenType {
   ACCESS = 'access',
@@ -13,11 +13,6 @@ export enum TokenName {
 
 export type LoginParams = {
   input: LoginInput;
-  res: Response;
-};
-
-export type RegisterParams = {
-  input: RegisterInput;
   res: Response;
 };
 

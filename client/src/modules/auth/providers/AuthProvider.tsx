@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     errorPolicy: 'all',
   });
 
-  const userId = data?.me?.userId;
+  const userId = data?.me?.id;
 
   const isAuthenticated = !!userId;
 

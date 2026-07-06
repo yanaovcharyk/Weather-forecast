@@ -1,5 +1,9 @@
-export type CreateUserParams = {
+export type CreateUserWithAuthParams = {
   email: string;
-  password: string;
+  passwordHash: string;
   salt: string;
+};
+
+export type UserAuthParams = {
+  userId: string;
 };

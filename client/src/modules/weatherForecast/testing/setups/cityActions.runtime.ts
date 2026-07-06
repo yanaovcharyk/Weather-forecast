@@ -5,7 +5,7 @@ import type { CityActionsContext } from '@/weatherForecast/testing/contexts/city
 import { useAddCity, useRemoveCity } from '@/weatherForecast/hooks';
 import { useRemoveAllCities } from '@/weatherForecast/hooks/useRemoveAllCities';
 import { useTogglePinned } from '@/weatherForecast/hooks/useTogglePinned';
-import { useCityByName } from '@/weatherForecast/hooks/useCityByName';
+import { useSavedCityLookup } from '@/weatherForecast/hooks/useSavedCityLookup';
 
 export const setupCityActionsRuntime = (
   ctx: CityActionsContext,
@@ -34,8 +34,8 @@ export const setupCityActionsRuntime = (
     loading: ctx.loading,
   });
 
-  vi.mocked(useCityByName).mockReturnValue({
-    getCityByName: ctx.getCityByName,
+  vi.mocked(useSavedCityLookup).mockReturnValue({
+    getSavedCity: ctx.getSavedCity,
   });
 
   ctx.searchParams.get = vi.fn().mockReturnValue(overrides?.existingId ?? null);

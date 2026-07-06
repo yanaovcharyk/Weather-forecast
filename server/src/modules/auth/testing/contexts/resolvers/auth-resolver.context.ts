@@ -17,7 +17,6 @@ import { MockUser, RAW_TOKEN_FIXTURE } from '@auth/testing/fixtures';
 export function createAuthServiceMock() {
   return {
     login: jest.fn(),
-    register: jest.fn(),
     logout: jest.fn(),
     rotateRefreshToken: jest.fn(),
   };

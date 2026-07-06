@@ -12,16 +12,16 @@ describe('CitiesResolver', () => {
     jest.clearAllMocks();
   });
 
-  it('getCitySuggestions should call citiesService.getCitySuggestions', async () => {
+  it('getCitySuggestions should call open weather city api', async () => {
     const expected = [
       { name: 'Kyiv', country: 'UA', lat: 50, lon: 30 },
       { name: 'Lviv', country: 'UA', lat: 49, lon: 24 },
     ];
-    ctx.citiesService.getCitySuggestions.mockResolvedValue(expected);
+    ctx.openWeatherCityApi.getCitySuggestions.mockResolvedValue(expected);
 
     const result = await ctx.resolver.getCitySuggestions({ query: 'Kyiv' });
 
-    expect(ctx.citiesService.getCitySuggestions).toHaveBeenCalledWith('Kyiv');
+    expect(ctx.openWeatherCityApi.getCitySuggestions).toHaveBeenCalledWith('Kyiv');
     expect(result).toEqual(expected);
   });
 
@@ -79,7 +79,7 @@ describe('CitiesResolver', () => {
     ).rejects.toThrow('fail');
   });
 
-  it('getCityById should call getCityById with userId and id', async () => {
+  it('getSavedCity should call getSavedCity with userId and id', async () => {
     const city = {
       id: '1',
       cityName: 'Kyiv',
@@ -87,24 +87,18 @@ describe('CitiesResolver', () => {
       lon: 30,
       isPinned: false,
     };
-    ctx.citiesService.getCityById.mockResolvedValue(city);
+    ctx.citiesService.getSavedCity.mockResolvedValue(city);
 
-    const result = await ctx.resolver.getCityById(user, '1');
+    const result = await ctx.resolver.getSavedCity(user, '1');
 
-    expect(ctx.citiesService.getCityById).toHaveBeenCalledWith({
+    expect(ctx.citiesService.getSavedCity).toHaveBeenCalledWith({
       userId: 'u1',
       id: '1',
     });
     expect(result).toEqual(city);
   });
 
-  it('should propagate error from getCityById', async () => {
-    ctx.citiesService.getCityById.mockRejectedValue(new Error('fail'));
-
-    await expect(ctx.resolver.getCityById(user, '1')).rejects.toThrow('fail');
-  });
-
-  it('getSavedCityByName should call getSavedCityByName', async () => {
+  it('getSavedCity should call getSavedCity with userId and cityName', async () => {
     const city = {
       id: '2',
       cityName: 'Lviv',
@@ -112,11 +106,11 @@ describe('CitiesResolver', () => {
       lon: 24,
       isPinned: false,
     };
-    ctx.citiesService.getSavedCityByName.mockResolvedValue(city);
+    ctx.citiesService.getSavedCity.mockResolvedValue(city);
 
-    const result = await ctx.resolver.getSavedCityByName(user, 'Lviv');
+    const result = await ctx.resolver.getSavedCity(user, undefined, 'Lviv');
 
-    expect(ctx.citiesService.getSavedCityByName).toHaveBeenCalledWith({
+    expect(ctx.citiesService.getSavedCity).toHaveBeenCalledWith({
       userId: 'u1',
       cityName: 'Lviv',
     });
@@ -124,20 +118,26 @@ describe('CitiesResolver', () => {
     expect(result).toEqual(city);
   });
 
-  it('getSavedCityByName should return null', async () => {
-    ctx.citiesService.getSavedCityByName.mockResolvedValue(null);
+  it('getSavedCity should return null', async () => {
+    ctx.citiesService.getSavedCity.mockResolvedValue(null);
 
-    const result = await ctx.resolver.getSavedCityByName(user, 'Unknown');
+    const result = await ctx.resolver.getSavedCity(user, undefined, 'Unknown');
 
     expect(result).toBeNull();
   });
 
-  it('should propagate error from getSavedCityByName', async () => {
-    ctx.citiesService.getSavedCityByName.mockRejectedValue(new Error('fail'));
+  it('should propagate error from getSavedCity', async () => {
+    ctx.citiesService.getSavedCity.mockRejectedValue(new Error('fail'));
 
-    await expect(ctx.resolver.getSavedCityByName(user, 'X')).rejects.toThrow(
-      'fail',
-    );
+    await expect(
+      ctx.resolver.getSavedCity(user, undefined, 'X'),
+    ).rejects.toThrow('fail');
+  });
+
+  it('getSavedCity should reject missing lookup args', async () => {
+    await expect(
+      ctx.resolver.getSavedCity(user, undefined, undefined),
+    ).rejects.toThrow('City id or name is required');
   });
 
   it('addSavedCity should call service.addSavedCity', async () => {

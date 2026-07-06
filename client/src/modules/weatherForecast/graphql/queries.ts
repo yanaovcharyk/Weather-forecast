@@ -42,26 +42,3 @@ export const GET_CITY_SUGGESTIONS = gql`
     }
   }
 `;
-
-export const GET_SAVED_CITY_BY_NAME = gql`
-  query GetSavedCityByName($cityName: String!) {
-    getSavedCityByName(cityName: $cityName) {
-      id
-      cityName
-      lat
-      lon
-      isPinned
-      weather {
-        temperature
-        min
-        max
-        description
-        next3Days {
-          min
-          max
-          description
-        }
-      }
-    }
-  }
-`;

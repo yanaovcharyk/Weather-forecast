@@ -18,14 +18,18 @@ type RemoveAllCitiesFn = () => Promise<{
 
 type TogglePinnedFn = (id: string, currentPinned: boolean) => Promise<void>;
 
-type GetCityByNameFn = (cityName: string) => Promise<City | null>;
+type GetSavedCityFn = (variables: {
+  id?: string;
+  cityName?: string;
+  includeWeather?: boolean;
+}) => Promise<City | null>;
 
 export type CityActionsContext = {
   addCity: Mock<AddCityFn>;
   removeCity: Mock<RemoveCityFn>;
   removeAllCities: Mock<RemoveAllCitiesFn>;
   togglePinned: Mock<TogglePinnedFn>;
-  getCityByName: Mock<GetCityByNameFn>;
+  getSavedCity: Mock<GetSavedCityFn>;
 
   loading: boolean;
   error: ErrorLike | undefined;
@@ -48,7 +52,7 @@ export const createCityActionsContext = (): CityActionsContext => ({
   removeCity: vi.fn<RemoveCityFn>(),
   removeAllCities: vi.fn<RemoveAllCitiesFn>(),
   togglePinned: vi.fn<TogglePinnedFn>(),
-  getCityByName: vi.fn<GetCityByNameFn>(),
+  getSavedCity: vi.fn<GetSavedCityFn>(),
 
   loading: false,
   error: undefined,

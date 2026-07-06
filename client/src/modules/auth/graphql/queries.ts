@@ -3,7 +3,10 @@ import { gql } from '@apollo/client';
 export const ME_QUERY = gql`
   query Me {
     me {
-      userId
+      id
+      email
+      createdAt
+      updatedAt
     }
   }
 `;

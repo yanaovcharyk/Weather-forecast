@@ -10,14 +10,13 @@ import { AppLoggerService } from '@logger/services';
 import {
   AddSavedCityParams,
   CityByIdParams,
-  SavedCityByNameParams,
+  SavedCityLookupParams,
   UpdateSavedCityParams,
   UserIdParams,
 } from '@cities/types';
-import { ICityOutput, ICitySuggestion } from '@cities/interfaces';
+import { ICityOutput } from '@cities/interfaces';
 import { LogMethod } from '@logger/decorators';
 import { removeUndefined } from '@shared/utils';
-import { OpenWeatherCityApiService } from './open-weather-city-api.service';
 
 @Injectable()
 export class CitiesService {
@@ -26,21 +25,21 @@ export class CitiesService {
   constructor(
     @InjectRepository(CityEntity)
     private readonly cityRepository: Repository<CityEntity>,
-    private readonly openWeatherCityApi: OpenWeatherCityApiService,
     loggerService: AppLoggerService,
   ) {
     this.logger = loggerService.child(CitiesService.name);
   }
 
   @LogMethod()
-  async getCitySuggestions(query: string): Promise<ICitySuggestion[]> {
-    return this.openWeatherCityApi.getCitySuggestions(query);
-  }
+  async getSavedCity(params: SavedCityLookupParams): Promise<CityEntity | null> {
+    const { userId, ...lookupParams } = params;
 
-  @LogMethod()
-  async getCityById(params: CityByIdParams): Promise<ICityOutput> {
-    const city = await this.findSavedCityOrFail(params);
-    return city;
+    return this.cityRepository.findOne({
+      where: {
+        userId,
+        ...lookupParams,
+      },
+    });
   }
 
   @LogMethod()
@@ -71,20 +70,8 @@ export class CitiesService {
   }
 
   @LogMethod()
-  async getSavedCityByName(
-    params: SavedCityByNameParams,
-  ): Promise<ICityOutput | null> {
-    return this.cityRepository.findOne({
-      where: {
-        userId: params.userId,
-        cityName: params.cityName,
-      },
-    });
-  }
-
-  @LogMethod()
   async removeSavedCity(params: CityByIdParams): Promise<ICityOutput> {
-    const city = await this.findSavedCityOrFail(params);
+    const city = await this.getSavedCityOrFail(params);
     const removedCity = { ...city };
     await this.cityRepository.remove(city);
 
@@ -130,14 +117,15 @@ export class CitiesService {
       current: updates,
     });
 
-    return this.findSavedCityOrFail(params);
+    return this.getSavedCityOrFail(params);
   }
 
-  private async findSavedCityOrFail(
+  private async getSavedCityOrFail(
     params: CityByIdParams,
   ): Promise<CityEntity> {
-    const city = await this.cityRepository.findOne({
-      where: { id: params.id, userId: params.userId },
+    const city = await this.getSavedCity({
+      userId: params.userId,
+      id: params.id,
     });
 
     if (!city) {

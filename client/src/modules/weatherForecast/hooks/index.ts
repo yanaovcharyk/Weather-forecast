@@ -2,7 +2,7 @@ export { useAddCity } from './useAddCity';
 export { type AddCityFormResult, useAddCityForm } from './useAddCityForm';
 export { useCitiesPaginated } from './useCitiesPaginated';
 export { useCityActions } from './useCityActions';
-export { useCityByName } from './useCityByName';
+export { useSavedCityLookup } from './useSavedCityLookup';
 export { useCitySearch } from './useCitySearch';
 export { useRemoveAllCities } from './useRemoveAllCities';
 export { useRemoveCity } from './useRemoveCity';

@@ -32,36 +32,71 @@ describe('UserService', () => {
     expect(result).toEqual(user);
   });
 
-  it('create should call repository.create and save', async () => {
-    const data = {
-      email: 'new@example.com',
-      password: 'hashed',
+  it('createUserWithPassword should hash password and create user with auth data', async () => {
+    ctx.passwordHasher.hash.mockResolvedValue({
+      hash: 'hashed',
       salt: 'salt',
+    });
+
+    const created = {
+      id: '2',
+      email: 'new@example.com',
     };
-    const created = { id: '2', ...data };
+
     ctx.repo.create.mockReturnValue(created);
     ctx.repo.save.mockResolvedValue(created);
+    ctx.authRepo.create.mockReturnValue({
+      userId: created.id,
+      salt: 'salt',
+    });
 
-    const result = await ctx.service.create(data);
+    const result = await ctx.service.createUserWithPassword({
+      email: 'new@example.com',
+      password: 'password',
+    });
 
-    expect(ctx.repo.create).toHaveBeenCalledWith(data);
-    expect(ctx.repo.save).toHaveBeenCalledWith(created);
+    expect(ctx.passwordHasher.hash).toHaveBeenCalledWith({
+      password: 'password',
+    });
+    expect(ctx.repo.create).toHaveBeenCalledWith({
+      email: 'new@example.com',
+    });
+    expect(ctx.authRepo.create).toHaveBeenCalledWith({
+      userId: created.id,
+      passwordHash: 'hashed',
+      salt: 'salt',
+    });
     expect(ctx.logger.info).toHaveBeenCalledWith('User created', {
       userId: created.id,
     });
     expect(result).toEqual(created);
   });
 
+  it('findAuthByUserId should call auth repository.findOne with userId', async () => {
+    const userAuth = { id: 'auth-1', userId: '1' };
+    ctx.authRepo.findOne.mockResolvedValue(userAuth);
+
+    const result = await ctx.service.findAuthByUserId({ userId: '1' });
+
+    expect(ctx.authRepo.findOne).toHaveBeenCalledWith({
+      where: { userId: '1' },
+    });
+    expect(result).toEqual(userAuth);
+  });
+
   it('incrementRefreshTokenVersion should increment and return current version', async () => {
-    ctx.repo.findOne.mockResolvedValue({
+    ctx.authRepo.findOne.mockResolvedValue({
       id: '1',
+      userId: '1',
       refreshTokenVersion: 2,
     });
 
-    const result = await ctx.service.incrementRefreshTokenVersion('1');
+    const result = await ctx.service.incrementRefreshTokenVersion({
+      userId: '1',
+    });
 
-    expect(ctx.repo.increment).toHaveBeenCalledWith(
-      { id: '1' },
+    expect(ctx.authRepo.increment).toHaveBeenCalledWith(
+      { userId: '1' },
       'refreshTokenVersion',
       1,
     );
@@ -69,10 +104,10 @@ describe('UserService', () => {
   });
 
   it('incrementRefreshTokenVersion should throw when user is missing after update', async () => {
-    ctx.repo.findOne.mockResolvedValue(null);
+    ctx.authRepo.findOne.mockResolvedValue(null);
 
-    await expect(ctx.service.incrementRefreshTokenVersion('1')).rejects.toThrow(
-      'User not found',
-    );
+    await expect(
+      ctx.service.incrementRefreshTokenVersion({ userId: '1' }),
+    ).rejects.toThrow('User auth not found');
   });
 });
