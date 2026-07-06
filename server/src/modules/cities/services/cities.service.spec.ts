@@ -221,11 +221,14 @@ describe('CitiesService', () => {
         },
       });
 
-      expect(ctx.logger.info).toHaveBeenCalledWith('updateSavedCity: city updated', {
-        id: UpdateDniproCityParams.id,
-        fields: ['cityName', 'isPinned'],
-        current: UpdateDniproCityParams.input,
-      });
+      expect(ctx.logger.info).toHaveBeenCalledWith(
+        'updateSavedCity: city updated',
+        {
+          id: UpdateDniproCityParams.id,
+          fields: ['cityName', 'isPinned'],
+          current: UpdateDniproCityParams.input,
+        },
+      );
 
       expect(result).toEqual(UpdatedDniproCity);
     });
@@ -233,18 +236,23 @@ describe('CitiesService', () => {
     it('should update isPinned to false when false is provided', async () => {
       mockCityUpdateSuccess(UnpinnedDniproCity);
 
-      const result = await service.updateSavedCity(UpdatePinnedDniproCityParams);
+      const result = await service.updateSavedCity(
+        UpdatePinnedDniproCityParams,
+      );
 
       expectCityUpdate(
         UpdatePinnedDniproCityParams,
         UpdatePinnedDniproCityParams.input,
       );
 
-      expect(ctx.logger.info).toHaveBeenCalledWith('updateSavedCity: city updated', {
-        id: UpdatePinnedDniproCityParams.id,
-        fields: ['isPinned'],
-        current: UpdatePinnedDniproCityParams.input,
-      });
+      expect(ctx.logger.info).toHaveBeenCalledWith(
+        'updateSavedCity: city updated',
+        {
+          id: UpdatePinnedDniproCityParams.id,
+          fields: ['isPinned'],
+          current: UpdatePinnedDniproCityParams.input,
+        },
+      );
 
       expect(result.isPinned).toBe(false);
     });
@@ -309,6 +317,33 @@ describe('CitiesService', () => {
 
       expect(ctx.repo.findOne).not.toHaveBeenCalled();
       expect(ctx.repo.save).not.toHaveBeenCalled();
+    });
+
+    it('should throw NotFoundException when updated city cannot be reloaded', async () => {
+      ctx.repo.update.mockResolvedValue({
+        affected: 1,
+      });
+      ctx.repo.findOne.mockResolvedValue(null);
+
+      await expect(
+        service.updateSavedCity({
+          id: DniproCity.id,
+          userId: DniproCity.userId,
+          input: {
+            isPinned: true,
+          },
+        }),
+      ).rejects.toThrow(NotFoundException);
+
+      expect(ctx.repo.findOne).toHaveBeenCalledWith({
+        where: {
+          id: DniproCity.id,
+          userId: DniproCity.userId,
+        },
+      });
+      expect(ctx.logger.warn).toHaveBeenCalledWith('City not found', {
+        id: DniproCity.id,
+      });
     });
   });
 });

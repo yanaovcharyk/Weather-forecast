@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { AppLoggerService } from './app-logger.service';
-import { ClientLogInput } from '@logger/dto';
+import { IClientLogInput } from '@logger/types';
 
 type ParsedMeta = Record<string, unknown>;
 
@@ -8,13 +8,13 @@ type ParsedMeta = Record<string, unknown>;
 export class ClientLoggerService {
   constructor(private readonly logger: AppLoggerService) {}
 
-  writeLogs(logs: ClientLogInput[]): void {
+  writeLogs(logs: IClientLogInput[]): void {
     for (const log of logs) {
       this.writeLog(log);
     }
   }
 
-  private writeLog(log: ClientLogInput): void {
+  private writeLog(log: IClientLogInput): void {
     const parsedMeta = this.parseMeta(log.metadata);
 
     const meta = {

@@ -1,6 +1,6 @@
-import { IUserEntity } from '@users/interfaces';
+import { IUserOutput } from '@users/interfaces';
 
-export const MockUser: IUserEntity = {
+export const MockUser: IUserOutput = {
   id: '1',
   email: 'test@test.com',
   createdAt: new Date(),

@@ -4,11 +4,11 @@ import { UserEntity } from '@users/entities';
 import { InjectRepository } from '@nestjs/typeorm';
 import { AppLoggerService } from '@logger/services';
 import { CreateUserWithAuthParams, UserAuthParams } from '@users/types';
-import { IUserEntity } from '@users/interfaces';
 import { LogMethod } from '@logger/index';
 import { UserAuthEntity } from '@auth/entities';
 import { Pbkdf2PasswordHasher } from '@auth/services/password-hasher.service';
-import { CreateUserInput } from '@users/dto';
+import { ICreateUserInput, IUserOutput } from '@users/interfaces';
+import { IUserAuthOutput } from '@auth/interfaces';
 
 @Injectable()
 export class UserService {
@@ -26,17 +26,17 @@ export class UserService {
   }
 
   @LogMethod()
-  async findByEmail(email: string): Promise<IUserEntity | null> {
+  async findByEmail(email: string): Promise<IUserOutput | null> {
     return this.userRepository.findOne({ where: { email } });
   }
 
   @LogMethod()
-  async findById(id: string): Promise<IUserEntity | null> {
+  async findById(id: string): Promise<IUserOutput | null> {
     return this.userRepository.findOne({ where: { id } });
   }
 
   @LogMethod()
-  async createUserWithPassword(input: CreateUserInput): Promise<IUserEntity> {
+  async createUserWithPassword(input: ICreateUserInput): Promise<IUserOutput> {
     const { hash, salt } = await this.passwordHasher.hash({
       password: input.password,
     });
@@ -51,7 +51,7 @@ export class UserService {
   @LogMethod()
   private async createUserWithAuth(
     params: CreateUserWithAuthParams,
-  ): Promise<IUserEntity> {
+  ): Promise<IUserOutput> {
     const user = this.userRepository.create({
       email: params.email,
     });
@@ -72,7 +72,9 @@ export class UserService {
   }
 
   @LogMethod()
-  async findAuthByUserId(params: UserAuthParams): Promise<UserAuthEntity | null> {
+  async findAuthByUserId(
+    params: UserAuthParams,
+  ): Promise<IUserAuthOutput | null> {
     return this.userAuthRepository.findOne({
       where: { userId: params.userId },
     });

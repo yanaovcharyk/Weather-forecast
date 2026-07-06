@@ -6,7 +6,6 @@ import { ICurrentUser } from '@auth/interfaces';
 import { AppLoggerService } from '@logger/services';
 import { LogResolver } from '@logger/decorators';
 import { CreateUserInput, UserOutput } from '@users/dto';
-import { IUserEntity } from '@users/interfaces';
 import { UserService } from '@users/services';
 
 @Resolver()
@@ -25,7 +24,7 @@ export class UsersResolver {
   async createUser(@Args('input') input: CreateUserInput): Promise<UserOutput> {
     const user = await this.userService.createUserWithPassword(input);
 
-    return this.toUserOutput(user);
+    return user;
   }
 
   @Query(() => UserOutput)
@@ -38,15 +37,6 @@ export class UsersResolver {
       throw new UnauthorizedException('Unauthorized');
     }
 
-    return this.toUserOutput(currentUser);
-  }
-
-  private toUserOutput(user: IUserEntity): UserOutput {
-    return {
-      id: user.id,
-      email: user.email,
-      createdAt: user.createdAt!,
-      updatedAt: user.updatedAt!,
-    };
+    return currentUser;
   }
 }

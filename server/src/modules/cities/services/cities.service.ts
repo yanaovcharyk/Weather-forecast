@@ -31,7 +31,9 @@ export class CitiesService {
   }
 
   @LogMethod()
-  async getSavedCity(params: SavedCityLookupParams): Promise<CityEntity | null> {
+  async getSavedCity(
+    params: SavedCityLookupParams,
+  ): Promise<ICityOutput | null> {
     const { userId, ...lookupParams } = params;
 
     return this.cityRepository.findOne({
@@ -71,7 +73,18 @@ export class CitiesService {
 
   @LogMethod()
   async removeSavedCity(params: CityByIdParams): Promise<ICityOutput> {
-    const city = await this.getSavedCityOrFail(params);
+    const city = await this.cityRepository.findOne({
+      where: {
+        id: params.id,
+        userId: params.userId,
+      },
+    });
+
+    if (!city) {
+      this.logger.warn('City not found', { id: params.id });
+      throw new NotFoundException('City not found');
+    }
+
     const removedCity = { ...city };
     await this.cityRepository.remove(city);
 
@@ -122,7 +135,7 @@ export class CitiesService {
 
   private async getSavedCityOrFail(
     params: CityByIdParams,
-  ): Promise<CityEntity> {
+  ): Promise<ICityOutput> {
     const city = await this.getSavedCity({
       userId: params.userId,
       id: params.id,

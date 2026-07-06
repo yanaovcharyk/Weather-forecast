@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CityEntity } from '@cities/entities';
-import { CitiesConnection, CityOutput } from '@cities/dto';
+import { ICitiesConnectionOutput, ICityOutput } from '@cities/interfaces';
 import {
   CITY_CURSOR_VALUE_GETTERS,
   CitySortField,
@@ -38,7 +38,7 @@ export class CitiesQueryService {
   @LogMethod({
     shouldLogResult: true,
   })
-  async getSavedCities(params: GetSavedCitiesParams): Promise<CityOutput[]> {
+  async getSavedCities(params: GetSavedCitiesParams): Promise<ICityOutput[]> {
     const { userId } = params;
 
     const cities = await this.cityRepository.find({
@@ -54,7 +54,7 @@ export class CitiesQueryService {
   })
   async getSavedCitiesPaginated(
     params: GetSavedCitiesPaginatedParams,
-  ): Promise<CitiesConnection> {
+  ): Promise<ICitiesConnectionOutput> {
     const { userId, query } = params;
 
     const qb = this.cityRepository
@@ -138,7 +138,9 @@ export class CitiesQueryService {
     qb.take(limit + 1);
   }
 
-  private toConnection(params: BuildCitiesConnectionParams): CitiesConnection {
+  private toConnection(
+    params: BuildCitiesConnectionParams,
+  ): ICitiesConnectionOutput {
     const { cities, limit, sortBy } = params;
 
     const getCursorValue = CITY_CURSOR_VALUE_GETTERS[sortBy];

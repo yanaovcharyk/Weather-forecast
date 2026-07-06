@@ -1,10 +1,7 @@
 import { Resolver, Query, Args } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { WeatherService } from '@weather/services';
-import {
-  WeatherDetailsOutput,
-  GetWeatherInput,
-} from '@weather/dto';
+import { WeatherDetailsOutput, GetWeatherInput } from '@weather/dto';
 import { AppLoggerService } from '@logger/services';
 import { LogResolver } from '@logger/index';
 import { AccessJwtGuard } from '@auth/guards';
@@ -22,7 +19,9 @@ export class WeatherResolver {
   @UseGuards(AccessJwtGuard)
   @Query(() => WeatherDetailsOutput)
   @LogResolver()
-  async getWeatherDetails(@Args('input') input: GetWeatherInput) {
+  async getWeatherDetails(
+    @Args('input') input: GetWeatherInput,
+  ): Promise<WeatherDetailsOutput> {
     return this.weatherService.getWeatherDetails(input);
   }
 }

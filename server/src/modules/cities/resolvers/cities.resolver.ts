@@ -6,7 +6,7 @@ import {
   Parent,
   ResolveField,
 } from '@nestjs/graphql';
-import { BadRequestException, UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import {
   CitiesService,
   CitiesQueryService,
@@ -33,7 +33,7 @@ import {
   graphqlListType,
   graphqlType,
 } from '@graphql/type-functions';
-import { SavedCityLookupParams } from '@cities/types';
+import { toSavedCityLookupParams } from '@cities/utils';
 
 const cityOutputType = graphqlType(CityOutput);
 const cityOutputListType = graphqlListType(CityOutput);
@@ -59,7 +59,9 @@ export class CitiesResolver {
   @UseGuards(AccessJwtGuard)
   @Query(citySuggestionListType)
   @LogResolver()
-  async getCitySuggestions(@Args('input') input: CitySearchInput) {
+  async getCitySuggestions(
+    @Args('input') input: CitySearchInput,
+  ): Promise<CitySuggestion[]> {
     return this.openWeatherCityApi.getCitySuggestions(input.query);
   }
 
@@ -96,7 +98,7 @@ export class CitiesResolver {
     @Args('cityName', { nullable: true }) cityName?: string,
   ): Promise<CityOutput | null> {
     return this.citiesService.getSavedCity(
-      this.toSavedCityLookupParams(user.id, { id, cityName }),
+      toSavedCityLookupParams(user.id, { id, cityName }),
     );
   }
 
@@ -106,7 +108,7 @@ export class CitiesResolver {
   async addSavedCity(
     @CurrentUser() user: ICurrentUser,
     @Args('input') input: AddCityInput,
-  ) {
+  ): Promise<CityOutput> {
     return this.citiesService.addSavedCity({
       userId: user.id,
       input,
@@ -156,36 +158,10 @@ export class CitiesResolver {
 
   @ResolveField(weatherOutputType, { nullable: true })
   @LogResolver()
-  async weather(@Parent() city: CityOutput) {
+  async weather(@Parent() city: CityOutput): Promise<WeatherOutput> {
     return this.weatherService.getWeatherPreview({
       lat: city.lat,
       lon: city.lon,
     });
-  }
-
-  private toSavedCityLookupParams(
-    userId: string,
-    args: {
-      id?: string;
-      cityName?: string;
-    },
-  ): SavedCityLookupParams {
-    const cityName = args.cityName?.trim();
-
-    if (args.id) {
-      return {
-        userId,
-        id: args.id,
-      };
-    }
-
-    if (cityName) {
-      return {
-        userId,
-        cityName,
-      };
-    }
-
-    throw new BadRequestException('City id or name is required');
   }
 }

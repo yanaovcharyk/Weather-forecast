@@ -1,9 +1,12 @@
 import { SelectQueryBuilder } from 'typeorm';
-import { AddCityInput, CitiesQueryInput, UpdateCityInput } from './dto';
 import { CityEntity } from './entities';
 import { CitySortField } from './city-query.config';
 import { SortOrder } from '@shared/constants';
-import { IUpdateCityInput } from './interfaces';
+import {
+  IAddCityInput,
+  ICitiesQueryInput,
+  IUpdateCityInput,
+} from './interfaces';
 
 export type UserIdParams = {
   userId: string;
@@ -31,11 +34,11 @@ export type SavedCityLookupParams =
 
 export type AddSavedCityParams = {
   userId: string;
-  input: AddCityInput;
+  input: IAddCityInput;
 };
 
 export type UpdateSavedCityParams = CityByIdParams & {
-  input: UpdateCityInput;
+  input: IUpdateCityInput;
 };
 
 export type GetSavedCitiesParams = {
@@ -44,17 +47,17 @@ export type GetSavedCitiesParams = {
 
 export type GetSavedCitiesPaginatedParams = {
   userId: string;
-  query: CitiesQueryInput;
+  query: ICitiesQueryInput;
 };
 
 export type ApplySortingParams = {
   qb: SelectQueryBuilder<CityEntity>;
-  query: CitiesQueryInput;
+  query: ICitiesQueryInput;
 };
 
 export type ApplyCursorParams = {
   qb: SelectQueryBuilder<CityEntity>;
-  query: CitiesQueryInput;
+  query: ICitiesQueryInput;
   sortBy: CitySortField;
   sortOrder: SortOrder;
 };

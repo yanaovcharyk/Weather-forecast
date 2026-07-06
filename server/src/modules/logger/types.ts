@@ -11,6 +11,24 @@ export interface ILoggerContext {
   context?: string;
 }
 
+export interface IClientLogInput {
+  timestamp: string;
+  level: string;
+  message: string;
+  requestId?: string;
+  userId?: string;
+  sessionId?: string;
+  route?: string;
+  metadata?: string;
+  operationName?: string;
+  variables?: string;
+  path?: string;
+  search?: string;
+  module?: string;
+  executionTimeMs?: number;
+  hasErrors?: boolean;
+}
+
 export type LogMethodOptions = {
   shouldLogArguments?: boolean;
   shouldLogResult?: boolean;
@@ -21,10 +39,7 @@ export type LogMethodOptions = {
 
 export type SerializeHandler = {
   condition: (value: unknown) => boolean;
-  handler: (
-    value: any,
-    sanitize: (value: unknown) => unknown,
-  ) => unknown;
+  handler: (value: any, sanitize: (value: unknown) => unknown) => unknown;
 };
 
 export enum SerializationPlaceholder {

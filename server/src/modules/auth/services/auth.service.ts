@@ -2,8 +2,8 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '@users/services';
 import { AppLoggerService } from '@logger/services';
 import { LogMethod } from '@logger/decorators';
-import { IUserEntity } from '@users/interfaces';
 import { IAuthOutput } from '@auth/interfaces';
+import { IUserOutput } from '@users/interfaces';
 import {
   LoginParams,
   LogoutParams,
@@ -119,7 +119,7 @@ export class AuthService {
   private async validateUser(
     email: string,
     password: string,
-  ): Promise<{ user: IUserEntity; refreshTokenVersion: number }> {
+  ): Promise<{ user: IUserOutput; refreshTokenVersion: number }> {
     const user = await this.usersService.findByEmail(email);
 
     if (!user) {

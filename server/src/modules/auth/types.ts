@@ -1,5 +1,5 @@
 import { Response } from 'express';
-import { LoginInput } from './dto';
+import { IAuthInput } from './interfaces';
 
 export enum TokenType {
   ACCESS = 'access',
@@ -12,7 +12,7 @@ export enum TokenName {
 }
 
 export type LoginParams = {
-  input: LoginInput;
+  input: IAuthInput;
   res: Response;
 };
 

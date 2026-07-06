@@ -37,7 +37,7 @@ export class WeatherService {
     );
     const dailySummaries = mapDailyForecast(forecast.list);
 
-    return {
+    const weatherDetails = {
       coordinates,
       current: currentWeather,
       hourly: hourlyForecast,
@@ -46,6 +46,8 @@ export class WeatherService {
         timezone: forecast.city?.timezone?.toString?.() ?? '',
       },
     };
+
+    return weatherDetails;
   }
 
   @LogMethod()

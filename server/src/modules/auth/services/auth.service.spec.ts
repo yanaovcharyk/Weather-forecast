@@ -82,6 +82,30 @@ describe('AuthService', () => {
         }),
       ).rejects.toThrow(UnauthorizedException);
     });
+
+    it('should throw when user auth is missing', async () => {
+      ctx.usersService.findByEmail.mockResolvedValue(MockUser);
+      ctx.usersService.findAuthByUserId.mockResolvedValue(null);
+
+      await expect(
+        service.login({
+          input: {
+            ...LoginInputFixture,
+            email: MockUser.email,
+          },
+          res: ctx.res,
+        }),
+      ).rejects.toThrow(UnauthorizedException);
+
+      expect(ctx.logger.warn).toHaveBeenCalledWith(
+        'Login failed: user auth not found',
+        {
+          userId: MockUser.id,
+          email: MockUser.email,
+        },
+      );
+      expect(ctx.passwordHasher.validatePassword).not.toHaveBeenCalled();
+    });
   });
 
   describe('logout', () => {
@@ -95,13 +119,15 @@ describe('AuthService', () => {
 
       expect(result).toEqual({ success: true });
 
-      expect(ctx.usersService.incrementRefreshTokenVersion).toHaveBeenCalledWith({
+      expect(
+        ctx.usersService.incrementRefreshTokenVersion,
+      ).toHaveBeenCalledWith({
         userId: MockUser.id,
       });
 
-      expect(ctx.cookieService.clearAccessAndRefreshTokens).toHaveBeenCalledWith(
-        ctx.res,
-      );
+      expect(
+        ctx.cookieService.clearAccessAndRefreshTokens,
+      ).toHaveBeenCalledWith(ctx.res);
     });
 
     it('should throw when user not found', async () => {
@@ -149,7 +175,9 @@ describe('AuthService', () => {
 
       expect(result).toEqual({ success: true });
 
-      expect(ctx.usersService.incrementRefreshTokenVersion).toHaveBeenCalledWith({
+      expect(
+        ctx.usersService.incrementRefreshTokenVersion,
+      ).toHaveBeenCalledWith({
         userId: MockUser.id,
       });
 
