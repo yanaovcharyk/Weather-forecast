@@ -1,6 +1,6 @@
 import { AuthResolver } from './auth.resolver';
 import { LoginInputFixture } from '@auth/testing/fixtures/auth-input.fixture';
-import { MockUser } from '@auth/testing/fixtures';
+import { MockUser, RAW_TOKEN_FIXTURE } from '@auth/testing/fixtures';
 import { createAuthResolverContext } from '@auth/testing/contexts/resolvers/auth-resolver.context';
 
 describe('AuthResolver', () => {
@@ -71,6 +71,7 @@ describe('AuthResolver', () => {
 
   describe('refreshTokens', () => {
     it('should call authService.rotateRefreshToken', async () => {
+      ctx.authCookieService.getRefreshToken.mockReturnValue(RAW_TOKEN_FIXTURE);
       ctx.authService.rotateRefreshToken.mockResolvedValue({
         success: true,
       });
@@ -82,25 +83,24 @@ describe('AuthResolver', () => {
       });
 
       expect(ctx.authService.rotateRefreshToken).toHaveBeenCalledWith({
-        oldToken: ctx.gqlContext.jwtToken,
+        oldToken: RAW_TOKEN_FIXTURE,
         res: ctx.res,
       });
+      expect(ctx.authCookieService.getRefreshToken).toHaveBeenCalledWith(
+        ctx.req,
+      );
     });
 
-    it('should handle missing jwtToken', async () => {
-      const brokenCtx = {
-        ...ctx.gqlContext,
-        jwtToken: undefined,
-      };
-
+    it('should pass null when refresh token cookie is missing', async () => {
+      ctx.authCookieService.getRefreshToken.mockReturnValue(null);
       ctx.authService.rotateRefreshToken.mockResolvedValue({
         success: true,
       });
 
-      const result = await resolver.refreshTokens(brokenCtx as any);
+      const result = await resolver.refreshTokens(ctx.gqlContext);
 
       expect(ctx.authService.rotateRefreshToken).toHaveBeenCalledWith({
-        oldToken: undefined,
+        oldToken: null,
         res: ctx.res,
       });
 

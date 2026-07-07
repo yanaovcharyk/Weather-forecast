@@ -1,7 +1,7 @@
 import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { UnauthorizedException, UseGuards } from '@nestjs/common';
 import { LoginInput, AuthOutput } from '@auth/dto';
-import { AuthService } from '@auth/services';
+import { AuthCookieService, AuthService } from '@auth/services';
 import { RefreshJwtGuard } from '@auth/guards';
 import { AppLoggerService } from '@logger/services';
 import { LogResolver } from '@logger/decorators';
@@ -14,6 +14,7 @@ export class AuthResolver {
 
   constructor(
     private readonly authService: AuthService,
+    private readonly authCookieService: AuthCookieService,
     loggerService: AppLoggerService,
   ) {
     this.logger = loggerService.child(AuthResolver.name);
@@ -49,11 +50,10 @@ export class AuthResolver {
   }
 
   @Mutation(() => AuthOutput)
-  @UseGuards(RefreshJwtGuard)
   @LogResolver()
   async refreshTokens(@Context() ctx: IGQLContext): Promise<AuthOutput> {
     return this.authService.rotateRefreshToken({
-      oldToken: ctx.jwtToken,
+      oldToken: this.authCookieService.getRefreshToken(ctx.req),
       res: ctx.res,
     });
   }

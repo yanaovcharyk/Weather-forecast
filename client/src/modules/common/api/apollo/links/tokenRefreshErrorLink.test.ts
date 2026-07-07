@@ -16,7 +16,7 @@ describe('createTokenRefreshErrorLink', () => {
         queueRetryOperation: vi.fn(),
         refreshAccessToken: vi.fn(),
       } as never,
-      performLogout: vi.fn(),
+      handleRefreshFailure: vi.fn(),
       displayErrorMessage: vi.fn(),
     });
 
@@ -54,7 +54,7 @@ describe('createTokenRefreshErrorLink', () => {
         queueRetryOperation: vi.fn(),
         refreshAccessToken: vi.fn(),
       } as never,
-      performLogout: vi.fn(),
+      handleRefreshFailure: vi.fn(),
       displayErrorMessage,
     });
 
@@ -92,7 +92,7 @@ describe('createTokenRefreshErrorLink', () => {
         queueRetryOperation,
         refreshAccessToken,
       } as never,
-      performLogout: vi.fn(),
+      handleRefreshFailure: vi.fn(),
       displayErrorMessage: vi.fn(),
     });
 
@@ -160,7 +160,7 @@ describe('createTokenRefreshErrorLink', () => {
         queueRetryOperation,
         refreshAccessToken: vi.fn(() => Promise.resolve()),
       } as never,
-      performLogout: vi.fn(),
+      handleRefreshFailure: vi.fn(),
       displayErrorMessage: vi.fn(),
     });
 
@@ -200,15 +200,15 @@ describe('createTokenRefreshErrorLink', () => {
     expect(propagatedError).toHaveBeenCalled();
   });
 
-  it('performs logout if refresh fails', async () => {
-    const performLogout = vi.fn();
+  it('handles refresh failure if refresh fails', async () => {
+    const handleRefreshFailure = vi.fn();
 
     const link = createTokenRefreshErrorLink({
       tokenRefreshCoordinator: {
         queueRetryOperation: vi.fn(),
         refreshAccessToken: vi.fn(() => Promise.reject(new Error())),
       } as never,
-      performLogout,
+      handleRefreshFailure,
       displayErrorMessage: vi.fn(),
     });
 
@@ -234,7 +234,7 @@ describe('createTokenRefreshErrorLink', () => {
     await Promise.resolve();
     await Promise.resolve();
 
-    expect(performLogout).toHaveBeenCalled();
+    expect(handleRefreshFailure).toHaveBeenCalled();
   });
 
   it('shows error for network error', () => {
@@ -252,7 +252,7 @@ describe('createTokenRefreshErrorLink', () => {
         queueRetryOperation: vi.fn(),
         refreshAccessToken: vi.fn(),
       } as never,
-      performLogout: vi.fn(),
+      handleRefreshFailure: vi.fn(),
       displayErrorMessage,
     });
 

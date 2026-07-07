@@ -205,6 +205,10 @@ describe('AuthService', () => {
           res: ctx.res,
         }),
       ).rejects.toThrow(UnauthorizedException);
+
+      expect(
+        ctx.cookieService.clearAccessAndRefreshTokens,
+      ).toHaveBeenCalledWith(ctx.res);
     });
 
     it('should throw when refresh token version mismatch', async () => {
@@ -226,6 +230,41 @@ describe('AuthService', () => {
           res: ctx.res,
         }),
       ).rejects.toThrow(UnauthorizedException);
+
+      expect(
+        ctx.cookieService.clearAccessAndRefreshTokens,
+      ).toHaveBeenCalledWith(ctx.res);
+    });
+
+    it('should clear auth cookies when refresh token is missing', async () => {
+      await expect(
+        service.rotateRefreshToken({
+          oldToken: null,
+          res: ctx.res,
+        }),
+      ).rejects.toThrow(UnauthorizedException);
+
+      expect(ctx.tokenService.verifyRefreshToken).not.toHaveBeenCalled();
+      expect(
+        ctx.cookieService.clearAccessAndRefreshTokens,
+      ).toHaveBeenCalledWith(ctx.res);
+    });
+
+    it('should clear auth cookies when refresh token verification fails', async () => {
+      ctx.tokenService.verifyRefreshToken.mockRejectedValue(
+        new UnauthorizedException('Unauthorized'),
+      );
+
+      await expect(
+        service.rotateRefreshToken({
+          oldToken: RAW_TOKEN_FIXTURE,
+          res: ctx.res,
+        }),
+      ).rejects.toThrow(UnauthorizedException);
+
+      expect(
+        ctx.cookieService.clearAccessAndRefreshTokens,
+      ).toHaveBeenCalledWith(ctx.res);
     });
   });
 });

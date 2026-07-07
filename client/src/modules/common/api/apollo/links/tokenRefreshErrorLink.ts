@@ -9,13 +9,13 @@ import {
 
 type CreateErrorLinkParams = {
   tokenRefreshCoordinator: AccessTokenRefreshCoordinator;
-  performLogout: () => void | Promise<void>;
+  handleRefreshFailure: () => void | Promise<void>;
   displayErrorMessage: (message: string) => void;
 };
 
 export const createTokenRefreshErrorLink = ({
   tokenRefreshCoordinator,
-  performLogout,
+  handleRefreshFailure,
   displayErrorMessage,
 }: CreateErrorLinkParams) => {
   return new ApolloLink((operation, forward) => {
@@ -46,7 +46,7 @@ export const createTokenRefreshErrorLink = ({
             tokenRefreshCoordinator.queueRetryOperation(retryOperation);
 
             tokenRefreshCoordinator.refreshAccessToken().catch((error) => {
-              void Promise.resolve(performLogout())
+              void Promise.resolve(handleRefreshFailure())
                 .catch(() => undefined)
                 .finally(() => responseObserver.error(error));
             });

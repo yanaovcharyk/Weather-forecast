@@ -25,6 +25,10 @@ export function createAuthServiceMock() {
 export type AuthResolverTestContext = {
   resolver: AuthResolver;
   authService: ReturnType<typeof createAuthServiceMock>;
+  authCookieService: {
+    getRefreshToken: jest.Mock;
+    getAccessToken: jest.Mock;
+  };
   logger: ReturnType<typeof createLoggerMock>;
   req: ReturnType<typeof createMockRequest>;
   res: ReturnType<typeof createResponseMock>;
@@ -33,6 +37,10 @@ export type AuthResolverTestContext = {
 
 export async function createAuthResolverContext(): Promise<AuthResolverTestContext> {
   const authService = createAuthServiceMock();
+  const authCookieService = {
+    getRefreshToken: jest.fn(),
+    getAccessToken: jest.fn(),
+  };
   const logger = createLoggerMock();
   const req = createMockRequest();
   const res = createResponseMock();
@@ -72,16 +80,14 @@ export async function createAuthResolverContext(): Promise<AuthResolverTestConte
     },
     {
       provide: AuthCookieService,
-      useValue: {
-        getRefreshToken: jest.fn(),
-        getAccessToken: jest.fn(),
-      },
+      useValue: authCookieService,
     },
   ]);
 
   return {
     resolver,
     authService,
+    authCookieService,
     logger,
     req,
     res,

@@ -76,44 +76,54 @@ export class AuthService {
   ): Promise<IAuthOutput> {
     const { oldToken, res } = params;
 
-    const payload = await this.jwtService.verifyRefreshToken(oldToken);
-    const user = await this.usersService.findById(payload.userId);
-    const userAuth = await this.usersService.findAuthByUserId({
-      userId: payload.userId,
-    });
+    try {
+      if (!oldToken) {
+        this.logger.warn('Refresh token rotation failed: token missing');
+        throw new UnauthorizedException('Unauthorized');
+      }
 
-    if (!user || !userAuth) {
-      this.logger.warn('Refresh token rotation failed: user not found', {
+      const payload = await this.jwtService.verifyRefreshToken(oldToken);
+      const user = await this.usersService.findById(payload.userId);
+      const userAuth = await this.usersService.findAuthByUserId({
         userId: payload.userId,
       });
 
-      throw new UnauthorizedException('Unauthorized');
-    }
+      if (!user || !userAuth) {
+        this.logger.warn('Refresh token rotation failed: user not found', {
+          userId: payload.userId,
+        });
 
-    if (payload.version !== userAuth.refreshTokenVersion) {
-      this.logger.warn('Refresh token version mismatch', {
-        tokenVersion: payload.version,
-        currentVersion: userAuth.refreshTokenVersion,
+        throw new UnauthorizedException('Unauthorized');
+      }
+
+      if (payload.version !== userAuth.refreshTokenVersion) {
+        this.logger.warn('Refresh token version mismatch', {
+          tokenVersion: payload.version,
+          currentVersion: userAuth.refreshTokenVersion,
+        });
+
+        throw new UnauthorizedException('Unauthorized');
+      }
+
+      const newVersion = await this.usersService.incrementRefreshTokenVersion({
+        userId: user.id,
       });
 
-      throw new UnauthorizedException('Unauthorized');
+      const tokens = await this.generateTokens({
+        userId: user.id,
+        refreshTokenVersion: newVersion,
+      });
+      this.setCookies(res, tokens);
+      this.logger.info('Refresh token rotated', {
+        userId: user.id,
+        version: newVersion,
+      });
+
+      return { success: true };
+    } catch (error) {
+      this.cookieService.clearAccessAndRefreshTokens(res);
+      throw error;
     }
-
-    const newVersion = await this.usersService.incrementRefreshTokenVersion({
-      userId: user.id,
-    });
-
-    const tokens = await this.generateTokens({
-      userId: user.id,
-      refreshTokenVersion: newVersion,
-    });
-    this.setCookies(res, tokens);
-    this.logger.info('Refresh token rotated', {
-      userId: user.id,
-      version: newVersion,
-    });
-
-    return { success: true };
   }
 
   private async validateUser(

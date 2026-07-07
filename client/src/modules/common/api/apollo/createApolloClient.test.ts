@@ -95,17 +95,11 @@ vi.mock('./links/tokenRefreshErrorLink', () => ({
 import { createApolloClient } from './createApolloClient';
 import { createTokenRefreshErrorLink } from './links/tokenRefreshErrorLink';
 import { loggerContext } from '@/logger/context/LoggerContextStore';
-import { LOGOUT_MUTATION } from '@/auth/graphql';
-import { print } from 'graphql';
 
 describe('createApolloClient', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.capturedCacheConfig = undefined;
-    vi.stubGlobal(
-      'fetch',
-      vi.fn(() => Promise.resolve()),
-    );
 
     Object.defineProperty(window, 'location', {
       value: {
@@ -141,27 +135,17 @@ describe('createApolloClient', () => {
     );
   });
 
-  it('performs logout from token refresh link callback', async () => {
+  it('handles refresh failure from token refresh link callback', () => {
     const setSpy = vi.spyOn(loggerContext, 'set');
 
     createApolloClient({
       displayErrorMessage: vi.fn(),
     });
 
-    const [{ performLogout }] = vi.mocked(createTokenRefreshErrorLink).mock
-      .calls[0];
+    const [{ handleRefreshFailure }] = vi.mocked(createTokenRefreshErrorLink)
+      .mock.calls[0];
 
-    await performLogout();
-
-    expect(fetch).toHaveBeenCalledWith('http://localhost/graphql', {
-      method: 'POST',
-      credentials: 'include',
-      keepalive: true,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query: print(LOGOUT_MUTATION),
-      }),
-    });
+    handleRefreshFailure();
 
     expect(setSpy).toHaveBeenCalledWith(
       expect.objectContaining({
@@ -172,7 +156,7 @@ describe('createApolloClient', () => {
     expect(window.location.href).toBe('/login');
   });
 
-  it('does not redirect again when token refresh fails on login page', async () => {
+  it('does not redirect again when token refresh fails on login page', () => {
     Object.defineProperty(window, 'location', {
       value: {
         href: 'http://localhost/login',
@@ -185,10 +169,10 @@ describe('createApolloClient', () => {
       displayErrorMessage: vi.fn(),
     });
 
-    const [{ performLogout }] = vi.mocked(createTokenRefreshErrorLink).mock
-      .calls[0];
+    const [{ handleRefreshFailure }] = vi.mocked(createTokenRefreshErrorLink)
+      .mock.calls[0];
 
-    await performLogout();
+    handleRefreshFailure();
 
     expect(window.location.href).toBe('http://localhost/login');
   });

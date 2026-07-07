@@ -22,7 +22,7 @@ export type LogoutParams = {
 };
 
 export type RotateRefreshTokenParams = {
-  oldToken: string;
+  oldToken: string | null;
   res: Response;
 };
 
