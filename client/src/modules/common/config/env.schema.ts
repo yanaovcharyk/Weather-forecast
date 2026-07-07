@@ -31,6 +31,8 @@ export const envSchema = z.object({
     .default('info') satisfies z.ZodType<LogLevel>,
   VITE_LOGGER_CONSOLE: booleanFromEnv.default(false),
   VITE_LOGGER_REMOTE: booleanFromEnv.default(false),
+
+  VITE_APOLLO_DEVTOOLS: booleanFromEnv.default(false),
 });
 
 export type FrontendEnv = z.infer<typeof envSchema>;

@@ -10,4 +10,5 @@ export const configuration = (env: FrontendEnv): IFrontendConfig => ({
   loggerLevel: env.VITE_LOGGER_LEVEL,
   loggerConsole: env.VITE_LOGGER_CONSOLE,
   loggerRemote: env.VITE_LOGGER_REMOTE,
+  apolloDevtools: env.VITE_APOLLO_DEVTOOLS,
 });

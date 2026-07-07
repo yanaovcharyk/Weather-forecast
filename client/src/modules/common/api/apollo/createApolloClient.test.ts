@@ -80,6 +80,7 @@ vi.mock('@/common/config', () => ({
   config: {
     apiBaseUrl: 'http://localhost',
     graphqlPath: '/graphql',
+    apolloDevtools: false,
   },
 }));
 
@@ -116,6 +117,14 @@ describe('createApolloClient', () => {
     expect(mocks.mockApolloLinkFrom).toHaveBeenCalledTimes(1);
 
     expect(mocks.mockApolloClient).toHaveBeenCalledTimes(1);
+    expect(mocks.mockApolloClient).toHaveBeenCalledWith(
+      expect.objectContaining({
+        devtools: {
+          enabled: true,
+          name: 'Weather Forecast',
+        },
+      }),
+    );
   });
 
   it('normalizes city outputs by id', () => {

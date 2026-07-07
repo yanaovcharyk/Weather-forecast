@@ -20,6 +20,8 @@ services:
     restart: always
     env_file:
       - ${SERVER_ENV_FILE}
+    environment:
+      DB_HOST: postgres
     ports:
       - "${SERVER_PORT}:${SERVER_INTERNAL_PORT}"
     depends_on:
@@ -35,6 +37,8 @@ services:
     container_name: weather-client
     env_file:
       - ${CLIENT_ENV_FILE}
+    environment:
+      VITE_APOLLO_DEVTOOLS: "true"
     ports:
       - "${CLIENT_PORT}:${CLIENT_INTERNAL_PORT}"
     depends_on:

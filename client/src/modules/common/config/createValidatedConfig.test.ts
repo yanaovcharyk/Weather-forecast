@@ -12,6 +12,7 @@ describe('createValidatedConfig', () => {
       VITE_LOGGER_LEVEL: 'warn',
       VITE_LOGGER_CONSOLE: 'false',
       VITE_LOGGER_REMOTE: 'true',
+      VITE_APOLLO_DEVTOOLS: 'true',
     });
 
     expect(result).toEqual({
@@ -22,6 +23,7 @@ describe('createValidatedConfig', () => {
       loggerLevel: 'warn',
       loggerConsole: false,
       loggerRemote: true,
+      apolloDevtools: true,
     });
   });
 
@@ -34,6 +36,7 @@ describe('createValidatedConfig', () => {
       loggerLevel: 'info',
       loggerConsole: false,
       loggerRemote: false,
+      apolloDevtools: false,
     });
   });
 

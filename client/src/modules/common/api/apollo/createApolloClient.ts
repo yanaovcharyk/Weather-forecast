@@ -33,6 +33,11 @@ export const createApolloClient = ({
   });
 
   return new ApolloClient({
+    devtools: {
+      enabled: config.apolloDevtools || import.meta.env.DEV,
+      name: 'Weather Forecast',
+    },
+
     link: ApolloLink.from([apolloLoggerLink, tokenRefreshErrorLink, httpLink]),
 
     cache: new InMemoryCache({
