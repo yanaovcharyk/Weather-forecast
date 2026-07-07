@@ -38,25 +38,6 @@ export const useTogglePinned = () => {
           isPinned: !currentPinned,
         },
       },
-
-      update(cache, { data }) {
-        const city = data?.updateSavedCity;
-        if (!city) {
-          return;
-        }
-
-        cache.modify({
-          id: cache.identify({
-            __typename: 'CityOutput',
-            id: city.id,
-          }),
-          fields: {
-            isPinned() {
-              return city.isPinned;
-            },
-          },
-        });
-      },
     });
   };
 

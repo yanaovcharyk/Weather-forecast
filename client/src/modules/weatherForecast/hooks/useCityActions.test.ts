@@ -226,4 +226,41 @@ describe('useCityActions', () => {
       isPinned: true,
     });
   });
+
+  it('should ignore existing city lookup result after unmount', async () => {
+    const deferred = createControlledPromise<City | null>();
+    ctx.getSavedCity.mockReturnValue(deferred.promise);
+
+    setupCityActionsRuntime(ctx, {
+      existingId: '123',
+    });
+
+    const { unmount } = setupCityActions(ctx);
+
+    unmount();
+
+    await act(async () => {
+      deferred.resolve({
+        id: '123',
+        cityName: 'Kyiv',
+      } as City);
+      await deferred.promise;
+    });
+
+    expect(ctx.setSearchParams).not.toHaveBeenCalled();
+  });
+
+  it('should clear existing city selection when existing city lookup fails', async () => {
+    ctx.getSavedCity.mockRejectedValue(new Error());
+
+    setupCityActionsRuntime(ctx, {
+      existingId: '123',
+    });
+
+    setupCityActions(ctx);
+
+    await waitFor(() => {
+      expect(ctx.setSearchParams).toHaveBeenCalled();
+    });
+  });
 });

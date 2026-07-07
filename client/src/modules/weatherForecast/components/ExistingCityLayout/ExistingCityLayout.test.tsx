@@ -27,7 +27,7 @@ describe('ExistingCityLayout', () => {
     citiesListProps = null;
   });
 
-  it('passes loading=false when loading=false', () => {
+  it('passes isListLoading=false when loading=false', () => {
     render(
       <ExistingCityLayout
         existingCity={city as City}
@@ -40,10 +40,10 @@ describe('ExistingCityLayout', () => {
       />,
     );
 
-    expect(citiesListProps?.loading).toBe(false);
+    expect(citiesListProps?.isListLoading).toBe(false);
   });
 
-  it('passes loading=false when loading=true but existingCity exists', () => {
+  it('passes isListLoading=false when loading=true but existingCity exists', () => {
     render(
       <ExistingCityLayout
         existingCity={city as City}
@@ -56,7 +56,7 @@ describe('ExistingCityLayout', () => {
       />,
     );
 
-    expect(citiesListProps?.loading).toBe(false);
+    expect(citiesListProps?.isListLoading).toBe(false);
   });
 
   it('renders back button', () => {
@@ -132,6 +132,6 @@ describe('ExistingCityLayout', () => {
       />,
     );
 
-    citiesListProps?.loadMore();
+    citiesListProps?.onLoadMore();
   });
 });

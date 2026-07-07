@@ -40,10 +40,38 @@ describe('createValidatedConfig', () => {
     });
   });
 
+  it('accepts boolean frontend environment variables', () => {
+    expect(
+      createValidatedConfig({
+        VITE_LOGGER_ENABLED: true,
+        VITE_LOGGER_CONSOLE: false,
+        VITE_LOGGER_REMOTE: true,
+        VITE_APOLLO_DEVTOOLS: false,
+      }),
+    ).toEqual({
+      apiBaseUrl: 'http://localhost:3000',
+      graphqlPath: '/graphql',
+      loggerApiUrl: 'http://localhost:3000/graphql',
+      loggerEnabled: true,
+      loggerLevel: 'info',
+      loggerConsole: false,
+      loggerRemote: true,
+      apolloDevtools: false,
+    });
+  });
+
   it('throws for invalid frontend environment variables', () => {
     expect(() =>
       createValidatedConfig({
         VITE_LOGGER_LEVEL: 'verbose',
+      }),
+    ).toThrow('Invalid frontend environment variables');
+  });
+
+  it('throws when boolean frontend environment variable is not boolean-like', () => {
+    expect(() =>
+      createValidatedConfig({
+        VITE_LOGGER_ENABLED: 'yes',
       }),
     ).toThrow('Invalid frontend environment variables');
   });

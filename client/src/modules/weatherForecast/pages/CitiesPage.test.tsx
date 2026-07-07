@@ -51,7 +51,12 @@ vi.mock('@/weatherForecast/hooks', () => ({
 vi.mock('@/weatherForecast/components', () => ({
   AddCityForm: () => <div>AddCityForm</div>,
 
-  CitiesList: ({ onCityClick, cities, hasNext, loading }: CitiesListProps) => {
+  CitiesList: ({
+    onCityClick,
+    cities,
+    hasNextPage,
+    isListLoading,
+  }: CitiesListProps) => {
     const firstCity = cities[0];
 
     return (
@@ -61,8 +66,8 @@ vi.mock('@/weatherForecast/components', () => ({
         </button>
 
         <div>count:{cities.length}</div>
-        <div>hasNext:{String(hasNext)}</div>
-        <div>loading:{String(loading)}</div>
+        <div>hasNextPage:{String(hasNextPage)}</div>
+        <div>isListLoading:{String(isListLoading)}</div>
       </div>
     );
   },
@@ -199,7 +204,7 @@ describe('CitiesPage', () => {
     expect(clearExistingCitySelection).toHaveBeenCalledTimes(1);
   });
 
-  it('should pass hasNext and loading states', () => {
+  it('should pass hasNextPage and isListLoading states', () => {
     mockUseSortingParams.mockReturnValue(
       createSortingParamsResult({
         showPinnedOnly: true,
@@ -214,9 +219,9 @@ describe('CitiesPage', () => {
 
     setup();
 
-    expect(screen.getByText('hasNext:true')).toBeInTheDocument();
+    expect(screen.getByText('hasNextPage:true')).toBeInTheDocument();
 
-    expect(screen.getByText('loading:true')).toBeInTheDocument();
+    expect(screen.getByText('isListLoading:true')).toBeInTheDocument();
   });
   it('calls notification callbacks passed to useCityActions', () => {
     mockUseCityActions.mockImplementation((params) => {

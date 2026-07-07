@@ -40,8 +40,8 @@ const defaultProps: React.ComponentProps<typeof CitiesList> = {
   removingCityId: null,
   onRemove: vi.fn(),
   onTogglePinned: vi.fn(),
-  loadMore: vi.fn(),
-  hasNext: false,
+  onLoadMore: vi.fn(),
+  hasNextPage: false,
 };
 
 const renderComponent = (
@@ -84,8 +84,8 @@ describe('CitiesList', () => {
     const loadMore = vi.fn();
 
     renderComponent({
-      hasNext: true,
-      loadMore,
+      hasNextPage: true,
+      onLoadMore: loadMore,
     });
 
     intersectionObserver.trigger([{ isIntersecting: true }]);
@@ -97,8 +97,8 @@ describe('CitiesList', () => {
     const loadMore = vi.fn();
 
     renderComponent({
-      hasNext: true,
-      loadMore,
+      hasNextPage: true,
+      onLoadMore: loadMore,
     });
 
     intersectionObserver.trigger([{ isIntersecting: false }]);
@@ -106,54 +106,28 @@ describe('CitiesList', () => {
     expect(loadMore).not.toHaveBeenCalled();
   });
 
-  it('disconnects previous observer when effect reruns', () => {
+  it('disconnects observer when infinite scroll turns off', () => {
     const { rerender } = renderComponent({
-      hasNext: true,
-      cities,
+      hasNextPage: true,
     });
 
-    rerender(
-      <CitiesList
-        {...defaultProps}
-        hasNext
-        cities={[
-          ...cities,
-          {
-            id: '2',
-            cityName: 'Lviv',
-            weather: null,
-            isPinned: false,
-            lat: 49.84,
-            lon: 24.03,
-          },
-        ]}
-      />,
-    );
+    rerender(<CitiesList {...defaultProps} hasNextPage={false} />);
 
-    expect(true).toBeTruthy();
+    expect(intersectionObserver.disconnect).toHaveBeenCalledTimes(1);
   });
 
-  it('covers false branch of loaderRef.current', () => {
-    const { rerender } = renderComponent({
-      hasNext: true,
-    });
-
-    rerender(<CitiesList {...defaultProps} hasNext={false} />);
-
-    expect(true).toBeTruthy();
-  });
-
-  it('returns early when hasNext=false', () => {
+  it('does not observe load-more trigger when hasNextPage=false', () => {
     renderComponent({
-      hasNext: false,
+      hasNextPage: false,
     });
 
     expect(screen.getByText('Kyiv')).toBeInTheDocument();
+    expect(intersectionObserver.observe).not.toHaveBeenCalled();
   });
 
   it('renders loading overlay', () => {
     renderComponent({
-      loading: true,
+      isListLoading: true,
     });
 
     const spin = document.querySelector('.ant-spin');
@@ -163,9 +137,9 @@ describe('CitiesList', () => {
     expect(row?.className).toContain('blocked');
   });
 
-  it('observes loader element when hasNext=true', () => {
+  it('observes load-more trigger when hasNextPage=true', () => {
     renderComponent({
-      hasNext: true,
+      hasNextPage: true,
     });
 
     expect(intersectionObserver.observe).toHaveBeenCalledTimes(1);

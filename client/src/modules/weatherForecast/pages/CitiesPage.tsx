@@ -45,10 +45,12 @@ export const CitiesPage = () => {
     showInfoNotification,
   });
 
-  const { cities, loading, loadMore, hasNext } = useCitiesPaginated(
-    sorting,
-    showPinnedOnly,
-  );
+  const {
+    cities,
+    loading,
+    loadMore,
+    hasNext: hasNextPage,
+  } = useCitiesPaginated(sorting, showPinnedOnly);
 
   const navigate = useNavigate();
 
@@ -115,10 +117,10 @@ export const CitiesPage = () => {
                     removingCityId={currentlyRemovingCityId}
                     onRemove={handleRemoveCity}
                     onTogglePinned={handleTogglePinned}
-                    loadMore={loadMore}
-                    hasNext={hasNext}
+                    onLoadMore={loadMore}
+                    hasNextPage={hasNextPage}
                     onCityClick={handleOpenCity}
-                    loading={loading && cities.length === 0}
+                    isListLoading={loading && cities.length === 0}
                   />
                 )}
               </>

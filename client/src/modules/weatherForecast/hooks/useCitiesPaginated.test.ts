@@ -141,6 +141,52 @@ describe('useCitiesPaginated', () => {
     });
   });
 
+  it('loads next page with null cursor when end cursor is missing', async () => {
+    vi.mocked(useQuery).mockReturnValue(
+      createQueryResult({
+        fetchMore,
+        data: {
+          getSavedCitiesPaginated: {
+            edges: [],
+            pageInfo: {
+              hasNextPage: true,
+            },
+          },
+        },
+      }) as never,
+    );
+
+    const { result } = renderHook(() =>
+      useCitiesPaginated(
+        {
+          sortBy: 'createdAt',
+          sortOrder: 'DESC',
+        },
+        true,
+      ),
+    );
+
+    await act(async () => {
+      await result.current.loadMore();
+    });
+
+    expect(fetchMore).toHaveBeenCalledWith({
+      variables: {
+        query: {
+          pagination: {
+            limit: 10,
+            cursor: null,
+          },
+          sorting: {
+            sortBy: 'CREATED_AT',
+            sortOrder: 'DESC',
+          },
+          showPinnedOnly: true,
+        },
+      },
+    });
+  });
+
   it('does not load more when no next page', async () => {
     vi.mocked(useQuery).mockReturnValue(
       createQueryResult({

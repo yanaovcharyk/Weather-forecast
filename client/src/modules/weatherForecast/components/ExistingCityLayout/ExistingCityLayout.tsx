@@ -35,10 +35,10 @@ export const ExistingCityLayout = ({
         removingCityId={removingId}
         onRemove={onRemove}
         onTogglePinned={onTogglePinned}
-        loadMore={() => {}}
-        hasNext={false}
+        onLoadMore={() => {}}
+        hasNextPage={false}
         onCityClick={onCityClick}
-        loading={loading && !existingCity}
+        isListLoading={loading && !existingCity}
       />
     </>
   );

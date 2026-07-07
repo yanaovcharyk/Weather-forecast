@@ -4,6 +4,7 @@ export { useCitiesPaginated } from './useCitiesPaginated';
 export { useCityActions } from './useCityActions';
 export { useSavedCityLookup } from './useSavedCityLookup';
 export { useCitySearch } from './useCitySearch';
+export { useInfiniteScrollTrigger } from './useInfiniteScrollTrigger';
 export { useRemoveAllCities } from './useRemoveAllCities';
 export { useRemoveCity } from './useRemoveCity';
 export { useSortingParams } from './useSortingParams';

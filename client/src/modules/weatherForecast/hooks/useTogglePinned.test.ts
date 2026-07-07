@@ -24,24 +24,13 @@ type UpdateCityVariables = {
 type MutateFn = (options: {
   variables: UpdateCityVariables;
   optimisticResponse: UpdateCityMutation;
-  update?: (
-    cache: {
-      modify: ReturnType<typeof vi.fn>;
-      identify: ReturnType<typeof vi.fn>;
-    },
-    result: { data?: UpdateCityMutation | null },
-  ) => void;
 }) => Promise<void>;
 
 describe('useTogglePinned', () => {
   const mutate = vi.fn<MutateFn>();
 
-  let cacheModifyMock: ReturnType<typeof vi.fn>;
-
   beforeEach(() => {
     vi.clearAllMocks();
-
-    cacheModifyMock = vi.fn();
 
     vi.mocked(useMutation).mockReturnValue([
       mutate,
@@ -49,98 +38,52 @@ describe('useTogglePinned', () => {
     ] as unknown as ReturnType<typeof useMutation>);
   });
 
-  it('calls cache.modify when city exists', async () => {
-    mutate.mockImplementation(async (options) => {
-      options.update?.(
-        {
-          modify: cacheModifyMock,
-          identify: vi.fn(() => 'CityOutput:1'),
-        },
-        {
-          data: {
-            updateSavedCity: {
-              __typename: 'CityOutput',
-              id: '1',
-              isPinned: true,
-            },
-          },
-        },
-      );
-    });
-
+  it('pins city with optimistic response when city is not pinned', async () => {
     const { result } = renderHook(() => useTogglePinned());
 
     await act(async () => {
       await result.current.togglePinned('1', false);
     });
 
-    expect(cacheModifyMock).toHaveBeenCalledTimes(1);
-  });
-
-  it('returns city.isPinned from cache.modify field resolver', async () => {
-    mutate.mockImplementation(async (options) => {
-      options.update?.(
-        {
-          modify: cacheModifyMock,
-          identify: vi.fn(() => 'CityOutput:1'),
+    expect(mutate).toHaveBeenCalledWith({
+      variables: {
+        id: '1',
+        input: {
+          isPinned: true,
         },
-        {
-          data: {
-            updateSavedCity: {
-              __typename: 'CityOutput',
-              id: '1',
-              isPinned: true,
-            },
-          },
-        },
-      );
-    });
-
-    const { result } = renderHook(() => useTogglePinned());
-
-    await act(async () => {
-      await result.current.togglePinned('1', false);
-    });
-
-    expect(mutate).toHaveBeenCalledWith(
-      expect.objectContaining({
-        variables: {
+      },
+      optimisticResponse: {
+        updateSavedCity: {
+          __typename: 'CityOutput',
           id: '1',
-          input: {
-            isPinned: true,
-          },
+          isPinned: true,
         },
-      }),
-    );
-
-    const modifyArg = cacheModifyMock.mock.calls[0][0];
-
-    expect(modifyArg.id).toBe('CityOutput:1');
-    expect(modifyArg.fields.isPinned()).toBe(true);
+      },
+    });
   });
 
-  it('does not call cache.modify when no city returned', async () => {
-    mutate.mockImplementationOnce(async (options) => {
-      options.update?.(
-        {
-          modify: cacheModifyMock,
-          identify: vi.fn(),
-        },
-        {
-          data: {
-            updateSavedCity: null,
-          },
-        },
-      );
-    });
-
+  it('unpins city with optimistic response when city is pinned', async () => {
     const { result } = renderHook(() => useTogglePinned());
 
     await act(async () => {
-      await result.current.togglePinned('1', false);
+      await result.current.togglePinned('1', true);
     });
 
-    expect(cacheModifyMock).not.toHaveBeenCalled();
+    expect(mutate).toHaveBeenCalledWith({
+      variables: {
+        id: '1',
+        input: {
+          isPinned: false,
+        },
+      },
+      optimisticResponse: {
+        updateSavedCity: {
+          __typename: 'CityOutput',
+          id: '1',
+          isPinned: false,
+        },
+      },
+    });
   });
 
   it('returns loading state', () => {

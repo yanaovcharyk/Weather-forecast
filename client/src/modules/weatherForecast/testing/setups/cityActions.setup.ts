@@ -4,7 +4,7 @@ import { useCityActions } from '@/weatherForecast/hooks/useCityActions';
 import type { CityActionsContext } from '@/weatherForecast/testing/contexts/cityActions.context';
 
 export const setupCityActions = (ctx: CityActionsContext) => {
-  const { result } = renderHook(() =>
+  const { result, unmount } = renderHook(() =>
     useCityActions({
       showSuccessNotification: ctx.showSuccessNotification,
 
@@ -24,5 +24,7 @@ export const setupCityActions = (ctx: CityActionsContext) => {
     handleTogglePinned: result.current.handleTogglePinned,
 
     handleDeleteAllCities: result.current.handleDeleteAllCities,
+
+    unmount,
   };
 };

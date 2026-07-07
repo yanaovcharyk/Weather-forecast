@@ -1,6 +1,7 @@
 import { Col, Row, Spin } from 'antd';
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import { CityCard } from '@/weatherForecast/components/CityCard';
+import { useInfiniteScrollTrigger } from '@/weatherForecast/hooks/useInfiniteScrollTrigger';
 import styles from './CitiesList.module.scss';
 import type { City } from '@/weatherForecast/types';
 
@@ -10,54 +11,36 @@ export type CitiesListProps = {
   onRemove: (id: string, cityName: string) => void;
   onTogglePinned: (id: string, currentPinned: boolean) => void;
   onCityClick?: (id: string) => void;
-  loadMore: () => void;
-  hasNext: boolean;
-  loading?: boolean;
+  onLoadMore: () => void;
+  hasNextPage: boolean;
+  isListLoading?: boolean;
 };
 
-export const CitiesList = React.memo(function CitiesList({
-  cities,
-  removingCityId,
-  onRemove,
-  onTogglePinned,
-  onCityClick,
-  loadMore,
-  hasNext,
-  loading,
-}: CitiesListProps) {
-  const loaderRef = useRef<HTMLDivElement | null>(null);
-  const observerRef = useRef<IntersectionObserver | null>(null);
+export const CitiesList = React.memo(function CitiesList(
+  props: CitiesListProps,
+) {
+  const {
+    cities,
+    removingCityId,
+    onRemove,
+    onTogglePinned,
+    onCityClick,
+    onLoadMore,
+    hasNextPage,
+    isListLoading,
+  } = props;
 
-  useEffect(() => {
-    if (!hasNext) return;
-
-    if (observerRef.current) {
-      observerRef.current.disconnect();
-    }
-
-    observerRef.current = new IntersectionObserver((entries) => {
-      const entry = entries[0];
-
-      if (entry.isIntersecting) {
-        loadMore();
-      }
-    });
-
-    const el = loaderRef.current;
-
-    /* istanbul ignore next */
-    if (!el) return;
-
-    observerRef.current.observe(el);
-
-    return () => {
-      observerRef.current?.disconnect();
-    };
-  }, [hasNext, loadMore, cities.length]);
+  const loadMoreTriggerRef = useInfiniteScrollTrigger({
+    hasNextPage,
+    onLoadMore,
+  });
 
   return (
     <div className={styles.wrapper}>
-      <Row gutter={[12, 12]} className={loading ? styles.blocked : undefined}>
+      <Row
+        gutter={[12, 12]}
+        className={isListLoading ? styles.blocked : undefined}
+      >
         {cities.map((city) => (
           <Col key={city.id} xs={24} sm={24} md={12}>
             <CityCard
@@ -73,9 +56,11 @@ export const CitiesList = React.memo(function CitiesList({
         ))}
       </Row>
 
-      {hasNext && <div ref={loaderRef} className={styles.hasNext} />}
+      {hasNextPage && (
+        <div ref={loadMoreTriggerRef} className={styles.hasNext} />
+      )}
 
-      {loading && (
+      {isListLoading && (
         <div className={styles.overlay}>
           <Spin size="large" />
         </div>
