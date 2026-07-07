@@ -4,9 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { Header } from './Header';
 import type { ConfirmModalProps } from '@/common/components/ConfirmModal/ConfirmModal';
 
-const navigateMock = vi.fn();
 const logoutMock = vi.fn();
-const clearStoreMock = vi.fn();
 const confirmModalProps = vi.fn();
 
 vi.mock('@/common/components/ConfirmModal/ConfirmModal', () => ({
@@ -32,16 +30,15 @@ vi.mock('@/common/components/ConfirmModal/ConfirmModal', () => ({
 
 vi.mock('react-router-dom', () => ({
   Link: ({ children }: React.PropsWithChildren) => <a>{children}</a>,
-  useNavigate: () => navigateMock,
 }));
 
-vi.mock('@/auth/hooks/useLogout', () => ({
-  useLogout: () => logoutMock,
-}));
-
-vi.mock('@apollo/client/react', () => ({
-  useApolloClient: () => ({
-    clearStore: clearStoreMock,
+vi.mock('@/auth/contexts/AuthContext', () => ({
+  useAuthContext: () => ({
+    currentUser: null,
+    isAuthenticated: false,
+    isLoading: false,
+    logout: logoutMock,
+    refreshSession: vi.fn(),
   }),
 }));
 
@@ -50,7 +47,6 @@ describe('Header', () => {
     vi.clearAllMocks();
 
     logoutMock.mockResolvedValue(undefined);
-    clearStoreMock.mockResolvedValue(undefined);
   });
 
   it('should render application title', () => {
@@ -111,7 +107,7 @@ describe('Header', () => {
     });
   });
 
-  it('should logout, clear apollo cache and navigate to login', async () => {
+  it('should logout', async () => {
     render(<Header />);
 
     fireEvent.click(screen.getByRole('button'));
@@ -124,16 +120,6 @@ describe('Header', () => {
 
     await waitFor(() => {
       expect(logoutMock).toHaveBeenCalledTimes(1);
-      expect(clearStoreMock).toHaveBeenCalledTimes(1);
-      expect(navigateMock).toHaveBeenCalledWith('/login');
     });
-
-    expect(logoutMock.mock.invocationCallOrder[0]).toBeLessThan(
-      clearStoreMock.mock.invocationCallOrder[0],
-    );
-
-    expect(clearStoreMock.mock.invocationCallOrder[0]).toBeLessThan(
-      navigateMock.mock.invocationCallOrder[0],
-    );
   });
 });

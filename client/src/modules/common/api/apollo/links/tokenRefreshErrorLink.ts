@@ -9,7 +9,7 @@ import {
 
 type CreateErrorLinkParams = {
   tokenRefreshCoordinator: AccessTokenRefreshCoordinator;
-  performLogout: () => void;
+  performLogout: () => void | Promise<void>;
   displayErrorMessage: (message: string) => void;
 };
 
@@ -46,8 +46,9 @@ export const createTokenRefreshErrorLink = ({
             tokenRefreshCoordinator.queueRetryOperation(retryOperation);
 
             tokenRefreshCoordinator.refreshAccessToken().catch((error) => {
-              performLogout();
-              responseObserver.error(error);
+              void Promise.resolve(performLogout())
+                .catch(() => undefined)
+                .finally(() => responseObserver.error(error));
             });
 
             return;

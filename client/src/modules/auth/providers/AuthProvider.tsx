@@ -1,17 +1,21 @@
 import { useMemo, useCallback, useEffect } from 'react';
-import { useQuery } from '@apollo/client/react';
-import { ME_QUERY } from '@/auth/graphql';
+import { useApolloClient, useMutation, useQuery } from '@apollo/client/react';
+import { LOGOUT_MUTATION, ME_QUERY } from '@/auth/graphql';
 import { AuthContext } from '@/auth/contexts/AuthContext';
 import { loggerContext } from '@/logger/context/LoggerContextStore';
-import type { IMeQuery } from '@/auth/types';
+import type { ILogoutMutationResponse, IMeQuery } from '@/auth/types';
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const { data, loading, refetch } = useQuery<IMeQuery>(ME_QUERY, {
     fetchPolicy: 'network-only',
     errorPolicy: 'all',
   });
+  const [logoutMutation] =
+    useMutation<ILogoutMutationResponse>(LOGOUT_MUTATION);
+  const client = useApolloClient();
 
-  const userId = data?.me?.id;
+  const currentUser = data?.me ?? null;
+  const userId = currentUser?.id;
 
   const isAuthenticated = !!userId;
 
@@ -22,27 +26,34 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     });
   }, [userId]);
 
-  const login = useCallback(async () => {
+  const refreshSession = useCallback(async () => {
     await refetch();
   }, [refetch]);
 
-  const logout = useCallback(() => {
-    loggerContext.set({
-      ...loggerContext.get(),
-      userId: undefined,
-    });
+  const logout = useCallback(async () => {
+    try {
+      await logoutMutation();
+    } finally {
+      loggerContext.set({
+        ...loggerContext.get(),
+        userId: undefined,
+      });
 
-    window.location.href = '/login';
-  }, []);
+      await client.clearStore();
+
+      window.location.href = '/login';
+    }
+  }, [client, logoutMutation]);
 
   const value = useMemo(
     () => ({
-      login,
-      logout,
+      currentUser,
       isAuthenticated,
-      loading,
+      isLoading: loading,
+      logout,
+      refreshSession,
     }),
-    [login, logout, isAuthenticated, loading],
+    [currentUser, isAuthenticated, loading, logout, refreshSession],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

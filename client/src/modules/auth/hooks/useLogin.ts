@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/common/hooks/useToast';
 import { LOGIN_MUTATION } from '@/auth/graphql';
 import type { ILoginMutationResponse } from '@/auth/types';
-import { useAuth } from './useAuth';
+import { useAuthContext } from '@/auth/contexts/AuthContext';
 import { extractErrorCode, mapErrorCodeToMessage } from '@/common/utils';
 import type { LoginFormInput } from '@/auth/validation';
 
 export const useLogin = () => {
-  const { login } = useAuth();
+  const { refreshSession } = useAuthContext();
   const navigate = useNavigate();
   const { toast } = useToast();
 
@@ -30,11 +30,11 @@ export const useLogin = () => {
         return;
       }
 
-      login();
+      await refreshSession();
       toast('success', 'Logged in successfully');
       navigate('/');
-    } catch (err) {
-      toast('error', mapErrorCodeToMessage(extractErrorCode(err)));
+    } catch (error) {
+      toast('error', mapErrorCodeToMessage(extractErrorCode(error)));
     }
   };
 

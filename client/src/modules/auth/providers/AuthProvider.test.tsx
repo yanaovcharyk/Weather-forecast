@@ -8,7 +8,6 @@ import {
 import { setupAuthProviderRuntime } from '@/auth/testing/runtimes';
 import { setupAuthProvider } from '@/auth/testing/setups';
 import '@/common/testing/mocks/apollo.mock';
-
 import { loggerContext } from '@/logger';
 
 describe('AuthProvider', () => {
@@ -23,26 +22,34 @@ describe('AuthProvider', () => {
   it('provides authenticated state', () => {
     ctx.setAuthenticated();
 
-    const { authState } = setupAuthProvider();
+    const { authState, currentUser } = setupAuthProvider();
 
     expect(authState()).toHaveTextContent('true');
+    expect(currentUser()).toHaveTextContent('test@example.com');
   });
 
-  it('calls refetch on login', async () => {
+  it('provides loading state', () => {
+    const { authLoadingState } = setupAuthProvider();
+
+    expect(authLoadingState()).toHaveTextContent('false');
+  });
+
+  it('calls refetch on refresh session', async () => {
     ctx.refetch.mockResolvedValue({});
 
-    const { user, loginButton } = setupAuthProvider();
+    const { user, refreshSessionButton } = setupAuthProvider();
 
-    await user.click(loginButton());
+    await user.click(refreshSessionButton());
 
     expect(ctx.refetch).toHaveBeenCalled();
   });
 
-  it('handles logout', async () => {
+  it('logs out, clears store and redirects to login', async () => {
+    const location = { href: '' };
     const setSpy = vi.spyOn(loggerContext, 'set');
 
     Object.defineProperty(window, 'location', {
-      value: { href: '' },
+      value: location,
       writable: true,
     });
 
@@ -50,12 +57,13 @@ describe('AuthProvider', () => {
 
     await user.click(logoutButton());
 
+    expect(ctx.logoutMutation).toHaveBeenCalledTimes(1);
+    expect(ctx.clearStore).toHaveBeenCalledTimes(1);
     expect(setSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         userId: undefined,
       }),
     );
-
     expect(window.location.href).toBe('/login');
   });
 });

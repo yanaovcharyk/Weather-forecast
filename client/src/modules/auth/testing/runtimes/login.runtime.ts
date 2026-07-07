@@ -1,9 +1,10 @@
 import { useMutation } from '@apollo/client/react';
-import { useAuth } from '@/auth/hooks/useAuth';
+import { useAuthContext } from '@/auth/contexts/AuthContext';
 import { useToast } from '@/common/hooks/useToast';
 import { useNavigate } from 'react-router-dom';
 import type { LoginContext } from '@/auth/testing/contexts/login.context';
 import { createMutationState } from '@/auth/testing/mocks/mutationState.mock';
+import { createAuthMock } from '@/common/testing/mocks/auth.mock';
 
 export const setupLoginRuntime = (
   ctx: LoginContext,
@@ -18,9 +19,11 @@ export const setupLoginRuntime = (
     }),
   ]);
 
-  vi.mocked(useAuth).mockReturnValue({
-    login: ctx.login,
-  } as never);
+  vi.mocked(useAuthContext).mockReturnValue(
+    createAuthMock({
+      refreshSession: ctx.refreshSession,
+    }),
+  );
 
   vi.mocked(useToast).mockReturnValue({
     toast: ctx.toast,

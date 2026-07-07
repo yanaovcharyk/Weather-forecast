@@ -3,18 +3,11 @@ import { describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
   createApolloClient: vi.fn(),
-  logout: vi.fn(),
   toast: vi.fn(),
 }));
 
 vi.mock('..', () => ({
   createApolloClient: mocks.createApolloClient,
-}));
-
-vi.mock('@/auth/hooks/useAuth', () => ({
-  useAuth: () => ({
-    logout: mocks.logout,
-  }),
 }));
 
 vi.mock('@/common/hooks/useToast', () => ({

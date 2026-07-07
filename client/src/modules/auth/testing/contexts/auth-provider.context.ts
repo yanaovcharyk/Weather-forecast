@@ -4,6 +4,8 @@ import type { IMeQuery } from '@/auth/types';
 
 export type AuthProviderContext = {
   data: IMeQuery | undefined;
+  clearStore: ReturnType<typeof vi.fn>;
+  logoutMutation: ReturnType<typeof vi.fn>;
   refetch: ReturnType<typeof vi.fn>;
 
   setAuthenticated: () => void;
@@ -14,6 +16,8 @@ export const createAuthProviderContext = (): AuthProviderContext => {
   const ctx: AuthProviderContext = {
     data: undefined,
 
+    clearStore: vi.fn(),
+    logoutMutation: vi.fn(),
     refetch: vi.fn(),
 
     setAuthenticated: () => {

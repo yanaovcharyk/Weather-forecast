@@ -1,11 +1,21 @@
 import { vi } from 'vitest';
 
 import type { AuthProviderContext } from '@/auth/testing/contexts';
-import { useQueryMock } from '@/common/testing/mocks/apollo.mock';
-import { createQueryResult } from '@/common/testing/factories';
+import {
+  useApolloClientMock,
+  useMutationMock,
+  useQueryMock,
+} from '@/common/testing/mocks/apollo.mock';
+import {
+  createMutationResult,
+  createQueryResult,
+} from '@/common/testing/factories';
 
 export const setupAuthProviderRuntime = (ctx: AuthProviderContext) => {
   vi.clearAllMocks();
+
+  ctx.clearStore.mockResolvedValue(undefined);
+  ctx.logoutMutation.mockResolvedValue({});
 
   useQueryMock.mockImplementation(() =>
     createQueryResult({
@@ -13,4 +23,10 @@ export const setupAuthProviderRuntime = (ctx: AuthProviderContext) => {
       refetch: ctx.refetch as never,
     }),
   );
+
+  useMutationMock.mockReturnValue([ctx.logoutMutation, createMutationResult()]);
+
+  useApolloClientMock.mockReturnValue({
+    clearStore: ctx.clearStore,
+  });
 };

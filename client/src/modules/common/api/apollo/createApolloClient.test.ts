@@ -94,16 +94,30 @@ vi.mock('./links/tokenRefreshErrorLink', () => ({
 
 import { createApolloClient } from './createApolloClient';
 import { createTokenRefreshErrorLink } from './links/tokenRefreshErrorLink';
+import { loggerContext } from '@/logger/context/LoggerContextStore';
+import { LOGOUT_MUTATION } from '@/auth/graphql';
+import { print } from 'graphql';
 
 describe('createApolloClient', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     mocks.capturedCacheConfig = undefined;
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(() => Promise.resolve()),
+    );
+
+    Object.defineProperty(window, 'location', {
+      value: {
+        href: '',
+        pathname: '/',
+      },
+      writable: true,
+    });
   });
 
   it('creates apollo client', () => {
     createApolloClient({
-      performLogout: vi.fn(),
       displayErrorMessage: vi.fn(),
     });
 
@@ -127,9 +141,60 @@ describe('createApolloClient', () => {
     );
   });
 
+  it('performs logout from token refresh link callback', async () => {
+    const setSpy = vi.spyOn(loggerContext, 'set');
+
+    createApolloClient({
+      displayErrorMessage: vi.fn(),
+    });
+
+    const [{ performLogout }] = vi.mocked(createTokenRefreshErrorLink).mock
+      .calls[0];
+
+    await performLogout();
+
+    expect(fetch).toHaveBeenCalledWith('http://localhost/graphql', {
+      method: 'POST',
+      credentials: 'include',
+      keepalive: true,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: print(LOGOUT_MUTATION),
+      }),
+    });
+
+    expect(setSpy).toHaveBeenCalledWith(
+      expect.objectContaining({
+        userId: undefined,
+      }),
+    );
+
+    expect(window.location.href).toBe('/login');
+  });
+
+  it('does not redirect again when token refresh fails on login page', async () => {
+    Object.defineProperty(window, 'location', {
+      value: {
+        href: 'http://localhost/login',
+        pathname: '/login',
+      },
+      writable: true,
+    });
+
+    createApolloClient({
+      displayErrorMessage: vi.fn(),
+    });
+
+    const [{ performLogout }] = vi.mocked(createTokenRefreshErrorLink).mock
+      .calls[0];
+
+    await performLogout();
+
+    expect(window.location.href).toBe('http://localhost/login');
+  });
+
   it('normalizes city outputs by id', () => {
     createApolloClient({
-      performLogout: vi.fn(),
       displayErrorMessage: vi.fn(),
     });
 
@@ -140,7 +205,6 @@ describe('createApolloClient', () => {
 
   it('returns incoming data for first page', () => {
     createApolloClient({
-      performLogout: vi.fn(),
       displayErrorMessage: vi.fn(),
     });
 
@@ -170,7 +234,6 @@ describe('createApolloClient', () => {
 
   it('merges next page and appends only new cities', () => {
     createApolloClient({
-      performLogout: vi.fn(),
       displayErrorMessage: vi.fn(),
     });
 
@@ -218,7 +281,6 @@ describe('createApolloClient', () => {
 
   it('does not append duplicate cities', () => {
     createApolloClient({
-      performLogout: vi.fn(),
       displayErrorMessage: vi.fn(),
     });
 
@@ -254,7 +316,6 @@ describe('createApolloClient', () => {
 
   it('handles missing edges collections', () => {
     createApolloClient({
-      performLogout: vi.fn(),
       displayErrorMessage: vi.fn(),
     });
 

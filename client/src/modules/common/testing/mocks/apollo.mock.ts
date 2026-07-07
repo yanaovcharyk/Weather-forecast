@@ -1,5 +1,7 @@
 import { vi } from 'vitest';
 
+export const useApolloClientMock = vi.fn();
+export const useMutationMock = vi.fn();
 export const useQueryMock = vi.fn();
 
 vi.mock('@apollo/client/react', async () => {
@@ -9,6 +11,8 @@ vi.mock('@apollo/client/react', async () => {
 
   return {
     ...actual,
+    useApolloClient: useApolloClientMock,
+    useMutation: useMutationMock,
     useQuery: useQueryMock,
   };
 });

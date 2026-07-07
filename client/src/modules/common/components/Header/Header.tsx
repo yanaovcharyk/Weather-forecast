@@ -1,25 +1,20 @@
 import { useState } from 'react';
 import { Button, Flex, Typography } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
-import { Link, useNavigate } from 'react-router-dom';
-import { useApolloClient } from '@apollo/client/react';
+import { Link } from 'react-router-dom';
 import { Shadow } from '@/common/components/Shadow/Shadow';
 import { ConfirmModal } from '@/common/components/ConfirmModal/ConfirmModal';
-import { useLogout } from '@/auth/hooks/useLogout';
+import { useAuthContext } from '@/auth/contexts/AuthContext';
 import styles from './Header.module.scss';
 
 const { Title } = Typography;
 
 export const Header = () => {
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const logout = useLogout();
-  const client = useApolloClient();
-  const navigate = useNavigate();
+  const { logout } = useAuthContext();
 
   const handleLogout = async () => {
     await logout();
-    await client.clearStore();
-    navigate('/login');
   };
 
   return (

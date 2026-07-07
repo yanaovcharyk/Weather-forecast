@@ -8,7 +8,7 @@ import { setupLoginRuntime } from '@/auth/testing/runtimes/login.runtime';
 import { setupLogin } from '@/auth/testing/setups/login.setup';
 
 vi.mock('@apollo/client/react');
-vi.mock('./useAuth');
+vi.mock('@/auth/contexts/AuthContext');
 vi.mock('@/common/hooks/useToast');
 
 vi.mock('react-router-dom', async () => {
@@ -46,7 +46,7 @@ describe('useLogin', () => {
 
     await login(LOGIN_FIXTURE.email, LOGIN_FIXTURE.password);
 
-    expect(ctx.login).toHaveBeenCalled();
+    expect(ctx.refreshSession).toHaveBeenCalled();
     expect(ctx.toast).toHaveBeenCalledWith('success', 'Logged in successfully');
     expect(ctx.navigate).toHaveBeenCalledWith('/');
   });
@@ -58,7 +58,7 @@ describe('useLogin', () => {
 
     await login(LOGIN_FIXTURE.email, LOGIN_FIXTURE.wrongPassword);
 
-    expect(ctx.login).not.toHaveBeenCalled();
+    expect(ctx.refreshSession).not.toHaveBeenCalled();
     expect(ctx.toast).toHaveBeenCalledWith(
       'error',
       'Invalid email or password',

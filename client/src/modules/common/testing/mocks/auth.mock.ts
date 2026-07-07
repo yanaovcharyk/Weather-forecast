@@ -1,11 +1,12 @@
-import type { AuthContext } from '@/auth/contexts/AuthContext';
+import type { IAuthContextValue } from '@/auth/types';
 
-export type AuthContextType = React.ContextType<typeof AuthContext>;
+export type AuthContextType = IAuthContextValue;
 
 export const createAuthMock = (overrides?: Partial<AuthContextType>) => ({
-  login: vi.fn(),
+  currentUser: null,
   logout: vi.fn(),
+  refreshSession: vi.fn(),
   isAuthenticated: false,
-  loading: false,
+  isLoading: false,
   ...overrides,
 });

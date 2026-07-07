@@ -232,6 +232,7 @@ describe('createTokenRefreshErrorLink', () => {
     });
 
     await Promise.resolve();
+    await Promise.resolve();
 
     expect(performLogout).toHaveBeenCalled();
   });

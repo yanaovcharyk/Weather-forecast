@@ -4,19 +4,43 @@ import {
   ApolloLink,
   HttpLink,
 } from '@apollo/client';
+import { print } from 'graphql';
 
 import { AccessTokenRefreshCoordinator } from '@/auth/services/AccessTokenRefreshCoordinator';
+import { LOGOUT_MUTATION } from '@/auth/graphql';
 import { createTokenRefreshErrorLink } from './links/tokenRefreshErrorLink';
 import { apolloLoggerLink } from './links/apolloLoggerLink';
 import { config } from '@/common/config';
+import { loggerContext } from '@/logger/context/LoggerContextStore';
 
 type CreateApolloClientParams = {
-  performLogout: () => void;
   displayErrorMessage: (message: string) => void;
 };
 
+const performLogout = async () => {
+  try {
+    await fetch(config.apiBaseUrl + config.graphqlPath, {
+      method: 'POST',
+      credentials: 'include',
+      keepalive: true,
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        query: print(LOGOUT_MUTATION),
+      }),
+    });
+  } finally {
+    loggerContext.set({
+      ...loggerContext.get(),
+      userId: undefined,
+    });
+
+    if (window.location.pathname !== '/login') {
+      window.location.href = '/login';
+    }
+  }
+};
+
 export const createApolloClient = ({
-  performLogout,
   displayErrorMessage,
 }: CreateApolloClientParams) => {
   const tokenRefreshCoordinator = new AccessTokenRefreshCoordinator();

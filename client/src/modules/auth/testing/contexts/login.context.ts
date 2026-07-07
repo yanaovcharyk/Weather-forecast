@@ -2,7 +2,7 @@ import { vi } from 'vitest';
 
 export const createLoginContext = () => ({
   mutate: vi.fn(),
-  login: vi.fn(),
+  refreshSession: vi.fn(),
   navigate: vi.fn(),
   toast: vi.fn(),
 });

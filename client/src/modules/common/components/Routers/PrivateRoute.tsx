@@ -1,16 +1,16 @@
 import { type ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 import Spin from 'antd/es/spin';
-import { useAuth } from '@/auth/hooks/useAuth';
+import { useAuthContext } from '@/auth/contexts/AuthContext';
 
 export const PrivateRoute = ({ children }: { children: ReactNode }) => {
-  const { isAuthenticated, loading } = useAuth();
+  const { currentUser, isLoading } = useAuthContext();
 
-  if (loading) {
+  if (isLoading) {
     return <Spin fullscreen />;
   }
 
-  if (!isAuthenticated) {
+  if (!currentUser) {
     return <Navigate to="/login" replace />;
   }
 
