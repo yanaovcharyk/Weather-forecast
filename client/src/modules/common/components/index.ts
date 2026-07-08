@@ -2,7 +2,7 @@ export { PageLayout as AppLayout } from './Layouts/PageLayout/PageLayout';
 export { CenteredLayout } from './Layouts/CenteredLayout/CenteredLayout';
 export { PageLayout } from './Layouts/PageLayout/PageLayout';
 export { PrimaryButton } from './Button/PrimaryButton/PrimaryButton';
-export { ScrollToTopButton } from './Button/ScrollToTopButton';
+export { ScrollToTopButton } from './Button/ScrollToTopButton/ScrollToTopButton';
 export { AppCard } from './Card/FormCard/AppCard';
 export { EmptyState } from './EmptyState';
 export { ErrorPage } from './ErrorPage/ErrorPage';

@@ -21,7 +21,7 @@ export class LoggerQueue {
   }
 
   addLog(logRecord: IClientLogRecord): void {
-    if (!config.loggerRemote) {
+    if (!config.isLoggerRemote) {
       return;
     }
 
@@ -37,7 +37,7 @@ export class LoggerQueue {
   async sendQueuedLogs(
     mode: 'batch' | 'auto' | 'manual' = 'manual',
   ): Promise<void> {
-    if (!this.queuedLogs.length || !config.loggerRemote) {
+    if (!this.queuedLogs.length || !config.isLoggerRemote) {
       return;
     }
 
@@ -76,7 +76,7 @@ export class LoggerQueue {
 
   private registerPageCloseListeners(): void {
     const flush = (): void => {
-      if (!this.queuedLogs.length || !config.loggerRemote) {
+      if (!this.queuedLogs.length || !config.isLoggerRemote) {
         return;
       }
 

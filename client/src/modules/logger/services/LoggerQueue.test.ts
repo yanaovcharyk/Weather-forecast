@@ -50,7 +50,7 @@ describe('LoggerQueue', () => {
     vi.useFakeTimers();
     vi.clearAllMocks();
 
-    config.loggerRemote = true;
+    config.isLoggerRemote = true;
     queue = new LoggerQueue(false);
 
     consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -76,7 +76,7 @@ describe('LoggerQueue', () => {
   });
 
   it('does not queue logs when remote logging is disabled', async () => {
-    config.loggerRemote = false;
+    config.isLoggerRemote = false;
 
     queue.addLog(createLogRecord({ message: 'test' }));
     await queue.sendQueuedLogs();

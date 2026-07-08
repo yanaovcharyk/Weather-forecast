@@ -44,7 +44,7 @@ export const createApolloClient = ({
 
   return new ApolloClient({
     devtools: {
-      enabled: config.apolloDevtools || import.meta.env.DEV,
+      enabled: config.isApolloDevtoolsEnabled,
       name: 'Weather Forecast',
     },
 

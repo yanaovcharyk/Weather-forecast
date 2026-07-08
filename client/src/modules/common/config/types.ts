@@ -7,7 +7,7 @@ export interface IFrontendConfig {
 
   loggerEnabled: boolean;
   loggerLevel: LogLevel;
-  loggerConsole: boolean;
-  loggerRemote: boolean;
-  apolloDevtools: boolean;
+  isLoggerConsole: boolean;
+  isLoggerRemote: boolean;
+  isApolloDevtoolsEnabled: boolean;
 }
