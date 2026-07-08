@@ -1,11 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
-import { registry } from './registry';
+import { routes } from './registry';
 import { applyGuards } from './guards';
 import { ErrorBoundary } from '@/logger/components';
 
 export const AppRouter = () => {
-  const routes = registry.flatMap((module) => module.routes);
-
   return (
     <Routes>
       {routes.map((route, i) => {

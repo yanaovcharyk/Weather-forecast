@@ -30,7 +30,7 @@ export default defineConfig(({ mode }) => {
 
     test: {
       environment: 'jsdom',
-      setupFiles: './src/modules/common/testing/setup.ts',
+      setupFiles: './src/modules/common/testing/setupJest.ts',
       css: false,
       globals: true,
       clearMocks: true,

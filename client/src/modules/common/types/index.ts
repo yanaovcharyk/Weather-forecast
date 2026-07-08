@@ -1,2 +1,2 @@
-export type { IRoutableModule } from './IRoutableModule';
+export type { IAppModule } from './IAppModule';
 export type { AppRoute } from './AppRoute';

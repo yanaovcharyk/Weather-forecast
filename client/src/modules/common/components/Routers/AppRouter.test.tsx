@@ -4,14 +4,10 @@ import { AppRouter } from './AppRouter';
 import { applyGuards } from './guards';
 
 vi.mock('./registry', () => ({
-  registry: [
+  routes: [
     {
-      routes: [
-        {
-          path: '/',
-          component: () => <div>Home Page</div>,
-        },
-      ],
+      path: '/',
+      component: () => <div>Home Page</div>,
     },
   ],
 }));

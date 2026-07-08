@@ -7,19 +7,15 @@ const OuterProvider = ({ children }: { children?: ReactNode }) => (
   <section data-testid="outer-provider">{children}</section>
 );
 
-const LabelProvider = ({
-  children,
-  label,
-}: {
-  children?: ReactNode;
-  label?: string;
-}) => <div aria-label={label}>{children}</div>;
+const InnerProvider = ({ children }: { children?: ReactNode }) => (
+  <div aria-label="inner provider">{children}</div>
+);
 
 describe('ProviderComposer', () => {
   it('renders providers from outermost to innermost', () => {
     const providers = [
-      { component: OuterProvider },
-      { component: LabelProvider, props: { label: 'inner provider' } },
+      { component: OuterProvider, order: 10 },
+      { component: InnerProvider, order: 20 },
     ] satisfies readonly ProviderEntry[];
 
     render(

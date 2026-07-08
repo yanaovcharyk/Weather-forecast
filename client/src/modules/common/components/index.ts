@@ -11,6 +11,13 @@ export { BackgroundCard } from './Card/BackgroundCard/BackgroundCard';
 export { BackgroundCardSkeleton } from './Card/BackgroundCard/BackgroundCardSkeleton';
 export { BlurLoaderOverlay } from './BlurLoaderOverlay/BlurLoaderOverlay';
 export { ConfirmModal } from './ConfirmModal/ConfirmModal';
-export { AppRouter, PrivateRoute, applyGuards, registry } from './Routers';
+export {
+  AppRouter,
+  PrivateRoute,
+  applyGuards,
+  appModules,
+  routes,
+  providers,
+} from './Routers';
 export { Shadow } from './Shadow/Shadow';
 export { AppText, AppTitle } from './Typography';

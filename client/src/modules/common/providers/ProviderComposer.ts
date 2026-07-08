@@ -2,7 +2,7 @@ import { createElement, type ElementType, type ReactNode } from 'react';
 
 export type ProviderEntry = {
   component: ElementType;
-  props?: object;
+  order: number;
 };
 
 type ProviderComposerProps = {
@@ -15,7 +15,7 @@ export const ProviderComposer = ({
   children,
 }: ProviderComposerProps) =>
   providers.reduceRight(
-    (wrappedChildren, { component: Provider, props }) =>
-      createElement(Provider, props, wrappedChildren),
+    (wrappedChildren, { component: Provider }) =>
+      createElement(Provider, null, wrappedChildren),
     children,
   );

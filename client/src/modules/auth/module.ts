@@ -1,16 +1,18 @@
-import type { AppRoute, IRoutableModule } from '@/common/types';
+import type { IAppModule } from '@/common/types';
+import { ProviderOrder } from '@/common/providers';
+import { AuthProvider } from './providers';
 import { LoginPage } from './pages/LoginPage';
 
-class AuthModule implements IRoutableModule {
-  name = 'auth';
-
-  routes: AppRoute[] = [
+const authModule: IAppModule = {
+  name: 'auth',
+  providers: [{ component: AuthProvider, order: ProviderOrder.Auth }],
+  routes: [
     {
       path: '/login',
       component: LoginPage,
       guard: 'guest',
     },
-  ];
-}
+  ],
+};
 
-export default new AuthModule();
+export default authModule;
