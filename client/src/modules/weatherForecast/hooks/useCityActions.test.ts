@@ -250,6 +250,31 @@ describe('useCityActions', () => {
     expect(ctx.setSearchParams).not.toHaveBeenCalled();
   });
 
+  it('should ignore existing city lookup error after unmount', async () => {
+    const deferred = createControlledPromise<City | null>();
+    ctx.getSavedCity.mockReturnValue(deferred.promise);
+
+    setupCityActionsRuntime(ctx, {
+      existingId: '123',
+    });
+
+    const { unmount } = setupCityActions(ctx);
+
+    unmount();
+
+    await act(async () => {
+      deferred.reject(new Error('lookup failed'));
+
+      try {
+        await deferred.promise;
+      } catch {
+        // Expected rejection is handled by the hook after unmount.
+      }
+    });
+
+    expect(ctx.setSearchParams).not.toHaveBeenCalled();
+  });
+
   it('should clear existing city selection when existing city lookup fails', async () => {
     ctx.getSavedCity.mockRejectedValue(new Error());
 

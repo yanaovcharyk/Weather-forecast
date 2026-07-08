@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Button } from 'antd';
+import styles from './ScrollToTopButton.module.scss';
 
 export const ScrollToTopButton = () => {
   const [visible, setVisible] = useState(false);
@@ -18,12 +19,7 @@ export const ScrollToTopButton = () => {
   return (
     <Button
       type="primary"
-      style={{
-        position: 'fixed',
-        bottom: 40,
-        right: 40,
-        zIndex: 1000,
-      }}
+      className={styles.button}
       onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
     >
       ↑

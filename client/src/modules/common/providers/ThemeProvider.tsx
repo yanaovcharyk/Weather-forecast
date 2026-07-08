@@ -1,5 +1,7 @@
 import { ConfigProvider, theme as antdTheme } from 'antd';
 import type { ReactNode } from 'react';
+import styles from './ThemeProvider.module.scss';
+
 const { defaultAlgorithm } = antdTheme;
 
 type Props = {
@@ -90,17 +92,7 @@ export const ThemeProvider = ({ children }: Props) => {
         },
       }}
     >
-      <div
-        style={
-          {
-            '--radius': '8px',
-            '--shadow-sm': '0 2px 8px rgba(0,0,0,0.3)',
-            '--shadow-lg': '0 -4px 12px rgba(0,0,0,0.3)',
-          } as React.CSSProperties
-        }
-      >
-        {children}
-      </div>
+      <div className={styles.themeRoot}>{children}</div>
     </ConfigProvider>
   );
 };

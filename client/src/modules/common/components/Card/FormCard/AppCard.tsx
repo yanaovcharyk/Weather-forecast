@@ -4,13 +4,7 @@ import classNames from 'classnames';
 
 export const AppCard = ({ children, ...props }: CardProps) => {
   return (
-    <Card
-      {...props}
-      style={{
-        ...props.style,
-      }}
-      className={classNames(styles.card, props.className)}
-    >
+    <Card {...props} className={classNames(styles.card, props.className)}>
       {children}
     </Card>
   );

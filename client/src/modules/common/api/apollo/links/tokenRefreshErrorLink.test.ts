@@ -237,6 +237,47 @@ describe('createTokenRefreshErrorLink', () => {
     expect(handleRefreshFailure).toHaveBeenCalled();
   });
 
+  it('propagates refresh error when refresh failure handler rejects', async () => {
+    const refreshError = new Error('refresh failed');
+    const observerError = vi.fn();
+
+    const link = createTokenRefreshErrorLink({
+      tokenRefreshCoordinator: {
+        queueRetryOperation: vi.fn(),
+        refreshAccessToken: vi.fn(() => Promise.reject(refreshError)),
+      } as never,
+      handleRefreshFailure: vi.fn(() =>
+        Promise.reject(new Error('logout failed')),
+      ),
+      displayErrorMessage: vi.fn(),
+    });
+
+    const forward = vi.fn(
+      () =>
+        new Observable((observer) => {
+          observer.next({
+            errors: [
+              {
+                extensions: {
+                  code: 'UNAUTHENTICATED',
+                },
+              },
+            ],
+          });
+        }),
+    );
+
+    link.request({} as never, forward as never)?.subscribe({
+      error: observerError,
+    });
+
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+
+    expect(observerError).toHaveBeenCalledWith(refreshError);
+  });
+
   it('shows error for network error', () => {
     const displayErrorMessage = vi.fn();
     const observerError = vi.fn();

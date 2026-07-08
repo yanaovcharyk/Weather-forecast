@@ -22,7 +22,7 @@ export const Header = () => {
       <Flex align="center" justify="space-between" className={styles.inner}>
         <Shadow type="text" direction="bottom">
           <Link to="/" className={styles.link}>
-            <Title style={{ margin: 0 }} level={3}>
+            <Title className={styles.title} level={3}>
               Weather
             </Title>
           </Link>

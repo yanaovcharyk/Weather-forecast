@@ -27,7 +27,13 @@
   pointer-events: none;
 }
 
+.forecastDays {
+  width: 100%;
+}
+
 .dayCard {
+  flex: 1;
+
   padding: 6px 4px;
   border-radius: 8px;
 

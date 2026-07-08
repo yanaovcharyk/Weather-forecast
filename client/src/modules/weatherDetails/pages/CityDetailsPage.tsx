@@ -12,6 +12,7 @@ import {
   HourlyForecast,
   DailyForecast,
 } from '@/weatherDetails/components';
+import styles from './CityDetailsPage.module.scss';
 
 export const CityDetailsPage = () => {
   const { cityName, weather, loading, error } = useCityWeather();
@@ -36,7 +37,7 @@ export const CityDetailsPage = () => {
 
   return (
     <PageLayout header={<Header />}>
-      <Space orientation="vertical" size="large" style={{ width: '100%' }}>
+      <Space orientation="vertical" size="large" className={styles.container}>
         <AppCard>
           <Button type="default" onClick={handleBack}>
             ← Back to all cities
@@ -48,7 +49,7 @@ export const CityDetailsPage = () => {
             <Space
               orientation="vertical"
               size="large"
-              style={{ width: '100%' }}
+              className={styles.container}
             >
               <CurrentWeatherCard cityName={cityName} weather={weather} />
               <HourlyForecast hourly={weather.hourly} />

@@ -20,6 +20,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
 import { useToast } from '@/common/hooks/useToast';
+import styles from './CitiesPage.module.scss';
 
 export const CitiesPage = () => {
   const { sorting, setSorting, showPinnedOnly, setShowPinnedOnly } =
@@ -76,7 +77,7 @@ export const CitiesPage = () => {
     <PageLayout header={<Header />}>
       <Row justify="center">
         <Col span={24}>
-          <Flex vertical style={{ width: '100%' }} gap={16}>
+          <Flex vertical className={styles.content} gap={16}>
             {currentlySelectedCity ? (
               <ExistingCityLayout
                 existingCity={currentlySelectedCity}
@@ -105,8 +106,7 @@ export const CitiesPage = () => {
                     flex={1}
                     justify="center"
                     align="center"
-                    className="empty-state-container"
-                    style={{ minHeight: '60vh' }}
+                    className={styles.emptyState}
                   >
                     <EmptyState description="No cities" />
                   </Flex>

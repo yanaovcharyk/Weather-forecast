@@ -95,7 +95,7 @@ export const CityCard = React.memo(function CityCard({
             </Flex>
           </Flex>
 
-          <Flex gap={4} style={{ width: '100%' }}>
+          <Flex gap={4} className={styles.forecastDays}>
             {weather.next3Days?.map((day, i) => (
               <Flex
                 key={i}
@@ -103,7 +103,6 @@ export const CityCard = React.memo(function CityCard({
                 align="center"
                 justify="center"
                 className={styles.dayCard}
-                style={{ flex: 1 }}
               >
                 <AppText size="sm" strong>
                   {days[i]?.label}

@@ -14,7 +14,7 @@ export const AppTitle = ({ className, style, ...props }: Props) => {
     <AntTitle
       {...props}
       className={classNames(styles.title, className)}
-      style={{ margin: 0, ...style }}
+      style={style}
     />
   );
 };
