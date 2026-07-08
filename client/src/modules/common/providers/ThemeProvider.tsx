@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 const { defaultAlgorithm } = antdTheme;
 
 type Props = {
-  children: ReactNode;
+  children?: ReactNode;
 };
 
 export const ThemeProvider = ({ children }: Props) => {

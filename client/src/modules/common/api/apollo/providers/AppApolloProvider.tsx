@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
+import type { ReactNode } from 'react';
 import { ApolloProvider } from '@apollo/client/react';
 import { createApolloClient } from '..';
 import { useToast } from '@/common/hooks/useToast';
 
 interface AppApolloProviderProps {
-  children: React.ReactNode;
+  children?: ReactNode;
 }
 
 export const AppApolloProvider = ({ children }: AppApolloProviderProps) => {

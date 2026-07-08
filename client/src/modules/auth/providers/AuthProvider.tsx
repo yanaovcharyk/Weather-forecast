@@ -1,11 +1,11 @@
-import { useMemo, useCallback, useEffect } from 'react';
+import { useMemo, useCallback, useEffect, type ReactNode } from 'react';
 import { useApolloClient, useMutation, useQuery } from '@apollo/client/react';
 import { LOGOUT_MUTATION, ME_QUERY } from '@/auth/graphql';
 import { AuthContext } from '@/auth/contexts/AuthContext';
 import { loggerContext } from '@/logger/context/LoggerContextStore';
 import type { ILogoutMutationResponse, IMeQuery } from '@/auth/types';
 
-export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
+export const AuthProvider = ({ children }: { children?: ReactNode }) => {
   const { data, loading, refetch } = useQuery<IMeQuery>(ME_QUERY, {
     fetchPolicy: 'network-only',
     errorPolicy: 'all',

@@ -1,10 +1,7 @@
+import type { ReactNode } from 'react';
 import { useRouteTracking } from '@/logger/hooks/useRouteTracking';
 
-export function RouteLoggerProvider({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function RouteLoggerProvider({ children }: { children?: ReactNode }) {
   useRouteTracking();
   return children;
 }

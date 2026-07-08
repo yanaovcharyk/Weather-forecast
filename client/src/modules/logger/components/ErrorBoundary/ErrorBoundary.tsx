@@ -4,7 +4,7 @@ import { normalizeReactError } from '@/common/utils/normalizeReactError';
 import { ErrorPage } from '@/common/components/ErrorPage/ErrorPage';
 
 type Props = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 type State = {
