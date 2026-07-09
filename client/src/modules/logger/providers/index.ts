@@ -1,2 +1,1 @@
-export { RouteLoggerProvider } from './RouteLoggerProvider';
-export { LoggerContextProvider } from './LoggerContextProvider';
+export { LoggerProvider } from './LoggerProvider';

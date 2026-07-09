@@ -2,7 +2,7 @@ import { normalizeError } from '@/logger/utils/normalizeError';
 import { type LogMetadata } from '@/logger/types';
 import type { Logger } from './LoggerService';
 
-export class LoggerOperation {
+export class OperationLogger {
   private readonly startedAt = performance.now();
 
   private readonly logger: Logger;

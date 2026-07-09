@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { LoggerOperation } from './LoggerOperation';
+import { OperationLogger } from './OperationLogger';
 import { normalizeError } from '@/logger/utils/normalizeError';
 
 vi.mock('@/logger/utils/normalizeError', () => ({
@@ -27,7 +27,7 @@ describe('LoggerOperation', () => {
   });
 
   it('logs operation start during creation', () => {
-    new LoggerOperation(logger as never, 'weather.load', { city: 'Kyiv' });
+    new OperationLogger(logger as never, 'weather.load', { city: 'Kyiv' });
 
     expect(logger.info).toHaveBeenCalledWith('weather.load.started', {
       city: 'Kyiv',
@@ -35,7 +35,7 @@ describe('LoggerOperation', () => {
   });
 
   it('logs completion event with duration', () => {
-    const operation = new LoggerOperation(logger as never, 'weather.load');
+    const operation = new OperationLogger(logger as never, 'weather.load');
 
     operation.success({
       source: 'cache',
@@ -48,7 +48,7 @@ describe('LoggerOperation', () => {
   });
 
   it('logs normalized error on failure', () => {
-    const operation = new LoggerOperation(logger as never, 'weather.load');
+    const operation = new OperationLogger(logger as never, 'weather.load');
 
     operation.fail(new Error('boom'));
 
@@ -64,7 +64,7 @@ describe('LoggerOperation', () => {
   });
 
   it('logs warning message', () => {
-    const operation = new LoggerOperation(logger as never, 'weather.load', {
+    const operation = new OperationLogger(logger as never, 'weather.load', {
       city: 'Kyiv',
     });
 

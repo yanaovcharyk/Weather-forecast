@@ -9,7 +9,7 @@ import {
 import { loggerQueue } from './LoggerQueueService';
 import { loggerRateLimiter } from './LoggerRateLimiter';
 import { sanitizeForLogging } from '@/logger/utils/sanitizeForLogging';
-import { LoggerOperation } from './LoggerOperation';
+import { OperationLogger } from './OperationLogger';
 import { config } from '@/common/config';
 import { shouldLog } from '@/logger/utils/shouldLog';
 
@@ -27,8 +27,8 @@ export class Logger {
     });
   }
 
-  operation(event: string, metadata?: LogMetadata): LoggerOperation {
-    return new LoggerOperation(this, event, metadata);
+  operation(event: string, metadata?: LogMetadata): OperationLogger {
+    return new OperationLogger(this, event, metadata);
   }
 
   info(message: string, metadata?: LogMetadata): void {

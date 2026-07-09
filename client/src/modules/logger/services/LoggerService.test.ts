@@ -6,7 +6,7 @@ import { loggerContext } from '@/logger/context/LoggerContextStore';
 import { loggerRateLimiter } from './LoggerRateLimiter';
 import { sanitizeForLogging } from '@/logger/utils/sanitizeForLogging';
 import { shouldLog } from '@/logger/utils/shouldLog';
-import { LoggerOperation } from './LoggerOperation';
+import { OperationLogger } from './OperationLogger';
 import { config } from '@/common/config';
 import type { JsonValue } from '@/logger/types';
 import { LogLevel } from '@/logger/types';
@@ -91,7 +91,7 @@ describe('Logger', () => {
     it('creates logger operation instance', () => {
       logger.operation('weather.fetch');
 
-      expect(LoggerOperation).toHaveBeenCalledWith(
+      expect(OperationLogger).toHaveBeenCalledWith(
         logger,
         'weather.fetch',
         undefined,

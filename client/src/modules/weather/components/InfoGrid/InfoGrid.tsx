@@ -30,24 +30,9 @@ export const InfoGrid = ({ items, column = 2 }: Props) => {
         >
           {row.map((item) => (
             <div key={item.label} className={styles.item}>
-              <AppText
-                className={styles.label}
-                style={{
-                  fontSize: token.fontSizeSM,
-                  color: token.colorText,
-                }}
-              >
-                {item.label}
-              </AppText>
+              <AppText className={styles.label}>{item.label}</AppText>
 
-              <AppText
-                strong
-                className={styles.value}
-                style={{
-                  fontSize: token.fontSize,
-                  color: token.colorText,
-                }}
-              >
+              <AppText strong className={styles.value}>
                 {item.value}
               </AppText>
             </div>
