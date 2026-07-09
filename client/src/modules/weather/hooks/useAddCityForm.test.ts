@@ -21,26 +21,24 @@ describe('useAddCityForm', () => {
 
     vi.mocked(useCitySearch).mockReturnValue({
       loading: false,
-      handleSearch: vi.fn(),
+      handleSearchCities: vi.fn(),
       cityOptions: [],
-      data: undefined,
     });
   });
 
   it('returns values from useCitySearch', () => {
-    const handleSearch = vi.fn();
+    const handleSearchCities = vi.fn();
 
     vi.mocked(useCitySearch).mockReturnValue({
       loading: true,
-      handleSearch,
+      handleSearchCities,
       cityOptions: [{ label: 'Kyiv', value: '1' }],
-      data: undefined,
     });
 
     const { result } = renderHook(() => useAddCityForm(vi.fn()));
 
     expect(result.current.loading).toBe(true);
-    expect(result.current.handleSearch).toBe(handleSearch);
+    expect(result.current.handleSearchCities).toBe(handleSearchCities);
     expect(result.current.cityOptions).toHaveLength(1);
   });
 
@@ -64,16 +62,20 @@ describe('useAddCityForm', () => {
     const cityName = JSON.stringify({
       lat: 50.45,
       lon: 30.52,
-      name: 'Kyiv',
+      cityName: 'Kyiv',
     });
 
     await act(async () => {
       await result.current.handleSubmit({
-        cityName,
+        selectedCity: cityName,
       });
     });
 
-    expect(onSubmit).toHaveBeenCalledWith(50.45, 30.52, 'Kyiv');
+    expect(onSubmit).toHaveBeenCalledWith({
+      lat: 50.45,
+      lon: 30.52,
+      cityName: 'Kyiv',
+    });
 
     expect(resetFields).toHaveBeenCalled();
   });

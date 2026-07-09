@@ -25,9 +25,7 @@ export const setupLoginRuntime = (
     }),
   );
 
-  vi.mocked(useToast).mockReturnValue({
-    toast: ctx.toast,
-  } as never);
+  vi.mocked(useToast).mockReturnValue(ctx.toast as never);
 
   vi.mocked(useNavigate).mockReturnValue(ctx.navigate);
 };

@@ -80,7 +80,7 @@ vi.mock('@/common/config', () => ({
   config: {
     apiBaseUrl: 'http://localhost',
     graphqlPath: '/graphql',
-    apolloDevtools: false,
+    isApolloDevtoolsEnabled: true,
   },
 }));
 

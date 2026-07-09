@@ -3,7 +3,7 @@ import { AppCard } from '@/common/components';
 import { CitiesList } from '@/weather/components/CitiesList';
 import type { City } from '@/weather/types';
 
-export interface ExistingCityLaypoutProps {
+export interface ExistingCityLayoutProps {
   existingCity: City;
   onBack: () => void;
   removingId: string | null;
@@ -21,7 +21,7 @@ export const ExistingCityLayout = ({
   onTogglePinned,
   loading,
   onCityClick,
-}: ExistingCityLaypoutProps) => {
+}: ExistingCityLayoutProps) => {
   return (
     <>
       <AppCard>

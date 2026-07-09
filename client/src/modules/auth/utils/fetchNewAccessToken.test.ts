@@ -17,16 +17,21 @@ describe('fetchNewAccessToken', () => {
 
     await fetchNewAccessToken();
 
-    expect(globalThis.fetch).toHaveBeenCalledWith(
-      config.apiBaseUrl + config.graphqlPath,
+    const [url, options] = vi.mocked(globalThis.fetch).mock.calls[0];
+    const headers = options?.headers as Headers;
+
+    expect(url).toBe(config.apiBaseUrl + config.graphqlPath);
+    expect(options).toEqual(
       expect.objectContaining({
         method: 'POST',
         credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        keepalive: true,
       }),
     );
+    expect(headers.get('Content-Type')).toBe('application/json');
+    expect(JSON.parse(options?.body as string)).toEqual({
+      query: expect.any(String),
+    });
   });
 
   it('returns true on success', async () => {

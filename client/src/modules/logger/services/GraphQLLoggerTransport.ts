@@ -1,16 +1,17 @@
 import type {
   IClientLogRecord,
-  ISerializedClientLogRecord,
+  SerializedClientLogRecord,
   ISendLogsGraphQLRequestBody,
   ILoggerTransport,
 } from '@/logger/types';
 import { SEND_CLIENT_LOGS_MUTATION_STRING } from '@/logger/graphql';
 import { config } from '@/common/config';
+import { postJson, sendJsonBeacon } from '@/common/api/http';
 
 export class GraphQLLoggerTransport implements ILoggerTransport {
   private serializeLogsForTransport(
     logRecords: IClientLogRecord[],
-  ): ISerializedClientLogRecord[] {
+  ): SerializedClientLogRecord[] {
     return logRecords.map(({ metadata, ...rest }) => ({
       ...rest,
 
@@ -37,14 +38,7 @@ export class GraphQLLoggerTransport implements ILoggerTransport {
 
     const graphqlRequestBody = this.createRequestBody(logRecords);
 
-    const response = await fetch(config.loggerApiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify(graphqlRequestBody),
-    });
+    const response = await postJson(config.loggerApiUrl, graphqlRequestBody);
 
     if (!response.ok) {
       throw new Error(`Failed to send logs: ${response.status}`);
@@ -58,9 +52,6 @@ export class GraphQLLoggerTransport implements ILoggerTransport {
 
     const graphqlRequestBody = this.createRequestBody(logRecords);
 
-    navigator.sendBeacon(
-      config.loggerApiUrl,
-      JSON.stringify(graphqlRequestBody),
-    );
+    sendJsonBeacon(config.loggerApiUrl, graphqlRequestBody);
   }
 }

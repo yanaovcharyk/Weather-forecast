@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { LoggerRetryQueue } from './LoggerRetryService';
 import { createLogRecord } from '@/logger/testing/fixtures';
+import { LogLevel } from '@/logger/types';
 
 const mocks = vi.hoisted(() => ({
   sendMock: vi.fn(),
@@ -49,7 +50,7 @@ describe('LoggerRetryQueue', () => {
     expect(consoleSpy).toHaveBeenCalledWith('Logs permanently dropped', [
       {
         message: 'x',
-        level: 'info',
+        level: LogLevel.Info,
         timestamp: expect.any(String),
       },
     ]);

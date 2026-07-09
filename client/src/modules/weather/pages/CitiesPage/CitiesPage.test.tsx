@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { screen } from '@testing-library/react';
 
 import type { CitiesListProps } from '@/weather/components/CitiesList/CitiesList';
-import type { ExistingCityLaypoutProps } from '@/weather/components/ExistingCityLayout/ExistingCityLayout';
+import type { ExistingCityLayoutProps } from '@/weather/components/ExistingCityLayout/ExistingCityLayout';
 import type { ComponentProps, PropsWithChildren } from 'react';
 import type { EmptyState, PageLayout } from '@/common/components';
 import {
@@ -18,7 +18,6 @@ import { renderWithUser } from '@/common/testing/render/renderWithUser';
 import { CitiesPage } from './CitiesPage';
 
 const mockNavigate = vi.fn();
-const mockToast = vi.fn();
 
 const mockUseCitiesPaginated = vi.fn();
 const mockUseSortingParams = vi.fn();
@@ -32,12 +31,6 @@ vi.mock('antd', () => ({
 
 vi.mock('react-router-dom', () => ({
   useNavigate: () => mockNavigate,
-}));
-
-vi.mock('@/common/hooks/useToast', () => ({
-  useToast: () => ({
-    toast: mockToast,
-  }),
 }));
 
 vi.mock('@/weather/hooks', () => ({
@@ -74,7 +67,7 @@ vi.mock('@/weather/components', () => ({
 
   CitiesControls: () => <div>CitiesControls</div>,
 
-  ExistingCityLayout: ({ onBack }: ExistingCityLaypoutProps) => (
+  ExistingCityLayout: ({ onBack }: ExistingCityLayoutProps) => (
     <div>
       ExistingCityLayout
       <button onClick={onBack}>Back</button>
@@ -152,7 +145,7 @@ describe('CitiesPage', () => {
     expect(mockNavigate).toHaveBeenCalledWith(`/cities/${CITY_FIXTURE.id}`);
   });
 
-  it('should filter pinned cities when showPinnedOnly=true', () => {
+  it('should render cities returned by paginated hook when showPinnedOnly=true', () => {
     mockUseSortingParams.mockReturnValue(
       createSortingParamsResult({
         showPinnedOnly: true,
@@ -166,7 +159,7 @@ describe('CitiesPage', () => {
 
     setup();
 
-    expect(screen.getByText('count:1')).toBeInTheDocument();
+    expect(screen.getByText('count:2')).toBeInTheDocument();
   });
 
   it('should render existing city layout when city selected', () => {
@@ -223,21 +216,9 @@ describe('CitiesPage', () => {
 
     expect(screen.getByText('isListLoading:true')).toBeInTheDocument();
   });
-  it('calls notification callbacks passed to useCityActions', () => {
-    mockUseCityActions.mockImplementation((params) => {
-      params.showSuccessNotification('success message');
-      params.showErrorNotification('error message');
-      params.showInfoNotification('info message');
-
-      return createCityActionsResult();
-    });
-
+  it('should call useCityActions without page-level notification wiring', () => {
     setup();
 
-    expect(mockToast).toHaveBeenCalledWith('success', 'success message');
-
-    expect(mockToast).toHaveBeenCalledWith('error', 'error message');
-
-    expect(mockToast).toHaveBeenCalledWith('info', 'info message');
+    expect(mockUseCityActions).toHaveBeenCalledWith();
   });
 });

@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { createValidatedConfig } from './createValidatedConfig';
+import { LogLevel } from '@/logger/types';
 
 describe('createValidatedConfig', () => {
   it('creates typed config object from environment variables', () => {
@@ -20,10 +21,10 @@ describe('createValidatedConfig', () => {
       graphqlPath: '/graphql',
       loggerApiUrl: 'http://localhost:3000/graphql',
       loggerEnabled: true,
-      loggerLevel: 'warn',
-      loggerConsole: false,
-      loggerRemote: true,
-      apolloDevtools: true,
+      loggerLevel: LogLevel.Warn,
+      isLoggerConsole: false,
+      isLoggerRemote: true,
+      isApolloDevtoolsEnabled: true,
     });
   });
 
@@ -33,10 +34,10 @@ describe('createValidatedConfig', () => {
       graphqlPath: '/graphql',
       loggerApiUrl: 'http://localhost:3000/graphql',
       loggerEnabled: false,
-      loggerLevel: 'info',
-      loggerConsole: false,
-      loggerRemote: false,
-      apolloDevtools: false,
+      loggerLevel: LogLevel.Info,
+      isLoggerConsole: false,
+      isLoggerRemote: false,
+      isApolloDevtoolsEnabled: false,
     });
   });
 
@@ -53,10 +54,10 @@ describe('createValidatedConfig', () => {
       graphqlPath: '/graphql',
       loggerApiUrl: 'http://localhost:3000/graphql',
       loggerEnabled: true,
-      loggerLevel: 'info',
-      loggerConsole: false,
-      loggerRemote: true,
-      apolloDevtools: false,
+      loggerLevel: LogLevel.Info,
+      isLoggerConsole: false,
+      isLoggerRemote: true,
+      isApolloDevtoolsEnabled: false,
     });
   });
 

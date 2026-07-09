@@ -1,9 +1,10 @@
 import { useMutation } from '@apollo/client/react';
 import { UPDATE_SAVED_CITY_MUTATION } from '@/weather/graphql';
+import { GraphQLTypename } from '@/weather/types';
 
 export type UpdateCityMutation = {
   updateSavedCity: {
-    __typename: 'CityOutput';
+    __typename: GraphQLTypename.CityOutput;
     id: string;
     isPinned: boolean;
   };
@@ -33,7 +34,7 @@ export const useTogglePinned = () => {
 
       optimisticResponse: {
         updateSavedCity: {
-          __typename: 'CityOutput',
+          __typename: GraphQLTypename.CityOutput,
           id,
           isPinned: !currentPinned,
         },

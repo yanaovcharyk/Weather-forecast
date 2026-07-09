@@ -1,4 +1,4 @@
-import type { LogLevel } from '@/logger/types';
+import { LogLevel } from '@/logger/types';
 import { LOG_LEVEL_PRIORITY } from '@/logger/constants';
 import { config } from '@/common/config';
 
@@ -7,7 +7,7 @@ export const shouldLog = (level: LogLevel) => {
     return false;
   }
 
-  const minLevel = config.loggerLevel ?? 'info';
+  const minLevel = config.loggerLevel ?? LogLevel.Info;
 
   return LOG_LEVEL_PRIORITY[level] >= LOG_LEVEL_PRIORITY[minLevel];
 };

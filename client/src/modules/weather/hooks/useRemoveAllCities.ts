@@ -1,6 +1,7 @@
 import { useMutation } from '@apollo/client/react';
 
 import { REMOVE_ALL_SAVED_CITIES } from '@/weather/graphql';
+import { GraphQLTypename } from '@/weather/types';
 
 type RemoveAllCitiesMutation = {
   removeAllSavedCities: boolean;
@@ -22,7 +23,7 @@ export const useRemoveAllCities = () => {
                 __typename: existingConnection.__typename,
                 edges: [],
                 pageInfo: {
-                  __typename: 'PageInfo',
+                  __typename: GraphQLTypename.PageInfo,
                   hasNextPage: false,
                   endCursor: null,
                 },

@@ -33,9 +33,15 @@ vi.mock('./useRemoveCity');
 vi.mock('./useRemoveAllCities');
 vi.mock('./useTogglePinned');
 vi.mock('./useSavedCityLookup');
+vi.mock('@/common/hooks/useToast');
 
 describe('useCityActions', () => {
   let ctx: CityActionsContext;
+  const selectedCity = {
+    cityName: 'Kyiv',
+    lat: 10,
+    lon: 20,
+  };
 
   beforeEach(() => {
     ctx = createCityActionsContext();
@@ -45,14 +51,14 @@ describe('useCityActions', () => {
   it('should add city successfully', async () => {
     ctx.getSavedCity.mockResolvedValue(null);
 
-    const { handleAddCity } = setupCityActions(ctx);
+    const { handleAddCity } = setupCityActions();
 
     await act(async () => {
-      await handleAddCity(10, 20, 'Kyiv');
+      await handleAddCity(selectedCity);
     });
 
-    expect(ctx.addCity).toHaveBeenCalledWith(10, 20, 'Kyiv');
-    expect(ctx.showSuccessNotification).toHaveBeenCalledWith(
+    expect(ctx.addCity).toHaveBeenCalledWith(selectedCity);
+    expect(ctx.toast.success).toHaveBeenCalledWith(
       'City Kyiv added successfully',
     );
   });
@@ -63,35 +69,31 @@ describe('useCityActions', () => {
       cityName: 'Kyiv',
     } as City);
 
-    const { handleAddCity } = setupCityActions(ctx);
+    const { handleAddCity } = setupCityActions();
 
     await act(async () => {
-      await handleAddCity(10, 20, 'Kyiv');
+      await handleAddCity(selectedCity);
     });
 
     expect(ctx.setSearchParams).toHaveBeenCalled();
-    expect(ctx.showInfoNotification).toHaveBeenCalledWith(
-      'City Kyiv already exists',
-    );
+    expect(ctx.toast.info).toHaveBeenCalledWith('City Kyiv already exists');
     expect(ctx.addCity).not.toHaveBeenCalled();
   });
 
   it('should handle add city error', async () => {
     ctx.getSavedCity.mockRejectedValue(new Error());
 
-    const { handleAddCity } = setupCityActions(ctx);
+    const { handleAddCity } = setupCityActions();
 
     await act(async () => {
-      await handleAddCity(10, 20, 'Kyiv');
+      await handleAddCity(selectedCity);
     });
 
-    expect(ctx.showErrorNotification).toHaveBeenCalledWith(
-      'Failed to add city',
-    );
+    expect(ctx.toast.error).toHaveBeenCalledWith('Failed to add city');
   });
 
   it('should remove city', async () => {
-    const { handleRemoveCity } = setupCityActions(ctx);
+    const { handleRemoveCity } = setupCityActions();
 
     await act(async () => {
       await handleRemoveCity('123', 'Kyiv');
@@ -106,7 +108,7 @@ describe('useCityActions', () => {
       existingId: '123',
     });
 
-    const { handleRemoveCity } = setupCityActions(ctx);
+    const { handleRemoveCity } = setupCityActions();
 
     await act(async () => {
       await handleRemoveCity('123', 'Kyiv');
@@ -116,7 +118,7 @@ describe('useCityActions', () => {
   });
 
   it('should toggle pinned', async () => {
-    const { handleTogglePinned } = setupCityActions(ctx);
+    const { handleTogglePinned } = setupCityActions();
 
     await act(async () => {
       await handleTogglePinned('123', false);
@@ -131,7 +133,7 @@ describe('useCityActions', () => {
       code: undefined,
     });
 
-    const { handleDeleteAllCities } = setupCityActions(ctx);
+    const { handleDeleteAllCities } = setupCityActions();
 
     await act(async () => {
       await handleDeleteAllCities();
@@ -152,7 +154,7 @@ describe('useCityActions', () => {
       code: undefined,
     });
 
-    const { handleDeleteAllCities } = setupCityActions(ctx);
+    const { handleDeleteAllCities } = setupCityActions();
 
     await act(async () => {
       await handleDeleteAllCities();
@@ -168,7 +170,7 @@ describe('useCityActions', () => {
   });
 
   it('should return initial state', () => {
-    const { result } = setupCityActions(ctx);
+    const { result } = setupCityActions();
 
     expect(result.current.isAddingCity).toBe(false);
     expect(result.current.currentlyRemovingCityId).toBe(null);
@@ -179,16 +181,16 @@ describe('useCityActions', () => {
     const deferred = createControlledPromise<City | null>();
     ctx.getSavedCity.mockReturnValue(deferred.promise);
 
-    const { result } = setupCityActions(ctx);
+    const { result } = setupCityActions();
 
     let firstRequest!: Promise<void>;
 
     act(() => {
-      firstRequest = result.current.handleAddCity(10, 20, 'Kyiv');
+      firstRequest = result.current.handleAddCity(selectedCity);
     });
 
     await act(async () => {
-      await result.current.handleAddCity(10, 20, 'Kyiv');
+      await result.current.handleAddCity(selectedCity);
     });
 
     expect(ctx.getSavedCity).toHaveBeenCalledTimes(1);
@@ -210,7 +212,7 @@ describe('useCityActions', () => {
       existingId: '123',
     });
 
-    const { result } = setupCityActions(ctx);
+    const { result } = setupCityActions();
 
     await waitFor(() => {
       expect(result.current.currentlySelectedCity?.id).toBe('123');
@@ -235,7 +237,7 @@ describe('useCityActions', () => {
       existingId: '123',
     });
 
-    const { unmount } = setupCityActions(ctx);
+    const { unmount } = setupCityActions();
 
     unmount();
 
@@ -258,7 +260,7 @@ describe('useCityActions', () => {
       existingId: '123',
     });
 
-    const { unmount } = setupCityActions(ctx);
+    const { unmount } = setupCityActions();
 
     unmount();
 
@@ -282,7 +284,7 @@ describe('useCityActions', () => {
       existingId: '123',
     });
 
-    setupCityActions(ctx);
+    setupCityActions();
 
     await waitFor(() => {
       expect(ctx.setSearchParams).toHaveBeenCalled();

@@ -1,4 +1,9 @@
-export type LogLevel = 'info' | 'warn' | 'error' | 'debug';
+export enum LogLevel {
+  Info = 'info',
+  Warn = 'warn',
+  Error = 'error',
+  Debug = 'debug',
+}
 
 export type LogMetadata = Record<string, unknown>;
 
@@ -16,21 +21,14 @@ export interface IClientLogRecord extends ILoggerContext {
   metadata?: JsonValue;
 }
 
-export interface ISerializedClientLogRecord {
-  timestamp: string;
-  level: LogLevel;
-  message: string;
-  requestId?: string;
-  userId?: string;
-  sessionId?: string;
-  route?: string;
+export type SerializedClientLogRecord = Omit<IClientLogRecord, 'metadata'> & {
   metadata?: string;
-}
+};
 
 export interface ISendLogsGraphQLRequestBody {
   query: string;
   variables: {
-    input: ISerializedClientLogRecord[];
+    input: SerializedClientLogRecord[];
   };
 }
 

@@ -3,12 +3,13 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { useMutation } from '@apollo/client/react';
 import { useTogglePinned } from './useTogglePinned';
 import { createMutationResult } from '@/common/testing/factories';
+import { GraphQLTypename } from '@/weather/types';
 
 vi.mock('@apollo/client/react');
 
 type UpdateCityMutation = {
   updateSavedCity: {
-    __typename: 'CityOutput';
+    __typename: GraphQLTypename.CityOutput;
     id: string;
     isPinned: boolean;
   } | null;
@@ -54,7 +55,7 @@ describe('useTogglePinned', () => {
       },
       optimisticResponse: {
         updateSavedCity: {
-          __typename: 'CityOutput',
+          __typename: GraphQLTypename.CityOutput,
           id: '1',
           isPinned: true,
         },
@@ -78,7 +79,7 @@ describe('useTogglePinned', () => {
       },
       optimisticResponse: {
         updateSavedCity: {
-          __typename: 'CityOutput',
+          __typename: GraphQLTypename.CityOutput,
           id: '1',
           isPinned: false,
         },

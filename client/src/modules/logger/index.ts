@@ -12,14 +12,13 @@ export type {
   IClientLogRecord,
   ILoggerContext,
   ILoggerTransport,
-  ISerializedClientLogRecord,
+  SerializedClientLogRecord,
   ISendLogsGraphQLRequestBody,
   JsonPrimitive,
   JsonValue,
-  LogLevel,
   LogMetadata,
 } from './types';
-export { DEFAULT_FIELDS_TO_MASK } from './types';
+export { DEFAULT_FIELDS_TO_MASK, LogLevel } from './types';
 export { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
 export { LoggerContextProvider } from './providers/LoggerContextProvider';
 export { RouteLoggerProvider } from './providers/RouteLoggerProvider';

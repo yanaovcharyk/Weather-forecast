@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 
 import { useSortingParams } from './useSortingParams';
 import { createRouterMocks } from '@/common/testing/mocks/router.mock';
+import { CitySortField, CitySortOrder } from '@/weather/types';
 
 vi.mock('react-router-dom');
 
@@ -23,8 +24,8 @@ describe('useSortingParams', () => {
     const { result } = renderHook(() => useSortingParams());
 
     expect(result.current.sorting).toEqual({
-      sortBy: 'createdAt',
-      sortOrder: 'DESC',
+      sortBy: CitySortField.CreatedAt,
+      sortOrder: CitySortOrder.Desc,
     });
 
     expect(result.current.showPinnedOnly).toBe(false);
@@ -35,14 +36,14 @@ describe('useSortingParams', () => {
 
     act(() => {
       result.current.setSorting({
-        sortBy: 'cityName',
-        sortOrder: 'ASC',
+        sortBy: CitySortField.CityName,
+        sortOrder: CitySortOrder.Asc,
       });
     });
 
     expect(result.current.sorting).toEqual({
-      sortBy: 'cityName',
-      sortOrder: 'ASC',
+      sortBy: CitySortField.CityName,
+      sortOrder: CitySortOrder.Asc,
     });
   });
 

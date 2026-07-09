@@ -1,18 +1,21 @@
 import { Col, Form, Row, Select } from 'antd';
 import { EmptyState, AppCard, PrimaryButton } from '@/common/components';
-import type { AddCityFormProps } from './types';
-import { useAddCityForm } from '@/weather/hooks/useAddCityForm';
-import { useIsMobile } from '@/common/hooks/useIsMobile';
+import { useAddCityForm } from '@/weather/hooks/';
+import { useIsMobile } from '@/common/hooks/';
+import type { SelectedCity } from '@/weather/types';
 
 import styles from './AddCityForm.module.scss';
+
+export interface AddCityFormProps {
+  onSubmit: (city: SelectedCity) => Promise<void> | void;
+  disabled?: boolean;
+}
 
 export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
   const isMobile = useIsMobile();
 
-  const { form, loading, handleSearch, cityOptions, handleSubmit } =
+  const { form, loading, handleSearchCities, cityOptions, handleSubmit } =
     useAddCityForm(onSubmit);
-
-  const error = form.getFieldError('cityName');
 
   return (
     <AppCard className={styles.formCard}>
@@ -20,15 +23,14 @@ export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
         <Row gutter={16} align="top">
           <Col span={isMobile ? 18 : 22}>
             <Form.Item
-              name="cityName"
+              name="selectedCity"
               rules={[{ required: true, message: 'Select a city' }]}
               className={styles.formItem}
-              validateStatus={error.length ? 'error' : undefined}
             >
               <Select
                 showSearch={{
                   filterOption: false,
-                  onSearch: handleSearch,
+                  onSearch: handleSearchCities,
                 }}
                 loading={loading}
                 disabled={disabled}

@@ -1,9 +1,29 @@
-import React, { useState, useCallback } from 'react';
-import { Row, Col, Select, Button, Checkbox } from 'antd';
-import { ArrowUpOutlined, ArrowDownOutlined } from '@ant-design/icons';
+import React, { useCallback, useState } from 'react';
+import { Button, Checkbox, Col, Row, Select } from 'antd';
+import type { CheckboxChangeEvent } from 'antd/es/checkbox';
+import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+
+import { CitySortField, CitySortOrder } from '@/weather/types';
 import type { DisabledStates, SortingState } from '@/weather/types';
 import { ConfirmModal } from '@/common/components';
+
 import styles from './CitiesControls.module.scss';
+
+type SortOption = {
+  label: string;
+  value: SortingState['sortBy'];
+};
+
+const SORT_OPTIONS: SortOption[] = [
+  {
+    label: 'City name',
+    value: CitySortField.CityName,
+  },
+  {
+    label: 'Date added',
+    value: CitySortField.CreatedAt,
+  },
+];
 
 export type CitiesControlsProps = {
   sorting: SortingState;
@@ -14,44 +34,79 @@ export type CitiesControlsProps = {
   disabledStates: DisabledStates;
 };
 
-export const CitiesControls: React.FC<CitiesControlsProps> = ({
+export const CitiesControls = ({
   sorting,
   setSorting,
   onDeleteAll,
   showPinnedOnly,
   setShowPinnedOnly,
   disabledStates,
-}) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isDeleting, setIsDeleting] = useState(false);
+}: CitiesControlsProps) => {
+  const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);
+  const [isDeletingAllCities, setIsDeletingAllCities] = useState(false);
 
-  const showDeleteAllModal = useCallback(() => {
-    setIsModalVisible(true);
+  const openDeleteAllModal = useCallback(() => {
+    setIsDeleteAllModalOpen(true);
   }, []);
 
-  const handleConfirmDeleteAll = useCallback(async () => {
-    setIsDeleting(true);
+  const closeDeleteAllModal = useCallback(() => {
+    setIsDeleteAllModalOpen(false);
+  }, []);
+
+  const handleSortByChange = useCallback(
+    (sortBy: SortingState['sortBy']) => {
+      setSorting((currentSorting) => ({
+        ...currentSorting,
+        sortBy,
+      }));
+    },
+    [setSorting],
+  );
+
+  const toggleSortOrder = useCallback(() => {
+    setSorting((currentSorting) => ({
+      ...currentSorting,
+      sortOrder:
+        currentSorting.sortOrder === CitySortOrder.Asc
+          ? CitySortOrder.Desc
+          : CitySortOrder.Asc,
+    }));
+  }, [setSorting]);
+
+  const handleFavoritesOnlyChange = useCallback(
+    (event: CheckboxChangeEvent) => {
+      setShowPinnedOnly(event.target.checked);
+    },
+    [setShowPinnedOnly],
+  );
+
+  const handleDeleteAllCitiesConfirm = useCallback(async () => {
+    setIsDeletingAllCities(true);
+
     try {
       await onDeleteAll();
-      setIsModalVisible(false);
+      closeDeleteAllModal();
     } finally {
-      setIsDeleting(false);
+      setIsDeletingAllCities(false);
     }
-  }, [onDeleteAll]);
+  }, [onDeleteAll, closeDeleteAllModal]);
+
+  const sortOrderIcon =
+    sorting.sortOrder === CitySortOrder.Asc ? (
+      <ArrowUpOutlined />
+    ) : (
+      <ArrowDownOutlined />
+    );
+
+  const labelClassName = disabledStates.sorting
+    ? `${styles.label} ${styles.disabledLabel}`
+    : styles.label;
 
   return (
     <>
       <Row>
         <Col span={16}>
-          <div
-            className={
-              disabledStates.sorting
-                ? `${styles.label} ${styles.disabledLabel}`
-                : styles.label
-            }
-          >
-            Sort by:
-          </div>
+          <div className={labelClassName}>Sort by:</div>
 
           <Row className={styles.controls}>
             <div>
@@ -59,36 +114,21 @@ export const CitiesControls: React.FC<CitiesControlsProps> = ({
                 value={sorting.sortBy}
                 className={styles.select}
                 disabled={disabledStates.sorting}
-                onChange={(value) =>
-                  setSorting((s) => ({ ...s, sortBy: value }))
-                }
-                options={[
-                  { label: 'City name', value: 'cityName' },
-                  { label: 'Date added', value: 'createdAt' },
-                ]}
+                onChange={handleSortByChange}
+                options={SORT_OPTIONS}
               />
 
               <Button
                 disabled={disabledStates.sorting}
-                icon={
-                  sorting.sortOrder === 'ASC' ? (
-                    <ArrowUpOutlined />
-                  ) : (
-                    <ArrowDownOutlined />
-                  )
-                }
-                onClick={() =>
-                  setSorting((s) => ({
-                    ...s,
-                    sortOrder: s.sortOrder === 'ASC' ? 'DESC' : 'ASC',
-                  }))
-                }
+                icon={sortOrderIcon}
+                onClick={toggleSortOrder}
               />
             </div>
 
             <Checkbox
               checked={showPinnedOnly}
-              onChange={(e) => setShowPinnedOnly(e.target.checked)}
+              disabled={disabledStates.pinnedFilter}
+              onChange={handleFavoritesOnlyChange}
               className={styles.pinnedCheckbox}
             >
               Favourites only
@@ -100,7 +140,7 @@ export const CitiesControls: React.FC<CitiesControlsProps> = ({
           <Button
             danger
             disabled={disabledStates.deleteAll}
-            onClick={showDeleteAllModal}
+            onClick={openDeleteAllModal}
           >
             Delete all
           </Button>
@@ -108,15 +148,15 @@ export const CitiesControls: React.FC<CitiesControlsProps> = ({
       </Row>
 
       <ConfirmModal
-        visible={isModalVisible}
+        visible={isDeleteAllModalOpen}
         title="Delete all cities?"
         content="This action cannot be undone."
         okText="Delete all"
         okType="danger"
         cancelText="Cancel"
-        loading={isDeleting}
-        onOk={handleConfirmDeleteAll}
-        onCancel={() => setIsModalVisible(false)}
+        loading={isDeletingAllCities}
+        onOk={handleDeleteAllCitiesConfirm}
+        onCancel={closeDeleteAllModal}
       />
     </>
   );

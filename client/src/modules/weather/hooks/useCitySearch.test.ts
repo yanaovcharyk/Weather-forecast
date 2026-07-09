@@ -53,9 +53,9 @@ describe('useCitySearch', () => {
       {
         label: 'Kyiv, UA',
         value: JSON.stringify({
+          cityName: 'Kyiv',
           lat: 50,
           lon: 30,
-          name: 'Kyiv',
         }),
       },
     ]);
@@ -65,7 +65,7 @@ describe('useCitySearch', () => {
     const { result } = renderHook(() => useCitySearch());
 
     act(() => {
-      result.current.handleSearch('k');
+      result.current.handleSearchCities('k');
       vi.runAllTimers();
     });
 
@@ -76,7 +76,7 @@ describe('useCitySearch', () => {
     const { result } = renderHook(() => useCitySearch());
 
     act(() => {
-      result.current.handleSearch('Kyiv');
+      result.current.handleSearchCities('Kyiv');
     });
 
     expect(executeSearch).not.toHaveBeenCalled();
@@ -98,8 +98,8 @@ describe('useCitySearch', () => {
     const { result } = renderHook(() => useCitySearch());
 
     act(() => {
-      result.current.handleSearch('Ky');
-      result.current.handleSearch('Kyiv');
+      result.current.handleSearchCities('Ky');
+      result.current.handleSearchCities('Kyiv');
     });
 
     act(() => {

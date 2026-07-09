@@ -3,6 +3,7 @@ import { renderHook, act } from '@testing-library/react';
 
 import { useRemoveAllCities } from './useRemoveAllCities';
 import { createMutationResult } from '@/common/testing/factories';
+import { GraphQLTypename } from '@/weather/types';
 
 const mockMutate = vi.fn();
 const mockUseMutation = vi.fn();
@@ -111,7 +112,7 @@ describe('useRemoveAllCities', () => {
     const getSavedCitiesPaginated = modifyCall.fields.getSavedCitiesPaginated;
 
     const existingConnection = {
-      __typename: 'CitiesConnection',
+      __typename: GraphQLTypename.CitiesConnection,
       edges: [{ id: '1' }],
       pageInfo: {
         hasNextPage: true,
@@ -122,10 +123,10 @@ describe('useRemoveAllCities', () => {
     const result = getSavedCitiesPaginated(existingConnection);
 
     expect(result).toEqual({
-      __typename: 'CitiesConnection',
+      __typename: GraphQLTypename.CitiesConnection,
       edges: [],
       pageInfo: {
-        __typename: 'PageInfo',
+        __typename: GraphQLTypename.PageInfo,
         hasNextPage: false,
         endCursor: null,
       },

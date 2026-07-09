@@ -10,6 +10,7 @@ import { createTokenRefreshErrorLink } from './links/tokenRefreshErrorLink';
 import { apolloLoggerLink } from './links/apolloLoggerLink';
 import { config } from '@/common/config';
 import { loggerContext } from '@/logger/context/LoggerContextStore';
+import { createApiUrl } from '@/common/api/http';
 
 type CreateApolloClientParams = {
   displayErrorMessage: (message: string) => void;
@@ -32,7 +33,7 @@ export const createApolloClient = ({
   const tokenRefreshCoordinator = new AccessTokenRefreshCoordinator();
 
   const httpLink = new HttpLink({
-    uri: config.apiBaseUrl + config.graphqlPath,
+    uri: createApiUrl(config.graphqlPath),
     credentials: 'include',
   });
 

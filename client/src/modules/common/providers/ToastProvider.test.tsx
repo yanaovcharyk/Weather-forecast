@@ -29,9 +29,7 @@ vi.mock('antd', async () => {
 const Consumer = () => {
   const context = useContext(ToastContext)!;
 
-  return (
-    <button onClick={() => context.toast('success', 'Saved')}>Trigger</button>
-  );
+  return <button onClick={() => context.success('Saved')}>Trigger</button>;
 };
 
 describe('ToastProvider', () => {
@@ -65,7 +63,12 @@ describe('ToastProvider', () => {
     const Probe = () => {
       const context = useContext(ToastContext);
 
-      return <div data-testid="has-toast">{typeof context?.toast}</div>;
+      return (
+        <div>
+          <div data-testid="has-toast">{typeof context?.toast}</div>
+          <div data-testid="has-error">{typeof context?.error}</div>
+        </div>
+      );
     };
 
     render(
@@ -75,5 +78,6 @@ describe('ToastProvider', () => {
     );
 
     expect(screen.getByTestId('has-toast')).toHaveTextContent('function');
+    expect(screen.getByTestId('has-error')).toHaveTextContent('function');
   });
 });

@@ -6,6 +6,10 @@ vi.mock('@/common/contexts/ToastContext', async () => {
 
   type ToastContextType = {
     toast: ReturnType<typeof vi.fn>;
+    success: ReturnType<typeof vi.fn>;
+    error: ReturnType<typeof vi.fn>;
+    info: ReturnType<typeof vi.fn>;
+    warning: ReturnType<typeof vi.fn>;
   };
 
   return {
@@ -18,19 +22,23 @@ import { useToast } from './useToast';
 
 describe('useToast', () => {
   it('returns toast context value', () => {
-    const toast = vi.fn();
+    const toastApi = {
+      toast: vi.fn(),
+      success: vi.fn(),
+      error: vi.fn(),
+      info: vi.fn(),
+      warning: vi.fn(),
+    };
 
     const wrapper = ({ children }: React.PropsWithChildren) => (
-      <ToastContext.Provider value={{ toast }}>
-        {children}
-      </ToastContext.Provider>
+      <ToastContext.Provider value={toastApi}>{children}</ToastContext.Provider>
     );
 
     const { result } = renderHook(() => useToast(), {
       wrapper,
     });
 
-    expect(result.current.toast).toBe(toast);
+    expect(result.current).toBe(toastApi);
   });
 
   it('throws without provider', () => {

@@ -5,22 +5,12 @@ import { useAddCity } from './useAddCity';
 import { useRemoveCity } from './useRemoveCity';
 import { useRemoveAllCities } from './useRemoveAllCities';
 import { useTogglePinned } from './useTogglePinned';
-import type { City } from '@/weather/types';
+import type { City, SelectedCity } from '@/weather/types';
 import { useSavedCityLookup } from './useSavedCityLookup';
+import { useToast } from '@/common/hooks/useToast';
 
-type NotificationFunction = (message: string) => void;
-
-interface CityActionsOptions {
-  showSuccessNotification: NotificationFunction;
-  showErrorNotification: NotificationFunction;
-  showInfoNotification: NotificationFunction;
-}
-
-export const useCityActions = ({
-  showSuccessNotification,
-  showErrorNotification,
-  showInfoNotification,
-}: CityActionsOptions) => {
+export const useCityActions = () => {
+  const toast = useToast();
   const { addCity } = useAddCity();
   const { removeCity } = useRemoveCity();
   const { removeAllCities } = useRemoveAllCities();
@@ -98,7 +88,7 @@ export const useCityActions = ({
     : null;
 
   const handleAddCity = useCallback(
-    async (lat: number, lon: number, cityName: string) => {
+    async (city: SelectedCity) => {
       if (isAddingCity) {
         return;
       }
@@ -107,7 +97,7 @@ export const useCityActions = ({
 
       try {
         const existingCity = await getSavedCity({
-          cityName,
+          cityName: city.cityName,
           includeWeather: true,
         });
 
@@ -116,30 +106,21 @@ export const useCityActions = ({
           updatedParams.set('existingId', String(existingCity.id));
           setSearchParams(updatedParams);
           setCurrentlySelectedCity(existingCity);
-          showInfoNotification(`City ${cityName} already exists`);
+          toast.info(`City ${city.cityName} already exists`);
 
           return;
         }
 
-        await addCity(lat, lon, cityName);
+        await addCity(city);
 
-        showSuccessNotification(`City ${cityName} added successfully`);
+        toast.success(`City ${city.cityName} added successfully`);
       } catch {
-        showErrorNotification('Failed to add city');
+        toast.error('Failed to add city');
       } finally {
         setIsAddingCity(false);
       }
     },
-    [
-      isAddingCity,
-      addCity,
-      showInfoNotification,
-      showSuccessNotification,
-      showErrorNotification,
-      getSavedCity,
-      setSearchParams,
-      searchParams,
-    ],
+    [isAddingCity, addCity, toast, getSavedCity, setSearchParams, searchParams],
   );
 
   const handleRemoveCity = useCallback(
@@ -157,22 +138,15 @@ export const useCityActions = ({
           { ok: true },
           {
             successMessage: `City ${cityName} removed successfully`,
-            notifyError: showErrorNotification,
-            notifySuccess: showSuccessNotification,
+            notifyError: toast.error,
+            notifySuccess: toast.success,
           },
         );
       } finally {
         setCurrentlyRemovingCityId(null);
       }
     },
-    [
-      removeCity,
-      selectedExistingCityId,
-      searchParams,
-      setSearchParams,
-      showErrorNotification,
-      showSuccessNotification,
-    ],
+    [removeCity, selectedExistingCityId, searchParams, setSearchParams, toast],
   );
 
   const handleTogglePinned = useCallback(
@@ -194,11 +168,11 @@ export const useCityActions = ({
       { ok: result.ok, code: result.code },
       {
         successMessage: 'All cities removed successfully',
-        notifyError: showErrorNotification,
-        notifySuccess: showSuccessNotification,
+        notifyError: toast.error,
+        notifySuccess: toast.success,
       },
     );
-  }, [removeAllCities, showErrorNotification, showSuccessNotification]);
+  }, [removeAllCities, toast]);
 
   return {
     handleAddCity,
@@ -209,6 +183,5 @@ export const useCityActions = ({
     isAddingCity,
     currentlyRemovingCityId,
     currentlySelectedCity: selectedCityFromUrl,
-    setCurrentlySelectedCity,
   };
 };

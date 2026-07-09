@@ -50,13 +50,35 @@ export type CitiesPaginatedResponse = {
   };
 };
 
+export enum CitySortField {
+  CreatedAt = 'createdAt',
+  CityName = 'cityName',
+}
+
+export enum CitySortOrder {
+  Asc = 'ASC',
+  Desc = 'DESC',
+}
+
+export enum CityQuerySortField {
+  CreatedAt = 'CREATED_AT',
+  CityName = 'CITY_NAME',
+}
+
+export enum GraphQLTypename {
+  CityOutput = 'CityOutput',
+  PageInfo = 'PageInfo',
+  CitiesConnection = 'CitiesConnection',
+}
+
 export type SortingState = {
-  sortBy: 'createdAt' | 'cityName';
-  sortOrder: 'ASC' | 'DESC';
+  sortBy: CitySortField;
+  sortOrder: CitySortOrder;
 };
 
-export type CitiesQuerySorting = Omit<SortingState, 'sortBy'> & {
-  sortBy: 'CITY_NAME' | 'CREATED_AT';
+export type CitiesQuerySorting = {
+  sortBy: CityQuerySortField;
+  sortOrder: CitySortOrder;
 };
 
 export type CitiesPaginatedVariables = {
@@ -129,13 +151,27 @@ export type GetWeatherDetailsResponse = {
   getWeatherDetails: WeatherDetails;
 };
 
-export type SavedCityDetails = {
-  id: string;
-  cityName: string;
-  lat: number;
-  lon: number;
-};
+export type SavedCityDetails = Pick<City, 'id' | 'cityName' | 'lat' | 'lon'>;
 
 export type GetSavedCityResponse = {
   getSavedCity: SavedCityDetails | null;
 };
+
+export interface CitySuggestion {
+  name: string;
+  country: string;
+  lat: number;
+  lon: number;
+}
+
+export interface CitySuggestionsData {
+  getCitySuggestions: CitySuggestion[];
+}
+
+export interface CitySuggestionsVars {
+  input: {
+    query: string;
+  };
+}
+
+export type SelectedCity = Pick<City, 'cityName' | 'lat' | 'lon'>;

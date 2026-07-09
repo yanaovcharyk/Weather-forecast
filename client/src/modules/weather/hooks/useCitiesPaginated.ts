@@ -2,6 +2,7 @@ import { useCallback, useMemo } from 'react';
 import { useQuery } from '@apollo/client/react';
 
 import { GET_SAVED_CITIES_PAGINATED } from '@/weather/graphql';
+import { CityQuerySortField, CitySortField } from '@/weather/types';
 import type {
   CitiesPaginatedVariables,
   CitiesQuerySorting,
@@ -13,8 +14,8 @@ const CITY_SORT_FIELD_GRAPHQL_VALUES: Record<
   SortingState['sortBy'],
   CitiesQuerySorting['sortBy']
 > = {
-  cityName: 'CITY_NAME',
-  createdAt: 'CREATED_AT',
+  [CitySortField.CityName]: CityQuerySortField.CityName,
+  [CitySortField.CreatedAt]: CityQuerySortField.CreatedAt,
 };
 
 const toCitiesQuerySorting = (sorting: SortingState): CitiesQuerySorting => ({

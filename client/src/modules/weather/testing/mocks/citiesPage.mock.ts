@@ -5,6 +5,7 @@ import type {
   useCityActions,
   useSortingParams,
 } from '@/weather/hooks';
+import { CitySortField, CitySortOrder } from '@/weather/types';
 
 type SortingParamsResult = ReturnType<typeof useSortingParams>;
 type CityActionsResult = ReturnType<typeof useCityActions>;
@@ -14,8 +15,8 @@ export const createSortingParamsResult = (
   overrides: Partial<SortingParamsResult> = {},
 ): SortingParamsResult => ({
   sorting: {
-    sortBy: 'cityName',
-    sortOrder: 'ASC',
+    sortBy: CitySortField.CityName,
+    sortOrder: CitySortOrder.Asc,
   },
   setSorting: vi.fn(),
   showPinnedOnly: false,
@@ -34,7 +35,6 @@ export const createCityActionsResult = (
   isAddingCity: false,
   currentlyRemovingCityId: null,
   currentlySelectedCity: null,
-  setCurrentlySelectedCity: vi.fn(),
   ...overrides,
 });
 

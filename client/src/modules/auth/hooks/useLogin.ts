@@ -10,7 +10,7 @@ import type { LoginFormInput } from '@/auth/validation';
 export const useLogin = () => {
   const { refreshSession } = useAuthContext();
   const navigate = useNavigate();
-  const { toast } = useToast();
+  const toast = useToast();
 
   const [loginMutation, { loading }] = useMutation<ILoginMutationResponse>(
     LOGIN_MUTATION,
@@ -26,15 +26,15 @@ export const useLogin = () => {
       });
 
       if (!data?.login?.success) {
-        toast('error', 'Invalid email or password');
+        toast.error('Invalid email or password');
         return;
       }
 
       await refreshSession();
-      toast('success', 'Logged in successfully');
+      toast.success('Logged in successfully');
       navigate('/');
     } catch (error) {
-      toast('error', mapErrorCodeToMessage(extractErrorCode(error)));
+      toast.error(mapErrorCodeToMessage(extractErrorCode(error)));
     }
   };
 

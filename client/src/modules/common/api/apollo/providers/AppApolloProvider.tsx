@@ -9,12 +9,12 @@ interface AppApolloProviderProps {
 }
 
 export const AppApolloProvider = ({ children }: AppApolloProviderProps) => {
-  const { toast } = useToast();
+  const toast = useToast();
 
   const client = useMemo(() => {
     return createApolloClient({
       displayErrorMessage: (message: string) => {
-        toast('error', message);
+        toast.error(message);
       },
     });
   }, [toast]);

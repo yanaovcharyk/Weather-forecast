@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 
 const mocks = vi.hoisted(() => ({
   createApolloClient: vi.fn(),
-  toast: vi.fn(),
+  toastError: vi.fn(),
 }));
 
 vi.mock('..', () => ({
@@ -12,7 +12,7 @@ vi.mock('..', () => ({
 
 vi.mock('@/common/hooks/useToast', () => ({
   useToast: () => ({
-    toast: mocks.toast,
+    error: mocks.toastError,
   }),
 }));
 
@@ -53,6 +53,6 @@ describe('AppApolloProvider', () => {
 
     callback('Error');
 
-    expect(mocks.toast).toHaveBeenCalledWith('error', 'Error');
+    expect(mocks.toastError).toHaveBeenCalledWith('Error');
   });
 });

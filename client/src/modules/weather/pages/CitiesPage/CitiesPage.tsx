@@ -19,17 +19,11 @@ import {
 } from '@/weather/hooks';
 import { useNavigate } from 'react-router-dom';
 import { useMemo } from 'react';
-import { useToast } from '@/common/hooks/useToast';
 import styles from './CitiesPage.module.scss';
 
 export const CitiesPage = () => {
   const { sorting, setSorting, showPinnedOnly, setShowPinnedOnly } =
     useSortingParams();
-
-  const { toast } = useToast();
-  const showSuccessNotification = (msg: string) => toast('success', msg);
-  const showErrorNotification = (msg: string) => toast('error', msg);
-  const showInfoNotification = (msg: string) => toast('info', msg);
 
   const {
     handleAddCity,
@@ -40,11 +34,7 @@ export const CitiesPage = () => {
     isAddingCity,
     currentlyRemovingCityId,
     currentlySelectedCity,
-  } = useCityActions({
-    showSuccessNotification,
-    showErrorNotification,
-    showInfoNotification,
-  });
+  } = useCityActions();
 
   const {
     cities,
@@ -55,10 +45,6 @@ export const CitiesPage = () => {
 
   const navigate = useNavigate();
 
-  const filteredCities = useMemo(() => {
-    return showPinnedOnly ? cities.filter((city) => city.isPinned) : cities;
-  }, [cities, showPinnedOnly]);
-
   const controlsPanelDisabled = useMemo(
     () => ({
       sorting: cities.length <= 1,
@@ -68,7 +54,7 @@ export const CitiesPage = () => {
     [cities],
   );
 
-  const isEmpty = !loading && filteredCities.length === 0;
+  const isEmpty = !loading && cities.length === 0;
   const handleOpenCity = (id: string) => {
     navigate(`/cities/${id}`);
   };
@@ -113,7 +99,7 @@ export const CitiesPage = () => {
                 ) : (
                   <CitiesList
                     key={`${sorting.sortBy}-${sorting.sortOrder}-${showPinnedOnly}`}
-                    cities={filteredCities}
+                    cities={cities}
                     removingCityId={currentlyRemovingCityId}
                     onRemove={handleRemoveCity}
                     onTogglePinned={handleTogglePinned}

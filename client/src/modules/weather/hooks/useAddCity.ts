@@ -1,6 +1,6 @@
 import { useMutation } from '@apollo/client/react';
 import { ADD_SAVED_CITY_MUTATION } from '@/weather/graphql';
-import type { City } from '@/weather/types';
+import type { City, SelectedCity } from '@/weather/types';
 
 export type AddCityMutation = {
   addSavedCity: City;
@@ -32,14 +32,10 @@ export const useAddCity = () => {
     },
   );
 
-  const addCity = async (
-    lat: number,
-    lon: number,
-    cityName: string,
-  ): Promise<City | null> => {
+  const addCity = async (city: SelectedCity): Promise<City | null> => {
     const { data } = await mutate({
       variables: {
-        input: { lat, lon, cityName },
+        input: city,
       },
     });
 

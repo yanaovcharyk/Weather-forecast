@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { GraphQLLoggerTransport } from './GraphQLLoggerTransport';
+import { config } from '@/common/config';
 
 describe('GraphQLLoggerTransport', () => {
   let transport: GraphQLLoggerTransport;
@@ -32,7 +33,19 @@ describe('GraphQLLoggerTransport', () => {
       },
     ] as never);
 
-    expect(fetch).toHaveBeenCalled();
+    const [url, options] = vi.mocked(fetch).mock.calls[0];
+    const headers = options?.headers as Headers;
+    const body = JSON.parse(options?.body as string);
+
+    expect(url).toBe(config.loggerApiUrl);
+    expect(options).toEqual(
+      expect.objectContaining({
+        method: 'POST',
+        credentials: 'include',
+      }),
+    );
+    expect(headers.get('Content-Type')).toBe('application/json');
+    expect(body.variables.input[0].metadata).toBe('{"city":"Kyiv"}');
   });
 
   it('throws when fetch fails', async () => {
@@ -74,7 +87,10 @@ describe('GraphQLLoggerTransport', () => {
       },
     ] as never);
 
-    expect(navigator.sendBeacon).toHaveBeenCalled();
+    expect(navigator.sendBeacon).toHaveBeenCalledWith(
+      config.loggerApiUrl,
+      expect.any(String),
+    );
   });
 
   it('does not send empty batch on page close', () => {

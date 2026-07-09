@@ -87,7 +87,11 @@ describe('useAddCity', () => {
     let addCityResult: City | null = null;
 
     await act(async () => {
-      addCityResult = await result.current.addCity(50.45, 30.52, 'Kyiv');
+      addCityResult = await result.current.addCity({
+        cityName: 'Kyiv',
+        lat: 50.45,
+        lon: 30.52,
+      });
     });
 
     expect(executeAddCityMutationMock).toHaveBeenCalledWith({
@@ -121,7 +125,11 @@ describe('useAddCity', () => {
     const { result } = renderHook(() => useAddCity());
 
     await act(async () => {
-      await result.current.addCity(1, 2, 'Kyiv');
+      await result.current.addCity({
+        cityName: 'Kyiv',
+        lat: 1,
+        lon: 2,
+      });
     });
 
     const apolloCacheMock = runCapturedApolloCacheUpdate(undefined, {

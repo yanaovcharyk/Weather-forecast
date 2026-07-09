@@ -1,8 +1,8 @@
 import { loggerContext } from '@/logger/context/LoggerContextStore';
 import {
   DEFAULT_FIELDS_TO_MASK,
+  LogLevel,
   type IClientLogRecord,
-  type LogLevel,
   type LogMetadata,
 } from '@/logger/types';
 
@@ -32,19 +32,19 @@ export class Logger {
   }
 
   info(message: string, metadata?: LogMetadata): void {
-    this.createAndDispatchLogRecord('info', message, metadata);
+    this.createAndDispatchLogRecord(LogLevel.Info, message, metadata);
   }
 
   warn(message: string, metadata?: LogMetadata): void {
-    this.createAndDispatchLogRecord('warn', message, metadata);
+    this.createAndDispatchLogRecord(LogLevel.Warn, message, metadata);
   }
 
   error(message: string, metadata?: LogMetadata): void {
-    this.createAndDispatchLogRecord('error', message, metadata);
+    this.createAndDispatchLogRecord(LogLevel.Error, message, metadata);
   }
 
   debug(message: string, metadata?: LogMetadata): void {
-    this.createAndDispatchLogRecord('debug', message, metadata);
+    this.createAndDispatchLogRecord(LogLevel.Debug, message, metadata);
   }
 
   private createAndDispatchLogRecord(
@@ -87,19 +87,19 @@ export class Logger {
 
   private printLogToBrowserConsole(logRecord: IClientLogRecord): void {
     switch (logRecord.level) {
-      case 'info':
+      case LogLevel.Info:
         console.info(logRecord);
         return;
 
-      case 'warn':
+      case LogLevel.Warn:
         console.warn(logRecord);
         return;
 
-      case 'error':
+      case LogLevel.Error:
         console.error(logRecord);
         return;
 
-      case 'debug':
+      case LogLevel.Debug:
         console.debug(logRecord);
         return;
     }

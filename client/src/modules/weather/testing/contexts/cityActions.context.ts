@@ -1,13 +1,10 @@
 import type { SetURLSearchParams } from 'react-router-dom';
 import type { Mock } from 'vitest';
-import type { City } from '@/weather/types';
+import type { City, SelectedCity } from '@/weather/types';
 import type { ErrorLike } from '@apollo/client';
+import type { ToastContextValue } from '@/common/contexts/ToastContext';
 
-type AddCityFn = (
-  lat: number,
-  lon: number,
-  cityName: string,
-) => Promise<City | null>;
+type AddCityFn = (city: SelectedCity) => Promise<City | null>;
 
 type RemoveCityFn = (id: string) => Promise<void>;
 
@@ -34,9 +31,13 @@ export type CityActionsContext = {
   loading: boolean;
   error: ErrorLike | undefined;
 
-  showSuccessNotification: Mock<(msg: string) => void>;
-  showErrorNotification: Mock<(msg: string) => void>;
-  showInfoNotification: Mock<(msg: string) => void>;
+  toast: {
+    toast: Mock<ToastContextValue['toast']>;
+    success: Mock<ToastContextValue['success']>;
+    error: Mock<ToastContextValue['error']>;
+    info: Mock<ToastContextValue['info']>;
+    warning: Mock<ToastContextValue['warning']>;
+  };
 
   searchParams: URLSearchParams & {
     get: Mock<(key: string) => string | null>;
@@ -57,9 +58,13 @@ export const createCityActionsContext = (): CityActionsContext => ({
   loading: false,
   error: undefined,
 
-  showSuccessNotification: vi.fn(),
-  showErrorNotification: vi.fn(),
-  showInfoNotification: vi.fn(),
+  toast: {
+    toast: vi.fn<ToastContextValue['toast']>(),
+    success: vi.fn<ToastContextValue['success']>(),
+    error: vi.fn<ToastContextValue['error']>(),
+    info: vi.fn<ToastContextValue['info']>(),
+    warning: vi.fn<ToastContextValue['warning']>(),
+  },
 
   searchParams: Object.assign(new URLSearchParams(), {
     get: vi.fn(),

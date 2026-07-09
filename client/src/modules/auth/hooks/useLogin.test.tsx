@@ -47,7 +47,7 @@ describe('useLogin', () => {
     await login(LOGIN_FIXTURE.email, LOGIN_FIXTURE.password);
 
     expect(ctx.refreshSession).toHaveBeenCalled();
-    expect(ctx.toast).toHaveBeenCalledWith('success', 'Logged in successfully');
+    expect(ctx.toast.success).toHaveBeenCalledWith('Logged in successfully');
     expect(ctx.navigate).toHaveBeenCalledWith('/');
   });
 
@@ -59,10 +59,7 @@ describe('useLogin', () => {
     await login(LOGIN_FIXTURE.email, LOGIN_FIXTURE.wrongPassword);
 
     expect(ctx.refreshSession).not.toHaveBeenCalled();
-    expect(ctx.toast).toHaveBeenCalledWith(
-      'error',
-      'Invalid email or password',
-    );
+    expect(ctx.toast.error).toHaveBeenCalledWith('Invalid email or password');
   });
 
   it('handles mutation error', async () => {
@@ -72,6 +69,6 @@ describe('useLogin', () => {
 
     await login(LOGIN_FIXTURE.email, LOGIN_FIXTURE.password);
 
-    expect(ctx.toast).toHaveBeenCalled();
+    expect(ctx.toast.error).toHaveBeenCalled();
   });
 });

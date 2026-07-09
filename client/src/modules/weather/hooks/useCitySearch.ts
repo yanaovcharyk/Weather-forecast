@@ -1,73 +1,68 @@
 import { useLazyQuery } from '@apollo/client/react';
-import { useMemo, useRef } from 'react';
+import { useRef } from 'react';
 
 import { GET_CITY_SUGGESTIONS } from '@/weather/graphql';
 import type {
-  CitySelectValue,
+  CitySuggestion,
   CitySuggestionsData,
   CitySuggestionsVars,
-} from '@/weather/components/AddCityForm/types';
+  SelectedCity,
+} from '@/weather/types';
 import { normalizeCityName } from '@/weather/utils';
 
-const DEBOUNCE_DELAY_MS = 300;
-const MIN_SEARCH_LENGTH = 2;
+const SEARCH_DELAY_MS = 300;
+const MIN_QUERY_LENGTH = 3;
+
+const mapToSelectedCity = (city: CitySuggestion): SelectedCity => ({
+  cityName: city.name,
+  lat: city.lat,
+  lon: city.lon,
+});
 
 export const useCitySearch = () => {
   const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const [executeCitySearch, { data, loading }] = useLazyQuery<
+  const [searchCitiesQuery, { data, loading }] = useLazyQuery<
     CitySuggestionsData,
     CitySuggestionsVars
   >(GET_CITY_SUGGESTIONS, {
     fetchPolicy: 'no-cache',
   });
 
-  const cancelPreviousSearch = () => {
+  const fetchCitySuggestions = (query: string) =>
+    searchCitiesQuery({
+      variables: {
+        input: {
+          query,
+        },
+      },
+    });
+
+  const handleSearchCities = (input: string) => {
+    const query = normalizeCityName(input);
+
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current);
     }
-  };
 
-  const scheduleSearchRequest = (query: string) => {
+    if (query.length < MIN_QUERY_LENGTH) {
+      return;
+    }
+
     debounceTimerRef.current = setTimeout(() => {
-      executeCitySearch({
-        variables: {
-          input: {
-            query,
-          },
-        },
-      });
-    }, DEBOUNCE_DELAY_MS);
+      fetchCitySuggestions(query);
+    }, SEARCH_DELAY_MS);
   };
 
-  const requestCitySearch = (inputValue: string) => {
-    const query = normalizeCityName(inputValue);
-
-    cancelPreviousSearch();
-
-    if (query.length < MIN_SEARCH_LENGTH) return;
-
-    scheduleSearchRequest(query);
-  };
-
-  const cityOptions = useMemo(() => {
-    return (
-      data?.getCitySuggestions?.map((city) => ({
-        label: `${city.name}, ${city.country}`,
-
-        value: JSON.stringify({
-          lat: city.lat,
-          lon: city.lon,
-          name: city.name,
-        } satisfies CitySelectValue),
-      })) ?? []
-    );
-  }, [data]);
+  const cityOptions =
+    data?.getCitySuggestions.map((city) => ({
+      label: `${city.name}, ${city.country}`,
+      value: JSON.stringify(mapToSelectedCity(city)),
+    })) ?? [];
 
   return {
-    data,
     loading,
-    handleSearch: requestCitySearch,
+    handleSearchCities,
     cityOptions,
   };
 };

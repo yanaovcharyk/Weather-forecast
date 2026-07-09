@@ -6,6 +6,7 @@ import { useAddCity, useRemoveCity } from '@/weather/hooks';
 import { useRemoveAllCities } from '@/weather/hooks/useRemoveAllCities';
 import { useTogglePinned } from '@/weather/hooks/useTogglePinned';
 import { useSavedCityLookup } from '@/weather/hooks/useSavedCityLookup';
+import { useToast } from '@/common/hooks/useToast';
 
 export const setupCityActionsRuntime = (
   ctx: CityActionsContext,
@@ -37,6 +38,8 @@ export const setupCityActionsRuntime = (
   vi.mocked(useSavedCityLookup).mockReturnValue({
     getSavedCity: ctx.getSavedCity,
   });
+
+  vi.mocked(useToast).mockReturnValue(ctx.toast);
 
   ctx.searchParams.get = vi.fn().mockReturnValue(overrides?.existingId ?? null);
 

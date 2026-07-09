@@ -9,6 +9,7 @@ import { shouldLog } from '@/logger/utils/shouldLog';
 import { LoggerOperation } from './LoggerOperation';
 import { config } from '@/common/config';
 import type { JsonValue } from '@/logger/types';
+import { LogLevel } from '@/logger/types';
 
 vi.mock('./LoggerQueueService', () => ({
   loggerQueue: {
@@ -108,7 +109,7 @@ describe('Logger', () => {
 
       expect(loggerQueue.addLog).toHaveBeenCalledWith(
         expect.objectContaining({
-          level: 'info',
+          level: LogLevel.Info,
           message: 'weather.loaded',
           route: '/weather',
           sessionId: 'session-123',
@@ -127,7 +128,7 @@ describe('Logger', () => {
 
       expect(loggerQueue.addLog).toHaveBeenCalledWith(
         expect.objectContaining({
-          level: 'warn',
+          level: LogLevel.Warn,
           message: 'weather.cache.miss',
         }),
       );
@@ -140,7 +141,7 @@ describe('Logger', () => {
 
       expect(loggerQueue.addLog).toHaveBeenCalledWith(
         expect.objectContaining({
-          level: 'error',
+          level: LogLevel.Error,
           message: 'weather.failed',
         }),
       );
@@ -153,7 +154,7 @@ describe('Logger', () => {
 
       expect(loggerQueue.addLog).toHaveBeenCalledWith(
         expect.objectContaining({
-          level: 'debug',
+          level: LogLevel.Debug,
           message: 'weather.debug',
         }),
       );

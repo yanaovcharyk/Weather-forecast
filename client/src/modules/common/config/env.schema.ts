@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import type { LogLevel } from '@/logger/types';
+import { LogLevel } from '@/logger/types';
 
 const booleanFromEnv = z.preprocess((value) => {
   if (typeof value !== 'string') {
@@ -27,8 +27,8 @@ export const envSchema = z.object({
 
   VITE_LOGGER_ENABLED: booleanFromEnv.default(false),
   VITE_LOGGER_LEVEL: z
-    .enum(['info', 'warn', 'error', 'debug'])
-    .default('info') satisfies z.ZodType<LogLevel>,
+    .enum(LogLevel)
+    .default(LogLevel.Info) satisfies z.ZodType<LogLevel>,
   VITE_LOGGER_CONSOLE: booleanFromEnv.default(false),
   VITE_LOGGER_REMOTE: booleanFromEnv.default(false),
 

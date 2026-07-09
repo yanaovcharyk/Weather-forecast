@@ -4,6 +4,7 @@ import type {
   IRemoveCityMutation,
   IRemoveCityVariables,
 } from '@/weather/types';
+import { GraphQLTypename } from '@/weather/types';
 import type { Reference } from '@apollo/client';
 
 export const useRemoveCity = () => {
@@ -34,7 +35,7 @@ export const useRemoveCity = () => {
 
       cache.evict({
         id: cache.identify({
-          __typename: 'CityOutput',
+          __typename: GraphQLTypename.CityOutput,
           id: deletedId,
         }),
       });

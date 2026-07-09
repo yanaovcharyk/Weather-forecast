@@ -3,6 +3,7 @@ import { renderHook, act } from '@testing-library/react';
 
 import { useRemoveCity } from './useRemoveCity';
 import { createMutationResult } from '@/common/testing/factories';
+import { GraphQLTypename } from '@/weather/types';
 
 const mockMutate = vi.fn();
 
@@ -99,7 +100,7 @@ describe('useRemoveCity', () => {
     expect(result.edges).toEqual([{ id: 'edge2' }]);
 
     expect(cache.identify).toHaveBeenCalledWith({
-      __typename: 'CityOutput',
+      __typename: GraphQLTypename.CityOutput,
       id: '123',
     });
 

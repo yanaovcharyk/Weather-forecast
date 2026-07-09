@@ -6,6 +6,7 @@ import {
   CitiesControls,
   type CitiesControlsProps,
 } from '@/weather/components/CitiesControlBar/CitiesControls';
+import { CitySortField, CitySortOrder } from '@/weather/types';
 
 type Sorting = CitiesControlsProps['sorting'];
 type SortingUpdater = (previous: Sorting) => Sorting;
@@ -14,8 +15,8 @@ export const createCitiesControlsProps = (
   overrides: Partial<CitiesControlsProps> = {},
 ): CitiesControlsProps => ({
   sorting: {
-    sortBy: 'cityName',
-    sortOrder: 'ASC',
+    sortBy: CitySortField.CityName,
+    sortOrder: CitySortOrder.Asc,
   },
   setSorting: vi.fn() as CitiesControlsProps['setSorting'],
   onDeleteAll: vi.fn().mockResolvedValue(undefined),

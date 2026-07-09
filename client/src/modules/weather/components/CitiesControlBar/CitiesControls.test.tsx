@@ -27,6 +27,7 @@ import {
   getSortingUpdater,
   setupCitiesControls as setup,
 } from '@/weather/testing/setups/citiesControls.setup';
+import { CitySortField, CitySortOrder } from '@/weather/types';
 
 describe('CitiesControls', () => {
   beforeEach(() => {
@@ -49,13 +50,18 @@ describe('CitiesControls', () => {
     const setSorting = vi.fn();
     const { user, getSortSelect } = setup({ setSorting });
 
-    await user.selectOptions(getSortSelect(), 'createdAt');
+    await user.selectOptions(getSortSelect(), CitySortField.CreatedAt);
 
     const updater = getSortingUpdater(setSorting);
 
-    expect(updater({ sortBy: 'cityName', sortOrder: 'ASC' })).toEqual({
-      sortBy: 'createdAt',
-      sortOrder: 'ASC',
+    expect(
+      updater({
+        sortBy: CitySortField.CityName,
+        sortOrder: CitySortOrder.Asc,
+      }),
+    ).toEqual({
+      sortBy: CitySortField.CreatedAt,
+      sortOrder: CitySortOrder.Asc,
     });
   });
 
@@ -67,16 +73,24 @@ describe('CitiesControls', () => {
 
     const updater = getSortingUpdater(setSorting);
 
-    expect(updater({ sortBy: 'cityName', sortOrder: 'ASC' })).toEqual({
-      sortBy: 'cityName',
-      sortOrder: 'DESC',
+    expect(
+      updater({
+        sortBy: CitySortField.CityName,
+        sortOrder: CitySortOrder.Asc,
+      }),
+    ).toEqual({
+      sortBy: CitySortField.CityName,
+      sortOrder: CitySortOrder.Desc,
     });
   });
 
   it('toggles sort order from DESC to ASC', async () => {
     const setSorting = vi.fn();
     const { user, getSortOrderButton } = setup({
-      sorting: { sortBy: 'cityName', sortOrder: 'DESC' },
+      sorting: {
+        sortBy: CitySortField.CityName,
+        sortOrder: CitySortOrder.Desc,
+      },
       setSorting,
     });
 
@@ -84,9 +98,14 @@ describe('CitiesControls', () => {
 
     const updater = getSortingUpdater(setSorting);
 
-    expect(updater({ sortBy: 'cityName', sortOrder: 'DESC' })).toEqual({
-      sortBy: 'cityName',
-      sortOrder: 'ASC',
+    expect(
+      updater({
+        sortBy: CitySortField.CityName,
+        sortOrder: CitySortOrder.Desc,
+      }),
+    ).toEqual({
+      sortBy: CitySortField.CityName,
+      sortOrder: CitySortOrder.Asc,
     });
   });
 
@@ -151,8 +170,8 @@ describe('CitiesControls', () => {
   it('renders down icon when sortOrder is DESC', () => {
     setup({
       sorting: {
-        sortBy: 'cityName',
-        sortOrder: 'DESC',
+        sortBy: CitySortField.CityName,
+        sortOrder: CitySortOrder.Desc,
       },
     });
 
@@ -162,8 +181,8 @@ describe('CitiesControls', () => {
   it('renders up icon when sortOrder is ASC', () => {
     setup({
       sorting: {
-        sortBy: 'cityName',
-        sortOrder: 'ASC',
+        sortBy: CitySortField.CityName,
+        sortOrder: CitySortOrder.Asc,
       },
     });
 

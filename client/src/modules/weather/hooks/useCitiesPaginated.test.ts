@@ -4,6 +4,7 @@ import { vi } from 'vitest';
 
 import { useCitiesPaginated } from './useCitiesPaginated';
 import { createQueryResult } from '@/common/testing/factories';
+import { CitySortField, CitySortOrder } from '@/weather/types';
 
 vi.mock('@apollo/client/react');
 
@@ -45,8 +46,8 @@ describe('useCitiesPaginated', () => {
     const { result } = renderHook(() =>
       useCitiesPaginated(
         {
-          sortBy: 'cityName',
-          sortOrder: 'ASC',
+          sortBy: CitySortField.CityName,
+          sortOrder: CitySortOrder.Asc,
         },
         false,
       ),
@@ -84,8 +85,8 @@ describe('useCitiesPaginated', () => {
     const { result } = renderHook(() =>
       useCitiesPaginated(
         {
-          sortBy: 'cityName',
-          sortOrder: 'ASC',
+          sortBy: CitySortField.CityName,
+          sortOrder: CitySortOrder.Asc,
         },
         false,
       ),
@@ -113,8 +114,8 @@ describe('useCitiesPaginated', () => {
     const { result } = renderHook(() =>
       useCitiesPaginated(
         {
-          sortBy: 'createdAt',
-          sortOrder: 'DESC',
+          sortBy: CitySortField.CreatedAt,
+          sortOrder: CitySortOrder.Desc,
         },
         true,
       ),
@@ -159,8 +160,8 @@ describe('useCitiesPaginated', () => {
     const { result } = renderHook(() =>
       useCitiesPaginated(
         {
-          sortBy: 'createdAt',
-          sortOrder: 'DESC',
+          sortBy: CitySortField.CreatedAt,
+          sortOrder: CitySortOrder.Desc,
         },
         true,
       ),
@@ -205,8 +206,8 @@ describe('useCitiesPaginated', () => {
     const { result } = renderHook(() =>
       useCitiesPaginated(
         {
-          sortBy: 'cityName',
-          sortOrder: 'ASC',
+          sortBy: CitySortField.CityName,
+          sortOrder: CitySortOrder.Asc,
         },
         false,
       ),
