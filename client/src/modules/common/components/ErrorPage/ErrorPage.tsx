@@ -1,17 +1,21 @@
 import { Space, Alert } from 'antd';
-import { PageLayout } from '@/common/components/Layouts/PageLayout/PageLayout';
-import { Header } from '@/common/components/Header/Header';
+import { PageLayout, Header } from '@/common/components';
+
 import styles from './ErrorPage.module.scss';
 
-export const ErrorPage = () => {
+type ErrorPageProps = {
+  title?: string;
+  description?: string;
+};
+
+export const ErrorPage = ({
+  title = 'Technical work in progress.',
+  description = 'Please try again later.',
+}: ErrorPageProps) => {
   return (
     <PageLayout header={<Header />}>
       <Space orientation="vertical" size="large" className={styles.container}>
-        <Alert
-          type="error"
-          title="Technical work in progress."
-          description="Please try again later."
-        />
+        <Alert type="error" title={title} description={description} />
       </Space>
     </PageLayout>
   );

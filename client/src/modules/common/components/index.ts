@@ -21,3 +21,4 @@ export {
 } from './Routers';
 export { Shadow } from './Shadow/Shadow';
 export { AppText, AppTitle } from './Typography';
+export { PageGuard } from './PageGuard/PageGuard';

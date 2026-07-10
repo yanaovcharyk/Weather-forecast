@@ -29,23 +29,29 @@ export const useCityWeather = (): CityWeatherResult => {
     fetchPolicy: 'cache-and-network',
   });
 
-  const lat = cityData?.getSavedCity?.lat;
-  const lon = cityData?.getSavedCity?.lon;
+  const city = cityData?.getSavedCity;
+  const cityName = city?.cityName;
+  const lat = city?.lat;
+  const lon = city?.lon;
+
+  const shouldLoadWeather = lat != null && lon != null;
 
   const {
     data: weatherData,
     loading: weatherLoading,
     error: weatherError,
   } = useQuery<GetWeatherDetailsResponse>(GET_WEATHER_DETAILS, {
-    variables: lat && lon ? { input: { lat, lon } } : undefined,
-    skip: !lat || !lon,
+    variables: shouldLoadWeather ? { input: { lat, lon } } : undefined,
+    skip: !shouldLoadWeather,
     fetchPolicy: 'network-only',
   });
 
+  const weather = weatherData?.getWeatherDetails;
+
   return {
-    cityName: cityData?.getSavedCity?.cityName,
-    weather: weatherData?.getWeatherDetails,
-    loading: cityLoading || weatherLoading,
+    cityName,
+    weather,
+    loading: cityLoading || weatherLoading || !cityName || !weather,
     error: cityError || weatherError,
   };
 };
