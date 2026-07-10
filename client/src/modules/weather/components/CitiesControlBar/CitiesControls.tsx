@@ -1,11 +1,18 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Button, Checkbox, Col, Row, Select } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 
 import { CitySortField, CitySortOrder } from '@/weather/types';
-import type { DisabledStates, SortingState } from '@/weather/types';
+import type { SortingState } from '@/weather/types';
 import { ConfirmModal } from '@/common/components';
+import {
+  useSortingParams,
+  useCitiesPaginated,
+  useRemoveAllCities,
+} from '@/weather/hooks';
+import { useToast } from '@/common/hooks/useToast';
+import { handleResult } from '@/common/utils';
 
 import styles from './CitiesControls.module.scss';
 
@@ -15,35 +22,30 @@ type SortOption = {
 };
 
 const SORT_OPTIONS: SortOption[] = [
-  {
-    label: 'City name',
-    value: CitySortField.CityName,
-  },
-  {
-    label: 'Date added',
-    value: CitySortField.CreatedAt,
-  },
+  { label: 'City name', value: CitySortField.CityName },
+  { label: 'Date added', value: CitySortField.CreatedAt },
 ];
 
-export type CitiesControlsProps = {
-  sorting: SortingState;
-  setSorting: React.Dispatch<React.SetStateAction<SortingState>>;
-  onDeleteAll: () => Promise<void>;
-  showPinnedOnly: boolean;
-  setShowPinnedOnly: React.Dispatch<React.SetStateAction<boolean>>;
-  disabledStates: DisabledStates;
-};
+export const CitiesControls = () => {
+  const toast = useToast();
 
-export const CitiesControls = ({
-  sorting,
-  setSorting,
-  onDeleteAll,
-  showPinnedOnly,
-  setShowPinnedOnly,
-  disabledStates,
-}: CitiesControlsProps) => {
+  const { sorting, setSorting, showPinnedOnly, setShowPinnedOnly } =
+    useSortingParams();
+
+  const { cities } = useCitiesPaginated(sorting, showPinnedOnly);
+  const { removeAllCities } = useRemoveAllCities();
+
   const [isDeleteAllModalOpen, setIsDeleteAllModalOpen] = useState(false);
   const [isDeletingAllCities, setIsDeletingAllCities] = useState(false);
+
+  const disabledStates = useMemo(
+    () => ({
+      sorting: cities.length <= 1,
+      deleteAll: cities.length === 0,
+      pinnedFilter: !cities.some((city) => city.isPinned),
+    }),
+    [cities],
+  );
 
   const openDeleteAllModal = useCallback(() => {
     setIsDeleteAllModalOpen(true);
@@ -84,12 +86,22 @@ export const CitiesControls = ({
     setIsDeletingAllCities(true);
 
     try {
-      await onDeleteAll();
+      const result = await removeAllCities();
+
+      handleResult(
+        { ok: result.ok, code: result.code },
+        {
+          successMessage: 'All cities removed successfully',
+          notifyError: toast.error,
+          notifySuccess: toast.success,
+        },
+      );
+
       closeDeleteAllModal();
     } finally {
       setIsDeletingAllCities(false);
     }
-  }, [onDeleteAll, closeDeleteAllModal]);
+  }, [removeAllCities, toast, closeDeleteAllModal]);
 
   const sortOrderIcon =
     sorting.sortOrder === CitySortOrder.Asc ? (

@@ -8,7 +8,7 @@ import {
 } from '@/weather/components';
 import styles from './CityDetailsPage.module.scss';
 import { BackToAllCitiesButton } from '@/weather/components';
-import { PageGuard } from '@/common/components';
+import { DataBoundary } from '@/common/components';
 
 export const CityDetailsPage = () => {
   const { cityName, weather, loading, error } = useCityWeather();
@@ -16,7 +16,7 @@ export const CityDetailsPage = () => {
   const isLoading = loading || !cityName || !weather;
 
   return (
-    <PageGuard
+    <DataBoundary
       loading={isLoading}
       error={error}
       errorTitle="Failed to load weather data"
@@ -42,6 +42,6 @@ export const CityDetailsPage = () => {
           </Space>
         </PageLayout>
       )}
-    </PageGuard>
+    </DataBoundary>
   );
 };

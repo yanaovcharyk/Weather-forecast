@@ -8,7 +8,7 @@ type PageGuardProps = {
   children: React.ReactNode;
 };
 
-export const PageGuard = ({
+export const DataBoundary = ({
   loading,
   error,
   errorTitle,

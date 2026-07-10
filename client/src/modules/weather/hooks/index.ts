@@ -10,3 +10,4 @@ export { useRemoveCity } from './useRemoveCity';
 export { useSortingParams } from './useSortingParams';
 export { useTogglePinned } from './useTogglePinned';
 export { useCityWeather, type CityWeatherResult } from './useCityWeather';
+export { useAddCityAction } from './useAddCityAction';

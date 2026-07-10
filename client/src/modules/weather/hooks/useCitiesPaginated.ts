@@ -29,7 +29,7 @@ export const useCitiesPaginated = (
 ) => {
   const querySorting = useMemo(() => toCitiesQuerySorting(sorting), [sorting]);
 
-  const { data, loading, fetchMore } = useQuery<
+  const { data, loading, fetchMore, error } = useQuery<
     CitiesPaginatedResponse,
     CitiesPaginatedVariables
   >(GET_SAVED_CITIES_PAGINATED, {
@@ -75,6 +75,7 @@ export const useCitiesPaginated = (
   return {
     cities: data?.getSavedCitiesPaginated?.edges.map((edge) => edge.node) ?? [],
     loading,
+    error,
     loadMore,
     hasNext: data?.getSavedCitiesPaginated?.pageInfo.hasNextPage ?? false,
   };

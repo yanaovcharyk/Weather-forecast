@@ -1,21 +1,16 @@
 import { Col, Form, Row, Select } from 'antd';
 import { EmptyState, AppCard, PrimaryButton } from '@/common/components';
-import { useAddCityForm } from '@/weather/hooks/';
-import { useIsMobile } from '@/common/hooks/';
-import type { SelectedCity } from '@/weather/types';
+import { useAddCityForm, useAddCityAction } from '@/weather/hooks';
+import { useIsMobile } from '@/common/hooks';
 
 import styles from './AddCityForm.module.scss';
 
-export interface AddCityFormProps {
-  onSubmit: (city: SelectedCity) => Promise<void> | void;
-  disabled?: boolean;
-}
-
-export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
+export const AddCityForm = () => {
   const isMobile = useIsMobile();
+  const { handleAddCity, isAddingCity } = useAddCityAction();
 
   const { form, loading, handleSearchCities, cityOptions, handleSubmit } =
-    useAddCityForm(onSubmit);
+    useAddCityForm(handleAddCity);
 
   return (
     <AppCard className={styles.formCard}>
@@ -33,7 +28,7 @@ export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
                   onSearch: handleSearchCities,
                 }}
                 loading={loading}
-                disabled={disabled}
+                disabled={isAddingCity}
                 allowClear
                 options={cityOptions}
                 size="middle"
@@ -49,7 +44,7 @@ export const AddCityForm = ({ onSubmit, disabled }: AddCityFormProps) => {
               block
               size="middle"
               htmlType="submit"
-              disabled={disabled}
+              disabled={isAddingCity}
             >
               Add
             </PrimaryButton>

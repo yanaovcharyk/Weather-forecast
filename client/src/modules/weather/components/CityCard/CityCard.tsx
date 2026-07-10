@@ -1,32 +1,32 @@
 import React from 'react';
 import { Button, Flex } from 'antd';
-import { getWeatherBackground, getNextDays } from '@/weather/utils';
 import { CloseOutlined, HeartFilled, HeartOutlined } from '@ant-design/icons';
+
 import { BackgroundCard, BackgroundCardSkeleton } from '@/common/components';
 import { AppText, AppTitle } from '@/common/components/Typography';
 import { useSmartBackground } from '@/common/hooks';
-import styles from './CityCard.module.scss';
+import { getWeatherBackground, getNextDays } from '@/weather/utils';
 import type { City } from '@/weather/types';
 
+import styles from './CityCard.module.scss';
+
 export interface CityCardProps {
-  cityName: string;
-  weather: City['weather'];
-  isPinned: boolean;
-  onTogglePinned: () => void;
-  onRemove: () => void;
+  city: City;
   loading?: boolean;
-  onClick?: () => void;
+  onTogglePinned: (id: string, isPinned: boolean) => void;
+  onRemove: (id: string) => void;
+  onOpen: (id: string) => void;
 }
 
 export const CityCard = React.memo(function CityCard({
-  cityName,
-  weather,
-  isPinned,
+  city,
+  loading,
   onTogglePinned,
   onRemove,
-  loading,
-  onClick,
+  onOpen,
 }: CityCardProps) {
+  const { id, cityName, weather, isPinned } = city;
+
   const background = getWeatherBackground(weather?.description);
   const { loaded } = useSmartBackground(background);
 
@@ -42,28 +42,36 @@ export const CityCard = React.memo(function CityCard({
   return (
     <BackgroundCard
       className={`${styles.card} ${isDisabled ? styles.cardLoading : ''}`}
-      onClick={isDisabled ? undefined : onClick}
+      onClick={isDisabled ? undefined : () => onOpen(id)}
       headerLeft={<AppTitle level={5}>{cityName}</AppTitle>}
       headerRight={
         <Flex gap={4}>
           <Button
             type="text"
+            icon={isPinned ? <HeartFilled /> : <HeartOutlined />}
             onClick={(e) => {
               e.stopPropagation();
-              if (isDisabled) return;
-              onTogglePinned();
+
+              if (isDisabled) {
+                return;
+              }
+
+              onTogglePinned(id, isPinned);
             }}
-            icon={isPinned ? <HeartFilled /> : <HeartOutlined />}
           />
 
           <Button
             type="text"
+            icon={<CloseOutlined />}
             onClick={(e) => {
               e.stopPropagation();
-              if (isDisabled) return;
-              onRemove();
+
+              if (isDisabled) {
+                return;
+              }
+
+              onRemove(id);
             }}
-            icon={<CloseOutlined />}
           />
         </Flex>
       }
@@ -81,11 +89,13 @@ export const CityCard = React.memo(function CityCard({
                 <AppText strong size="lg">
                   {weather.temperature}°C
                 </AppText>
+
                 <AppText>{weather.description}</AppText>
               </Flex>
 
               <Flex flex={1} vertical align="end" gap={6}>
                 <AppText size="sm">Max: {weather.max}°C</AppText>
+
                 <AppText size="sm">Min: {weather.min}°C</AppText>
               </Flex>
             </Flex>
@@ -96,16 +106,16 @@ export const CityCard = React.memo(function CityCard({
           </Flex>
 
           <Flex gap={4} className={styles.forecastDays}>
-            {weather.next3Days?.map((day, i) => (
+            {weather.next3Days?.map((day, index) => (
               <Flex
-                key={i}
+                key={index}
                 vertical
                 align="center"
                 justify="center"
                 className={styles.dayCard}
               >
                 <AppText size="sm" strong>
-                  {days[i]?.label}
+                  {days[index]?.label}
                 </AppText>
 
                 <AppText strong>

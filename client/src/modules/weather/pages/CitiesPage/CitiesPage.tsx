@@ -1,119 +1,30 @@
 import { Row, Col, Flex } from 'antd';
+import { AddCityForm, CitiesList, CitiesControls } from '@/weather/components';
 import {
-  AddCityForm,
-  CitiesList,
-  CitiesControls,
-  ExistingCityLayout,
-} from '@/weather/components';
-import {
-  EmptyState,
   AppCard,
   PageLayout,
   Header,
   ScrollToTopButton,
 } from '@/common/components';
-import {
-  useSortingParams,
-  useCityActions,
-  useCitiesPaginated,
-} from '@/weather/hooks';
-import { useNavigate } from 'react-router-dom';
-import { useMemo } from 'react';
 import styles from './CitiesPage.module.scss';
 
 export const CitiesPage = () => {
-  const { sorting, setSorting, showPinnedOnly, setShowPinnedOnly } =
-    useSortingParams();
-
-  const {
-    handleAddCity,
-    handleRemoveCity,
-    handleTogglePinned,
-    handleDeleteAllCities,
-    clearExistingCitySelection,
-    isAddingCity,
-    currentlyRemovingCityId,
-    currentlySelectedCity,
-  } = useCityActions();
-
-  const {
-    cities,
-    loading,
-    loadMore,
-    hasNext: hasNextPage,
-  } = useCitiesPaginated(sorting, showPinnedOnly);
-
-  const navigate = useNavigate();
-
-  const controlsPanelDisabled = useMemo(
-    () => ({
-      sorting: cities.length <= 1,
-      deleteAll: cities.length === 0,
-      pinnedFilter: !cities.some((city) => city.isPinned),
-    }),
-    [cities],
-  );
-
-  const isEmpty = !loading && cities.length === 0;
-  const handleOpenCity = (id: string) => {
-    navigate(`/cities/${id}`);
-  };
-
   return (
     <PageLayout header={<Header />}>
       <Row justify="center">
         <Col span={24}>
           <Flex vertical className={styles.content} gap={16}>
-            {currentlySelectedCity ? (
-              <ExistingCityLayout
-                existingCity={currentlySelectedCity}
-                onBack={clearExistingCitySelection}
-                removingId={currentlyRemovingCityId}
-                onRemove={handleRemoveCity}
-                onTogglePinned={handleTogglePinned}
-                loading={loading}
-                onCityClick={handleOpenCity}
-              />
-            ) : (
-              <>
-                <AddCityForm onSubmit={handleAddCity} disabled={isAddingCity} />
-                <AppCard>
-                  <CitiesControls
-                    sorting={sorting}
-                    setSorting={setSorting}
-                    onDeleteAll={handleDeleteAllCities}
-                    showPinnedOnly={showPinnedOnly}
-                    setShowPinnedOnly={setShowPinnedOnly}
-                    disabledStates={controlsPanelDisabled}
-                  />
-                </AppCard>
-                {isEmpty ? (
-                  <Flex
-                    flex={1}
-                    justify="center"
-                    align="center"
-                    className={styles.emptyState}
-                  >
-                    <EmptyState description="No cities" />
-                  </Flex>
-                ) : (
-                  <CitiesList
-                    key={`${sorting.sortBy}-${sorting.sortOrder}-${showPinnedOnly}`}
-                    cities={cities}
-                    removingCityId={currentlyRemovingCityId}
-                    onRemove={handleRemoveCity}
-                    onTogglePinned={handleTogglePinned}
-                    onLoadMore={loadMore}
-                    hasNextPage={hasNextPage}
-                    onCityClick={handleOpenCity}
-                    isListLoading={loading && cities.length === 0}
-                  />
-                )}
-              </>
-            )}
+            <AddCityForm />
+
+            <AppCard>
+              <CitiesControls />
+            </AppCard>
+
+            <CitiesList />
           </Flex>
         </Col>
       </Row>
+
       <ScrollToTopButton />
     </PageLayout>
   );
