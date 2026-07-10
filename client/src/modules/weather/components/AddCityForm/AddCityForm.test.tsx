@@ -4,7 +4,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AddCityForm } from './AddCityForm';
 
-import { useAddCityForm } from '@/weather/hooks/useAddCityForm';
+import { useAddCityAction, useAddCityForm } from '@/weather/hooks';
 import { useIsMobile } from '@/common/hooks/useIsMobile';
 import {
   createUseAddCityFormResult,
@@ -13,7 +13,15 @@ import {
 } from '@/weather/testing/mocks';
 import { renderWithUser } from '@/common/testing/render/renderWithUser';
 
-vi.mock('@/weather/hooks/useAddCityForm');
+vi.mock('@/weather/hooks', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/weather/hooks')>();
+
+  return {
+    ...actual,
+    useAddCityAction: vi.fn(),
+    useAddCityForm: vi.fn(),
+  };
+});
 vi.mock('@/common/hooks/useIsMobile');
 
 type SelectProps = {
@@ -73,24 +81,17 @@ vi.mock('antd', async (importOriginal) => {
 });
 
 describe('AddCityForm', () => {
-  const onSubmit = vi.fn();
-
-  const setup = (
-    props: {
-      onSubmit: typeof onSubmit;
-      disabled: boolean;
-    } = {
-      onSubmit,
-      disabled: false,
-    },
-  ) => {
-    return renderWithUser(<AddCityForm {...props} />);
-  };
+  const setup = () => renderWithUser(<AddCityForm />);
 
   beforeEach(() => {
     vi.clearAllMocks();
 
     vi.mocked(useIsMobile).mockReturnValue(false);
+
+    vi.mocked(useAddCityAction).mockReturnValue({
+      handleAddCity: vi.fn(),
+      isAddingCity: false,
+    });
 
     vi.mocked(useAddCityForm).mockReturnValue(createUseAddCityFormResult());
   });
@@ -119,11 +120,13 @@ describe('AddCityForm', () => {
     expect(handleSubmitMock).toHaveBeenCalledTimes(1);
   });
 
-  it('disables button when disabled', () => {
-    setup({
-      onSubmit,
-      disabled: true,
+  it('disables button when city is adding', () => {
+    vi.mocked(useAddCityAction).mockReturnValue({
+      handleAddCity: vi.fn(),
+      isAddingCity: true,
     });
+
+    setup();
 
     expect(
       screen.getByRole('button', {

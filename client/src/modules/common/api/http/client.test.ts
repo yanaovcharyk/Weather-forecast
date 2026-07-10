@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { postGraphQL, postJson, sendJsonBeacon } from './client';
+import { createApiUrl, postGraphQL, postJson, sendJsonBeacon } from './client';
 
 describe('http client', () => {
   beforeEach(() => {
@@ -52,6 +52,33 @@ describe('http client', () => {
         ok: true,
       },
     });
+  });
+
+  it('preserves provided json headers and credentials', async () => {
+    await postJson(
+      '/graphql',
+      {
+        query: 'query Test',
+      },
+      {
+        credentials: 'omit',
+        headers: {
+          'Content-Type': 'application/graphql-response+json',
+        },
+      },
+    );
+
+    const [, options] = vi.mocked(fetch).mock.calls[0];
+    const headers = options?.headers as Headers;
+
+    expect(options?.credentials).toBe('omit');
+    expect(headers.get('Content-Type')).toBe(
+      'application/graphql-response+json',
+    );
+  });
+
+  it('creates api urls from configured base url', () => {
+    expect(createApiUrl('/graphql')).toContain('/graphql');
   });
 
   it('sends json through beacon', () => {

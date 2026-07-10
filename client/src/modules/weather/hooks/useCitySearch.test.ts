@@ -98,7 +98,7 @@ describe('useCitySearch', () => {
     const { result } = renderHook(() => useCitySearch());
 
     act(() => {
-      result.current.handleSearchCities('Ky');
+      result.current.handleSearchCities('Kyiv');
       result.current.handleSearchCities('Kyiv');
     });
 
@@ -107,5 +107,17 @@ describe('useCitySearch', () => {
     });
 
     expect(executeSearch).toHaveBeenCalledTimes(1);
+  });
+
+  it('clears pending search when next query is too short', () => {
+    const { result } = renderHook(() => useCitySearch());
+
+    act(() => {
+      result.current.handleSearchCities('Kyiv');
+      result.current.handleSearchCities('Ky');
+      vi.runAllTimers();
+    });
+
+    expect(executeSearch).not.toHaveBeenCalled();
   });
 });

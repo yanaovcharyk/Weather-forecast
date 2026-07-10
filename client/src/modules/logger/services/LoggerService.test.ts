@@ -37,7 +37,7 @@ vi.mock('@/logger/utils/shouldLog', () => ({
   shouldLog: vi.fn(),
 }));
 
-vi.mock('./LoggerOperation');
+vi.mock('./OperationLogger');
 
 describe('Logger', () => {
   let logger: Logger;

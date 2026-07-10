@@ -41,9 +41,10 @@ export const createCityActionsResult = (
 export const createCitiesPaginatedResult = (
   overrides: Partial<CitiesPaginatedResult> = {},
 ): CitiesPaginatedResult => ({
-  cities: [],
-  loading: false,
-  loadMore: vi.fn(),
-  hasNext: false,
-  ...overrides,
+  cities: overrides.cities ?? [],
+  loading: overrides.loading ?? false,
+  error: overrides.error,
+  loadMore:
+    overrides.loadMore ?? (vi.fn() as CitiesPaginatedResult['loadMore']),
+  hasNext: overrides.hasNext ?? false,
 });

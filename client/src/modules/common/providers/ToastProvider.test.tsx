@@ -32,6 +32,23 @@ const Consumer = () => {
   return <button onClick={() => context.success('Saved')}>Trigger</button>;
 };
 
+const AllToastConsumer = () => {
+  const context = useContext(ToastContext)!;
+
+  return (
+    <button
+      onClick={() => {
+        context.error('Failed');
+        context.info('Heads up');
+        context.warning('Careful');
+        context.toast('success', 'Generic');
+      }}
+    >
+      Trigger all
+    </button>
+  );
+};
+
 describe('ToastProvider', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -79,5 +96,20 @@ describe('ToastProvider', () => {
 
     expect(screen.getByTestId('has-toast')).toHaveTextContent('function');
     expect(screen.getByTestId('has-error')).toHaveTextContent('function');
+  });
+
+  it('should invoke all toast helpers', () => {
+    render(
+      <ToastProvider>
+        <AllToastConsumer />
+      </ToastProvider>,
+    );
+
+    fireEvent.click(screen.getByRole('button'));
+
+    expect(errorMock).toHaveBeenCalledWith('Failed');
+    expect(infoMock).toHaveBeenCalledWith('Heads up');
+    expect(warningMock).toHaveBeenCalledWith('Careful');
+    expect(successMock).toHaveBeenCalledWith('Generic');
   });
 });

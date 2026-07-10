@@ -2,10 +2,14 @@ import { screen, within } from '@testing-library/react';
 import { vi } from 'vitest';
 
 vi.mock('@/common/components', async () => {
+  const actual = await vi.importActual<typeof import('@/common/components')>(
+    '@/common/components',
+  );
   const { ConfirmModalMock } =
     await import('@/weather/testing/mocks/CitiesControls.mocks');
 
   return {
+    ...actual,
     ConfirmModal: ConfirmModalMock,
   };
 });
@@ -22,6 +26,21 @@ vi.mock('antd', async (importOriginal) => {
     Select: SelectMock,
   };
 });
+
+vi.mock('@/weather/hooks', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/weather/hooks')>();
+
+  return {
+    ...actual,
+    useCitiesPaginated: vi.fn(),
+    useRemoveAllCities: vi.fn(),
+    useSortingParams: vi.fn(),
+  };
+});
+
+vi.mock('@/common/hooks/useToast', () => ({
+  useToast: vi.fn(),
+}));
 
 import {
   getSortingUpdater,
@@ -133,36 +152,26 @@ describe('CitiesControls', () => {
   });
 
   it('confirms delete all', async () => {
-    const onDeleteAll = vi.fn().mockResolvedValue(undefined);
-    const { user, getDeleteAllButton } = setup({ onDeleteAll });
+    const removeAllCities = vi
+      .fn()
+      .mockResolvedValue({ ok: true, code: undefined });
+    const { user, getDeleteAllButton } = setup({ removeAllCities });
 
     await user.click(getDeleteAllButton());
     await user.click(screen.getByTestId('confirm-delete'));
 
-    expect(onDeleteAll).toHaveBeenCalledTimes(1);
+    expect(removeAllCities).toHaveBeenCalledTimes(1);
   });
 
   it('disables sorting controls when sorting is disabled', () => {
-    const { getSortSelect, getSortOrderButton } = setup({
-      disabledStates: {
-        sorting: true,
-        deleteAll: false,
-        pinnedFilter: false,
-      },
-    });
+    const { getSortSelect, getSortOrderButton } = setup({ cities: [] });
 
     expect(getSortSelect()).toBeDisabled();
     expect(getSortOrderButton()).toBeDisabled();
   });
 
   it('disables delete all button when deleteAll is disabled', () => {
-    const { getDeleteAllButton } = setup({
-      disabledStates: {
-        sorting: false,
-        deleteAll: true,
-        pinnedFilter: false,
-      },
-    });
+    const { getDeleteAllButton } = setup({ cities: [] });
 
     expect(getDeleteAllButton()).toBeDisabled();
   });

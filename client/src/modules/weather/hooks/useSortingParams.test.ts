@@ -31,6 +31,23 @@ describe('useSortingParams', () => {
     expect(result.current.showPinnedOnly).toBe(false);
   });
 
+  it('returns valid values from search params', () => {
+    vi.mocked(useSearchParams).mockReturnValue([
+      new URLSearchParams(
+        `sortBy=${CitySortField.CityName}&sortOrder=${CitySortOrder.Asc}&showPinnedOnly=true`,
+      ),
+      router.setSearchParams,
+    ] as never);
+
+    const { result } = renderHook(() => useSortingParams());
+
+    expect(result.current.sorting).toEqual({
+      sortBy: CitySortField.CityName,
+      sortOrder: CitySortOrder.Asc,
+    });
+    expect(result.current.showPinnedOnly).toBe(true);
+  });
+
   it('updates sorting', () => {
     const { result } = renderHook(() => useSortingParams());
 

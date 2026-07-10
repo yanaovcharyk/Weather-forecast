@@ -2,45 +2,90 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, type Mock } from 'vitest';
 
-import {
-  CitiesControls,
-  type CitiesControlsProps,
-} from '@/weather/components/CitiesControlBar/CitiesControls';
+import { CitiesControls } from '@/weather/components/CitiesControlBar/CitiesControls';
 import { CitySortField, CitySortOrder } from '@/weather/types';
+import type { City, SortingState } from '@/weather/types';
+import {
+  useCitiesPaginated,
+  useRemoveAllCities,
+  useSortingParams,
+} from '@/weather/hooks';
+import { useToast } from '@/common/hooks/useToast';
+import {
+  CITY_FIXTURE,
+  EXISTING_CITY_FIXTURE,
+} from '@/weather/testing/fixtures';
+import { createCitiesPaginatedResult } from '@/weather/testing/mocks';
 
-type Sorting = CitiesControlsProps['sorting'];
+type Sorting = SortingState;
 type SortingUpdater = (previous: Sorting) => Sorting;
+type SortingParamsResult = ReturnType<typeof useSortingParams>;
+type RemoveAllCitiesResult = ReturnType<typeof useRemoveAllCities>;
 
-export const createCitiesControlsProps = (
-  overrides: Partial<CitiesControlsProps> = {},
-): CitiesControlsProps => ({
+type CitiesControlsSetupOptions = {
+  sorting?: SortingState;
+  setSorting?: SortingParamsResult['setSorting'];
+  showPinnedOnly?: boolean;
+  setShowPinnedOnly?: SortingParamsResult['setShowPinnedOnly'];
+  cities?: City[];
+  removeAllCities?: RemoveAllCitiesResult['removeAllCities'];
+};
+
+export const createCitiesControlsOptions = (
+  overrides: CitiesControlsSetupOptions = {},
+): Required<CitiesControlsSetupOptions> => ({
   sorting: {
     sortBy: CitySortField.CityName,
     sortOrder: CitySortOrder.Asc,
   },
-  setSorting: vi.fn() as CitiesControlsProps['setSorting'],
-  onDeleteAll: vi.fn().mockResolvedValue(undefined),
+  setSorting: vi.fn() as SortingParamsResult['setSorting'],
   showPinnedOnly: false,
-  setShowPinnedOnly: vi.fn() as CitiesControlsProps['setShowPinnedOnly'],
-  disabledStates: {
-    sorting: false,
-    deleteAll: false,
-    pinnedFilter: false,
-  },
+  setShowPinnedOnly: vi.fn() as SortingParamsResult['setShowPinnedOnly'],
+  cities: [CITY_FIXTURE, EXISTING_CITY_FIXTURE],
+  removeAllCities: vi.fn().mockResolvedValue({
+    ok: true,
+    code: undefined,
+  }) as RemoveAllCitiesResult['removeAllCities'],
   ...overrides,
 });
 
 export const setupCitiesControls = (
-  overrides: Partial<CitiesControlsProps> = {},
+  overrides: CitiesControlsSetupOptions = {},
 ) => {
-  const props = createCitiesControlsProps(overrides);
+  const options = createCitiesControlsOptions(overrides);
   const user = userEvent.setup();
 
-  render(<CitiesControls {...props} />);
+  vi.mocked(useSortingParams).mockReturnValue({
+    sorting: options.sorting,
+    setSorting: options.setSorting,
+    showPinnedOnly: options.showPinnedOnly,
+    setShowPinnedOnly: options.setShowPinnedOnly,
+  });
+
+  vi.mocked(useCitiesPaginated).mockReturnValue(
+    createCitiesPaginatedResult({
+      cities: options.cities,
+    }),
+  );
+
+  vi.mocked(useRemoveAllCities).mockReturnValue({
+    removeAllCities: options.removeAllCities,
+    loading: false,
+  });
+
+  vi.mocked(useToast).mockReturnValue({
+    toast: vi.fn(),
+    success: vi.fn(),
+    error: vi.fn(),
+    info: vi.fn(),
+    warning: vi.fn(),
+  });
+
+  render(<CitiesControls />);
 
   return {
     user,
-    props,
+    options,
     getSortSelect: () =>
       screen.getByRole('combobox', {
         name: /sort by/i,

@@ -1,10 +1,12 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Flex } from 'antd';
 import { CloseOutlined, HeartFilled, HeartOutlined } from '@ant-design/icons';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { BackgroundCard, BackgroundCardSkeleton } from '@/common/components';
 import { AppText, AppTitle } from '@/common/components/Typography';
 import { useSmartBackground } from '@/common/hooks';
+import { useRemoveCity, useTogglePinned } from '@/weather/hooks';
 import { getWeatherBackground, getNextDays } from '@/weather/utils';
 import type { City } from '@/weather/types';
 
@@ -12,26 +14,49 @@ import styles from './CityCard.module.scss';
 
 export interface CityCardProps {
   city: City;
-  loading?: boolean;
-  onTogglePinned: (id: string, isPinned: boolean) => void;
-  onRemove: (id: string) => void;
-  onOpen: (id: string) => void;
 }
 
-export const CityCard = React.memo(function CityCard({
-  city,
-  loading,
-  onTogglePinned,
-  onRemove,
-  onOpen,
-}: CityCardProps) {
+export const CityCard = React.memo(function CityCard({ city }: CityCardProps) {
   const { id, cityName, weather, isPinned } = city;
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { removeCity } = useRemoveCity();
+  const { togglePinned } = useTogglePinned();
+  const [isRemoving, setIsRemoving] = useState(false);
 
   const background = getWeatherBackground(weather?.description);
   const { loaded } = useSmartBackground(background);
 
-  const isDisabled = !!loading;
+  const isDisabled = isRemoving;
   const days = getNextDays(3);
+
+  const clearExistingCitySelection = useCallback(() => {
+    const updatedParams = new URLSearchParams(searchParams);
+    updatedParams.delete('existingId');
+    setSearchParams(updatedParams);
+  }, [searchParams, setSearchParams]);
+
+  const handleOpen = useCallback(() => {
+    navigate(`/cities/${id}`);
+  }, [navigate, id]);
+
+  const handleTogglePinned = useCallback(async () => {
+    await togglePinned(id, isPinned);
+  }, [togglePinned, id, isPinned]);
+
+  const handleRemove = useCallback(async () => {
+    setIsRemoving(true);
+
+    try {
+      await removeCity(id);
+
+      if (searchParams.get('existingId') === id) {
+        clearExistingCitySelection();
+      }
+    } finally {
+      setIsRemoving(false);
+    }
+  }, [removeCity, id, searchParams, clearExistingCitySelection]);
 
   if (!loaded) {
     return (
@@ -42,7 +67,7 @@ export const CityCard = React.memo(function CityCard({
   return (
     <BackgroundCard
       className={`${styles.card} ${isDisabled ? styles.cardLoading : ''}`}
-      onClick={isDisabled ? undefined : () => onOpen(id)}
+      onClick={isDisabled ? undefined : handleOpen}
       headerLeft={<AppTitle level={5}>{cityName}</AppTitle>}
       headerRight={
         <Flex gap={4}>
@@ -56,7 +81,7 @@ export const CityCard = React.memo(function CityCard({
                 return;
               }
 
-              onTogglePinned(id, isPinned);
+              void handleTogglePinned();
             }}
           />
 
@@ -70,7 +95,7 @@ export const CityCard = React.memo(function CityCard({
                 return;
               }
 
-              onRemove(id);
+              void handleRemove();
             }}
           />
         </Flex>

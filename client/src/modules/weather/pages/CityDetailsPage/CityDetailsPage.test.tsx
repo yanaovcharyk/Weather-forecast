@@ -1,41 +1,58 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { useNavigate, useSearchParams } from 'react-router';
 import type { ReactNode } from 'react';
 import { useCityWeather } from '@/weather/hooks';
 import { createCityWeatherState } from '@/weather/testing/mocks';
-import { createRouterMocks } from '@/common/testing/mocks/router.mock';
 import { CityDetailsPage } from './CityDetailsPage';
 
-vi.mock('@/weather/hooks/useCityWeather');
+const navigate = vi.fn();
 
-vi.mock('react-router', () => ({
-  useNavigate: vi.fn(),
-  useSearchParams: vi.fn(),
-}));
+vi.mock('@/weather/hooks', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/weather/hooks')>();
+
+  return {
+    ...actual,
+    useCityWeather: vi.fn(),
+  };
+});
 
 vi.mock('@/common/components', () => ({
   PageLayout: ({ children }: { children: ReactNode }) => <div>{children}</div>,
   Header: () => <div>Header</div>,
-  AppCard: ({ children }: { children: ReactNode }) => <div>{children}</div>,
-  BlurLoaderOverlay: ({
+  DataBoundary: ({
     loading,
+    error,
+    errorTitle,
     children,
   }: {
     loading: boolean;
+    error?: Error | null;
+    errorTitle?: string;
     children: ReactNode;
-  }) => (loading ? <div>Loading...</div> : <div>{children}</div>),
+  }) => {
+    if (error) {
+      return (
+        <div>
+          <div>{errorTitle}</div>
+          <div>{error.message}</div>
+        </div>
+      );
+    }
+
+    return loading ? <div>Loading...</div> : <div>{children}</div>;
+  },
 }));
 
 vi.mock('@/weather/components', () => ({
+  BackToAllCitiesButton: () => (
+    <button onClick={() => navigate('/?test=1')}>← Back to all cities</button>
+  ),
   CurrentWeatherCard: ({ cityName }: { cityName: string }) => (
     <div>Current: {cityName}</div>
   ),
   HourlyForecast: () => <div>Hourly</div>,
   DailyForecast: () => <div>Daily</div>,
 }));
-
-const router = createRouterMocks('test=1');
 
 const setup = (state = createCityWeatherState()) => {
   vi.mocked(useCityWeather).mockReturnValue(state);
@@ -46,12 +63,6 @@ const setup = (state = createCityWeatherState()) => {
 describe('CityDetailsPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
-
-    vi.mocked(useNavigate).mockReturnValue(router.navigate);
-    vi.mocked(useSearchParams).mockReturnValue([
-      router.searchParams,
-      router.setSearchParams,
-    ]);
   });
 
   it('shows loading state', () => {
@@ -93,6 +104,6 @@ describe('CityDetailsPage', () => {
 
     fireEvent.click(screen.getByText('← Back to all cities'));
 
-    expect(router.navigate).toHaveBeenCalledWith('/?test=1');
+    expect(navigate).toHaveBeenCalledWith('/?test=1');
   });
 });
