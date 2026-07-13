@@ -9,6 +9,7 @@ import type {
   CitiesPaginatedResponse,
   SortingState,
 } from '@/weather/types';
+import { CITIES_PAGE_LIMIT } from '@/weather/config/pagination';
 
 const CITY_SORT_FIELD_GRAPHQL_VALUES: Record<
   SortingState['sortBy'],
@@ -36,7 +37,7 @@ export const useCitiesPaginated = (
     variables: {
       query: {
         pagination: {
-          limit: 10,
+          limit: CITIES_PAGE_LIMIT,
           cursor: null,
         },
 

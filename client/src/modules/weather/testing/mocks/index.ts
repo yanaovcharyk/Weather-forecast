@@ -1,6 +1,5 @@
 export {
   createCitiesPaginatedResult,
-  createCityActionsResult,
   createSortingParamsResult,
 } from './citiesPage.mock';
 export { createFormMock } from './form.mock';

@@ -14,7 +14,7 @@ import {
 import { useToast } from '@/common/hooks/useToast';
 import { handleResult } from '@/common/utils';
 
-import styles from './CitiesControls.module.scss';
+import styles from './CitiesListHeader.module.scss';
 
 type SortOption = {
   label: string;
@@ -26,7 +26,7 @@ const SORT_OPTIONS: SortOption[] = [
   { label: 'Date added', value: CitySortField.CreatedAt },
 ];
 
-export const CitiesControls = () => {
+export const CitiesListHeader = () => {
   const toast = useToast();
 
   const { sorting, setSorting, showPinnedOnly, setShowPinnedOnly } =

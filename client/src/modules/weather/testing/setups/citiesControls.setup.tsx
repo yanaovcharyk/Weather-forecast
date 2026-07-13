@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi, type Mock } from 'vitest';
 
-import { CitiesControls } from '@/weather/components/CitiesControlBar/CitiesControls';
+import { CitiesListHeader } from '@/weather/components/CitiesListHeader/CitiesListHeader';
 import { CitySortField, CitySortOrder } from '@/weather/types';
 import type { City, SortingState } from '@/weather/types';
 import {
@@ -81,7 +81,7 @@ export const setupCitiesControls = (
     warning: vi.fn(),
   });
 
-  render(<CitiesControls />);
+  render(<CitiesListHeader />);
 
   return {
     user,

@@ -1,14 +1,9 @@
 import { vi } from 'vitest';
 
-import type {
-  useCitiesPaginated,
-  useCityActions,
-  useSortingParams,
-} from '@/weather/hooks';
+import type { useCitiesPaginated, useSortingParams } from '@/weather/hooks';
 import { CitySortField, CitySortOrder } from '@/weather/types';
 
 type SortingParamsResult = ReturnType<typeof useSortingParams>;
-type CityActionsResult = ReturnType<typeof useCityActions>;
 type CitiesPaginatedResult = ReturnType<typeof useCitiesPaginated>;
 
 export const createSortingParamsResult = (
@@ -21,20 +16,6 @@ export const createSortingParamsResult = (
   setSorting: vi.fn(),
   showPinnedOnly: false,
   setShowPinnedOnly: vi.fn(),
-  ...overrides,
-});
-
-export const createCityActionsResult = (
-  overrides: Partial<CityActionsResult> = {},
-): CityActionsResult => ({
-  handleAddCity: vi.fn(),
-  handleRemoveCity: vi.fn(),
-  handleTogglePinned: vi.fn(),
-  handleDeleteAllCities: vi.fn(),
-  clearExistingCitySelection: vi.fn(),
-  isAddingCity: false,
-  currentlyRemovingCityId: null,
-  currentlySelectedCity: null,
   ...overrides,
 });
 

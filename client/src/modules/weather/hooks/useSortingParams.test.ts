@@ -11,6 +11,14 @@ vi.mock('react-router-dom');
 describe('useSortingParams', () => {
   const router = createRouterMocks();
 
+  const getUpdatedParams = () => {
+    const updatedParams = vi.mocked(router.setSearchParams).mock.calls[0]?.[0];
+
+    expect(updatedParams).toBeInstanceOf(URLSearchParams);
+
+    return updatedParams as URLSearchParams;
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -58,10 +66,11 @@ describe('useSortingParams', () => {
       });
     });
 
-    expect(result.current.sorting).toEqual({
-      sortBy: CitySortField.CityName,
-      sortOrder: CitySortOrder.Asc,
-    });
+    const updatedParams = getUpdatedParams();
+
+    expect(updatedParams.get('sortBy')).toBe(CitySortField.CityName);
+    expect(updatedParams.get('sortOrder')).toBe(CitySortOrder.Asc);
+    expect(updatedParams.get('showPinnedOnly')).toBe('false');
   });
 
   it('updates pinned filter', () => {
@@ -71,12 +80,16 @@ describe('useSortingParams', () => {
       result.current.setShowPinnedOnly(true);
     });
 
-    expect(result.current.showPinnedOnly).toBe(true);
+    const updatedParams = getUpdatedParams();
+
+    expect(updatedParams.get('sortBy')).toBe(CitySortField.CreatedAt);
+    expect(updatedParams.get('sortOrder')).toBe(CitySortOrder.Desc);
+    expect(updatedParams.get('showPinnedOnly')).toBe('true');
   });
 
-  it('syncs params', () => {
+  it('does not rewrite params on mount', () => {
     renderHook(() => useSortingParams());
 
-    expect(router.setSearchParams).toHaveBeenCalled();
+    expect(router.setSearchParams).not.toHaveBeenCalled();
   });
 });

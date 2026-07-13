@@ -1,7 +1,7 @@
 import { act, renderHook, waitFor } from '@testing-library/react';
 import { useSearchParams } from 'react-router-dom';
 
-import { useAddCityAction } from './useAddCityAction';
+import { useAddCityHandler } from './useAddCityHandler';
 import { useAddCity } from './useAddCity';
 import { useSavedCityLookup } from './useSavedCityLookup';
 import { useToast } from '@/common/hooks/useToast';
@@ -21,7 +21,7 @@ vi.mock('@/common/hooks/useToast');
 vi.mock('./useAddCity');
 vi.mock('./useSavedCityLookup');
 
-describe('useAddCityAction', () => {
+describe('useAddCityHandler', () => {
   const addCity = vi.fn();
   const getSavedCity = vi.fn();
   const setSearchParams = vi.fn();
@@ -60,7 +60,7 @@ describe('useAddCityAction', () => {
   });
 
   it('adds city and shows success toast', async () => {
-    const { result } = renderHook(() => useAddCityAction());
+    const { result } = renderHook(() => useAddCityHandler());
 
     await act(async () => {
       await result.current.handleAddCity(selectedCity);
@@ -73,7 +73,7 @@ describe('useAddCityAction', () => {
   it('selects existing city and shows info toast', async () => {
     getSavedCity.mockResolvedValue(CITY_FIXTURE);
 
-    const { result } = renderHook(() => useAddCityAction());
+    const { result } = renderHook(() => useAddCityHandler());
 
     await act(async () => {
       await result.current.handleAddCity(selectedCity);
@@ -90,7 +90,7 @@ describe('useAddCityAction', () => {
   it('shows error toast when adding fails', async () => {
     addCity.mockRejectedValue(new Error('Nope'));
 
-    const { result } = renderHook(() => useAddCityAction());
+    const { result } = renderHook(() => useAddCityHandler());
 
     await act(async () => {
       await result.current.handleAddCity(selectedCity);
@@ -103,7 +103,7 @@ describe('useAddCityAction', () => {
     const lookup = createControlledPromise<null>();
     getSavedCity.mockReturnValue(lookup.promise);
 
-    const { result } = renderHook(() => useAddCityAction());
+    const { result } = renderHook(() => useAddCityHandler());
 
     act(() => {
       void result.current.handleAddCity(selectedCity);

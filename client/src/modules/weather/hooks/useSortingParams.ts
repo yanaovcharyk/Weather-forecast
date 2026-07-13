@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useMemo } from 'react';
+import type { SetStateAction } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { CitySortField, CitySortOrder } from '@/weather/types';
@@ -64,20 +65,43 @@ const updateSortingParams = (
   return nextParams;
 };
 
+const resolveNextState = <T>(
+  nextState: SetStateAction<T>,
+  currentState: T,
+): T =>
+  typeof nextState === 'function'
+    ? (nextState as (previousState: T) => T)(currentState)
+    : nextState;
+
 export const useSortingParams = () => {
   const [params, setParams] = useSearchParams();
-  const [sorting, setSorting] = useState<SortingState>(() =>
-    getSortingFromParams(params),
-  );
-  const [showPinnedOnly, setShowPinnedOnly] = useState(() =>
-    getShowPinnedOnlyFromParams(params),
+
+  const sorting = useMemo(() => getSortingFromParams(params), [params]);
+  const showPinnedOnly = useMemo(
+    () => getShowPinnedOnlyFromParams(params),
+    [params],
   );
 
-  useEffect(() => {
-    const nextParams = updateSortingParams(params, sorting, showPinnedOnly);
+  const setSorting = useCallback(
+    (nextSortingState: SetStateAction<SortingState>) => {
+      const nextSorting = resolveNextState(nextSortingState, sorting);
 
-    setParams(nextParams);
-  }, [sorting, showPinnedOnly, params, setParams]);
+      setParams(updateSortingParams(params, nextSorting, showPinnedOnly));
+    },
+    [params, setParams, showPinnedOnly, sorting],
+  );
+
+  const setShowPinnedOnly = useCallback(
+    (nextShowPinnedOnlyState: SetStateAction<boolean>) => {
+      const nextShowPinnedOnly = resolveNextState(
+        nextShowPinnedOnlyState,
+        showPinnedOnly,
+      );
+
+      setParams(updateSortingParams(params, sorting, nextShowPinnedOnly));
+    },
+    [params, setParams, showPinnedOnly, sorting],
+  );
 
   return {
     sorting,

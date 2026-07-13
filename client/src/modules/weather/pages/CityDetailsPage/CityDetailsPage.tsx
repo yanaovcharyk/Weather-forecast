@@ -13,7 +13,7 @@ import { DataBoundary } from '@/common/components';
 export const CityDetailsPage = () => {
   const { cityName, weather, loading, error } = useCityWeather();
 
-  const isLoading = loading || !cityName || !weather;
+  const isLoading = loading;
 
   return (
     <DataBoundary

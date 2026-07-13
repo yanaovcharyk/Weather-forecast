@@ -1,43 +1,93 @@
-import { describe, expect, it, vi } from 'vitest';
 import { Observable } from 'rxjs';
+import { describe, expect, it, vi } from 'vitest';
 
 vi.mock('@/common/utils', () => ({
-  extractErrorCode: vi.fn((e) => e.extensions?.code),
-  isTokenError: vi.fn((e) => e.extensions?.code === 'UNAUTHENTICATED'),
+  extractErrorCode: vi.fn(
+    (error: { extensions: { code: string } }) => error.extensions.code,
+  ),
+  isTokenError: vi.fn(
+    (error: { extensions: { code: string } }) =>
+      error.extensions.code === 'UNAUTHENTICATED',
+  ),
   mapErrorCodeToMessage: vi.fn(() => 'message'),
 }));
 
 import { createTokenRefreshErrorLink } from './tokenRefreshErrorLink';
 
+type RetryOperation = () => void;
+
+const missingRetryOperation = (): never => {
+  throw new Error('Retry operation was not queued');
+};
+
+const createGraphQLErrorResponse = (code: string) => ({
+  errors: [
+    {
+      extensions: {
+        code,
+      },
+    },
+  ],
+});
+
+const unauthenticatedResponse = createGraphQLErrorResponse('UNAUTHENTICATED');
+
+const createResponseForward = <T>(response: T) =>
+  vi.fn(
+    () =>
+      new Observable<T>((observer) => {
+        observer.next(response);
+        observer.complete();
+      }),
+  );
+
+const subscribeToLink = (
+  link: ReturnType<typeof createTokenRefreshErrorLink>,
+  forward: never,
+  observer: {
+    next?: () => void;
+    error?: (error: unknown) => void;
+    complete?: () => void;
+  } = {},
+): void => {
+  link.request({} as never, forward)?.subscribe(observer);
+};
+
+const createLink = ({
+  queueRetryOperation = vi.fn(),
+  refreshAccessToken = vi.fn(() => Promise.resolve()),
+  handleRefreshFailure = vi.fn(),
+  displayErrorMessage = vi.fn(),
+}: {
+  queueRetryOperation?: (retryOperation: RetryOperation) => void;
+  refreshAccessToken?: () => Promise<void>;
+  handleRefreshFailure?: () => void | Promise<void>;
+  displayErrorMessage?: (message: string) => void;
+} = {}) =>
+  createTokenRefreshErrorLink({
+    tokenRefreshCoordinator: {
+      queueRetryOperation,
+      refreshAccessToken,
+    } as never,
+    handleRefreshFailure,
+    displayErrorMessage,
+  });
+
 describe('createTokenRefreshErrorLink', () => {
   it('passes successful graphql response through', () => {
-    const link = createTokenRefreshErrorLink({
-      tokenRefreshCoordinator: {
-        queueRetryOperation: vi.fn(),
-        refreshAccessToken: vi.fn(),
-      } as never,
-      handleRefreshFailure: vi.fn(),
-      displayErrorMessage: vi.fn(),
-    });
-
-    const next = vi.fn();
-    const complete = vi.fn();
-
     const response = {
       data: {
         cities: [],
       },
     };
 
-    const forward = vi.fn(
-      () =>
-        new Observable((observer) => {
-          observer.next(response);
-          observer.complete();
-        }),
-    );
+    const next = vi.fn();
+    const complete = vi.fn();
 
-    link.request({} as never, forward as never)?.subscribe({
+    const link = createLink();
+    const forward = createResponseForward(response);
+
+    subscribeToLink(link, forward as never, {
       next,
       complete,
     });
@@ -49,52 +99,33 @@ describe('createTokenRefreshErrorLink', () => {
   it('shows error for graphql error', () => {
     const displayErrorMessage = vi.fn();
 
-    const link = createTokenRefreshErrorLink({
-      tokenRefreshCoordinator: {
-        queueRetryOperation: vi.fn(),
-        refreshAccessToken: vi.fn(),
-      } as never,
-      handleRefreshFailure: vi.fn(),
+    const link = createLink({
       displayErrorMessage,
     });
 
-    const forward = vi.fn(
-      () =>
-        new Observable((observer) => {
-          observer.next({
-            errors: [
-              {
-                extensions: {
-                  code: 'CITY_EXISTS',
-                },
-              },
-            ],
-          });
-        }),
+    const forward = createResponseForward(
+      createGraphQLErrorResponse('CITY_EXISTS'),
     );
 
-    link.request({} as never, forward as never)?.subscribe();
+    subscribeToLink(link, forward as never);
 
     expect(displayErrorMessage).toHaveBeenCalledWith('message');
   });
 
   it('retries operation after token refresh', () => {
-    let queuedRetryOperation: (() => void) | undefined;
+    let queuedRetryOperation: RetryOperation = missingRetryOperation;
 
-    const queueRetryOperation = vi.fn((retry: () => void) => {
-      queuedRetryOperation = retry;
-    });
+    const queueRetryOperation = vi.fn(
+      (retryOperation: RetryOperation): void => {
+        queuedRetryOperation = retryOperation;
+      },
+    );
 
-    const refreshAccessToken = vi.fn(() => Promise.resolve());
-
-    const link = createTokenRefreshErrorLink({
-      tokenRefreshCoordinator: {
-        queueRetryOperation,
-        refreshAccessToken,
-      } as never,
-      handleRefreshFailure: vi.fn(),
-      displayErrorMessage: vi.fn(),
-    });
+    const response = {
+      data: {
+        success: true,
+      },
+    };
 
     const next = vi.fn();
     const complete = vi.fn();
@@ -107,64 +138,43 @@ describe('createTokenRefreshErrorLink', () => {
           callCount += 1;
 
           if (callCount === 1) {
-            observer.next({
-              errors: [
-                {
-                  extensions: {
-                    code: 'UNAUTHENTICATED',
-                  },
-                },
-              ],
-            });
-
+            observer.next(unauthenticatedResponse);
             return;
           }
 
-          observer.next({
-            data: {
-              success: true,
-            },
-          });
-
+          observer.next(response);
           observer.complete();
         }),
     );
 
-    link.request({} as never, forward as never)?.subscribe({
+    const link = createLink({
+      queueRetryOperation,
+    });
+
+    subscribeToLink(link, forward as never, {
       next,
       complete,
     });
 
     expect(queueRetryOperation).toHaveBeenCalled();
 
-    queuedRetryOperation?.();
+    queuedRetryOperation();
 
-    expect(next).toHaveBeenCalledWith({
-      data: {
-        success: true,
-      },
-    });
-
+    expect(next).toHaveBeenCalledWith(response);
     expect(complete).toHaveBeenCalled();
   });
 
   it('propagates retry error', () => {
-    let queuedRetryOperation: (() => void) | undefined;
+    let queuedRetryOperation: RetryOperation = missingRetryOperation;
 
-    const queueRetryOperation = vi.fn((retry: () => void) => {
-      queuedRetryOperation = retry;
-    });
+    const queueRetryOperation = vi.fn(
+      (retryOperation: RetryOperation): void => {
+        queuedRetryOperation = retryOperation;
+      },
+    );
 
-    const link = createTokenRefreshErrorLink({
-      tokenRefreshCoordinator: {
-        queueRetryOperation,
-        refreshAccessToken: vi.fn(() => Promise.resolve()),
-      } as never,
-      handleRefreshFailure: vi.fn(),
-      displayErrorMessage: vi.fn(),
-    });
-
-    const propagatedError = vi.fn();
+    const retryError = new Error('retry failed');
+    const observerError = vi.fn();
 
     let callCount = 0;
 
@@ -174,108 +184,68 @@ describe('createTokenRefreshErrorLink', () => {
           callCount += 1;
 
           if (callCount === 1) {
-            observer.next({
-              errors: [
-                {
-                  extensions: {
-                    code: 'UNAUTHENTICATED',
-                  },
-                },
-              ],
-            });
-
+            observer.next(unauthenticatedResponse);
             return;
           }
 
-          observer.error(new Error('retry failed'));
+          observer.error(retryError);
         }),
     );
 
-    link.request({} as never, forward as never)?.subscribe({
-      error: propagatedError,
+    const link = createLink({
+      queueRetryOperation,
     });
 
-    queuedRetryOperation?.();
+    subscribeToLink(link, forward as never, {
+      error: observerError,
+    });
 
-    expect(propagatedError).toHaveBeenCalled();
+    queuedRetryOperation();
+
+    expect(observerError).toHaveBeenCalledWith(retryError);
   });
 
   it('handles refresh failure if refresh fails', async () => {
     const handleRefreshFailure = vi.fn();
 
-    const link = createTokenRefreshErrorLink({
-      tokenRefreshCoordinator: {
-        queueRetryOperation: vi.fn(),
-        refreshAccessToken: vi.fn(() => Promise.reject(new Error())),
-      } as never,
+    const link = createLink({
+      refreshAccessToken: vi.fn(() =>
+        Promise.reject(new Error('refresh failed')),
+      ),
       handleRefreshFailure,
-      displayErrorMessage: vi.fn(),
     });
 
-    const forward = vi.fn(
-      () =>
-        new Observable((observer) => {
-          observer.next({
-            errors: [
-              {
-                extensions: {
-                  code: 'UNAUTHENTICATED',
-                },
-              },
-            ],
-          });
-        }),
-    );
+    const forward = createResponseForward(unauthenticatedResponse);
 
-    link.request({} as never, forward as never)?.subscribe({
-      error: () => {},
+    subscribeToLink(link, forward as never, {
+      error: vi.fn(),
     });
 
-    await Promise.resolve();
-    await Promise.resolve();
-
-    expect(handleRefreshFailure).toHaveBeenCalled();
+    await vi.waitFor(() => {
+      expect(handleRefreshFailure).toHaveBeenCalled();
+    });
   });
 
   it('propagates refresh error when refresh failure handler rejects', async () => {
     const refreshError = new Error('refresh failed');
     const observerError = vi.fn();
 
-    const link = createTokenRefreshErrorLink({
-      tokenRefreshCoordinator: {
-        queueRetryOperation: vi.fn(),
-        refreshAccessToken: vi.fn(() => Promise.reject(refreshError)),
-      } as never,
+    const link = createLink({
+      refreshAccessToken: vi.fn(() => Promise.reject(refreshError)),
       handleRefreshFailure: vi.fn(() =>
         Promise.reject(new Error('logout failed')),
       ),
-      displayErrorMessage: vi.fn(),
     });
 
-    const forward = vi.fn(
-      () =>
-        new Observable((observer) => {
-          observer.next({
-            errors: [
-              {
-                extensions: {
-                  code: 'UNAUTHENTICATED',
-                },
-              },
-            ],
-          });
-        }),
-    );
+    const forward = createResponseForward(unauthenticatedResponse);
 
-    link.request({} as never, forward as never)?.subscribe({
+    subscribeToLink(link, forward as never, {
       error: observerError,
     });
 
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-
-    expect(observerError).toHaveBeenCalledWith(refreshError);
+    await vi.waitFor(() => {
+      expect(observerError).toHaveBeenCalledWith(refreshError);
+    });
   });
 
   it('shows error for network error', () => {
@@ -288,12 +258,7 @@ describe('createTokenRefreshErrorLink', () => {
       },
     };
 
-    const link = createTokenRefreshErrorLink({
-      tokenRefreshCoordinator: {
-        queueRetryOperation: vi.fn(),
-        refreshAccessToken: vi.fn(),
-      } as never,
-      handleRefreshFailure: vi.fn(),
+    const link = createLink({
       displayErrorMessage,
     });
 
@@ -304,7 +269,7 @@ describe('createTokenRefreshErrorLink', () => {
         }),
     );
 
-    link.request({} as never, forward as never)?.subscribe({
+    subscribeToLink(link, forward as never, {
       error: observerError,
     });
 

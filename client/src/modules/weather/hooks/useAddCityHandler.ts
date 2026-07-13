@@ -5,7 +5,7 @@ import { useAddCity } from './useAddCity';
 import { useSavedCityLookup } from './useSavedCityLookup';
 import type { SelectedCity } from '@/weather/types';
 
-export const useAddCityAction = () => {
+export const useAddCityHandler = () => {
   const toast = useToast();
   const { addCity } = useAddCity();
   const { getSavedCity } = useSavedCityLookup();

@@ -1,5 +1,6 @@
 export { cleanComponentStack } from './cleanComponentStack';
 export { createSafeContext } from './createSafeContext';
+export { createDebouncedSearch } from './createDebouncedSearch';
 export {
   extractErrorCode,
   isTokenError,

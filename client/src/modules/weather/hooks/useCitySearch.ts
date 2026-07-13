@@ -1,6 +1,7 @@
 import { useLazyQuery } from '@apollo/client/react';
 import { useRef } from 'react';
 
+import { createDebouncedSearch } from '@/common/utils';
 import { GET_CITY_SUGGESTIONS } from '@/weather/graphql';
 import type {
   CitySuggestion,
@@ -20,7 +21,12 @@ const mapToSelectedCity = (city: CitySuggestion): SelectedCity => ({
 });
 
 export const useCitySearch = () => {
-  const debounceTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const debouncedSearchRef = useRef(
+    createDebouncedSearch({
+      delay: SEARCH_DELAY_MS,
+      minQueryLength: MIN_QUERY_LENGTH,
+    }),
+  );
 
   const [searchCitiesQuery, { data, loading }] = useLazyQuery<
     CitySuggestionsData,
@@ -29,29 +35,20 @@ export const useCitySearch = () => {
     fetchPolicy: 'no-cache',
   });
 
-  const fetchCitySuggestions = (query: string) =>
-    searchCitiesQuery({
+  const fetchCitySuggestions = (query: string): void => {
+    void searchCitiesQuery({
       variables: {
         input: {
           query,
         },
       },
     });
+  };
 
-  const handleSearchCities = (input: string) => {
+  const handleSearchCities = (input: string): void => {
     const query = normalizeCityName(input);
 
-    if (debounceTimerRef.current) {
-      clearTimeout(debounceTimerRef.current);
-    }
-
-    if (query.length < MIN_QUERY_LENGTH) {
-      return;
-    }
-
-    debounceTimerRef.current = setTimeout(() => {
-      fetchCitySuggestions(query);
-    }, SEARCH_DELAY_MS);
+    debouncedSearchRef.current(fetchCitySuggestions, query);
   };
 
   const cityOptions =
