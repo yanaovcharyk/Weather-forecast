@@ -1,6 +1,19 @@
-import { render, screen } from '@testing-library/react';
+import { beforeEach, vi } from 'vitest';
+import { screen } from '@testing-library/react';
 import { DailyForecast } from './DailyForecast';
-import { createDailyWeather } from '@/weather/testing/fixtures';
+import { createDailyWeather, createWeather } from '@/weather/testing/fixtures';
+import { useCityWeather } from '@/weather/hooks';
+import { createCityWeatherState } from '@/weather/testing/mocks';
+import { testRender } from '@/common/testing/render/renderWithProviders';
+
+vi.mock('@/weather/hooks', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/weather/hooks')>();
+
+  return {
+    ...actual,
+    useCityWeather: vi.fn(),
+  };
+});
 
 const dailyForecast = [
   createDailyWeather({
@@ -50,7 +63,15 @@ const dailyForecast = [
 
 describe('DailyForecast', () => {
   beforeEach(() => {
-    render(<DailyForecast daily={dailyForecast} />);
+    vi.mocked(useCityWeather).mockReturnValue(
+      createCityWeatherState({
+        weather: createWeather({
+          daily: dailyForecast,
+        }),
+      }),
+    );
+
+    testRender(<DailyForecast />);
   });
 
   it('renders forecast title', () => {

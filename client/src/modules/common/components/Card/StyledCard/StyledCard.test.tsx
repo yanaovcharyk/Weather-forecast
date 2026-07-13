@@ -1,15 +1,17 @@
 import { render, screen } from '@testing-library/react';
-import { AppCard } from './AppCard';
+import { StyledCard } from './StyledCard';
 
 describe('AppCard', () => {
   it('should render children', () => {
-    render(<AppCard>Card Content</AppCard>);
+    render(<StyledCard>Card Content</StyledCard>);
 
     expect(screen.getByText('Card Content')).toBeInTheDocument();
   });
 
   it('should merge custom className', () => {
-    const { container } = render(<AppCard className="custom">Content</AppCard>);
+    const { container } = render(
+      <StyledCard className="custom">Content</StyledCard>,
+    );
 
     expect(container.querySelector('.custom')).toBeInTheDocument();
   });

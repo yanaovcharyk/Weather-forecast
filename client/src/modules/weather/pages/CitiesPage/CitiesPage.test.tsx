@@ -14,8 +14,7 @@ vi.mock('antd', () => ({
 
 vi.mock('@/weather/components', () => ({
   AddCityForm: () => <div>AddCityForm</div>,
-  CitiesList: () => <div>CitiesList</div>,
-  CitiesControls: () => <div>CitiesControls</div>,
+  SavedCities: () => <div>SavedCities</div>,
 }));
 
 vi.mock('@/common/components', () => ({
@@ -45,9 +44,7 @@ describe('CitiesPage', () => {
 
     expect(screen.getByText('Header')).toBeInTheDocument();
     expect(screen.getByText('AddCityForm')).toBeInTheDocument();
-    expect(screen.getByText('CitiesControls')).toBeInTheDocument();
-
-    expect(screen.getByText('CitiesList')).toBeInTheDocument();
+    expect(screen.getByText('SavedCities')).toBeInTheDocument();
 
     expect(screen.getByText('ScrollToTop')).toBeInTheDocument();
   });

@@ -41,6 +41,18 @@ describe('useCityWeather', () => {
     expect(result.current.loading).toBe(true);
   });
 
+  it('returns separate loading states', () => {
+    setupCityWeatherRuntime(ctx, {
+      cityLoading: true,
+      weatherLoading: false,
+    });
+
+    const { result } = setupCityWeather();
+
+    expect(result.current.cityLoading).toBe(true);
+    expect(result.current.weatherLoading).toBe(false);
+  });
+
   it('returns city and weather data', () => {
     setupCityWeatherRuntime(ctx, {
       cityData: CITY_RESPONSE,

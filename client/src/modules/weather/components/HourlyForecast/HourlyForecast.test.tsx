@@ -1,7 +1,19 @@
-import { beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { beforeEach, vi } from 'vitest';
+import { screen } from '@testing-library/react';
 import { HourlyForecast } from './HourlyForecast';
-import { createHourlyWeather } from '@/weather/testing/fixtures';
+import { createHourlyWeather, createWeather } from '@/weather/testing/fixtures';
+import { useCityWeather } from '@/weather/hooks';
+import { createCityWeatherState } from '@/weather/testing/mocks';
+import { testRender } from '@/common/testing/render/renderWithProviders';
+
+vi.mock('@/weather/hooks', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/weather/hooks')>();
+
+  return {
+    ...actual,
+    useCityWeather: vi.fn(),
+  };
+});
 
 const hourlyForecast = [
   createHourlyWeather(),
@@ -16,7 +28,15 @@ const hourlyForecast = [
 
 describe('HourlyForecast', () => {
   beforeEach(() => {
-    render(<HourlyForecast hourly={hourlyForecast} />);
+    vi.mocked(useCityWeather).mockReturnValue(
+      createCityWeatherState({
+        weather: createWeather({
+          hourly: hourlyForecast,
+        }),
+      }),
+    );
+
+    testRender(<HourlyForecast />);
   });
 
   it('renders title', () => {

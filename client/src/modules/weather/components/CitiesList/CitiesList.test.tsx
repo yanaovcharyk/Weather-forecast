@@ -16,6 +16,13 @@ const hookMocks = vi.hoisted(() => ({
   navigate: vi.fn(),
   useCitiesPaginated: vi.fn(),
   useSortingParams: vi.fn(),
+  toast: {
+    toast: vi.fn(),
+    success: vi.fn(),
+    error: vi.fn(),
+    info: vi.fn(),
+    warning: vi.fn(),
+  },
   searchParams: new URLSearchParams(),
   setSearchParams: vi.fn(),
 }));
@@ -44,6 +51,10 @@ vi.mock('@/weather/components/CityCard', () => ({
     cityCardProps.push(props);
     return <div>{props.city.cityName}</div>;
   },
+}));
+
+vi.mock('@/common/hooks', () => ({
+  useToast: () => hookMocks.toast,
 }));
 
 beforeEach(() => {

@@ -7,6 +7,8 @@ export const createCityWeatherState = (
   cityName: 'Kyiv',
   weather: createWeather(),
   loading: false,
+  cityLoading: false,
+  weatherLoading: false,
   error: undefined,
   ...overrides,
 });

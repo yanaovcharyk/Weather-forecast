@@ -13,6 +13,8 @@ export type CityWeatherResult = {
   cityName: string | undefined;
   weather: GetWeatherDetailsResponse['getWeatherDetails'] | undefined;
   loading: boolean;
+  cityLoading: boolean;
+  weatherLoading: boolean;
   error: Error | undefined;
 };
 
@@ -51,7 +53,9 @@ export const useCityWeather = (): CityWeatherResult => {
   return {
     cityName,
     weather,
-    loading: cityLoading || weatherLoading || !cityName || !weather,
+    loading: cityLoading || weatherLoading,
+    cityLoading,
+    weatherLoading,
     error: cityError || weatherError,
   };
 };

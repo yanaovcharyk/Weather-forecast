@@ -1,7 +1,7 @@
 import React from 'react';
 import { createLogger } from '@/logger/utils/createLogger';
 import { normalizeReactError } from '@/common/utils/normalizeReactError';
-import { ErrorPage } from '@/common/components/ErrorPage/ErrorPage';
+import { ToastContext } from '@/common/contexts/ToastContext';
 
 type Props = {
   children?: React.ReactNode;
@@ -14,6 +14,10 @@ type State = {
 const logger = createLogger('ErrorBoundary');
 
 export class ErrorBoundary extends React.Component<Props, State> {
+  static contextType = ToastContext;
+
+  declare context: React.ContextType<typeof ToastContext>;
+
   state: State = {
     hasError: false,
   };
@@ -30,11 +34,13 @@ export class ErrorBoundary extends React.Component<Props, State> {
     logger.error('react.render.crash', {
       error: normalizedError,
     });
+
+    this.context?.error('Something went wrong');
   }
 
   render(): React.ReactNode {
     if (this.state.hasError) {
-      return <ErrorPage />;
+      return null;
     }
 
     return this.props.children;

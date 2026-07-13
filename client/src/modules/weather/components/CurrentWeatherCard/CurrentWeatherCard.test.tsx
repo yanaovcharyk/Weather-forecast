@@ -1,16 +1,27 @@
-import { render, screen } from '@testing-library/react';
+import { screen } from '@testing-library/react';
+import { vi } from 'vitest';
 import { CurrentWeatherCard } from './CurrentWeatherCard';
 import {
   createCurrentWeather,
   createWeather,
 } from '@/weather/testing/fixtures';
+import { useCityWeather } from '@/weather/hooks';
+import { createCityWeatherState } from '@/weather/testing/mocks';
+import { testRender } from '@/common/testing/render/renderWithProviders';
 
-const setup = (
-  props: Partial<React.ComponentProps<typeof CurrentWeatherCard>> = {},
-) => {
-  return render(
-    <CurrentWeatherCard cityName="Kyiv" weather={createWeather()} {...props} />,
-  );
+vi.mock('@/weather/hooks', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/weather/hooks')>();
+
+  return {
+    ...actual,
+    useCityWeather: vi.fn(),
+  };
+});
+
+const setup = (state = createCityWeatherState()) => {
+  vi.mocked(useCityWeather).mockReturnValue(state);
+
+  return testRender(<CurrentWeatherCard />);
 };
 
 describe('CurrentWeatherCard', () => {
@@ -24,17 +35,33 @@ describe('CurrentWeatherCard', () => {
     });
 
     it('renders custom weather values', () => {
-      setup({
-        weather: createWeather({
-          current: createCurrentWeather({
-            temp: 30,
-            description: 'Rain',
+      setup(
+        createCityWeatherState({
+          weather: createWeather({
+            current: createCurrentWeather({
+              temp: 30,
+              description: 'Rain',
+            }),
           }),
         }),
-      });
+      );
 
       expect(screen.getByText('30°C')).toBeInTheDocument();
       expect(screen.getByText('Rain')).toBeInTheDocument();
+    });
+
+    it('renders local skeleton while current weather is loading', () => {
+      const { container } = setup(
+        createCityWeatherState({
+          cityName: undefined,
+          weather: undefined,
+          cityLoading: true,
+          weatherLoading: true,
+        }),
+      );
+
+      expect(container.querySelector('.ant-skeleton')).toBeTruthy();
+      expect(screen.queryByText('Kyiv')).not.toBeInTheDocument();
     });
   });
 
