@@ -44,12 +44,12 @@ vi.mock('@/weather/hooks', () => ({
 }));
 
 vi.mock('@/weather/utils', () => ({
-  getWeatherBackground: vi.fn(() => 'bg.jpg'),
   getNextDays: vi.fn(() => [
-    { label: 'Mon' },
-    { label: 'Tue' },
-    { label: 'Wed' },
+    { weekDay: 'Mon' },
+    { weekDay: 'Tue' },
+    { weekDay: 'Wed' },
   ]),
+  getWeatherBackgroundImage: vi.fn(() => 'bg.jpg'),
 }));
 
 describe('CityCard', () => {

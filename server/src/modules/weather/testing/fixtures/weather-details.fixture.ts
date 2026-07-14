@@ -1,4 +1,5 @@
-import { IWeatherDetails } from "@weather/interfaces";
+import { IWeatherDetails } from '@weather/interfaces';
+import { WeatherCondition } from '@weather/enums';
 
 export const weatherDetailsFixture: IWeatherDetails = {
   coordinates: {
@@ -16,6 +17,8 @@ export const weatherDetailsFixture: IWeatherDetails = {
     pressure: 1015,
     description: 'Sunny',
     icon: '01d',
+    iconUrl: 'https://openweathermap.org/img/wn/01d@2x.png',
+    condition: WeatherCondition.CLEAR,
     sunrise: '05:00',
     sunset: '20:00',
   },
@@ -29,6 +32,7 @@ export const weatherDetailsFixture: IWeatherDetails = {
       max: 22,
       description: 'Clear',
       icon: '01d',
+      iconUrl: 'https://openweathermap.org/img/wn/01d.png',
       humidity: 60,
       pressure: 1015,
       clouds: 10,
@@ -42,6 +46,7 @@ export const weatherDetailsFixture: IWeatherDetails = {
       max: 23,
       description: 'Cloudy',
       icon: '02d',
+      iconUrl: 'https://openweathermap.org/img/wn/02d.png',
       humidity: 65,
       pressure: 1013,
       clouds: 40,
@@ -55,6 +60,7 @@ export const weatherDetailsFixture: IWeatherDetails = {
       max: 24,
       description: 'Rain',
       icon: '10d',
+      iconUrl: 'https://openweathermap.org/img/wn/10d.png',
       humidity: 80,
       pressure: 1010,
       clouds: 90,

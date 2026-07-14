@@ -108,6 +108,11 @@ describe('CitiesList', () => {
 
   it('filters cities by existingId search param', () => {
     hookMocks.searchParams = new URLSearchParams('existingId=1');
+    hookMocks.useSortingParams.mockReturnValue(
+      createSortingParamsResult({
+        showPinnedOnly: true,
+      }),
+    );
     hookMocks.useCitiesPaginated.mockReturnValue(
       createCitiesPaginatedResult({
         cities: [
@@ -129,6 +134,10 @@ describe('CitiesList', () => {
     expect(screen.getByText('Kyiv')).toBeInTheDocument();
     expect(screen.queryByText('Lviv')).not.toBeInTheDocument();
     expect(screen.getByText('← Back to all cities')).toBeInTheDocument();
+    expect(hookMocks.useCitiesPaginated).toHaveBeenCalledWith(
+      expect.any(Object),
+      false,
+    );
   });
 
   it('creates observer and calls loadMore on intersection', () => {

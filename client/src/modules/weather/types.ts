@@ -16,11 +16,30 @@ export interface WeatherPreviewDay {
   icon: string;
 }
 
+export enum WeatherCondition {
+  CLEAR = 'CLEAR',
+  FEW_CLOUDS = 'FEW_CLOUDS',
+  SCATTERED_CLOUDS = 'SCATTERED_CLOUDS',
+  BROKEN_CLOUDS = 'BROKEN_CLOUDS',
+  OVERCAST = 'OVERCAST',
+  DRIZZLE = 'DRIZZLE',
+  RAIN = 'RAIN',
+  THUNDERSTORM = 'THUNDERSTORM',
+  SNOW = 'SNOW',
+  SLEET = 'SLEET',
+  MIST = 'MIST',
+  DUST = 'DUST',
+  TORNADO = 'TORNADO',
+  WIND = 'WIND',
+  UNKNOWN = 'UNKNOWN',
+}
+
 export type Weather = {
   temperature: number;
   min: number;
   max: number;
   description: string;
+  condition: WeatherCondition;
   next3Days: WeatherPreviewDay[];
 };
 
@@ -108,6 +127,8 @@ export type CurrentWeather = {
   pressure: number;
   description: string;
   icon: string;
+  iconUrl: string;
+  condition: WeatherCondition;
   sunrise: string;
   sunset: string;
 };
@@ -118,6 +139,7 @@ export type DailyWeather = {
   max: number;
   description: string;
   icon: string;
+  iconUrl: string;
   humidity: number;
   pressure: number;
   clouds: number;
@@ -131,6 +153,7 @@ export type HourlyWeather = {
   temp: number;
   feelsLike: number;
   icon: string;
+  iconUrl: string;
 };
 
 export type WeatherMeta = {

@@ -28,9 +28,11 @@ export class LoggerQueue {
     this.queuedLogs.push(logRecord);
 
     if (this.queuedLogs.length >= LOGGER_BATCH_SIZE) {
-      this.sendQueuedLogs('batch').catch((error: unknown) => {
+      try {
+        this.sendQueuedLogs('batch');
+      } catch (error: unknown) {
         console.error('Failed to send queued logs', error);
-      });
+      }
     }
   }
 
@@ -61,16 +63,20 @@ export class LoggerQueue {
   }
 
   private startAutoSendScheduler(): void {
-    if (this.intervalId) return;
+    if (this.intervalId) {
+      return;
+    }
 
     this.intervalId = window.setInterval(() => {
       if (!this.queuedLogs.length) {
         return;
       }
 
-      this.sendQueuedLogs('auto').catch((error: unknown) => {
+      try {
+        this.sendQueuedLogs('auto');
+      } catch (error: unknown) {
         console.error('Failed to auto send logs', error);
-      });
+      }
     }, LOGGER_FLUSH_INTERVAL_IN_MS);
   }
 

@@ -49,7 +49,7 @@ export const DailyForecast = () => {
                 </AppText>
 
                 <img
-                  src={`https://openweathermap.org/img/wn/${day.icon}.png`}
+                  src={day.iconUrl}
                   alt={day.description}
                   className={styles.icon}
                 />

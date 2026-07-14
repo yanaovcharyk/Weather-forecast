@@ -1,3 +1,4 @@
+import { WeatherCondition } from '@/weather/types';
 import type {
   CurrentWeather,
   DailyWeather,
@@ -9,6 +10,7 @@ import type {
 export const WEATHER_FIXTURE: Weather = {
   temperature: 20,
   description: 'Sunny',
+  condition: WeatherCondition.CLEAR,
   min: 10,
   max: 25,
   next3Days: [
@@ -30,6 +32,8 @@ export const createCurrentWeather = (
   pressure: 1012,
   description: 'Clear sky',
   icon: '01d',
+  iconUrl: 'https://openweathermap.org/img/wn/01d@2x.png',
+  condition: WeatherCondition.CLEAR,
   sunrise: '06:00',
   sunset: '20:00',
   ...overrides,
@@ -43,6 +47,7 @@ export const createDailyWeather = (
   max: 25,
   description: 'Sunny',
   icon: '01d',
+  iconUrl: 'https://openweathermap.org/img/wn/01d.png',
   humidity: 70,
   pressure: 1012,
   clouds: 10,
@@ -59,6 +64,7 @@ export const createHourlyWeather = (
   temp: 20,
   feelsLike: 18,
   icon: '01d',
+  iconUrl: 'https://openweathermap.org/img/wn/01d.png',
   ...overrides,
 });
 

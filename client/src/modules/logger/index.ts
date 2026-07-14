@@ -20,6 +20,7 @@ export type {
 } from './types';
 export { DEFAULT_FIELDS_TO_MASK, LogLevel } from './types';
 export { ErrorBoundary } from './components/ErrorBoundary/ErrorBoundary';
+export { LoggerError } from './components/LoggerError/LoggerError';
 export { LoggerProvider } from './providers/LoggerProvider';
 export { loggerContext } from './context/LoggerContextStore';
 export { logger } from './services/LoggerService';

@@ -1,48 +1,18 @@
-import React from 'react';
-import { createLogger } from '@/logger/utils/createLogger';
-import { normalizeReactError } from '@/common/utils/normalizeReactError';
-import { ToastContext } from '@/common/contexts/ToastContext';
+import type { ReactNode } from 'react';
+import { useCallback } from 'react';
+import { useToast } from '@/common/hooks/useToast';
+import { LoggerError } from '@/logger/components/LoggerError/LoggerError';
 
 type Props = {
-  children?: React.ReactNode;
+  children?: ReactNode;
 };
 
-type State = {
-  hasError: boolean;
+export const ErrorBoundary = ({ children }: Props) => {
+  const toast = useToast();
+
+  const showErrorToast = useCallback(() => {
+    toast.error('Something went wrong');
+  }, [toast]);
+
+  return <LoggerError onError={showErrorToast}>{children}</LoggerError>;
 };
-
-const logger = createLogger('ErrorBoundary');
-
-export class ErrorBoundary extends React.Component<Props, State> {
-  static contextType = ToastContext;
-
-  declare context: React.ContextType<typeof ToastContext>;
-
-  state: State = {
-    hasError: false,
-  };
-
-  static getDerivedStateFromError(): State {
-    return {
-      hasError: true,
-    };
-  }
-
-  componentDidCatch(error: Error, info: React.ErrorInfo): void {
-    const normalizedError = normalizeReactError(error, info);
-
-    logger.error('react.render.crash', {
-      error: normalizedError,
-    });
-
-    this.context?.error('Something went wrong');
-  }
-
-  render(): React.ReactNode {
-    if (this.state.hasError) {
-      return null;
-    }
-
-    return this.props.children;
-  }
-}

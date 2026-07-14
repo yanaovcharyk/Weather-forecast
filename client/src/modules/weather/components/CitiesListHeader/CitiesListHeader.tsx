@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { Button, Checkbox, Col, Row, Select } from 'antd';
 import type { CheckboxChangeEvent } from 'antd/es/checkbox';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
+import { useSearchParams } from 'react-router-dom';
 
 import { CitySortField, CitySortOrder } from '@/weather/types';
 import type { SortingState } from '@/weather/types';
@@ -28,6 +29,8 @@ const SORT_OPTIONS: SortOption[] = [
 
 export const CitiesListHeader = () => {
   const toast = useToast();
+  const [searchParams] = useSearchParams();
+  const isExistingCityMode = searchParams.has('existingId');
 
   const { sorting, setSorting, showPinnedOnly, setShowPinnedOnly } =
     useSortingParams();
@@ -40,11 +43,11 @@ export const CitiesListHeader = () => {
 
   const disabledStates = useMemo(
     () => ({
-      sorting: cities.length <= 1,
-      deleteAll: cities.length === 0,
-      pinnedFilter: !cities.some((city) => city.isPinned),
+      sorting: isExistingCityMode || cities.length <= 1,
+      deleteAll: isExistingCityMode || cities.length === 0,
+      pinnedFilter: isExistingCityMode || !cities.some((city) => city.isPinned),
     }),
-    [cities],
+    [cities, isExistingCityMode],
   );
 
   const openDeleteAllModal = useCallback(() => {

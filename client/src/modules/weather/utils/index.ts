@@ -1,3 +1,3 @@
 export { getNextDays } from './getNextDays';
-export { getWeatherBackground } from './getWeatherBackground';
+export { getWeatherBackgroundImage } from './getWeatherBackgroundImage';
 export { normalizeCityName } from './normalizeCityName';

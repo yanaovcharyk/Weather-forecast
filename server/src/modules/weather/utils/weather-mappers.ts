@@ -8,6 +8,7 @@ import {
   IWeatherPreviewOutput,
   ITodayTemperatureRange,
 } from '@weather/interfaces';
+import { WeatherCondition } from '@weather/enums';
 
 import {
   calculateAverageBy,
@@ -18,12 +19,87 @@ import {
 import { getRoundedMinMax } from './get-rounded-min-max.util';
 import { getTemperatureRange } from './get-temperature-range.util';
 
+type WeatherConditionMapping = {
+  keywords: string[];
+  condition: WeatherCondition;
+};
+
+const openWeatherIconBaseUrl = 'https://openweathermap.org/img/wn';
+
+const openWeatherConditionMappings: WeatherConditionMapping[] = [
+  {
+    keywords: ['clear', 'sunny'],
+    condition: WeatherCondition.CLEAR,
+  },
+  {
+    keywords: ['few clouds'],
+    condition: WeatherCondition.FEW_CLOUDS,
+  },
+  {
+    keywords: ['scattered'],
+    condition: WeatherCondition.SCATTERED_CLOUDS,
+  },
+  {
+    keywords: ['broken'],
+    condition: WeatherCondition.BROKEN_CLOUDS,
+  },
+  { keywords: ['overcast'], condition: WeatherCondition.OVERCAST },
+  {
+    keywords: ['drizzle'],
+    condition: WeatherCondition.DRIZZLE,
+  },
+  { keywords: ['rain'], condition: WeatherCondition.RAIN },
+  { keywords: ['thunderstorm'], condition: WeatherCondition.THUNDERSTORM },
+  { keywords: ['snow'], condition: WeatherCondition.SNOW },
+  { keywords: ['sleet'], condition: WeatherCondition.SLEET },
+  {
+    keywords: ['mist', 'fog', 'haze', 'smoke'],
+    condition: WeatherCondition.MIST,
+  },
+  {
+    keywords: ['dust', 'sand', 'ash'],
+    condition: WeatherCondition.DUST,
+  },
+  { keywords: ['tornado'], condition: WeatherCondition.TORNADO },
+  { keywords: ['squall'], condition: WeatherCondition.WIND },
+];
+
+export const mapOpenWeatherCondition = (
+  description?: string,
+): WeatherCondition => {
+  if (!description) {
+    return WeatherCondition.UNKNOWN;
+  }
+
+  const normalizedDescription = description.toLowerCase();
+
+  const mapping = openWeatherConditionMappings.find(({ keywords }) =>
+    keywords.some((keyword) => normalizedDescription.includes(keyword)),
+  );
+
+  return mapping?.condition ?? WeatherCondition.UNKNOWN;
+};
+
+export const mapOpenWeatherIconUrl = (
+  icon?: string,
+  size: 'regular' | 'large' = 'regular',
+): string => {
+  if (!icon) {
+    return '';
+  }
+
+  const sizeSuffix = size === 'large' ? '@2x' : '';
+
+  return `${openWeatherIconBaseUrl}/${icon}${sizeSuffix}.png`;
+};
+
 export function mapCurrentWeather(
   current: IOpenWeatherCurrent,
   forecast: IOpenWeatherForecastItem[],
   timezone: number,
 ): IWeatherCurrent {
   const { min, max } = mapTodayTemperatureRange(forecast);
+  const description = current.weather[0].description;
 
   const weather: IWeatherCurrent = {
     temp: Math.round(current.main.temp),
@@ -33,8 +109,10 @@ export function mapCurrentWeather(
     humidity: current.main.humidity,
     windSpeed: Math.round(current.wind.speed),
     pressure: current.main.pressure,
-    description: current.weather[0].description,
+    description,
     icon: current.weather[0].icon,
+    iconUrl: mapOpenWeatherIconUrl(current.weather[0].icon, 'large'),
+    condition: mapOpenWeatherCondition(description),
     sunrise: formatUnixTime(current.sys.sunrise, timezone),
     sunset: formatUnixTime(current.sys.sunset, timezone),
   };
@@ -52,6 +130,7 @@ export function mapHourlyForecast(
       temp: Math.round(item.main.temp),
       feelsLike: Math.round(item.main.feels_like),
       icon: item.weather[0].icon,
+      iconUrl: mapOpenWeatherIconUrl(item.weather[0].icon),
     };
 
     return hourlyWeather;
@@ -67,19 +146,10 @@ export function mapDailyForecast(
     .slice(1, 4)
     .map(([date, items]) => {
       const { min, max } = getRoundedMinMax(items, (item) => item.main.temp);
-      const humidity = calculateAverageBy(
-        items,
-        (item) => item.main.humidity,
-      );
-      const pressure = calculateAverageBy(
-        items,
-        (item) => item.main.pressure,
-      );
+      const humidity = calculateAverageBy(items, (item) => item.main.humidity);
+      const pressure = calculateAverageBy(items, (item) => item.main.pressure);
       const clouds = calculateAverageBy(items, (item) => item.clouds.all);
-      const windSpeed = calculateAverageBy(
-        items,
-        (item) => item.wind.speed,
-      );
+      const windSpeed = calculateAverageBy(items, (item) => item.wind.speed);
       const feelsLike = calculateAverageBy(
         items,
         (item) => item.main.feels_like,
@@ -91,6 +161,7 @@ export function mapDailyForecast(
         max,
         description: items[0].weather[0].description,
         icon: items[0].weather[0].icon,
+        iconUrl: mapOpenWeatherIconUrl(items[0].weather[0].icon),
         humidity,
         pressure,
         clouds,
@@ -129,6 +200,7 @@ export function mapWeatherPreview(
   const dailyForecast = mapDailyForecast(list);
 
   const { min, max } = mapTodayTemperatureRange(list);
+  const description = currentLike.weather?.[0]?.description ?? '';
 
   const next3Days = dailyForecast.map((day) => ({
     min: day.min,
@@ -140,7 +212,8 @@ export function mapWeatherPreview(
     temperature: Math.round(currentLike.main.temp),
     min,
     max,
-    description: currentLike.weather?.[0]?.description ?? '',
+    description,
+    condition: mapOpenWeatherCondition(description),
     next3Days,
   };
 

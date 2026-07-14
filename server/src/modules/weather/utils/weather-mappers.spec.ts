@@ -10,10 +10,13 @@ import {
   mapCurrentWeather,
   mapDailyForecast,
   mapHourlyForecast,
+  mapOpenWeatherCondition,
+  mapOpenWeatherIconUrl,
   mapTodayTemperatureRange,
   mapWeatherPreview,
 } from './weather-mappers';
 import { IOpenWeatherForecastItem } from '@weather/interfaces';
+import { WeatherCondition } from '@weather/enums';
 
 describe('Weather Mappers', () => {
   it('mapCurrentWeather should map fields correctly', () => {
@@ -27,6 +30,8 @@ describe('Weather Mappers', () => {
     expect(result.sunset).toBeDefined();
     expect(result.min).toEqual(expect.any(Number));
     expect(result.max).toEqual(expect.any(Number));
+    expect(result.iconUrl).toBe('https://openweathermap.org/img/wn/01d@2x.png');
+    expect(result.condition).toBe(WeatherCondition.CLEAR);
   });
 
   it('mapCurrentWeather should handle timezone 0', () => {
@@ -46,6 +51,7 @@ describe('Weather Mappers', () => {
     expect(result[0]).toHaveProperty('temp');
     expect(result[0]).toHaveProperty('feelsLike');
     expect(result[0]).toHaveProperty('icon');
+    expect(result[0]).toHaveProperty('iconUrl');
   });
 
   it('mapDailyForecast should aggregate by date', () => {
@@ -56,6 +62,7 @@ describe('Weather Mappers', () => {
     expect(result[0]).toHaveProperty('max');
     expect(result[0]).toHaveProperty('description');
     expect(result[0]).toHaveProperty('icon');
+    expect(result[0]).toHaveProperty('iconUrl');
   });
 
   it('mapDailyForecast should handle timezone 0 and empty list', () => {
@@ -100,6 +107,7 @@ describe('Weather Mappers', () => {
     expect(result.min).toEqual(expect.any(Number));
     expect(result.max).toEqual(expect.any(Number));
     expect(result.description).toEqual(expect.any(String));
+    expect(result.condition).toEqual(expect.any(String));
     expect(result.next3Days).toHaveLength(3);
     expect(result.next3Days[0]).toHaveProperty('min');
     expect(result.next3Days[0]).toHaveProperty('max');
@@ -114,6 +122,27 @@ describe('Weather Mappers', () => {
     const result = mapWeatherPreview(listWithoutWeather);
 
     expect(result.description).toBe('');
+    expect(result.condition).toBe(WeatherCondition.UNKNOWN);
+  });
+
+  it('mapOpenWeatherCondition should map OpenWeather descriptions to semantic conditions', () => {
+    expect(mapOpenWeatherCondition('light rain')).toBe(WeatherCondition.RAIN);
+    expect(mapOpenWeatherCondition('fog and haze outside')).toBe(
+      WeatherCondition.MIST,
+    );
+    expect(mapOpenWeatherCondition('alien weather')).toBe(
+      WeatherCondition.UNKNOWN,
+    );
+  });
+
+  it('mapOpenWeatherIconUrl should map OpenWeather icon codes to image urls', () => {
+    expect(mapOpenWeatherIconUrl('01d')).toBe(
+      'https://openweathermap.org/img/wn/01d.png',
+    );
+    expect(mapOpenWeatherIconUrl('01d', 'large')).toBe(
+      'https://openweathermap.org/img/wn/01d@2x.png',
+    );
+    expect(mapOpenWeatherIconUrl()).toBe('');
   });
 
   it('mapTodayTemperatureRange should use todayForecasts when data for today exists', () => {
@@ -121,7 +150,7 @@ describe('Weather Mappers', () => {
 
     const forecastWithToday: IOpenWeatherForecastItem[] = [
       {
-        ...forecastFixture.list [0],
+        ...forecastFixture.list[0],
         dt_txt: `${today} 12:00:00`,
         main: {
           ...forecastFixture.list[0].main,

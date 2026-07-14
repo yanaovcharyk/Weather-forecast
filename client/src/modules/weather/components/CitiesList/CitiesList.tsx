@@ -13,6 +13,7 @@ import styles from './CitiesList.module.scss';
 export const CitiesList = React.memo(function CitiesList() {
   const [searchParams] = useSearchParams();
   const existingId = searchParams.get('existingId');
+  const isExistingCityMode = Boolean(existingId);
   const { sorting, showPinnedOnly } = useSortingParams();
 
   const {
@@ -21,14 +22,14 @@ export const CitiesList = React.memo(function CitiesList() {
     error,
     loadMore,
     hasNext: hasNextPage,
-  } = useCitiesPaginated(sorting, showPinnedOnly);
+  } = useCitiesPaginated(sorting, isExistingCityMode ? false : showPinnedOnly);
 
   const visibleCities = existingId
     ? cities.filter((city) => city.id === existingId)
     : cities;
 
-  const isEmpty = !loading && visibleCities.length === 0;
-  const shouldShowInfiniteScroll = !existingId && hasNextPage;
+  const isLoadedListEmpty = !loading && visibleCities.length === 0;
+  const shouldShowInfiniteScroll = !isExistingCityMode && hasNextPage;
   const isListLoading = loading && visibleCities.length === 0;
 
   const loadMoreTriggerRef = useInfiniteScrollTrigger({
@@ -45,7 +46,7 @@ export const CitiesList = React.memo(function CitiesList() {
       <div className={styles.wrapper}>
         {existingId && <BackToAllCitiesButton />}
 
-        {isEmpty ? (
+        {isLoadedListEmpty ? (
           <Flex
             flex={1}
             justify="center"

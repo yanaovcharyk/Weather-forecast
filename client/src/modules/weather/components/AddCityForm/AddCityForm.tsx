@@ -1,5 +1,5 @@
 import { Col, Form, Row, Select } from 'antd';
-import { EmptyState, AppCard, PrimaryButton } from '@/common/components';
+import { EmptyState, StyledCard, PrimaryButton } from '@/common/components';
 import { useAddCityForm, useAddCityAction } from '@/weather/hooks';
 import { useIsMobile } from '@/common/hooks';
 
@@ -13,7 +13,7 @@ export const AddCityForm = () => {
     useAddCityForm(handleAddCity);
 
   return (
-    <AppCard className={styles.formCard}>
+    <StyledCard className={styles.formCard}>
       <Form form={form} onFinish={handleSubmit}>
         <Row gutter={16} align="top">
           <Col span={isMobile ? 18 : 22}>
@@ -51,6 +51,6 @@ export const AddCityForm = () => {
           </Col>
         </Row>
       </Form>
-    </AppCard>
+    </StyledCard>
   );
 };

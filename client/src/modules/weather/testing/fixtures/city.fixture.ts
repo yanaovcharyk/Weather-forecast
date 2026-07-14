@@ -1,4 +1,4 @@
-import type { City } from '@/weather/types';
+import { WeatherCondition, type City } from '@/weather/types';
 
 export const CITY_FIXTURE: City = {
   id: '1',
@@ -41,6 +41,8 @@ export const WEATHER_RESPONSE = {
       pressure: 1015,
       description: 'Sunny',
       icon: '01d',
+      iconUrl: 'https://openweathermap.org/img/wn/01d@2x.png',
+      condition: WeatherCondition.CLEAR,
       sunrise: '06:01',
       sunset: '21:14',
     },
@@ -52,6 +54,7 @@ export const WEATHER_RESPONSE = {
         max: 26,
         description: 'Sunny',
         icon: '01d',
+        iconUrl: 'https://openweathermap.org/img/wn/01d.png',
         humidity: 75,
         pressure: 1014,
         clouds: 10,
@@ -67,6 +70,7 @@ export const WEATHER_RESPONSE = {
         temp: 25,
         feelsLike: 26,
         icon: '01d',
+        iconUrl: 'https://openweathermap.org/img/wn/01d.png',
       },
     ],
 

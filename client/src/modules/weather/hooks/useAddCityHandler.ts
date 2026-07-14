@@ -37,6 +37,13 @@ export const useAddCityHandler = () => {
         }
 
         await addCity(city);
+
+        if (searchParams.has('existingId')) {
+          const updatedParams = new URLSearchParams(searchParams);
+          updatedParams.delete('existingId');
+          setSearchParams(updatedParams);
+        }
+
         toast.success(`City ${city.cityName} added successfully`);
       } catch {
         toast.error('Failed to add city');

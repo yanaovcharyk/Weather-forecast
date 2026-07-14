@@ -4,6 +4,7 @@ export interface IDailyWeather {
   max: number;
   description: string;
   icon: string;
+  iconUrl: string;
   humidity: number;
   pressure: number;
   clouds: number;

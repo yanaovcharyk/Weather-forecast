@@ -36,7 +36,7 @@ export const HourlyForecast = () => {
                 </AppText>
 
                 <img
-                  src={`https://openweathermap.org/img/wn/${h.icon}.png`}
+                  src={h.iconUrl}
                   alt={`Weather at ${h.time}`}
                   className={styles.icon}
                 />

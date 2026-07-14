@@ -5,7 +5,7 @@ import { BackToAllCitiesButton } from './BackToAllCitiesButton';
 
 const routerMocks = vi.hoisted(() => ({
   navigate: vi.fn(),
-  searchParams: new URLSearchParams('sortBy=cityName'),
+  searchParams: new URLSearchParams('existingId=1&sortBy=cityName'),
 }));
 
 vi.mock('react-router-dom', async (importOriginal) => {
@@ -19,7 +19,7 @@ vi.mock('react-router-dom', async (importOriginal) => {
 });
 
 vi.mock('@/common/components', () => ({
-  AppCard: ({ children }: { children: React.ReactNode }) => (
+  StyledCard: ({ children }: { children: React.ReactNode }) => (
     <div>{children}</div>
   ),
 }));
@@ -29,7 +29,7 @@ describe('BackToAllCitiesButton', () => {
     vi.clearAllMocks();
   });
 
-  it('navigates back preserving current search params', async () => {
+  it('navigates back preserving params without existing city selection', async () => {
     const user = userEvent.setup();
 
     render(<BackToAllCitiesButton />);
@@ -41,5 +41,20 @@ describe('BackToAllCitiesButton', () => {
     );
 
     expect(routerMocks.navigate).toHaveBeenCalledWith('/?sortBy=cityName');
+  });
+
+  it('navigates to root when existing city selection is the only param', async () => {
+    const user = userEvent.setup();
+    routerMocks.searchParams = new URLSearchParams('existingId=1');
+
+    render(<BackToAllCitiesButton />);
+
+    await user.click(
+      screen.getByRole('button', {
+        name: '← Back to all cities',
+      }),
+    );
+
+    expect(routerMocks.navigate).toHaveBeenCalledWith('/');
   });
 });

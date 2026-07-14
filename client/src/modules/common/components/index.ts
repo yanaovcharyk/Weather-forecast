@@ -3,7 +3,7 @@ export { CenteredLayout } from './Layouts/CenteredLayout/CenteredLayout';
 export { PageLayout } from './Layouts/PageLayout/PageLayout';
 export { PrimaryButton } from './Button/PrimaryButton/PrimaryButton';
 export { ScrollToTopButton } from './Button/ScrollToTopButton/ScrollToTopButton';
-export { StyledCard as AppCard } from './Card/StyledCard/StyledCard';
+export { StyledCard } from './Card/StyledCard/StyledCard';
 export { EmptyState } from './EmptyState';
 export { ErrorPage } from './ErrorPage/ErrorPage';
 export { Header } from './Header/Header';

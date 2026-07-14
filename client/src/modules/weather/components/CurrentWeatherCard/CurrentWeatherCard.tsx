@@ -6,7 +6,7 @@ import {
   DataBoundary,
 } from '@/common/components';
 import { useCityWeather } from '@/weather/hooks';
-import { getWeatherBackground } from '@/weather/utils';
+import { getWeatherBackgroundImage } from '@/weather/utils';
 import { AppTitle, AppText } from '@/common/components/Typography';
 import styles from './CurrentWeatherCard.module.scss';
 
@@ -28,7 +28,7 @@ export const CurrentWeatherCard = () => {
   }
 
   const { current } = weather;
-  const background = getWeatherBackground(weather?.current?.description);
+  const background = getWeatherBackgroundImage(current.condition);
 
   return (
     <DataBoundary
@@ -52,7 +52,7 @@ export const CurrentWeatherCard = () => {
               >
                 {cityName}
                 <img
-                  src={`https://openweathermap.org/img/wn/${current.icon}@2x.png`}
+                  src={current.iconUrl}
                   alt={current.description}
                   className={styles.iconSmall}
                 />

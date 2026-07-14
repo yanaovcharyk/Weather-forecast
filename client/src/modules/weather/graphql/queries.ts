@@ -15,6 +15,7 @@ export const GET_SAVED_CITIES_PAGINATED = gql`
             min
             max
             description
+            condition
             next3Days {
               min
               max
@@ -56,6 +57,8 @@ export const GET_WEATHER_DETAILS = gql`
         pressure
         description
         icon
+        iconUrl
+        condition
         sunrise
         sunset
       }
@@ -66,6 +69,7 @@ export const GET_WEATHER_DETAILS = gql`
         max
         description
         icon
+        iconUrl
         humidity
         pressure
         clouds
@@ -79,6 +83,7 @@ export const GET_WEATHER_DETAILS = gql`
         temp
         feelsLike
         icon
+        iconUrl
       }
 
       meta {

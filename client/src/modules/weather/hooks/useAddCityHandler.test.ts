@@ -70,6 +70,25 @@ describe('useAddCityHandler', () => {
     expect(toast.success).toHaveBeenCalledWith('City Kyiv added successfully');
   });
 
+  it('clears existing city selection after adding a new city', async () => {
+    vi.mocked(useSearchParams).mockReturnValue([
+      new URLSearchParams('existingId=1&sortBy=cityName'),
+      setSearchParams,
+    ]);
+
+    const { result } = renderHook(() => useAddCityHandler());
+
+    await act(async () => {
+      await result.current.handleAddCity(selectedCity);
+    });
+
+    const updatedParams = setSearchParams.mock.calls[0][0];
+
+    expect(updatedParams.get('existingId')).toBeNull();
+    expect(updatedParams.get('sortBy')).toBe('cityName');
+    expect(addCity).toHaveBeenCalledWith(selectedCity);
+  });
+
   it('selects existing city and shows info toast', async () => {
     getSavedCity.mockResolvedValue(CITY_FIXTURE);
 

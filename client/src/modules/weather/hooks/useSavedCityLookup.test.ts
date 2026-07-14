@@ -1,6 +1,6 @@
 import { renderHook, act } from '@testing-library/react';
 import { vi } from 'vitest';
-import { useApolloClient } from '@apollo/client/react';
+import { useLazyQuery } from '@apollo/client/react';
 
 import { GET_SAVED_CITY } from '@/common/graphql';
 import { useSavedCityLookup } from './useSavedCityLookup';
@@ -8,14 +8,12 @@ import { useSavedCityLookup } from './useSavedCityLookup';
 vi.mock('@apollo/client/react');
 
 describe('useSavedCityLookup', () => {
-  const query = vi.fn();
+  const fetchSavedCity = vi.fn();
 
   beforeEach(() => {
     vi.clearAllMocks();
 
-    vi.mocked(useApolloClient).mockReturnValue({
-      query,
-    } as never);
+    vi.mocked(useLazyQuery).mockReturnValue([fetchSavedCity] as never);
   });
 
   it('returns city', async () => {
@@ -24,7 +22,7 @@ describe('useSavedCityLookup', () => {
       cityName: 'Kyiv',
     };
 
-    query.mockResolvedValue({
+    fetchSavedCity.mockResolvedValue({
       data: {
         getSavedCity: city,
       },
@@ -41,19 +39,20 @@ describe('useSavedCityLookup', () => {
       });
     });
 
-    expect(query).toHaveBeenCalledWith({
-      query: GET_SAVED_CITY,
+    expect(useLazyQuery).toHaveBeenCalledWith(GET_SAVED_CITY, {
+      fetchPolicy: 'network-only',
+    });
+    expect(fetchSavedCity).toHaveBeenCalledWith({
       variables: {
         cityName: 'Kyiv',
         includeWeather: true,
       },
-      fetchPolicy: 'network-only',
     });
     expect(response).toEqual(city);
   });
 
   it('returns null', async () => {
-    query.mockResolvedValue({
+    fetchSavedCity.mockResolvedValue({
       data: {
         getSavedCity: null,
       },

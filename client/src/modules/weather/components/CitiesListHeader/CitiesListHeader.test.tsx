@@ -42,6 +42,23 @@ vi.mock('@/common/hooks/useToast', () => ({
   useToast: vi.fn(),
 }));
 
+const routerMocks = vi.hoisted(() => ({
+  searchParams: new URLSearchParams(),
+  setSearchParams: vi.fn(),
+}));
+
+vi.mock('react-router-dom', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('react-router-dom')>();
+
+  return {
+    ...actual,
+    useSearchParams: () => [
+      routerMocks.searchParams,
+      routerMocks.setSearchParams,
+    ],
+  };
+});
+
 import {
   getSortingUpdater,
   setupCitiesControls as setup,
@@ -51,6 +68,7 @@ import { CitySortField, CitySortOrder } from '@/weather/types';
 describe('CitiesControls', () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    routerMocks.searchParams = new URLSearchParams();
   });
 
   it('renders controls', () => {
@@ -173,6 +191,22 @@ describe('CitiesControls', () => {
   it('disables delete all button when deleteAll is disabled', () => {
     const { getDeleteAllButton } = setup({ cities: [] });
 
+    expect(getDeleteAllButton()).toBeDisabled();
+  });
+
+  it('disables controls in existing city mode', () => {
+    routerMocks.searchParams = new URLSearchParams('existingId=1');
+
+    const {
+      getSortSelect,
+      getSortOrderButton,
+      getPinnedCheckbox,
+      getDeleteAllButton,
+    } = setup();
+
+    expect(getSortSelect()).toBeDisabled();
+    expect(getSortOrderButton()).toBeDisabled();
+    expect(getPinnedCheckbox()).toBeDisabled();
     expect(getDeleteAllButton()).toBeDisabled();
   });
 

@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, afterEach } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { getNextDays } from './getNextDays';
 
 describe('getNextDays', () => {
@@ -21,9 +21,9 @@ describe('getNextDays', () => {
 
     const result = getNextDays(3);
 
-    expect(result[0].label).toBe('Tue');
-    expect(result[1].label).toBe('Wed');
-    expect(result[2].label).toBe('Thu');
+    expect(result[0].weekDay).toBe('Tue');
+    expect(result[1].weekDay).toBe('Wed');
+    expect(result[2].weekDay).toBe('Thu');
   });
 
   it('should correctly increment dates', () => {

@@ -6,6 +6,7 @@ import {
   IWeatherDetails,
   IWeatherMeta,
 } from '@weather/interfaces';
+import { WeatherCondition } from '@weather/enums';
 
 @ObjectType()
 export class WeatherCurrent implements IWeatherCurrent {
@@ -37,6 +38,12 @@ export class WeatherCurrent implements IWeatherCurrent {
   icon!: string;
 
   @Field()
+  iconUrl!: string;
+
+  @Field(() => WeatherCondition)
+  condition!: WeatherCondition;
+
+  @Field()
   sunrise!: string;
 
   @Field()
@@ -59,6 +66,9 @@ export class DailyWeather implements IDailyWeather {
 
   @Field()
   icon!: string;
+
+  @Field()
+  iconUrl!: string;
 
   @Field(() => Float)
   humidity!: number;
@@ -92,6 +102,9 @@ export class HourlyWeather implements IHourlyWeather {
 
   @Field()
   icon!: string;
+
+  @Field()
+  iconUrl!: string;
 }
 
 @ObjectType()
@@ -102,7 +115,6 @@ export class WeatherMeta implements IWeatherMeta {
 
 @ObjectType()
 export class WeatherDetailsOutput {
-
   @Field(() => WeatherCurrent)
   current!: WeatherCurrent;
 

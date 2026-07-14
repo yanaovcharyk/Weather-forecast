@@ -1,6 +1,7 @@
-import { describe, it, expect, vi } from 'vitest';
+import { beforeEach, describe, it, expect, vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { ErrorBoundary } from './ErrorBoundary';
+import { LoggerError } from '@/logger/components/LoggerError/LoggerError';
 import { ToastContext } from '@/common/contexts/ToastContext';
 
 const mocks = vi.hoisted(() => ({
@@ -19,8 +20,12 @@ vi.mock('@/common/utils/normalizeReactError', () => ({
   normalizeReactError: mocks.normalize,
 }));
 
+beforeEach(() => {
+  vi.clearAllMocks();
+});
+
 describe('ErrorBoundary', () => {
-  it('logs and shows toast on error', () => {
+  it('shows toast on error', () => {
     const Throw = () => {
       throw new Error('boom');
     };
@@ -41,7 +46,25 @@ describe('ErrorBoundary', () => {
       </ToastContext.Provider>,
     );
 
-    expect(mocks.error).toHaveBeenCalled();
     expect(mocks.toastError).toHaveBeenCalledWith('Something went wrong');
+  });
+});
+
+describe('LoggerError', () => {
+  it('logs error without owning toast behavior', () => {
+    const onError = vi.fn();
+    const Throw = () => {
+      throw new Error('boom');
+    };
+
+    render(
+      <LoggerError onError={onError}>
+        <Throw />
+      </LoggerError>,
+    );
+
+    expect(mocks.error).toHaveBeenCalled();
+    expect(onError).toHaveBeenCalledOnce();
+    expect(mocks.toastError).not.toHaveBeenCalled();
   });
 });

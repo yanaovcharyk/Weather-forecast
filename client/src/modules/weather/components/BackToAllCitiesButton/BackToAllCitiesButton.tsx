@@ -1,5 +1,5 @@
 import { Button } from 'antd';
-import { AppCard } from '@/common/components';
+import { StyledCard } from '@/common/components';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 export const BackToAllCitiesButton = () => {
@@ -7,13 +7,18 @@ export const BackToAllCitiesButton = () => {
   const [params] = useSearchParams();
 
   const handleBack = () => {
-    navigate(`/?${params.toString()}`);
+    const updatedParams = new URLSearchParams(params);
+    updatedParams.delete('existingId');
+
+    const queryString = updatedParams.toString();
+    navigate(queryString ? `/?${queryString}` : '/');
   };
+
   return (
-    <AppCard>
+    <StyledCard>
       <Button type="default" onClick={handleBack}>
         ← Back to all cities
       </Button>
-    </AppCard>
+    </StyledCard>
   );
 };

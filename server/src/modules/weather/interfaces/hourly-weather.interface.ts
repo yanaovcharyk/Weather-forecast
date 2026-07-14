@@ -3,4 +3,5 @@ export interface IHourlyWeather {
   temp: number;
   feelsLike: number;
   icon: string;
+  iconUrl: string;
 }

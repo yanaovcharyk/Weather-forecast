@@ -7,7 +7,7 @@ import { BackgroundCard, BackgroundCardSkeleton } from '@/common/components';
 import { AppText, AppTitle } from '@/common/components/Typography';
 import { useSmartBackground } from '@/common/hooks';
 import { useRemoveCity, useTogglePinned } from '@/weather/hooks';
-import { getWeatherBackground, getNextDays } from '@/weather/utils';
+import { getNextDays, getWeatherBackgroundImage } from '@/weather/utils';
 import type { City } from '@/weather/types';
 
 import styles from './CityCard.module.scss';
@@ -24,7 +24,7 @@ export const CityCard = React.memo(function CityCard({ city }: CityCardProps) {
   const { togglePinned } = useTogglePinned();
   const [isRemoving, setIsRemoving] = useState(false);
 
-  const background = getWeatherBackground(weather?.description);
+  const background = getWeatherBackgroundImage(weather?.condition);
   const { loaded } = useSmartBackground(background);
 
   const isDisabled = isRemoving;
@@ -140,7 +140,7 @@ export const CityCard = React.memo(function CityCard({ city }: CityCardProps) {
                 className={styles.dayCard}
               >
                 <AppText size="sm" strong>
-                  {days[index]?.label}
+                  {days[index]?.weekDay}
                 </AppText>
 
                 <AppText strong>

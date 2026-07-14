@@ -74,7 +74,6 @@ function sanitizeLogValue(
     return safeStringify(value);
   }
 
-  // ✅ FIXED: Object.create(null) MUST match test expectation
   if (
     value &&
     typeof value === 'object' &&

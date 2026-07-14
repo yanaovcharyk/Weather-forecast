@@ -1,3 +1,5 @@
+import { WeatherCondition } from '@weather/enums';
+
 export interface IWeatherPreviewDay {
   min: number;
   max: number;
@@ -8,7 +10,6 @@ export interface IWeatherPreviewOutput {
   min: number;
   max: number;
   description: string;
+  condition: WeatherCondition;
   next3Days: IWeatherPreviewDay[];
 }
-
-
