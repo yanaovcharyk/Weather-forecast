@@ -2,7 +2,7 @@ import { act, renderHook } from '@testing-library/react';
 import type { useMutation } from '@apollo/client/react';
 import { vi } from 'vitest';
 
-import { createMutationResult } from '@/common/testing/factories';
+import { createMutationResult } from '@/common/testing/fixtures';
 import { useMutationMock } from '@/common/testing/mocks/apollo.mock';
 import {
   useAddCity,

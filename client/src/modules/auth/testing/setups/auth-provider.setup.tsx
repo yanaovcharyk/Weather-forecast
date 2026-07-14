@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import { AuthProvider } from '@/auth/providers/AuthProvider';
-import { AuthStateProbe } from './AuthStateProbe';
+import { AuthStateProbe } from '@/auth/testing/components/AuthStateProbe';
 
 export const setupAuthProvider = () => {
   const user = userEvent.setup();

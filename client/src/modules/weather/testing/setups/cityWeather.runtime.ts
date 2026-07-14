@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 
 import type { CityWeatherContext } from '@/weather/testing/contexts/cityWeather.context';
-import { createQueryResult } from '@/common/testing/factories';
+import { createQueryResult } from '@/common/testing/fixtures';
 import { useQueryMock } from '@/common/testing/mocks/apollo.mock';
 
 export const setupCityWeatherRuntime = (

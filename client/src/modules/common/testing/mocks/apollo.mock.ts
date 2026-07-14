@@ -4,7 +4,7 @@ import type { useMutation, useQuery } from '@apollo/client/react';
 import {
   createMutationResult,
   createQueryResult,
-} from '@/common/testing/factories';
+} from '@/common/testing/fixtures';
 
 const apolloHookMocks = vi.hoisted(() => ({
   useApolloClientMock: vi.fn(),

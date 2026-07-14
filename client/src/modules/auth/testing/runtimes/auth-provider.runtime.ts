@@ -9,7 +9,7 @@ import {
 import {
   createMutationResult,
   createQueryResult,
-} from '@/common/testing/factories';
+} from '@/common/testing/fixtures';
 
 export const setupAuthProviderRuntime = (ctx: AuthProviderContext) => {
   vi.clearAllMocks();

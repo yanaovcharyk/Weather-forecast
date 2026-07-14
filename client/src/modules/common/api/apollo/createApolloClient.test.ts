@@ -44,12 +44,16 @@ import {
   createCitiesConnection,
   createCityEdge,
   createMergeOptions,
-  createTestApolloClient,
+} from '@/common/testing/fixtures/apolloClient.fixture';
+import {
   getSavedCitiesPaginationMerge,
   getTokenRefreshFailureHandler,
+} from '@/common/testing/helpers/apolloClient.helpers';
+import {
   setWindowLocation,
   setupApolloClientRuntime,
-} from '@/common/testing/setups/createApolloClient.setup';
+} from '@/common/testing/runtimes/apolloClient.runtime';
+import { createTestApolloClient } from '@/common/testing/setups/apolloClient.setup';
 
 describe('createApolloClient', () => {
   beforeEach(() => {

@@ -2,13 +2,19 @@ import { describe, expect, it, vi } from 'vitest';
 
 import {
   UNAUTHENTICATED_RESPONSE,
-  createErrorForward,
   createGraphQLErrorResponse,
-  createResponseForward,
-  createRetryForward,
-  createTokenRefreshLink,
+} from '@/common/testing/fixtures/tokenRefreshErrorLink.fixture';
+import {
   missingRetryOperation,
   subscribeToTokenRefreshLink,
+} from '@/common/testing/helpers/tokenRefreshErrorLink.helpers';
+import {
+  createErrorForward,
+  createResponseForward,
+  createRetryForward,
+} from '@/common/testing/mocks/tokenRefreshForward.mock';
+import {
+  createTokenRefreshLink,
   type RetryOperation,
 } from '@/common/testing/setups/tokenRefreshErrorLink.setup';
 

@@ -6,7 +6,7 @@ import { useAddCity } from './useAddCity';
 import { useSavedCityLookup } from './useSavedCityLookup';
 import { useToast } from '@/common/hooks/useToast';
 import { CITY_FIXTURE } from '@/weather/testing/fixtures';
-import { createControlledPromise } from '@/common/testing/factories';
+import { createControlledPromise } from '@/common/testing/fixtures';
 
 vi.mock('react-router-dom', async (importOriginal) => {
   const actual = await importOriginal<typeof import('react-router-dom')>();

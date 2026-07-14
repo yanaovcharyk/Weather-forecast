@@ -3,11 +3,11 @@ import { useLogin } from '@/auth/hooks/useLogin';
 import { testRenderHook } from '@/common/testing/render/renderWithProviders';
 
 export const setupLogin = () => {
-  const hook = testRenderHook(() => useLogin());
+  const renderedHook = testRenderHook(() => useLogin());
 
   const login = async (email: string, password: string) => {
     await act(async () => {
-      await hook.result.current.loginUser({
+      await renderedHook.result.current.loginUser({
         email,
         password,
       });
@@ -15,7 +15,7 @@ export const setupLogin = () => {
   };
 
   return {
-    ...hook,
+    ...renderedHook,
     login,
   };
 };

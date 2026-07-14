@@ -2,15 +2,19 @@ import { ApolloLink } from '@apollo/client';
 import { Observable } from 'rxjs';
 import type { Subscriber } from 'rxjs';
 
-import type { AccessTokenRefreshCoordinator } from '@/auth/services/AccessTokenRefreshCoordinator';
 import {
   extractErrorCode,
   isTokenError,
   mapErrorCodeToMessage,
 } from '@/common/utils';
 
+type TokenRefreshCoordinator = {
+  queueRetryOperation: (operation: () => void) => void;
+  refreshAccessToken: () => Promise<void>;
+};
+
 type CreateErrorLinkParams = {
-  tokenRefreshCoordinator: AccessTokenRefreshCoordinator;
+  tokenRefreshCoordinator: TokenRefreshCoordinator;
   handleRefreshFailure: () => void | Promise<void>;
   displayErrorMessage: (message: string) => void;
 };
@@ -23,7 +27,7 @@ type HandleTokenErrorParams = {
   operation: ApolloLink.Operation;
   forward: ForwardOperation;
   responseObserver: ResponseObserver;
-  tokenRefreshCoordinator: AccessTokenRefreshCoordinator;
+  tokenRefreshCoordinator: TokenRefreshCoordinator;
   handleRefreshFailure: () => void | Promise<void>;
 };
 
