@@ -1,23 +1,41 @@
-import { renderHook, act } from '@testing-library/react';
-import { useLazyQuery } from '@apollo/client/react';
+import { act, renderHook } from '@testing-library/react';
 import { vi } from 'vitest';
 
 import { useCitySearch } from './useCitySearch';
-import { createQueryResult } from '@/common/testing/factories';
-
-vi.mock('@apollo/client/react');
+import { mockApolloLazyQuery } from '@/common/testing/mocks/apollo.mock';
 
 describe('useCitySearch', () => {
   const executeSearch = vi.fn();
+
+  const setup = () => {
+    const { result } = renderHook(() => useCitySearch());
+
+    const search = (query: string) => {
+      act(() => {
+        result.current.handleSearchCities(query);
+      });
+    };
+
+    const flushDebounce = () => {
+      act(() => {
+        vi.advanceTimersByTime(300);
+      });
+    };
+
+    return {
+      result,
+      search,
+      flushDebounce,
+    };
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
     vi.useFakeTimers();
 
-    vi.mocked(useLazyQuery).mockReturnValue([
-      executeSearch,
-      createQueryResult(),
-    ] as never);
+    mockApolloLazyQuery({
+      execute: executeSearch,
+    });
   });
 
   afterEach(() => {
@@ -25,15 +43,15 @@ describe('useCitySearch', () => {
   });
 
   it('returns empty city options', () => {
-    const { result } = renderHook(() => useCitySearch());
+    const { result } = setup();
 
     expect(result.current.cityOptions).toEqual([]);
   });
 
   it('maps city options', () => {
-    vi.mocked(useLazyQuery).mockReturnValue([
-      executeSearch,
-      createQueryResult({
+    mockApolloLazyQuery({
+      execute: executeSearch,
+      result: {
         data: {
           getCitySuggestions: [
             {
@@ -44,10 +62,10 @@ describe('useCitySearch', () => {
             },
           ],
         },
-      }),
-    ] as never);
+      },
+    });
 
-    const { result } = renderHook(() => useCitySearch());
+    const { result } = setup();
 
     expect(result.current.cityOptions).toEqual([
       {
@@ -62,28 +80,22 @@ describe('useCitySearch', () => {
   });
 
   it('does not search when query too short', () => {
-    const { result } = renderHook(() => useCitySearch());
+    const { search, flushDebounce } = setup();
 
-    act(() => {
-      result.current.handleSearchCities('k');
-      vi.runAllTimers();
-    });
+    search('k');
+    flushDebounce();
 
     expect(executeSearch).not.toHaveBeenCalled();
   });
 
   it('normalizes query and searches after debounce', () => {
-    const { result } = renderHook(() => useCitySearch());
+    const { search, flushDebounce } = setup();
 
-    act(() => {
-      result.current.handleSearchCities('Kyiv');
-    });
+    search('Kyiv');
 
     expect(executeSearch).not.toHaveBeenCalled();
 
-    act(() => {
-      vi.advanceTimersByTime(300);
-    });
+    flushDebounce();
 
     expect(executeSearch).toHaveBeenCalledWith({
       variables: {
@@ -95,28 +107,23 @@ describe('useCitySearch', () => {
   });
 
   it('cancels previous search', () => {
-    const { result } = renderHook(() => useCitySearch());
+    const { search, flushDebounce } = setup();
 
-    act(() => {
-      result.current.handleSearchCities('Kyiv');
-      result.current.handleSearchCities('Kyiv');
-    });
+    search('Kyiv');
+    search('Kyiv');
 
-    act(() => {
-      vi.advanceTimersByTime(300);
-    });
+    flushDebounce();
 
     expect(executeSearch).toHaveBeenCalledTimes(1);
   });
 
   it('clears pending search when next query is too short', () => {
-    const { result } = renderHook(() => useCitySearch());
+    const { search, flushDebounce } = setup();
 
-    act(() => {
-      result.current.handleSearchCities('Kyiv');
-      result.current.handleSearchCities('Ky');
-      vi.runAllTimers();
-    });
+    search('Kyiv');
+    search('Ky');
+
+    flushDebounce();
 
     expect(executeSearch).not.toHaveBeenCalled();
   });

@@ -1,19 +1,42 @@
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { vi } from 'vitest';
-import { useLazyQuery } from '@apollo/client/react';
 
 import { GET_SAVED_CITY } from '@/common/graphql';
+import {
+  mockApolloLazyQuery,
+  useLazyQueryMock,
+} from '@/common/testing/mocks/apollo.mock';
 import { useSavedCityLookup } from './useSavedCityLookup';
-
-vi.mock('@apollo/client/react');
 
 describe('useSavedCityLookup', () => {
   const fetchSavedCity = vi.fn();
 
+  const setup = () => {
+    const { result } = renderHook(() => useSavedCityLookup());
+
+    const getSavedCity = async (
+      params: Parameters<typeof result.current.getSavedCity>[0],
+    ) => {
+      let response;
+
+      await act(async () => {
+        response = await result.current.getSavedCity(params);
+      });
+
+      return response;
+    };
+
+    return {
+      getSavedCity,
+    };
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
 
-    vi.mocked(useLazyQuery).mockReturnValue([fetchSavedCity] as never);
+    mockApolloLazyQuery({
+      execute: fetchSavedCity,
+    });
   });
 
   it('returns city', async () => {
@@ -28,26 +51,24 @@ describe('useSavedCityLookup', () => {
       },
     });
 
-    const { result } = renderHook(() => useSavedCityLookup());
+    const { getSavedCity } = setup();
 
-    let response;
-
-    await act(async () => {
-      response = await result.current.getSavedCity({
-        cityName: 'Kyiv',
-        includeWeather: true,
-      });
+    const response = await getSavedCity({
+      cityName: 'Kyiv',
+      includeWeather: true,
     });
 
-    expect(useLazyQuery).toHaveBeenCalledWith(GET_SAVED_CITY, {
+    expect(useLazyQueryMock).toHaveBeenCalledWith(GET_SAVED_CITY, {
       fetchPolicy: 'network-only',
     });
+
     expect(fetchSavedCity).toHaveBeenCalledWith({
       variables: {
         cityName: 'Kyiv',
         includeWeather: true,
       },
     });
+
     expect(response).toEqual(city);
   });
 
@@ -58,12 +79,10 @@ describe('useSavedCityLookup', () => {
       },
     });
 
-    const { result } = renderHook(() => useSavedCityLookup());
+    const { getSavedCity } = setup();
 
-    let response;
-
-    await act(async () => {
-      response = await result.current.getSavedCity({ cityName: 'Kyiv' });
+    const response = await getSavedCity({
+      cityName: 'Kyiv',
     });
 
     expect(response).toBeNull();

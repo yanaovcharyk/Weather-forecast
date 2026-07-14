@@ -1,11 +1,9 @@
-import { renderHook, act } from '@testing-library/react';
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { useMutation } from '@apollo/client/react';
-import { useTogglePinned } from './useTogglePinned';
-import { createMutationResult } from '@/common/testing/factories';
-import { GraphQLTypename } from '@/weather/types';
+import { act, renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-vi.mock('@apollo/client/react');
+import { useTogglePinned } from './useTogglePinned';
+import { mockApolloMutation } from '@/common/testing/mocks/apollo.mock';
+import { GraphQLTypename } from '@/weather/types';
 
 type UpdateCityMutation = {
   updateSavedCity: {
@@ -30,21 +28,33 @@ type MutateFn = (options: {
 describe('useTogglePinned', () => {
   const mutate = vi.fn<MutateFn>();
 
+  const setup = () => {
+    const { result } = renderHook(() => useTogglePinned());
+
+    const togglePinned = async (id: string, isPinned: boolean) => {
+      await act(async () => {
+        await result.current.togglePinned(id, isPinned);
+      });
+    };
+
+    return {
+      result,
+      togglePinned,
+    };
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
 
-    vi.mocked(useMutation).mockReturnValue([
+    mockApolloMutation({
       mutate,
-      createMutationResult(),
-    ] as unknown as ReturnType<typeof useMutation>);
+    });
   });
 
   it('pins city with optimistic response when city is not pinned', async () => {
-    const { result } = renderHook(() => useTogglePinned());
+    const { togglePinned } = setup();
 
-    await act(async () => {
-      await result.current.togglePinned('1', false);
-    });
+    await togglePinned('1', false);
 
     expect(mutate).toHaveBeenCalledWith({
       variables: {
@@ -64,11 +74,9 @@ describe('useTogglePinned', () => {
   });
 
   it('unpins city with optimistic response when city is pinned', async () => {
-    const { result } = renderHook(() => useTogglePinned());
+    const { togglePinned } = setup();
 
-    await act(async () => {
-      await result.current.togglePinned('1', true);
-    });
+    await togglePinned('1', true);
 
     expect(mutate).toHaveBeenCalledWith({
       variables: {
@@ -88,14 +96,14 @@ describe('useTogglePinned', () => {
   });
 
   it('returns loading state', () => {
-    vi.mocked(useMutation).mockReturnValue([
+    mockApolloMutation({
       mutate,
-      createMutationResult({
+      result: {
         loading: true,
-      }),
-    ] as unknown as ReturnType<typeof useMutation>);
+      },
+    });
 
-    const { result } = renderHook(() => useTogglePinned());
+    const { result } = setup();
 
     expect(result.current.loading).toBe(true);
   });

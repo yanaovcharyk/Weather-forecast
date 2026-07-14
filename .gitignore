@@ -5,6 +5,10 @@ node_modules/
 dist/
 build/
 
+# coverage
+coverage/
+coverage.txt
+
 # env
 .env
 .env.*

@@ -1,76 +1,62 @@
-import {
-  describe,
-  it,
-  expect,
-  vi,
-  beforeEach,
-  afterEach,
-  type MockInstance,
-} from 'vitest';
-import { LoggerQueue } from './LoggerQueueService';
-import {
-  LOGGER_BATCH_SIZE,
-  LOGGER_FLUSH_INTERVAL_IN_MS,
-} from '@/logger/constants';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+
 import { config } from '@/common/config';
 import { loggerRetryQueue } from './LoggerRetryService';
+import { LoggerQueue } from './LoggerQueueService';
 import { createLogRecord } from '@/logger/testing/fixtures';
+import type { LoggerQueueTransportMocks } from '@/logger/testing/contexts/loggerQueue.context';
+import {
+  advanceLoggerFlushInterval,
+  setDocumentVisibility,
+  setupLoggerQueueRuntime,
+  type LoggerQueueRuntime,
+} from '@/logger/testing/setups/loggerQueue.runtime';
 
-const mocks = vi.hoisted(() => ({
-  sendMock: vi.fn(),
-  sendOnCloseMock: vi.fn(),
-}));
+const mocks = vi.hoisted(
+  (): LoggerQueueTransportMocks => ({
+    sendMock: vi.fn(),
+    sendOnCloseMock: vi.fn(),
+  }),
+);
 
-vi.mock('./GraphQLLoggerTransport', () => ({
-  GraphQLLoggerTransport: class {
-    send = mocks.sendMock;
-    sendOnPageClose = mocks.sendOnCloseMock;
-  },
-}));
+vi.mock('./GraphQLLoggerTransport', async () => {
+  const { createGraphQLLoggerTransportMock } =
+    await import('@/logger/testing/mocks/loggerQueue.mock');
 
-vi.mock('./LoggerRetryService', () => ({
-  loggerRetryQueue: {
-    retryFailedBatch: vi.fn(),
-  },
-}));
+  return {
+    GraphQLLoggerTransport: createGraphQLLoggerTransportMock(mocks),
+  };
+});
+
+vi.mock('./LoggerRetryService', async () => {
+  const { createLoggerRetryQueueMock } =
+    await import('@/logger/testing/mocks/loggerQueue.mock');
+
+  return {
+    loggerRetryQueue: createLoggerRetryQueueMock(),
+  };
+});
 
 describe('LoggerQueue', () => {
-  let queue: LoggerQueue;
-  let consoleSpy: MockInstance;
-
-  const fillBatch = () => {
-    for (let i = 0; i < LOGGER_BATCH_SIZE; i++) {
-      queue.addLog(createLogRecord({ message: `log-${i}` }));
-    }
-  };
-
-  const flush = () => vi.runOnlyPendingTimersAsync();
+  let runtime: LoggerQueueRuntime;
 
   beforeEach(() => {
-    vi.useFakeTimers();
-    vi.clearAllMocks();
-
-    config.isLoggerRemote = true;
-    queue = new LoggerQueue(false);
-
-    consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    runtime = setupLoggerQueueRuntime(mocks);
   });
 
   afterEach(() => {
-    queue.destroy();
-    vi.useRealTimers();
-    consoleSpy.mockRestore();
+    runtime.destroy();
   });
 
   it('sends logs manually', async () => {
-    queue.addLog(createLogRecord({ message: 'test' }));
-    await queue.sendQueuedLogs();
+    runtime.queue.addLog(createLogRecord({ message: 'test' }));
+    await runtime.queue.sendQueuedLogs();
 
     expect(mocks.sendMock).toHaveBeenCalledTimes(1);
   });
 
   it('does nothing when queue is empty', async () => {
-    await queue.sendQueuedLogs();
+    await runtime.queue.sendQueuedLogs();
 
     expect(mocks.sendMock).not.toHaveBeenCalled();
   });
@@ -78,8 +64,8 @@ describe('LoggerQueue', () => {
   it('does not queue logs when remote logging is disabled', async () => {
     config.isLoggerRemote = false;
 
-    queue.addLog(createLogRecord({ message: 'test' }));
-    await queue.sendQueuedLogs();
+    runtime.queue.addLog(createLogRecord({ message: 'test' }));
+    await runtime.queue.sendQueuedLogs();
 
     expect(mocks.sendMock).not.toHaveBeenCalled();
   });
@@ -87,8 +73,8 @@ describe('LoggerQueue', () => {
   it('retries failed send', async () => {
     mocks.sendMock.mockRejectedValueOnce(new Error('fail'));
 
-    queue.addLog(createLogRecord({ message: 'test' }));
-    await queue.sendQueuedLogs();
+    runtime.queue.addLog(createLogRecord({ message: 'test' }));
+    await runtime.queue.sendQueuedLogs();
 
     expect(loggerRetryQueue.retryFailedBatch).toHaveBeenCalled();
   });
@@ -98,47 +84,51 @@ describe('LoggerQueue', () => {
 
     mocks.sendMock.mockRejectedValueOnce(error);
 
-    fillBatch();
-    await queue.sendQueuedLogs();
+    runtime.fillBatch();
 
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Failed to send queued logs',
-      error,
-    );
+    await vi.waitFor(() => {
+      expect(runtime.consoleSpy).toHaveBeenCalledWith(
+        'Failed to send queued logs',
+        error,
+      );
+    });
   });
 
   it('auto scheduler sends logs', async () => {
-    const autoQueue = new LoggerQueue(true);
+    const autoQueue = runtime.createAutoQueue();
 
     autoQueue.addLog(createLogRecord({ message: 'x' }));
 
-    vi.advanceTimersByTime(LOGGER_FLUSH_INTERVAL_IN_MS);
-    await flush();
+    advanceLoggerFlushInterval();
+    await runtime.flushTimers();
 
     expect(mocks.sendMock).toHaveBeenCalledTimes(1);
 
     autoQueue.destroy();
   });
 
-  it('logs scheduler error (auto flush)', async () => {
+  it('logs scheduler error during auto flush', async () => {
     const error = new Error('scheduler error');
 
     mocks.sendMock.mockRejectedValueOnce(error);
 
-    const autoQueue = new LoggerQueue(true);
+    const autoQueue = runtime.createAutoQueue();
 
     autoQueue.addLog(createLogRecord({ message: 'x' }));
 
-    vi.advanceTimersByTime(LOGGER_FLUSH_INTERVAL_IN_MS);
-    await flush();
+    advanceLoggerFlushInterval();
+    await runtime.flushTimers();
 
-    expect(consoleSpy).toHaveBeenCalledWith('Failed to auto send logs', error);
+    expect(runtime.consoleSpy).toHaveBeenCalledWith(
+      'Failed to auto send logs',
+      error,
+    );
 
     autoQueue.destroy();
   });
 
   it('flushes on beforeunload', () => {
-    queue.addLog(createLogRecord({ message: 'test' }));
+    runtime.queue.addLog(createLogRecord({ message: 'test' }));
 
     window.dispatchEvent(new Event('beforeunload'));
 
@@ -146,13 +136,9 @@ describe('LoggerQueue', () => {
   });
 
   it('flushes on visibility hidden', () => {
-    queue.addLog(createLogRecord({ message: 'test' }));
+    runtime.queue.addLog(createLogRecord({ message: 'test' }));
 
-    Object.defineProperty(document, 'visibilityState', {
-      configurable: true,
-      value: 'hidden',
-    });
-
+    setDocumentVisibility('hidden');
     document.dispatchEvent(new Event('visibilitychange'));
 
     expect(mocks.sendOnCloseMock).toHaveBeenCalled();
@@ -160,8 +146,7 @@ describe('LoggerQueue', () => {
 
   it('clears interval on destroy', () => {
     const spy = vi.spyOn(globalThis, 'clearInterval');
-
-    const autoQueue = new LoggerQueue(true);
+    const autoQueue = runtime.createAutoQueue();
 
     autoQueue.destroy();
 
@@ -170,106 +155,72 @@ describe('LoggerQueue', () => {
     spy.mockRestore();
   });
 
-  it('covers batch error console (line 24)', async () => {
-    const error = new Error('batch fail');
-
-    mocks.sendMock.mockRejectedValueOnce(error);
-
-    const q = new LoggerQueue(false);
-
-    for (let i = 0; i < LOGGER_BATCH_SIZE; i++) {
-      q.addLog(createLogRecord({ message: `log-${i}` }));
-    }
-
-    await vi.runOnlyPendingTimersAsync();
-
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Failed to send queued logs',
-      error,
-    );
-  });
-
-  it('covers auto scheduler error console (line 60)', async () => {
-    const error = new Error('auto fail');
-
-    mocks.sendMock.mockRejectedValueOnce(error);
-
-    const q = new LoggerQueue(true);
-
-    q.addLog(createLogRecord({ message: 'x' }));
-
-    vi.advanceTimersByTime(LOGGER_FLUSH_INTERVAL_IN_MS);
-
-    await vi.runOnlyPendingTimersAsync();
-
-    expect(consoleSpy).toHaveBeenCalledWith('Failed to auto send logs', error);
-
-    q.destroy();
-  });
-
-  it('covers addLog batch catch handler', async () => {
+  it('logs addLog batch catch handler errors', async () => {
     const error = new Error('send failed');
 
     mocks.sendMock.mockRejectedValueOnce(error);
-
     vi.mocked(loggerRetryQueue.retryFailedBatch).mockRejectedValueOnce(error);
 
-    for (let i = 0; i < LOGGER_BATCH_SIZE; i++) {
-      queue.addLog(createLogRecord({ message: `log-${i}` }));
-    }
+    runtime.fillBatch();
 
-    await Promise.resolve();
-    await Promise.resolve();
-
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Failed to send queued logs',
-      error,
-    );
+    await vi.waitFor(() => {
+      expect(runtime.consoleSpy).toHaveBeenCalledWith(
+        'Failed to send queued logs',
+        error,
+      );
+    });
   });
 
-  it('covers auto scheduler outer catch handler', async () => {
+  it('logs auto scheduler outer catch handler errors', async () => {
     const error = new Error('send failed');
 
     mocks.sendMock.mockRejectedValueOnce(error);
-
     vi.mocked(loggerRetryQueue.retryFailedBatch).mockRejectedValueOnce(error);
 
-    const q = new LoggerQueue(true);
+    const autoQueue = runtime.createAutoQueue();
 
-    q.addLog(createLogRecord({ message: 'x' }));
+    autoQueue.addLog(createLogRecord({ message: 'x' }));
 
-    vi.advanceTimersByTime(LOGGER_FLUSH_INTERVAL_IN_MS);
-    await vi.runOnlyPendingTimersAsync();
+    advanceLoggerFlushInterval();
+    await runtime.flushTimers();
 
-    expect(consoleSpy).toHaveBeenCalledWith('Failed to auto send logs', error);
+    expect(runtime.consoleSpy).toHaveBeenCalledWith(
+      'Failed to auto send logs',
+      error,
+    );
 
-    q.destroy();
+    autoQueue.destroy();
   });
 
   it('does not start scheduler twice', () => {
     const setIntervalSpy = vi.spyOn(window, 'setInterval');
-
-    const q = new LoggerQueue(true);
-
-    expect(setIntervalSpy).toHaveBeenCalledTimes(1);
-
-    (q as unknown as Record<string, () => void>)['startAutoSendScheduler']();
+    const autoQueue = runtime.createAutoQueue();
 
     expect(setIntervalSpy).toHaveBeenCalledTimes(1);
 
-    q.destroy();
+    (autoQueue as unknown as Record<string, () => void>)[
+      'startAutoSendScheduler'
+    ]();
+
+    expect(setIntervalSpy).toHaveBeenCalledTimes(1);
+
+    autoQueue.destroy();
   });
 
   it('does not flush when page is visible', () => {
-    queue.addLog(createLogRecord({ message: 'test' }));
+    runtime.queue.addLog(createLogRecord({ message: 'test' }));
 
-    Object.defineProperty(document, 'visibilityState', {
-      configurable: true,
-      value: 'visible',
-    });
-
+    setDocumentVisibility('visible');
     document.dispatchEvent(new Event('visibilitychange'));
 
     expect(mocks.sendOnCloseMock).not.toHaveBeenCalled();
+  });
+
+  it('can create manual queue directly for coverage-sensitive paths', () => {
+    const queue = new LoggerQueue(false);
+
+    expect(queue).toBeInstanceOf(LoggerQueue);
+
+    queue.destroy();
   });
 });

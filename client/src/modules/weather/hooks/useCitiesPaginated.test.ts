@@ -1,61 +1,44 @@
-import { renderHook, act } from '@testing-library/react';
-import { useQuery } from '@apollo/client/react';
 import { vi } from 'vitest';
 
-import { useCitiesPaginated } from './useCitiesPaginated';
-import { createQueryResult } from '@/common/testing/factories';
-import { CitySortField, CitySortOrder } from '@/weather/types';
-
-vi.mock('@apollo/client/react');
+import { useQueryMock } from '@/common/testing/mocks/apollo.mock';
+import {
+  KYIV_CITY_NODE_FIXTURE,
+  LVIV_CITY_NODE_FIXTURE,
+  createCitiesConnection,
+  createCitiesPaginatedResponse,
+} from '@/weather/testing/fixtures';
+import {
+  DEFAULT_CITIES_SORTING,
+  NEXT_PAGE_SORTING,
+  createCitiesFetchMoreMock,
+  createEmptyCitiesResponse,
+  loadMoreCities,
+  setupCitiesPaginated,
+  setupCitiesPaginatedQuery,
+} from '@/weather/testing/setups/citiesPaginated.setup';
 
 describe('useCitiesPaginated', () => {
-  const fetchMore = vi.fn();
+  const fetchMore = createCitiesFetchMoreMock();
 
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it('returns mapped cities', () => {
-    vi.mocked(useQuery).mockReturnValue(
-      createQueryResult({
-        fetchMore,
-        data: {
-          getSavedCitiesPaginated: {
-            edges: [
-              {
-                node: {
-                  id: '1',
-                  cityName: 'Kyiv',
-                },
-              },
-              {
-                node: {
-                  id: '2',
-                  cityName: 'Lviv',
-                },
-              },
-            ],
-            pageInfo: {
-              hasNextPage: false,
-            },
-          },
-        },
-      }) as never,
-    );
-
-    const { result } = renderHook(() =>
-      useCitiesPaginated(
-        {
-          sortBy: CitySortField.CityName,
-          sortOrder: CitySortOrder.Asc,
-        },
-        false,
+    setupCitiesPaginatedQuery({
+      fetchMore,
+      data: createCitiesPaginatedResponse(
+        createCitiesConnection({
+          nodes: [KYIV_CITY_NODE_FIXTURE, LVIV_CITY_NODE_FIXTURE],
+        }),
       ),
-    );
+    });
+
+    const { result } = setupCitiesPaginated();
 
     expect(result.current.cities).toHaveLength(2);
     expect(result.current.hasNext).toBe(false);
-    expect(useQuery).toHaveBeenCalledWith(
+    expect(useQueryMock).toHaveBeenCalledWith(
       expect.anything(),
       expect.objectContaining({
         variables: {
@@ -76,54 +59,30 @@ describe('useCitiesPaginated', () => {
   });
 
   it('returns empty cities array', () => {
-    vi.mocked(useQuery).mockReturnValue(
-      createQueryResult({
-        fetchMore,
-      }) as never,
-    );
+    setupCitiesPaginatedQuery({
+      fetchMore,
+    });
 
-    const { result } = renderHook(() =>
-      useCitiesPaginated(
-        {
-          sortBy: CitySortField.CityName,
-          sortOrder: CitySortOrder.Asc,
-        },
-        false,
-      ),
-    );
+    const { result } = setupCitiesPaginated();
 
     expect(result.current.cities).toEqual([]);
   });
 
   it('loads next page', async () => {
-    vi.mocked(useQuery).mockReturnValue(
-      createQueryResult({
-        fetchMore,
-        data: {
-          getSavedCitiesPaginated: {
-            edges: [],
-            pageInfo: {
-              hasNextPage: true,
-              endCursor: 'cursor-1',
-            },
-          },
-        },
-      }) as never,
-    );
-
-    const { result } = renderHook(() =>
-      useCitiesPaginated(
-        {
-          sortBy: CitySortField.CreatedAt,
-          sortOrder: CitySortOrder.Desc,
-        },
-        true,
-      ),
-    );
-
-    await act(async () => {
-      await result.current.loadMore();
+    setupCitiesPaginatedQuery({
+      fetchMore,
+      data: createEmptyCitiesResponse({
+        hasNextPage: true,
+        endCursor: 'cursor-1',
+      }),
     });
+
+    const { result } = setupCitiesPaginated({
+      sorting: NEXT_PAGE_SORTING,
+      showPinnedOnly: true,
+    });
+
+    await loadMoreCities(result);
 
     expect(fetchMore).toHaveBeenCalledWith({
       variables: {
@@ -143,33 +102,19 @@ describe('useCitiesPaginated', () => {
   });
 
   it('loads next page with null cursor when end cursor is missing', async () => {
-    vi.mocked(useQuery).mockReturnValue(
-      createQueryResult({
-        fetchMore,
-        data: {
-          getSavedCitiesPaginated: {
-            edges: [],
-            pageInfo: {
-              hasNextPage: true,
-            },
-          },
-        },
-      }) as never,
-    );
-
-    const { result } = renderHook(() =>
-      useCitiesPaginated(
-        {
-          sortBy: CitySortField.CreatedAt,
-          sortOrder: CitySortOrder.Desc,
-        },
-        true,
-      ),
-    );
-
-    await act(async () => {
-      await result.current.loadMore();
+    setupCitiesPaginatedQuery({
+      fetchMore,
+      data: createEmptyCitiesResponse({
+        hasNextPage: true,
+      }),
     });
+
+    const { result } = setupCitiesPaginated({
+      sorting: NEXT_PAGE_SORTING,
+      showPinnedOnly: true,
+    });
+
+    await loadMoreCities(result);
 
     expect(fetchMore).toHaveBeenCalledWith({
       variables: {
@@ -189,33 +134,17 @@ describe('useCitiesPaginated', () => {
   });
 
   it('does not load more when no next page', async () => {
-    vi.mocked(useQuery).mockReturnValue(
-      createQueryResult({
-        fetchMore,
-        data: {
-          getSavedCitiesPaginated: {
-            edges: [],
-            pageInfo: {
-              hasNextPage: false,
-            },
-          },
-        },
-      }) as never,
-    );
-
-    const { result } = renderHook(() =>
-      useCitiesPaginated(
-        {
-          sortBy: CitySortField.CityName,
-          sortOrder: CitySortOrder.Asc,
-        },
-        false,
-      ),
-    );
-
-    await act(async () => {
-      await result.current.loadMore();
+    setupCitiesPaginatedQuery({
+      fetchMore,
+      data: createEmptyCitiesResponse(),
     });
+
+    const { result } = setupCitiesPaginated({
+      sorting: DEFAULT_CITIES_SORTING,
+      showPinnedOnly: false,
+    });
+
+    await loadMoreCities(result);
 
     expect(fetchMore).not.toHaveBeenCalled();
   });

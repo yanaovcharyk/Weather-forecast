@@ -1,79 +1,25 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-type CityNode = {
-  id: string;
-};
+import type { ApolloClientPackageMocks } from '@/common/testing/contexts/apolloClient.context';
 
-type Edge = {
-  node: CityNode;
-};
-
-type CacheConfig = {
-  typePolicies: {
-    CityOutput: {
-      keyFields: string[];
-    };
-
-    Query: {
-      fields: {
-        getSavedCitiesPaginated: {
-          merge: (
-            existing: unknown,
-            incoming: unknown,
-            options: unknown,
-          ) => unknown;
-        };
-      };
-    };
-  };
-};
-
-const mocks = vi.hoisted(() => ({
-  mockApolloClient: vi.fn(),
-  mockApolloLinkFrom: vi.fn(() => ({})),
-  mockTokenRefreshErrorLink: {},
-
-  capturedCacheConfig: undefined as CacheConfig | undefined,
-
-  mockHttpLink: vi.fn(function (
-    this: Record<string, unknown>,
-    config: unknown,
-  ) {
-    Object.assign(this, { config });
+const mocks = vi.hoisted(
+  (): ApolloClientPackageMocks => ({
+    mockApolloClient: vi.fn(),
+    mockApolloLinkFrom: vi.fn(() => ({})),
+    mockTokenRefreshErrorLink: {},
+    capturedCacheConfig: undefined,
+    mockHttpLink: vi.fn(),
+    mockInMemoryCache: vi.fn(),
   }),
-
-  mockInMemoryCache: vi.fn(function (
-    this: Record<string, unknown>,
-    config: CacheConfig,
-  ) {
-    mocks.capturedCacheConfig = config;
-
-    Object.assign(this, { config });
-  }),
-}));
+);
 
 vi.mock('@apollo/client', async () => {
   const actual =
     await vi.importActual<typeof import('@apollo/client')>('@apollo/client');
+  const { createApolloClientPackageMock } =
+    await import('@/common/testing/mocks/apolloClientPackage.mock');
 
-  const MockApolloLink = vi.fn(function (
-    this: Record<string, unknown>,
-    request?: unknown,
-  ) {
-    Object.assign(this, { request });
-  });
-
-  Object.assign(MockApolloLink, {
-    from: mocks.mockApolloLinkFrom,
-  });
-
-  return {
-    ...actual,
-    ApolloClient: mocks.mockApolloClient,
-    ApolloLink: MockApolloLink,
-    HttpLink: mocks.mockHttpLink,
-    InMemoryCache: mocks.mockInMemoryCache,
-  };
+  return createApolloClientPackageMock(actual, mocks);
 });
 
 vi.mock('@/common/config', () => ({
@@ -92,28 +38,26 @@ vi.mock('./links/tokenRefreshErrorLink', () => ({
   createTokenRefreshErrorLink: vi.fn(() => mocks.mockTokenRefreshErrorLink),
 }));
 
-import { createApolloClient } from './createApolloClient';
 import { createTokenRefreshErrorLink } from './links/tokenRefreshErrorLink';
 import { loggerContext } from '@/logger/context/LoggerContextStore';
+import {
+  createCitiesConnection,
+  createCityEdge,
+  createMergeOptions,
+  createTestApolloClient,
+  getSavedCitiesPaginationMerge,
+  getTokenRefreshFailureHandler,
+  setWindowLocation,
+  setupApolloClientRuntime,
+} from '@/common/testing/setups/createApolloClient.setup';
 
 describe('createApolloClient', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
-    mocks.capturedCacheConfig = undefined;
-
-    Object.defineProperty(window, 'location', {
-      value: {
-        href: '',
-        pathname: '/',
-      },
-      writable: true,
-    });
+    setupApolloClientRuntime(mocks);
   });
 
   it('creates apollo client', () => {
-    createApolloClient({
-      displayErrorMessage: vi.fn(),
-    });
+    createTestApolloClient();
 
     expect(mocks.mockHttpLink).toHaveBeenCalledWith({
       uri: 'http://localhost/graphql',
@@ -121,10 +65,7 @@ describe('createApolloClient', () => {
     });
 
     expect(createTokenRefreshErrorLink).toHaveBeenCalledTimes(1);
-
     expect(mocks.mockApolloLinkFrom).toHaveBeenCalledTimes(1);
-
-    expect(mocks.mockApolloClient).toHaveBeenCalledTimes(1);
     expect(mocks.mockApolloClient).toHaveBeenCalledWith(
       expect.objectContaining({
         devtools: {
@@ -138,49 +79,33 @@ describe('createApolloClient', () => {
   it('handles refresh failure from token refresh link callback', () => {
     const setSpy = vi.spyOn(loggerContext, 'set');
 
-    createApolloClient({
-      displayErrorMessage: vi.fn(),
-    });
+    createTestApolloClient();
 
-    const [{ handleRefreshFailure }] = vi.mocked(createTokenRefreshErrorLink)
-      .mock.calls[0];
-
-    handleRefreshFailure();
+    getTokenRefreshFailureHandler()();
 
     expect(setSpy).toHaveBeenCalledWith(
       expect.objectContaining({
         userId: undefined,
       }),
     );
-
     expect(window.location.href).toBe('/login');
   });
 
   it('does not redirect again when token refresh fails on login page', () => {
-    Object.defineProperty(window, 'location', {
-      value: {
-        href: 'http://localhost/login',
-        pathname: '/login',
-      },
-      writable: true,
+    setWindowLocation({
+      href: 'http://localhost/login',
+      pathname: '/login',
     });
 
-    createApolloClient({
-      displayErrorMessage: vi.fn(),
-    });
+    createTestApolloClient();
 
-    const [{ handleRefreshFailure }] = vi.mocked(createTokenRefreshErrorLink)
-      .mock.calls[0];
-
-    handleRefreshFailure();
+    getTokenRefreshFailureHandler()();
 
     expect(window.location.href).toBe('http://localhost/login');
   });
 
   it('normalizes city outputs by id', () => {
-    createApolloClient({
-      displayErrorMessage: vi.fn(),
-    });
+    createTestApolloClient();
 
     expect(mocks.capturedCacheConfig?.typePolicies.CityOutput).toEqual({
       keyFields: ['id'],
@@ -188,75 +113,37 @@ describe('createApolloClient', () => {
   });
 
   it('returns incoming data for first page', () => {
-    createApolloClient({
-      displayErrorMessage: vi.fn(),
+    createTestApolloClient();
+
+    const merge = getSavedCitiesPaginationMerge(mocks);
+    const incoming = createCitiesConnection({
+      edges: [createCityEdge('1')],
     });
 
-    const merge =
-      mocks.capturedCacheConfig?.typePolicies.Query.fields
-        .getSavedCitiesPaginated.merge;
-
-    expect(merge).toBeDefined();
-
-    const incoming = {
-      __typename: 'CitiesConnection',
-      edges: [{ node: { id: '1' } }],
-      pageInfo: {},
-    };
-
-    const result = merge?.(undefined, incoming, {
-      args: {
-        query: {
-          pagination: {},
-        },
-      },
-      readField: vi.fn((_field: string, node: CityNode): string => node.id),
-    });
+    const result = merge(undefined, incoming, createMergeOptions());
 
     expect(result).toBe(incoming);
   });
 
   it('merges next page and appends only new cities', () => {
-    createApolloClient({
-      displayErrorMessage: vi.fn(),
-    });
+    createTestApolloClient();
 
-    const merge =
-      mocks.capturedCacheConfig?.typePolicies.Query.fields
-        .getSavedCitiesPaginated.merge;
-
-    expect(merge).toBeDefined();
-
+    const merge = getSavedCitiesPaginationMerge(mocks);
     const existing = {
-      edges: [{ node: { id: '1' } }, { node: { id: '2' } }] satisfies Edge[],
+      edges: [createCityEdge('1'), createCityEdge('2')],
     };
-
-    const incoming = {
-      __typename: 'CitiesConnection',
-      edges: [{ node: { id: '2' } }, { node: { id: '3' } }] satisfies Edge[],
+    const incoming = createCitiesConnection({
+      edges: [createCityEdge('2'), createCityEdge('3')],
       pageInfo: {
         hasNextPage: false,
       },
-    };
-
-    const result = merge?.(existing, incoming, {
-      args: {
-        query: {
-          pagination: {
-            cursor: 'cursor',
-          },
-        },
-      },
-      readField: (_field: string, node: CityNode): string => node.id,
     });
+
+    const result = merge(existing, incoming, createMergeOptions('cursor'));
 
     expect(result).toEqual({
       __typename: 'CitiesConnection',
-      edges: [
-        { node: { id: '1' } },
-        { node: { id: '2' } },
-        { node: { id: '3' } },
-      ],
+      edges: [createCityEdge('1'), createCityEdge('2'), createCityEdge('3')],
       pageInfo: {
         hasNextPage: false,
       },
@@ -264,69 +151,34 @@ describe('createApolloClient', () => {
   });
 
   it('does not append duplicate cities', () => {
-    createApolloClient({
-      displayErrorMessage: vi.fn(),
-    });
+    createTestApolloClient();
 
-    const merge =
-      mocks.capturedCacheConfig?.typePolicies.Query.fields
-        .getSavedCitiesPaginated.merge;
-
-    expect(merge).toBeDefined();
-
-    const result = merge?.(
+    const merge = getSavedCitiesPaginationMerge(mocks);
+    const result = merge(
       {
-        edges: [{ node: { id: '1' } }] satisfies Edge[],
+        edges: [createCityEdge('1')],
       },
-      {
-        __typename: 'CitiesConnection',
-        edges: [{ node: { id: '1' } }] satisfies Edge[],
-        pageInfo: {},
-      },
-      {
-        args: {
-          query: {
-            pagination: {
-              cursor: 'next-page',
-            },
-          },
-        },
-        readField: (_field: string, node: CityNode): string => node.id,
-      },
-    ) as { edges: Edge[] };
+      createCitiesConnection({
+        edges: [createCityEdge('1')],
+      }),
+      createMergeOptions('next-page'),
+    ) as { edges: unknown[] };
 
     expect(result.edges).toHaveLength(1);
   });
 
   it('handles missing edges collections', () => {
-    createApolloClient({
-      displayErrorMessage: vi.fn(),
-    });
+    createTestApolloClient();
 
-    const merge =
-      mocks.capturedCacheConfig?.typePolicies.Query.fields
-        .getSavedCitiesPaginated.merge;
-
-    expect(merge).toBeDefined();
-
-    const result = merge?.(
+    const merge = getSavedCitiesPaginationMerge(mocks);
+    const result = merge(
       {},
-      {
-        __typename: 'CitiesConnection',
+      createCitiesConnection({
         pageInfo: {
           hasNextPage: false,
         },
-      },
-      {
-        args: {
-          query: {
-            pagination: {
-              cursor: 'next-page',
-            },
-          },
-        },
-        readField: (_field: string, node: CityNode): string => node.id,
-      },
+      }),
+      createMergeOptions('next-page'),
     );
 
     expect(result).toEqual({
@@ -335,6 +187,41 @@ describe('createApolloClient', () => {
       pageInfo: {
         hasNextPage: false,
       },
+    });
+  });
+
+  it('merges next page when existing connection is missing', () => {
+    createTestApolloClient();
+
+    const merge = getSavedCitiesPaginationMerge(mocks);
+    const incoming = createCitiesConnection({
+      edges: [createCityEdge('1')],
+    });
+
+    const result = merge(undefined, incoming, createMergeOptions('next-page'));
+
+    expect(result).toEqual(incoming);
+  });
+
+  it('merges next page when incoming edges are missing', () => {
+    createTestApolloClient();
+
+    const merge = getSavedCitiesPaginationMerge(mocks);
+    const result = merge(
+      {
+        edges: [createCityEdge('1')],
+      },
+      {
+        __typename: 'CitiesConnection',
+        pageInfo: {},
+      },
+      createMergeOptions('next-page'),
+    );
+
+    expect(result).toEqual({
+      __typename: 'CitiesConnection',
+      edges: [createCityEdge('1')],
+      pageInfo: {},
     });
   });
 });

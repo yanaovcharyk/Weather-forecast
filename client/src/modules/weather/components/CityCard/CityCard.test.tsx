@@ -1,21 +1,27 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, screen, waitFor } from '@testing-library/react';
 import { beforeEach, vi } from 'vitest';
 
 import { CityCard } from './CityCard';
-import { useSmartBackground } from '@/common/hooks';
-import { renderWithUser } from '@/common/testing/render/renderWithUser';
-import { CITY_FIXTURE, WEATHER_FIXTURE } from '@/weather/testing/fixtures';
+import type { CityCardRuntimeMocks } from '@/weather/testing/contexts/cityCard.context';
+import {
+  CITY_CARD_WITH_WEATHER_FIXTURE,
+  CITY_CARD_WITHOUT_WEATHER_FIXTURE,
+} from '@/weather/testing/contexts/cityCard.context';
+import { setupCityCardRuntime } from '@/weather/testing/setups/cityCard.runtime';
+import {
+  expectExistingCitySelectionCleared,
+  setupCityCard,
+} from '@/weather/testing/setups/cityCard.setup';
 
-const routerMocks = vi.hoisted(() => ({
-  navigate: vi.fn(),
-  searchParams: new URLSearchParams(),
-  setSearchParams: vi.fn(),
-}));
-
-const weatherHookMocks = vi.hoisted(() => ({
-  removeCity: vi.fn(),
-  togglePinned: vi.fn(),
-}));
+const runtimeMocks = vi.hoisted(
+  (): CityCardRuntimeMocks => ({
+    navigate: vi.fn(),
+    searchParams: new URLSearchParams(),
+    setSearchParams: vi.fn(),
+    removeCity: vi.fn(),
+    togglePinned: vi.fn(),
+  }),
+);
 
 vi.mock('@/common/hooks', () => ({
   useSmartBackground: vi.fn(),
@@ -26,20 +32,20 @@ vi.mock('react-router-dom', async (importOriginal) => {
 
   return {
     ...actual,
-    useNavigate: () => routerMocks.navigate,
+    useNavigate: () => runtimeMocks.navigate,
     useSearchParams: () => [
-      routerMocks.searchParams,
-      routerMocks.setSearchParams,
+      runtimeMocks.searchParams,
+      runtimeMocks.setSearchParams,
     ],
   };
 });
 
 vi.mock('@/weather/hooks', () => ({
   useRemoveCity: () => ({
-    removeCity: weatherHookMocks.removeCity,
+    removeCity: runtimeMocks.removeCity,
   }),
   useTogglePinned: () => ({
-    togglePinned: weatherHookMocks.togglePinned,
+    togglePinned: runtimeMocks.togglePinned,
   }),
 }));
 
@@ -54,173 +60,107 @@ vi.mock('@/weather/utils', () => ({
 
 describe('CityCard', () => {
   beforeEach(() => {
-    vi.clearAllMocks();
-    routerMocks.searchParams = new URLSearchParams();
-    weatherHookMocks.removeCity.mockResolvedValue(undefined);
-    weatherHookMocks.togglePinned.mockResolvedValue(undefined);
-    vi.mocked(useSmartBackground).mockReturnValue({ loaded: true });
+    setupCityCardRuntime(runtimeMocks);
   });
 
   it('renders full card with weather', () => {
-    render(
-      <CityCard
-        city={{
-          ...CITY_FIXTURE,
-          weather: WEATHER_FIXTURE,
-        }}
-      />,
-    );
+    setupCityCard();
 
     expect(screen.getByText('Kyiv')).toBeInTheDocument();
-
     expect(screen.getByText('Sunny')).toBeInTheDocument();
   });
 
   it('renders skeleton when not loaded', () => {
-    vi.mocked(useSmartBackground).mockReturnValue({ loaded: false });
+    setupCityCardRuntime(runtimeMocks, {
+      backgroundLoaded: false,
+    });
 
-    render(
-      <CityCard
-        city={{
-          ...CITY_FIXTURE,
-          weather: WEATHER_FIXTURE,
-        }}
-      />,
-    );
+    setupCityCard();
 
     expect(screen.queryByText('Kyiv')).not.toBeInTheDocument();
   });
 
   it('renders fallback when weather is null', () => {
-    render(<CityCard city={{ ...CITY_FIXTURE, weather: null }} />);
+    setupCityCard({
+      city: CITY_CARD_WITHOUT_WEATHER_FIXTURE,
+    });
 
     expect(screen.getByText('No forecast yet')).toBeInTheDocument();
   });
 
   it('opens city details when card is clicked', async () => {
-    const { user } = renderWithUser(
-      <CityCard
-        city={{
-          ...CITY_FIXTURE,
-          weather: WEATHER_FIXTURE,
-        }}
-      />,
-    );
+    const { user, getCard } = setupCityCard();
 
-    await user.click(screen.getByText('Kyiv').closest('.ant-card')!);
+    await user.click(getCard());
 
-    expect(routerMocks.navigate).toHaveBeenCalledWith('/cities/1');
+    expect(runtimeMocks.navigate).toHaveBeenCalledWith('/cities/1');
   });
 
   it('toggles pinned state from card button', async () => {
-    const { user } = renderWithUser(
-      <CityCard
-        city={{
-          ...CITY_FIXTURE,
-          weather: WEATHER_FIXTURE,
-        }}
-      />,
-    );
+    const { user, getPinButton } = setupCityCard();
 
-    const [pinBtn] = screen.getAllByRole('button');
+    await user.click(getPinButton());
 
-    await user.click(pinBtn);
-
-    expect(weatherHookMocks.togglePinned).toHaveBeenCalledWith('1', false);
-    expect(routerMocks.navigate).not.toHaveBeenCalled();
+    expect(runtimeMocks.togglePinned).toHaveBeenCalledWith('1', false);
+    expect(runtimeMocks.navigate).not.toHaveBeenCalled();
   });
 
   it('removes city from card button', async () => {
-    const { user } = renderWithUser(
-      <CityCard
-        city={{
-          ...CITY_FIXTURE,
-          weather: WEATHER_FIXTURE,
-        }}
-      />,
-    );
+    const { user, getRemoveButton } = setupCityCard();
 
-    const [, removeBtn] = screen.getAllByRole('button');
+    await user.click(getRemoveButton());
 
-    await user.click(removeBtn);
-
-    expect(weatherHookMocks.removeCity).toHaveBeenCalledWith('1');
-    expect(routerMocks.navigate).not.toHaveBeenCalled();
+    expect(runtimeMocks.removeCity).toHaveBeenCalledWith('1');
+    expect(runtimeMocks.navigate).not.toHaveBeenCalled();
   });
 
   it('clears existing city selection after removing selected card', async () => {
-    routerMocks.searchParams = new URLSearchParams('existingId=1&sortBy=name');
+    runtimeMocks.searchParams = new URLSearchParams('existingId=1&sortBy=name');
 
-    const { user } = renderWithUser(
-      <CityCard
-        city={{
-          ...CITY_FIXTURE,
-          weather: WEATHER_FIXTURE,
-        }}
-      />,
-    );
+    const { user, getRemoveButton } = setupCityCard();
 
-    const [, removeBtn] = screen.getAllByRole('button');
+    await user.click(getRemoveButton());
 
-    await user.click(removeBtn);
-
-    const updatedParams = routerMocks.setSearchParams.mock.calls[0][0];
-
-    expect(updatedParams.get('existingId')).toBeNull();
-    expect(updatedParams.get('sortBy')).toBe('name');
+    expectExistingCitySelectionCleared(runtimeMocks);
   });
 
   it('marks card as loading while remove is pending', async () => {
-    weatherHookMocks.removeCity.mockReturnValue(new Promise(() => {}));
+    runtimeMocks.removeCity.mockReturnValue(new Promise(() => {}));
 
-    const { user } = renderWithUser(
-      <CityCard
-        city={{
-          ...CITY_FIXTURE,
-          weather: WEATHER_FIXTURE,
-        }}
-      />,
-    );
+    const { user, getCard, getPinButton, getRemoveButton } = setupCityCard();
 
-    const card = screen.getByText('Kyiv').closest('.ant-card')!;
-    const [pinBtn, removeBtn] = screen.getAllByRole('button');
-
-    await user.click(removeBtn);
+    await user.click(getRemoveButton());
 
     await waitFor(() => {
-      expect(card.className).toContain('cardLoading');
+      expect(getCard().className).toContain('cardLoading');
     });
 
-    fireEvent.click(pinBtn);
-    fireEvent.click(removeBtn);
+    fireEvent.click(getPinButton());
+    fireEvent.click(getRemoveButton());
 
-    expect(weatherHookMocks.togglePinned).not.toHaveBeenCalled();
-    expect(weatherHookMocks.removeCity).toHaveBeenCalledTimes(1);
+    expect(runtimeMocks.togglePinned).not.toHaveBeenCalled();
+    expect(runtimeMocks.removeCity).toHaveBeenCalledTimes(1);
   });
 
   it('covers pinned icon toggle branch', () => {
-    const { rerender } = render(
-      <CityCard
-        city={{
-          ...CITY_FIXTURE,
-          weather: WEATHER_FIXTURE,
-          isPinned: false,
-        }}
-      />,
-    );
+    const { rerender, getPinButton } = setupCityCard({
+      city: {
+        ...CITY_CARD_WITH_WEATHER_FIXTURE,
+        isPinned: false,
+      },
+    });
 
-    expect(screen.getAllByRole('button')[0]).toBeInTheDocument();
+    expect(getPinButton()).toBeInTheDocument();
 
     rerender(
       <CityCard
         city={{
-          ...CITY_FIXTURE,
-          weather: WEATHER_FIXTURE,
+          ...CITY_CARD_WITH_WEATHER_FIXTURE,
           isPinned: true,
         }}
       />,
     );
 
-    expect(screen.getAllByRole('button')[0]).toBeInTheDocument();
+    expect(getPinButton()).toBeInTheDocument();
   });
 });

@@ -27,38 +27,75 @@ const hourlyForecast = [
 ];
 
 describe('HourlyForecast', () => {
-  beforeEach(() => {
-    vi.mocked(useCityWeather).mockReturnValue(
-      createCityWeatherState({
-        weather: createWeather({
-          hourly: hourlyForecast,
-        }),
+  const setup = (
+    state = createCityWeatherState({
+      weather: createWeather({
+        hourly: hourlyForecast,
       }),
-    );
+    }),
+  ) => {
+    vi.mocked(useCityWeather).mockReturnValue(state);
 
-    testRender(<HourlyForecast />);
+    return testRender(<HourlyForecast />);
+  };
+
+  beforeEach(() => {
+    vi.clearAllMocks();
   });
 
   it('renders title', () => {
+    setup();
+
     expect(screen.getByText(/hourly forecast/i)).toBeInTheDocument();
   });
 
   it('renders all hours', () => {
+    setup();
+
     expect(screen.getByText('12:00')).toBeInTheDocument();
     expect(screen.getByText('15:00')).toBeInTheDocument();
   });
 
   it('renders temperatures', () => {
+    setup();
+
     expect(screen.getByText('20°C')).toBeInTheDocument();
     expect(screen.getByText('22°C')).toBeInTheDocument();
   });
 
   it('renders feels like values', () => {
+    setup();
+
     expect(screen.getByText(/Feels\s*18°C/)).toBeInTheDocument();
     expect(screen.getByText(/Feels\s*21°C/)).toBeInTheDocument();
   });
 
   it('renders weather icons', () => {
+    setup();
+
     expect(screen.getAllByRole('img')).toHaveLength(2);
+  });
+
+  it('shows loading state before hourly forecast arrives', () => {
+    setup(
+      createCityWeatherState({
+        weatherLoading: true,
+        weather: createWeather({
+          hourly: [],
+        }),
+      }),
+    );
+
+    expect(document.querySelector('.ant-card-loading')).toBeInTheDocument();
+  });
+
+  it('renders empty forecast when weather is missing', () => {
+    setup(
+      createCityWeatherState({
+        weather: undefined,
+      }),
+    );
+
+    expect(screen.getByText(/hourly forecast/i)).toBeInTheDocument();
   });
 });

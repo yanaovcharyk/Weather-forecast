@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { Form } from 'antd';
 import { vi } from 'vitest';
 
@@ -9,6 +9,17 @@ vi.mock('./useCitySearch');
 
 describe('useAddCityForm', () => {
   const resetFields = vi.fn();
+
+  const setup = () => {
+    const onSubmit = vi.fn();
+
+    const { result } = renderHook(() => useAddCityForm(onSubmit));
+
+    return {
+      result,
+      onSubmit,
+    };
+  };
 
   beforeEach(() => {
     vi.clearAllMocks();
@@ -35,7 +46,7 @@ describe('useAddCityForm', () => {
       cityOptions: [{ label: 'Kyiv', value: '1' }],
     });
 
-    const { result } = renderHook(() => useAddCityForm(vi.fn()));
+    const { result } = setup();
 
     expect(result.current.loading).toBe(true);
     expect(result.current.handleSearchCities).toBe(handleSearchCities);
@@ -43,9 +54,7 @@ describe('useAddCityForm', () => {
   });
 
   it('does not submit empty city', async () => {
-    const onSubmit = vi.fn();
-
-    const { result } = renderHook(() => useAddCityForm(onSubmit));
+    const { result, onSubmit } = setup();
 
     await act(async () => {
       await result.current.handleSubmit({});
@@ -55,9 +64,7 @@ describe('useAddCityForm', () => {
   });
 
   it('submits city and resets form', async () => {
-    const onSubmit = vi.fn();
-
-    const { result } = renderHook(() => useAddCityForm(onSubmit));
+    const { result, onSubmit } = setup();
 
     const cityName = JSON.stringify({
       lat: 50.45,

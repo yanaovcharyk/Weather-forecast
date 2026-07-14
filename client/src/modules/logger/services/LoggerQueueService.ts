@@ -28,11 +28,7 @@ export class LoggerQueue {
     this.queuedLogs.push(logRecord);
 
     if (this.queuedLogs.length >= LOGGER_BATCH_SIZE) {
-      try {
-        this.sendQueuedLogs('batch');
-      } catch (error: unknown) {
-        console.error('Failed to send queued logs', error);
-      }
+      this.sendQueuedLogsSafely('batch');
     }
   }
 
@@ -72,12 +68,23 @@ export class LoggerQueue {
         return;
       }
 
-      try {
-        this.sendQueuedLogs('auto');
-      } catch (error: unknown) {
-        console.error('Failed to auto send logs', error);
-      }
+      this.sendQueuedLogsSafely('auto');
     }, LOGGER_FLUSH_INTERVAL_IN_MS);
+  }
+
+  private sendQueuedLogsSafely(mode: 'batch' | 'auto'): void {
+    void (async () => {
+      try {
+        await this.sendQueuedLogs(mode);
+      } catch (error: unknown) {
+        if (mode === 'auto') {
+          console.error('Failed to auto send logs', error);
+          return;
+        }
+
+        console.error('Failed to send queued logs', error);
+      }
+    })();
   }
 
   private registerPageCloseListeners(): void {

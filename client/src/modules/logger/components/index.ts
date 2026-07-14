@@ -1,2 +1,2 @@
-export { ErrorBoundary } from './ErrorBoundary/ErrorBoundary';
+export { ErrorBoundary } from '../../common/components/ErrorBoundary/ErrorBoundary';
 export { LoggerError } from './LoggerError/LoggerError';

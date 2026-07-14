@@ -1,34 +1,40 @@
-import { render, screen } from '@testing-library/react';
-import { vi, beforeEach } from 'vitest';
+import { screen } from '@testing-library/react';
+import { beforeEach, vi } from 'vitest';
 
-import { CitiesList } from './CitiesList';
-import type { City } from '@/weather/types';
 import type { CityCardProps } from '@/weather/components/CityCard/CityCard';
-import { mockIntersectionObserver } from '@/common/testing/mocks/browser.mock';
 import {
   createCitiesPaginatedResult,
   createSortingParamsResult,
 } from '@/weather/testing/mocks';
+import {
+  CITIES_LIST_CITY_FIXTURE,
+  CITIES_LIST_EXTRA_CITY_FIXTURE,
+  type CitiesListRuntimeMocks,
+} from '@/weather/testing/contexts/citiesList.context';
+import { setupCitiesListRuntime } from '@/weather/testing/setups/citiesList.runtime';
+import { setupCitiesList } from '@/weather/testing/setups/citiesList.setup';
 
 type CityCardMockProps = CityCardProps;
 
-const hookMocks = vi.hoisted(() => ({
-  navigate: vi.fn(),
-  useCitiesPaginated: vi.fn(),
-  useSortingParams: vi.fn(),
-  toast: {
-    toast: vi.fn(),
-    success: vi.fn(),
-    error: vi.fn(),
-    info: vi.fn(),
-    warning: vi.fn(),
-  },
-  searchParams: new URLSearchParams(),
-  setSearchParams: vi.fn(),
-}));
+const hookMocks = vi.hoisted(
+  (): CitiesListRuntimeMocks => ({
+    navigate: vi.fn(),
+    useCitiesPaginated: vi.fn(),
+    useSortingParams: vi.fn(),
+    toast: {
+      toast: vi.fn(),
+      success: vi.fn(),
+      error: vi.fn(),
+      info: vi.fn(),
+      warning: vi.fn(),
+    },
+    searchParams: new URLSearchParams(),
+    setSearchParams: vi.fn(),
+    cityCardProps: [],
+  }),
+);
 
-let cityCardProps: CityCardMockProps[] = [];
-let intersectionObserver: ReturnType<typeof mockIntersectionObserver>;
+let runtime: ReturnType<typeof setupCitiesListRuntime>;
 
 vi.mock('react-router-dom', async (importOriginal) => {
   const actual = await importOriginal<typeof import('react-router-dom')>();
@@ -48,7 +54,7 @@ vi.mock('@/weather/hooks', () => ({
 
 vi.mock('@/weather/components/CityCard', () => ({
   CityCard: (props: CityCardMockProps) => {
-    cityCardProps.push(props);
+    hookMocks.cityCardProps.push(props);
     return <div>{props.city.cityName}</div>;
   },
 }));
@@ -57,37 +63,13 @@ vi.mock('@/common/hooks', () => ({
   useToast: () => hookMocks.toast,
 }));
 
-beforeEach(() => {
-  vi.clearAllMocks();
-
-  cityCardProps = [];
-  hookMocks.searchParams = new URLSearchParams();
-  hookMocks.useSortingParams.mockReturnValue(createSortingParamsResult());
-  hookMocks.useCitiesPaginated.mockReturnValue(
-    createCitiesPaginatedResult({
-      cities,
-    }),
-  );
-
-  intersectionObserver = mockIntersectionObserver();
-});
-
-const cities: City[] = [
-  {
-    id: '1',
-    cityName: 'Kyiv',
-    weather: null,
-    isPinned: false,
-    lat: 50.45,
-    lon: 30.52,
-  },
-];
-
-const renderComponent = () => render(<CitiesList />);
-
 describe('CitiesList', () => {
+  beforeEach(() => {
+    runtime = setupCitiesListRuntime(hookMocks);
+  });
+
   it('renders city', () => {
-    renderComponent();
+    setupCitiesList();
 
     expect(screen.getByText('Kyiv')).toBeInTheDocument();
   });
@@ -95,15 +77,17 @@ describe('CitiesList', () => {
   it('renders empty state when there are no cities', () => {
     hookMocks.useCitiesPaginated.mockReturnValue(createCitiesPaginatedResult());
 
-    renderComponent();
+    setupCitiesList();
 
     expect(screen.getByText('No cities')).toBeInTheDocument();
   });
 
   it('passes only city data into CityCard', () => {
-    renderComponent();
+    setupCitiesList();
 
-    expect(cityCardProps[0]).toEqual({ city: cities[0] });
+    expect(hookMocks.cityCardProps[0]).toEqual({
+      city: CITIES_LIST_CITY_FIXTURE,
+    });
   });
 
   it('filters cities by existingId search param', () => {
@@ -115,21 +99,11 @@ describe('CitiesList', () => {
     );
     hookMocks.useCitiesPaginated.mockReturnValue(
       createCitiesPaginatedResult({
-        cities: [
-          cities[0],
-          {
-            id: '2',
-            cityName: 'Lviv',
-            weather: null,
-            isPinned: false,
-            lat: 49.84,
-            lon: 24.03,
-          },
-        ],
+        cities: [CITIES_LIST_CITY_FIXTURE, CITIES_LIST_EXTRA_CITY_FIXTURE],
       }),
     );
 
-    renderComponent();
+    setupCitiesList();
 
     expect(screen.getByText('Kyiv')).toBeInTheDocument();
     expect(screen.queryByText('Lviv')).not.toBeInTheDocument();
@@ -144,15 +118,14 @@ describe('CitiesList', () => {
     const loadMore = vi.fn();
     hookMocks.useCitiesPaginated.mockReturnValue(
       createCitiesPaginatedResult({
-        cities,
+        cities: [CITIES_LIST_CITY_FIXTURE],
         hasNext: true,
         loadMore,
       }),
     );
 
-    renderComponent();
-
-    intersectionObserver.trigger([{ isIntersecting: true }]);
+    setupCitiesList();
+    runtime.intersectionObserver.trigger([{ isIntersecting: true }]);
 
     expect(loadMore).toHaveBeenCalledTimes(1);
   });
@@ -161,15 +134,14 @@ describe('CitiesList', () => {
     const loadMore = vi.fn();
     hookMocks.useCitiesPaginated.mockReturnValue(
       createCitiesPaginatedResult({
-        cities,
+        cities: [CITIES_LIST_CITY_FIXTURE],
         hasNext: true,
         loadMore,
       }),
     );
 
-    renderComponent();
-
-    intersectionObserver.trigger([{ isIntersecting: false }]);
+    setupCitiesList();
+    runtime.intersectionObserver.trigger([{ isIntersecting: false }]);
 
     expect(loadMore).not.toHaveBeenCalled();
   });
@@ -177,34 +149,34 @@ describe('CitiesList', () => {
   it('disconnects observer on unmount', () => {
     hookMocks.useCitiesPaginated.mockReturnValue(
       createCitiesPaginatedResult({
-        cities,
+        cities: [CITIES_LIST_CITY_FIXTURE],
         hasNext: true,
       }),
     );
 
-    const { unmount } = renderComponent();
+    const { unmount } = setupCitiesList();
 
     unmount();
 
-    expect(intersectionObserver.disconnect).toHaveBeenCalledTimes(1);
+    expect(runtime.intersectionObserver.disconnect).toHaveBeenCalledTimes(1);
   });
 
   it('does not observe load-more trigger when hasNextPage=false', () => {
-    renderComponent();
+    setupCitiesList();
 
     expect(screen.getByText('Kyiv')).toBeInTheDocument();
-    expect(intersectionObserver.observe).not.toHaveBeenCalled();
+    expect(runtime.intersectionObserver.observe).not.toHaveBeenCalled();
   });
 
   it('renders loading overlay', () => {
     hookMocks.useCitiesPaginated.mockReturnValue(
       createCitiesPaginatedResult({
-        cities,
+        cities: [CITIES_LIST_CITY_FIXTURE],
         loading: true,
       }),
     );
 
-    renderComponent();
+    setupCitiesList();
 
     const spin = document.querySelector('.ant-spin');
     expect(spin).toHaveAttribute('aria-busy', 'true');
@@ -216,13 +188,13 @@ describe('CitiesList', () => {
   it('observes load-more trigger when hasNextPage=true', () => {
     hookMocks.useCitiesPaginated.mockReturnValue(
       createCitiesPaginatedResult({
-        cities,
+        cities: [CITIES_LIST_CITY_FIXTURE],
         hasNext: true,
       }),
     );
 
-    renderComponent();
+    setupCitiesList();
 
-    expect(intersectionObserver.observe).toHaveBeenCalledTimes(1);
+    expect(runtime.intersectionObserver.observe).toHaveBeenCalledTimes(1);
   });
 });

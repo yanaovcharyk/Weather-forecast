@@ -6,3 +6,9 @@ export {
   createHourlyWeather,
   createWeather,
 } from './weather.fixture';
+export {
+  KYIV_CITY_NODE_FIXTURE,
+  LVIV_CITY_NODE_FIXTURE,
+  createCitiesConnection,
+  createCitiesPaginatedResponse,
+} from './citiesConnection.fixture';

@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import '@/common/testing/mocks/apollo.mock';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,

@@ -21,7 +21,7 @@ describe('BlurLoaderOverlay', () => {
       </BlurLoaderOverlay>,
     );
 
-    const overlay = container.children[0].children[1]; // 👈 overlay div
+    const overlay = container.children[0].children[1];
 
     expect(overlay.className.includes('hidden')).toBe(false);
     expect(container.querySelector('.ant-spin')).toBeTruthy();
@@ -34,9 +34,9 @@ describe('BlurLoaderOverlay', () => {
       </BlurLoaderOverlay>,
     );
 
-    const overlay = container.children[0].children[1]; // 👈 overlay div
+    const overlay = container.children[0].children[1];
 
     expect(overlay.className.includes('hidden')).toBe(true);
-    expect(container.querySelector('.ant-spin')).toBeTruthy(); // Spin все одно рендериться
+    expect(container.querySelector('.ant-spin')).toBeTruthy();
   });
 });

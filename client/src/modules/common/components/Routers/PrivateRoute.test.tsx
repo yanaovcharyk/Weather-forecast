@@ -19,6 +19,20 @@ vi.mock('@/auth/contexts/AuthContext', () => ({
 
 const mockedUseAuthContext = vi.mocked(useAuthContext);
 
+const setup = ({
+  withRouter = false,
+}: {
+  withRouter?: boolean;
+} = {}) => {
+  const ui = (
+    <PrivateRoute>
+      <div>Secret</div>
+    </PrivateRoute>
+  );
+
+  return render(withRouter ? <MemoryRouter>{ui}</MemoryRouter> : ui);
+};
+
 describe('PrivateRoute', () => {
   it('should render spinner when authentication is loading', () => {
     mockedUseAuthContext.mockReturnValue(
@@ -27,11 +41,7 @@ describe('PrivateRoute', () => {
       }),
     );
 
-    render(
-      <PrivateRoute>
-        <div>Secret</div>
-      </PrivateRoute>,
-    );
+    setup();
 
     expect(document.querySelector('.ant-spin')).toBeInTheDocument();
   });
@@ -43,13 +53,9 @@ describe('PrivateRoute', () => {
       }),
     );
 
-    render(
-      <MemoryRouter>
-        <PrivateRoute>
-          <div>Secret</div>
-        </PrivateRoute>
-      </MemoryRouter>,
-    );
+    setup({
+      withRouter: true,
+    });
 
     expect(screen.queryByText('Secret')).not.toBeInTheDocument();
   });
@@ -62,11 +68,7 @@ describe('PrivateRoute', () => {
       }),
     );
 
-    render(
-      <PrivateRoute>
-        <div>Secret</div>
-      </PrivateRoute>,
-    );
+    setup();
 
     expect(screen.getByText('Secret')).toBeInTheDocument();
   });

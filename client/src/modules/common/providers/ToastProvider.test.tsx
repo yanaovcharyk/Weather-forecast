@@ -49,27 +49,22 @@ const AllToastConsumer = () => {
   );
 };
 
+const renderWithToastProvider = (children: React.ReactNode) =>
+  render(<ToastProvider>{children}</ToastProvider>);
+
 describe('ToastProvider', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it('should render children', () => {
-    render(
-      <ToastProvider>
-        <div>Content</div>
-      </ToastProvider>,
-    );
+    renderWithToastProvider(<div>Content</div>);
 
     expect(screen.getByText('Content')).toBeInTheDocument();
   });
 
   it('should invoke success toast when requested', () => {
-    render(
-      <ToastProvider>
-        <Consumer />
-      </ToastProvider>,
-    );
+    renderWithToastProvider(<Consumer />);
 
     fireEvent.click(screen.getByRole('button'));
 
@@ -88,22 +83,14 @@ describe('ToastProvider', () => {
       );
     };
 
-    render(
-      <ToastProvider>
-        <Probe />
-      </ToastProvider>,
-    );
+    renderWithToastProvider(<Probe />);
 
     expect(screen.getByTestId('has-toast')).toHaveTextContent('function');
     expect(screen.getByTestId('has-error')).toHaveTextContent('function');
   });
 
   it('should invoke all toast helpers', () => {
-    render(
-      <ToastProvider>
-        <AllToastConsumer />
-      </ToastProvider>,
-    );
+    renderWithToastProvider(<AllToastConsumer />);
 
     fireEvent.click(screen.getByRole('button'));
 

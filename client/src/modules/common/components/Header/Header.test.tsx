@@ -42,6 +42,23 @@ vi.mock('@/auth/contexts/AuthContext', () => ({
   }),
 }));
 
+const setup = () => {
+  render(<Header />);
+
+  return {
+    getLogoutButton: () => screen.getByRole('button'),
+    getCancelButton: () =>
+      screen.getByRole('button', {
+        name: 'Cancel',
+      }),
+    getLogoutConfirmButton: () =>
+      screen.getByRole('button', {
+        name: 'Logout',
+      }),
+    getLastConfirmModalProps: () => confirmModalProps.mock.calls.at(-1)?.[0],
+  };
+};
+
 describe('Header', () => {
   beforeEach(() => {
     vi.clearAllMocks();
@@ -50,57 +67,53 @@ describe('Header', () => {
   });
 
   it('should render application title', () => {
-    render(<Header />);
+    setup();
 
     expect(screen.getByText('Weather')).toBeInTheDocument();
   });
 
   it('should open logout modal after click', async () => {
-    render(<Header />);
+    const { getLogoutButton } = setup();
 
-    fireEvent.click(screen.getByRole('button'));
+    fireEvent.click(getLogoutButton());
 
     expect(await screen.findByRole('dialog')).toBeInTheDocument();
   });
 
   it('should close logout modal when cancel callback is executed', async () => {
-    render(<Header />);
+    const { getLastConfirmModalProps, getLogoutButton } = setup();
 
-    const props = confirmModalProps.mock.calls.at(-1)?.[0];
+    const props = getLastConfirmModalProps();
 
     expect(props.visible).toBe(false);
 
-    fireEvent.click(screen.getByRole('button'));
+    fireEvent.click(getLogoutButton());
 
     await waitFor(() => {
-      const openedProps = confirmModalProps.mock.calls.at(-1)?.[0];
+      const openedProps = getLastConfirmModalProps();
 
       expect(openedProps.visible).toBe(true);
     });
 
-    const openedProps = confirmModalProps.mock.calls.at(-1)?.[0];
+    const openedProps = getLastConfirmModalProps();
 
     openedProps.onCancel();
 
     await waitFor(() => {
-      const closedProps = confirmModalProps.mock.calls.at(-1)?.[0];
+      const closedProps = getLastConfirmModalProps();
 
       expect(closedProps.visible).toBe(false);
     });
   });
 
   it('should close modal when cancel is clicked', async () => {
-    render(<Header />);
+    const { getCancelButton, getLogoutButton } = setup();
 
-    fireEvent.click(screen.getByRole('button'));
+    fireEvent.click(getLogoutButton());
 
     expect(await screen.findByRole('dialog')).toBeInTheDocument();
 
-    fireEvent.click(
-      screen.getByRole('button', {
-        name: 'Cancel',
-      }),
-    );
+    fireEvent.click(getCancelButton());
 
     await waitFor(() => {
       expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
@@ -108,15 +121,11 @@ describe('Header', () => {
   });
 
   it('should logout', async () => {
-    render(<Header />);
+    const { getLogoutButton, getLogoutConfirmButton } = setup();
 
-    fireEvent.click(screen.getByRole('button'));
+    fireEvent.click(getLogoutButton());
 
-    fireEvent.click(
-      screen.getByRole('button', {
-        name: 'Logout',
-      }),
-    );
+    fireEvent.click(getLogoutConfirmButton());
 
     await waitFor(() => {
       expect(logoutMock).toHaveBeenCalledTimes(1);

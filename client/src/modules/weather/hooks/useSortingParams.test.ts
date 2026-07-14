@@ -1,4 +1,4 @@
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
 import { vi } from 'vitest';
 import { useSearchParams } from 'react-router-dom';
 
@@ -11,6 +11,19 @@ vi.mock('react-router-dom');
 describe('useSortingParams', () => {
   const router = createRouterMocks();
 
+  const setup = ({
+    searchParams = '',
+  }: {
+    searchParams?: string;
+  } = {}) => {
+    vi.mocked(useSearchParams).mockReturnValue([
+      new URLSearchParams(searchParams),
+      router.setSearchParams,
+    ] as never);
+
+    return renderHook(() => useSortingParams());
+  };
+
   const getUpdatedParams = () => {
     const updatedParams = vi.mocked(router.setSearchParams).mock.calls[0]?.[0];
 
@@ -21,15 +34,10 @@ describe('useSortingParams', () => {
 
   beforeEach(() => {
     vi.clearAllMocks();
-
-    vi.mocked(useSearchParams).mockReturnValue([
-      new URLSearchParams(),
-      router.setSearchParams,
-    ] as never);
   });
 
   it('returns default values', () => {
-    const { result } = renderHook(() => useSortingParams());
+    const { result } = setup();
 
     expect(result.current.sorting).toEqual({
       sortBy: CitySortField.CreatedAt,
@@ -40,24 +48,20 @@ describe('useSortingParams', () => {
   });
 
   it('returns valid values from search params', () => {
-    vi.mocked(useSearchParams).mockReturnValue([
-      new URLSearchParams(
-        `sortBy=${CitySortField.CityName}&sortOrder=${CitySortOrder.Asc}&showPinnedOnly=true`,
-      ),
-      router.setSearchParams,
-    ] as never);
-
-    const { result } = renderHook(() => useSortingParams());
+    const { result } = setup({
+      searchParams: `sortBy=${CitySortField.CityName}&sortOrder=${CitySortOrder.Asc}&showPinnedOnly=true`,
+    });
 
     expect(result.current.sorting).toEqual({
       sortBy: CitySortField.CityName,
       sortOrder: CitySortOrder.Asc,
     });
+
     expect(result.current.showPinnedOnly).toBe(true);
   });
 
   it('updates sorting', () => {
-    const { result } = renderHook(() => useSortingParams());
+    const { result } = setup();
 
     act(() => {
       result.current.setSorting({
@@ -73,8 +77,24 @@ describe('useSortingParams', () => {
     expect(updatedParams.get('showPinnedOnly')).toBe('false');
   });
 
+  it('updates sorting with updater callback', () => {
+    const { result } = setup();
+
+    act(() => {
+      result.current.setSorting((currentSorting) => ({
+        ...currentSorting,
+        sortOrder: CitySortOrder.Asc,
+      }));
+    });
+
+    const updatedParams = getUpdatedParams();
+
+    expect(updatedParams.get('sortBy')).toBe(CitySortField.CreatedAt);
+    expect(updatedParams.get('sortOrder')).toBe(CitySortOrder.Asc);
+  });
+
   it('updates pinned filter', () => {
-    const { result } = renderHook(() => useSortingParams());
+    const { result } = setup();
 
     act(() => {
       result.current.setShowPinnedOnly(true);
@@ -88,7 +108,7 @@ describe('useSortingParams', () => {
   });
 
   it('does not rewrite params on mount', () => {
-    renderHook(() => useSortingParams());
+    setup();
 
     expect(router.setSearchParams).not.toHaveBeenCalled();
   });

@@ -9,8 +9,6 @@ import {
 import { setupCityWeatherRuntime } from '@/weather/testing/setups/cityWeather.runtime';
 import { setupCityWeather } from '@/weather/testing/setups/cityWeather.setup';
 
-vi.mock('@apollo/client/react');
-
 vi.mock('react-router-dom', async () => {
   const actual =
     await vi.importActual<typeof import('react-router-dom')>(

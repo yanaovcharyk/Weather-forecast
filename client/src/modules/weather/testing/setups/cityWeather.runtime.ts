@@ -1,9 +1,8 @@
-import { useQuery } from '@apollo/client/react';
 import { useParams } from 'react-router-dom';
-import type { Mock } from 'vitest';
 
 import type { CityWeatherContext } from '@/weather/testing/contexts/cityWeather.context';
 import { createQueryResult } from '@/common/testing/factories';
+import { useQueryMock } from '@/common/testing/mocks/apollo.mock';
 
 export const setupCityWeatherRuntime = (
   ctx: CityWeatherContext,
@@ -20,9 +19,7 @@ export const setupCityWeatherRuntime = (
 
   let callCount = 0;
 
-  const mockedUseQuery = useQuery as unknown as Mock;
-
-  mockedUseQuery.mockImplementation(() => {
+  useQueryMock.mockImplementation(() => {
     callCount++;
 
     if (callCount === 1) {

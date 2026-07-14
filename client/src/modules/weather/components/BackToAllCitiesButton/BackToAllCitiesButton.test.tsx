@@ -24,36 +24,38 @@ vi.mock('@/common/components', () => ({
   ),
 }));
 
+const setup = () => {
+  const user = userEvent.setup();
+
+  render(<BackToAllCitiesButton />);
+
+  return {
+    user,
+    backButton: screen.getByRole('button', {
+      name: '← Back to all cities',
+    }),
+  };
+};
+
 describe('BackToAllCitiesButton', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
   it('navigates back preserving params without existing city selection', async () => {
-    const user = userEvent.setup();
+    const { user, backButton } = setup();
 
-    render(<BackToAllCitiesButton />);
-
-    await user.click(
-      screen.getByRole('button', {
-        name: '← Back to all cities',
-      }),
-    );
+    await user.click(backButton);
 
     expect(routerMocks.navigate).toHaveBeenCalledWith('/?sortBy=cityName');
   });
 
   it('navigates to root when existing city selection is the only param', async () => {
-    const user = userEvent.setup();
     routerMocks.searchParams = new URLSearchParams('existingId=1');
 
-    render(<BackToAllCitiesButton />);
+    const { user, backButton } = setup();
 
-    await user.click(
-      screen.getByRole('button', {
-        name: '← Back to all cities',
-      }),
-    );
+    await user.click(backButton);
 
     expect(routerMocks.navigate).toHaveBeenCalledWith('/');
   });

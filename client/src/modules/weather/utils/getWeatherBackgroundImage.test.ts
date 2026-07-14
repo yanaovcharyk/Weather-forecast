@@ -19,5 +19,8 @@ describe('getWeatherBackgroundImage', () => {
     expect(getWeatherBackgroundImage(WeatherCondition.UNKNOWN)).toBe(
       '/images/weather/default.webp',
     );
+    expect(getWeatherBackgroundImage('not-real' as WeatherCondition)).toBe(
+      '/images/weather/default.webp',
+    );
   });
 });

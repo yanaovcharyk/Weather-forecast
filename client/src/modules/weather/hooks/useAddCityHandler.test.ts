@@ -25,6 +25,7 @@ describe('useAddCityHandler', () => {
   const addCity = vi.fn();
   const getSavedCity = vi.fn();
   const setSearchParams = vi.fn();
+
   const toast = {
     toast: vi.fn(),
     success: vi.fn(),
@@ -39,6 +40,21 @@ describe('useAddCityHandler', () => {
     lon: 30.52,
   };
 
+  const setup = () => {
+    const { result } = renderHook(() => useAddCityHandler());
+
+    const addSelectedCity = async () => {
+      await act(async () => {
+        await result.current.handleAddCity(selectedCity);
+      });
+    };
+
+    return {
+      result,
+      addSelectedCity,
+    };
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
 
@@ -46,10 +62,13 @@ describe('useAddCityHandler', () => {
       addCity,
       loading: false,
     });
+
     vi.mocked(useSavedCityLookup).mockReturnValue({
       getSavedCity,
     });
+
     vi.mocked(useToast).mockReturnValue(toast);
+
     vi.mocked(useSearchParams).mockReturnValue([
       new URLSearchParams('sortBy=cityName'),
       setSearchParams,
@@ -60,11 +79,9 @@ describe('useAddCityHandler', () => {
   });
 
   it('adds city and shows success toast', async () => {
-    const { result } = renderHook(() => useAddCityHandler());
+    const { addSelectedCity } = setup();
 
-    await act(async () => {
-      await result.current.handleAddCity(selectedCity);
-    });
+    await addSelectedCity();
 
     expect(addCity).toHaveBeenCalledWith(selectedCity);
     expect(toast.success).toHaveBeenCalledWith('City Kyiv added successfully');
@@ -76,11 +93,9 @@ describe('useAddCityHandler', () => {
       setSearchParams,
     ]);
 
-    const { result } = renderHook(() => useAddCityHandler());
+    const { addSelectedCity } = setup();
 
-    await act(async () => {
-      await result.current.handleAddCity(selectedCity);
-    });
+    await addSelectedCity();
 
     const updatedParams = setSearchParams.mock.calls[0][0];
 
@@ -92,11 +107,9 @@ describe('useAddCityHandler', () => {
   it('selects existing city and shows info toast', async () => {
     getSavedCity.mockResolvedValue(CITY_FIXTURE);
 
-    const { result } = renderHook(() => useAddCityHandler());
+    const { addSelectedCity } = setup();
 
-    await act(async () => {
-      await result.current.handleAddCity(selectedCity);
-    });
+    await addSelectedCity();
 
     const updatedParams = setSearchParams.mock.calls[0][0];
 
@@ -109,20 +122,19 @@ describe('useAddCityHandler', () => {
   it('shows error toast when adding fails', async () => {
     addCity.mockRejectedValue(new Error('Nope'));
 
-    const { result } = renderHook(() => useAddCityHandler());
+    const { addSelectedCity } = setup();
 
-    await act(async () => {
-      await result.current.handleAddCity(selectedCity);
-    });
+    await addSelectedCity();
 
     expect(toast.error).toHaveBeenCalledWith('Failed to add city');
   });
 
   it('ignores duplicate submit while add flow is in progress', async () => {
     const lookup = createControlledPromise<null>();
+
     getSavedCity.mockReturnValue(lookup.promise);
 
-    const { result } = renderHook(() => useAddCityHandler());
+    const { result, addSelectedCity } = setup();
 
     act(() => {
       void result.current.handleAddCity(selectedCity);
@@ -132,9 +144,7 @@ describe('useAddCityHandler', () => {
       expect(result.current.isAddingCity).toBe(true);
     });
 
-    await act(async () => {
-      await result.current.handleAddCity(selectedCity);
-    });
+    await addSelectedCity();
 
     expect(getSavedCity).toHaveBeenCalledTimes(1);
 

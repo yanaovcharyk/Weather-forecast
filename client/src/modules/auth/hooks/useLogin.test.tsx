@@ -7,7 +7,6 @@ import {
 import { setupLoginRuntime } from '@/auth/testing/runtimes/login.runtime';
 import { setupLogin } from '@/auth/testing/setups/login.setup';
 
-vi.mock('@apollo/client/react');
 vi.mock('@/auth/contexts/AuthContext');
 vi.mock('@/common/hooks/useToast');
 

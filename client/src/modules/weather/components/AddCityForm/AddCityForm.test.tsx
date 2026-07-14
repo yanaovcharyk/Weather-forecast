@@ -1,17 +1,16 @@
-import React from 'react';
 import { screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-
-import { AddCityForm } from './AddCityForm';
 
 import { useAddCityAction, useAddCityForm } from '@/weather/hooks';
 import { useIsMobile } from '@/common/hooks/useIsMobile';
 import {
-  createUseAddCityFormResult,
+  addCitySelectMock,
   createFormMock,
   handleSubmitMock,
+  createUseAddCityFormResult,
 } from '@/weather/testing/mocks';
-import { renderWithUser } from '@/common/testing/render/renderWithUser';
+import { setupAddCityFormRuntime } from '@/weather/testing/setups/addCityForm.runtime';
+import { setupAddCityForm } from '@/weather/testing/setups/addCityForm.setup';
 
 vi.mock('@/weather/hooks', async (importOriginal) => {
   const actual = await importOriginal<typeof import('@/weather/hooks')>();
@@ -24,98 +23,35 @@ vi.mock('@/weather/hooks', async (importOriginal) => {
 });
 vi.mock('@/common/hooks/useIsMobile');
 
-type SelectProps = {
-  placement?: string;
-  getPopupContainer?: () => HTMLElement;
-};
-
-const selectMock = vi.fn<(props: SelectProps) => void>();
-
 vi.mock('antd', async (importOriginal) => {
   const actual = await importOriginal<typeof import('antd')>();
-
-  const FormMock = Object.assign(
-    ({
-      children,
-      onFinish,
-    }: {
-      children: React.ReactNode;
-      onFinish?: () => void;
-    }) => (
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          onFinish?.();
-        }}
-      >
-        {children}
-      </form>
-    ),
-    {
-      Item: ({ children }: { children: React.ReactNode }) => <>{children}</>,
-    },
-  );
+  const { AddCityButtonMock, AddCityFormAntFormMock, AddCitySelectMock } =
+    await import('@/weather/testing/mocks');
 
   return {
     ...actual,
-    Form: FormMock,
-    Select: (props: SelectProps) => {
-      selectMock(props);
-      return <div data-testid="select" />;
-    },
-
-    Button: ({
-      children,
-      disabled,
-      onClick,
-    }: {
-      children: React.ReactNode;
-      disabled?: boolean;
-      onClick?: () => void;
-    }) => (
-      <button disabled={disabled} onClick={onClick}>
-        {children}
-      </button>
-    ),
+    Form: AddCityFormAntFormMock,
+    Select: AddCitySelectMock,
+    Button: AddCityButtonMock,
   };
 });
 
 describe('AddCityForm', () => {
-  const setup = () => renderWithUser(<AddCityForm />);
-
   beforeEach(() => {
-    vi.clearAllMocks();
-
-    vi.mocked(useIsMobile).mockReturnValue(false);
-
-    vi.mocked(useAddCityAction).mockReturnValue({
-      handleAddCity: vi.fn(),
-      isAddingCity: false,
-    });
-
-    vi.mocked(useAddCityForm).mockReturnValue(createUseAddCityFormResult());
+    setupAddCityFormRuntime();
   });
 
   it('renders select and submit button', () => {
-    setup();
+    const { getAddButton, getSelect } = setupAddCityForm();
 
-    expect(screen.getByTestId('select')).toBeInTheDocument();
-
-    expect(
-      screen.getByRole('button', {
-        name: /add/i,
-      }),
-    ).toBeInTheDocument();
+    expect(getSelect()).toBeInTheDocument();
+    expect(getAddButton()).toBeInTheDocument();
   });
 
   it('calls submit handler', async () => {
-    const { user } = setup();
+    const { user, getAddButton } = setupAddCityForm();
 
-    await user.click(
-      screen.getByRole('button', {
-        name: /add/i,
-      }),
-    );
+    await user.click(getAddButton());
 
     expect(handleSubmitMock).toHaveBeenCalledTimes(1);
   });
@@ -126,21 +62,17 @@ describe('AddCityForm', () => {
       isAddingCity: true,
     });
 
-    setup();
+    const { getAddButton } = setupAddCityForm();
 
-    expect(
-      screen.getByRole('button', {
-        name: /add/i,
-      }),
-    ).toBeDisabled();
+    expect(getAddButton()).toBeDisabled();
   });
 
   it('passes getPopupContainer returning document.body', () => {
-    setup();
+    setupAddCityForm();
 
-    expect(selectMock).toHaveBeenCalled();
+    expect(addCitySelectMock).toHaveBeenCalled();
 
-    const props = selectMock.mock.calls[0][0];
+    const props = addCitySelectMock.mock.calls[0][0];
 
     expect(props.getPopupContainer).toBeDefined();
     expect(props.getPopupContainer?.()).toBe(document.body);
@@ -149,9 +81,9 @@ describe('AddCityForm', () => {
   it('uses bottomLeft placement on mobile to keep suggestions visible', () => {
     vi.mocked(useIsMobile).mockReturnValue(true);
 
-    setup();
+    setupAddCityForm();
 
-    const props = selectMock.mock.calls[0][0];
+    const props = addCitySelectMock.mock.calls[0][0];
 
     expect(props.placement).toBe('bottomLeft');
   });
@@ -163,7 +95,7 @@ describe('AddCityForm', () => {
       }),
     );
 
-    setup();
+    setupAddCityForm();
 
     expect(screen.getByTestId('select')).toBeInTheDocument();
   });

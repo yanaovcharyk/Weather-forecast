@@ -1,73 +1,100 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { renderHook, act } from '@testing-library/react';
+import { act, renderHook } from '@testing-library/react';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useRemoveAllCities } from './useRemoveAllCities';
-import { createMutationResult } from '@/common/testing/factories';
+import {
+  mockApolloMutation,
+  useMutationMock,
+} from '@/common/testing/mocks/apollo.mock';
 import { GraphQLTypename } from '@/weather/types';
 
 const mockMutate = vi.fn();
-const mockUseMutation = vi.fn();
-
-vi.mock('@apollo/client/react', () => ({
-  useMutation: (...args: unknown[]) => mockUseMutation(...args),
-}));
 
 vi.mock('@/weather/graphql', () => ({
   REMOVE_ALL_SAVED_CITIES: 'REMOVE_ALL_SAVED_CITIES',
 }));
 
 describe('useRemoveAllCities', () => {
+  const setup = () => {
+    const { result } = renderHook(() => useRemoveAllCities());
+
+    const removeAllCities = async () => {
+      let response;
+
+      await act(async () => {
+        response = await result.current.removeAllCities();
+      });
+
+      return response;
+    };
+
+    return {
+      result,
+      removeAllCities,
+    };
+  };
+
+  const setupCacheUpdate = () => {
+    setup();
+
+    const [, options] = useMutationMock.mock.calls[0];
+
+    const cache = {
+      modify: vi.fn(),
+    };
+
+    options.update(cache);
+
+    const modifyCall = cache.modify.mock.calls[0][0];
+
+    return {
+      getSavedCitiesPaginated: modifyCall.fields.getSavedCitiesPaginated,
+    };
+  };
+
   beforeEach(() => {
     vi.clearAllMocks();
 
-    mockUseMutation.mockReturnValue([mockMutate, createMutationResult()]);
+    mockApolloMutation({
+      mutate: mockMutate,
+    });
   });
 
-  it('should return loading state', () => {
-    const { result } = renderHook(() => useRemoveAllCities());
+  it('returns loading state', () => {
+    const { result } = setup();
 
     expect(result.current.loading).toBe(false);
-
     expect(result.current.removeAllCities).toBeDefined();
   });
 
-  it('should return ok=true when mutation succeeds', async () => {
+  it('returns ok=true when mutation succeeds', async () => {
     mockMutate.mockResolvedValue({
       data: {
         removeAllSavedCities: true,
       },
     });
 
-    const { result } = renderHook(() => useRemoveAllCities());
+    const { removeAllCities } = setup();
 
-    let response;
-
-    await act(async () => {
-      response = await result.current.removeAllCities();
-    });
+    const response = await removeAllCities();
 
     expect(mockMutate).toHaveBeenCalled();
-
     expect(response).toEqual({
       ok: true,
       code: undefined,
     });
   });
 
-  it('should return ok=false when mutation returns false', async () => {
+  it('returns ok=false when mutation returns false', async () => {
     mockMutate.mockResolvedValue({
       data: {
         removeAllSavedCities: false,
       },
     });
 
-    const { result } = renderHook(() => useRemoveAllCities());
+    const { removeAllCities } = setup();
 
-    let response;
-
-    await act(async () => {
-      response = await result.current.removeAllCities();
-    });
+    const response = await removeAllCities();
 
     expect(response).toEqual({
       ok: false,
@@ -75,16 +102,12 @@ describe('useRemoveAllCities', () => {
     });
   });
 
-  it('should return ok=false on mutation error', async () => {
+  it('returns ok=false on mutation error', async () => {
     mockMutate.mockRejectedValue(new Error('Mutation failed'));
 
-    const { result } = renderHook(() => useRemoveAllCities());
+    const { removeAllCities } = setup();
 
-    let response;
-
-    await act(async () => {
-      response = await result.current.removeAllCities();
-    });
+    const response = await removeAllCities();
 
     expect(response).toEqual({
       ok: false,
@@ -92,24 +115,8 @@ describe('useRemoveAllCities', () => {
     });
   });
 
-  it('should update cache and clear cities', () => {
-    renderHook(() => useRemoveAllCities());
-
-    const [, options] = mockUseMutation.mock.calls[0];
-
-    const update = options.update;
-
-    const cache = {
-      modify: vi.fn(),
-    };
-
-    update(cache);
-
-    expect(cache.modify).toHaveBeenCalled();
-
-    const modifyCall = cache.modify.mock.calls[0][0];
-
-    const getSavedCitiesPaginated = modifyCall.fields.getSavedCitiesPaginated;
+  it('updates cache and clears cities', () => {
+    const { getSavedCitiesPaginated } = setupCacheUpdate();
 
     const existingConnection = {
       __typename: GraphQLTypename.CitiesConnection,
@@ -133,25 +140,11 @@ describe('useRemoveAllCities', () => {
     });
   });
 
-  it('should return existingConnection when undefined', () => {
-    renderHook(() => useRemoveAllCities());
-
-    const [, options] = mockUseMutation.mock.calls[0];
-
-    const update = options.update;
-
-    const cache = {
-      modify: vi.fn(),
-    };
-
-    update(cache);
-
-    const modifyCall = cache.modify.mock.calls[0][0];
-
-    const getSavedCitiesPaginated = modifyCall.fields.getSavedCitiesPaginated;
+  it('returns existing connection when undefined', () => {
+    const { getSavedCitiesPaginated } = setupCacheUpdate();
 
     const result = getSavedCitiesPaginated(undefined);
 
-    expect(result).toBe(undefined);
+    expect(result).toBeUndefined();
   });
 });
