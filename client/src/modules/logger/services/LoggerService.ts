@@ -11,7 +11,7 @@ import { loggerRateLimiter } from './LoggerRateLimiter';
 import { sanitizeForLogging } from '@/logger/utils/sanitizeForLogging';
 import { OperationLogger } from './OperationLogger';
 import { config } from '@/common/config';
-import { shouldLog } from '@/logger/utils/shouldLog';
+import { shouldLog } from '@/logger/config/shouldLog';
 
 export class Logger {
   private readonly defaultMetadata: LogMetadata;

@@ -5,7 +5,7 @@ import { loggerQueue } from './LoggerQueueService';
 import { loggerContext } from '@/logger/context/LoggerContextStore';
 import { loggerRateLimiter } from './LoggerRateLimiter';
 import { sanitizeForLogging } from '@/logger/utils/sanitizeForLogging';
-import { shouldLog } from '@/logger/utils/shouldLog';
+import { shouldLog } from '@/logger/config/shouldLog';
 import { OperationLogger } from './OperationLogger';
 import { config } from '@/common/config';
 import type { JsonValue } from '@/logger/types';

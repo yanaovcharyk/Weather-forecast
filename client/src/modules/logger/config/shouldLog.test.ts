@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { shouldLog } from './shouldLog';
+import { shouldLog } from '../config/shouldLog';
 import { config } from '@/common/config';
 import { LOG_LEVEL_PRIORITY } from '@/logger/constants';
 import { LogLevel } from '@/logger/types';

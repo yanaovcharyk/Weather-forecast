@@ -1,9 +1,9 @@
 export {
   type LoginFormContext,
   createLoginFormContext,
-} from './login-form.context';
+} from './LoginForm.context';
 export { createLoginContext, type LoginContext } from './login.context';
 export {
   createAuthProviderContext,
   type AuthProviderContext,
-} from './auth-provider.context';
+} from './authProvider.context';
